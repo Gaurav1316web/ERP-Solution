@@ -749,6 +749,8 @@ Public Class clsDBTNEFTPerforma
     Public Const colMPName As String = "BENEFICERY NAME"
     Public Const colMPBank As String = "Bank"
     Public Const colMPMobileNo As String = "Mobile No"
+    Public Const colTHIRDPARTYCODE As String = "Third Party Code"
+
 
 
     Public Shared Function GetDefault() As DataTable
