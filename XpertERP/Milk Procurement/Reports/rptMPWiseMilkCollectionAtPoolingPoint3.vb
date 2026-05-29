@@ -681,7 +681,7 @@ LEFT  JOIN TSPL_ZONE_MASTER ON TSPL_ZONE_MASTER.Zone_Code =TSPL_VENDOR_MASTER.Zo
 LEFT  JOIN TSPL_ZONE_MASTER ON TSPL_ZONE_MASTER.Zone_Code =TSPL_VENDOR_MASTER.Zone_Code
                       Left Join TSPl_MP_MAster On TSPl_MP_MAster.MP_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.MP_CODE and TSPl_MP_MAster.VLC_Code=TSPL_VLC_MASTER_HEAD.VLC_Code
                   where 2=2 and  "
-            Qry += "   convert(date,TSPL_VLC_DATA_UPLOADER.DOC_DATE,103)>=CONVERT(DATE,'" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "',104) and convert(date,TSPL_VLC_DATA_UPLOADER.DOC_DATE,103) <=CONVERT(DATE,'" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "',103) "
+            Qry += "   convert(date,TSPL_VLC_DATA_UPLOADER.DOC_DATE,103)>=CONVERT(DATE,'" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "',104) and convert(date,TSPL_VLC_DATA_UPLOADER.DOC_DATE,103) <=CONVERT(DATE,'" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "',103) "
             If clsCommon.CompairString(txtFromShift.Text, "e") = CompairStringResult.Equal Then
                 Qry += " and 2=( case when tspl_vlc_data_uploader.doc_date >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/mmm/yyyy hh:mm tt") + "' and TSPL_VLC_DATA_UPLOADER.doc_date <= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/mmm/yyyy hh:mm tt") + "' and shift='m' then 3 else 2 end  )"
             End If

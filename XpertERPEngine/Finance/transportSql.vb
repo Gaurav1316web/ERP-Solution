@@ -1202,44 +1202,78 @@ xxx:
             'End If
 
             ''richa agarwal 09-feb-2016 to show double header in excel BM00000008811
-            If doubleheadershowninExcel = True Then
+            'If doubleheadershowninExcel = True Then
+            '    Dim view As New ColumnGroupsViewDefinition()
+            '    view = gv.ViewDefinition
+            '    Dim j1 As Integer = 1
+            '    Dim k As Integer = 0
+            '    If view.ColumnGroups.Count > 0 Then
+            '        Dim chartRange As Excel.Range
+            '        For i As Integer = 0 To view.ColumnGroups.Count - 1
+            '            excel.Cells(rowIndex, j1) = clsCommon.myCstr(view.ColumnGroups(i).Text)
+            '            Dim l As Integer = 0
+            '            For m As Integer = 0 To clsCommon.myCdbl(view.ColumnGroups(i).Rows(0).ColumnNames.Count) - 1
+            '                'If view.ColumnGroups(i).Rows(0).ColumnNames(m).IsVisible = False Then ''TELERIK2015->2022
+            '                '    l = l + 1
+            '                'End If
+
+            '                'If view.ColumnGroups(i).IsVisible = False Then ''TELERIK2015->2022
+            '                If view.ViewTemplate.Columns.Contains(view.ColumnGroups(i).Rows(0).ColumnNames(m)) = False Then
+            '                    l = l + 1
+            '                End If
+
+            '            Next
+
+            '            k = k + clsCommon.myCdbl(view.ColumnGroups(i).Rows(0).ColumnNames.Count) - l
+            '            chartRange = wSheet.Range(wSheet.Cells(rowIndex, j1), wSheet.Cells(rowIndex, k))
+            '            'chartRange.Merge()
+            '            chartRange.MergeCells = False
+            '            chartRange.VerticalAlignment = 2
+            '            chartRange.HorizontalAlignment = 3
+
+
+            '            'j1 = clsCommon.myCdbl(view.ColumnGroups(i).Rows(0).Columns.Count) + 1 - l
+            '            j1 = j1 + clsCommon.myCdbl(view.ColumnGroups(i).Rows(0).ColumnNames.Count) - l
+            '        Next
+
+            '        rowIndex += 1
+            '    End If
+
+            'End If
+
+            If doubleheadershowninExcel Then
                 Dim view As New ColumnGroupsViewDefinition()
                 view = gv.ViewDefinition
                 Dim j1 As Integer = 1
-                Dim k As Integer = 0
                 If view.ColumnGroups.Count > 0 Then
                     Dim chartRange As Excel.Range
                     For i As Integer = 0 To view.ColumnGroups.Count - 1
-                        excel.Cells(rowIndex, j1) = clsCommon.myCstr(view.ColumnGroups(i).Text)
-                        Dim l As Integer = 0
-                        For m As Integer = 0 To clsCommon.myCdbl(view.ColumnGroups(i).Rows(0).ColumnNames.Count) - 1
-                            'If view.ColumnGroups(i).Rows(0).ColumnNames(m).IsVisible = False Then ''TELERIK2015->2022
-                            '    l = l + 1
-                            'End If
-
-                            'If view.ColumnGroups(i).IsVisible = False Then ''TELERIK2015->2022
-                            If view.ViewTemplate.Columns.Contains(view.ColumnGroups(i).Rows(0).ColumnNames(m)) = False Then
-                                l = l + 1
+                        Dim visibleColCount As Integer = 0
+                        'Count only visible columns
+                        For m As Integer = 0 To view.ColumnGroups(i).Rows(0).ColumnNames.Count - 1
+                            Dim colName As String = view.ColumnGroups(i).Rows(0).ColumnNames(m)
+                            If view.ViewTemplate.Columns.Contains(colName) AndAlso view.ViewTemplate.Columns(colName).IsVisible Then
+                                visibleColCount += 1
                             End If
-
                         Next
-
-                        k = k + clsCommon.myCdbl(view.ColumnGroups(i).Rows(0).ColumnNames.Count) - l
-                        chartRange = wSheet.Range(wSheet.Cells(rowIndex, j1), wSheet.Cells(rowIndex, k))
-                        'chartRange.Merge()
-                        chartRange.MergeCells = False
-                        chartRange.VerticalAlignment = 2
-                        chartRange.HorizontalAlignment = 3
-
-
-                        'j1 = clsCommon.myCdbl(view.ColumnGroups(i).Rows(0).Columns.Count) + 1 - l
-                        j1 = j1 + clsCommon.myCdbl(view.ColumnGroups(i).Rows(0).ColumnNames.Count) - l
+                        'Skip if no visible columns
+                        If visibleColCount > 0 Then
+                            excel.Cells(rowIndex, j1) = clsCommon.myCstr(view.ColumnGroups(i).Text)
+                            Dim endCol As Integer = j1 + visibleColCount - 1
+                            chartRange = wSheet.Range(wSheet.Cells(rowIndex, j1), wSheet.Cells(rowIndex, endCol))
+                            'chartRange.Merge()
+                            With chartRange
+                                .Merge()
+                                .WrapText = True
+                            End With
+                            'Move next start column
+                            j1 = endCol + 1
+                        End If
                     Next
-
                     rowIndex += 1
                 End If
-
             End If
+
             ''------------------------------------------
             While isResteRawData
                 If (ToRow - fromRow + 1) <= MaxRowsToExport Then
@@ -1434,6 +1468,7 @@ xxx:
             If System.IO.File.Exists(strFileName) Then
                 System.IO.File.Delete(strFileName)
             End If
+
 
             clsCommon.ProgressBarPercentUpdate(100, "Wait Opening Excel file ")
             wBook.SaveAs(strFileName)
