@@ -223,6 +223,7 @@ Partial Class frmSaleReturnDairy
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.RadMenuItem2 = New Telerik.WinControls.UI.RadDropDownMenu()
         Me.RadThemeManager1 = New Telerik.WinControls.RadThemeManager()
+        Me.chkWithoutInvoice = New Telerik.WinControls.UI.RadCheckBox()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -406,6 +407,7 @@ Partial Class frmSaleReturnDairy
         CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         CType(Me.RadMenuItem2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkWithoutInvoice, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -711,7 +713,7 @@ Partial Class frmSaleReturnDairy
         'chkCncelDSR
         '
         Me.chkCncelDSR.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCncelDSR.Location = New System.Drawing.Point(741, 151)
+        Me.chkCncelDSR.Location = New System.Drawing.Point(628, 151)
         Me.chkCncelDSR.Name = "chkCncelDSR"
         Me.chkCncelDSR.Size = New System.Drawing.Size(55, 16)
         Me.chkCncelDSR.TabIndex = 1440
@@ -723,26 +725,26 @@ Partial Class frmSaleReturnDairy
         Me.ItemTypePanel.Controls.Add(Me.rbtn_Fresh)
         Me.ItemTypePanel.Location = New System.Drawing.Point(950, -1)
         Me.ItemTypePanel.Name = "ItemTypePanel"
-        Me.ItemTypePanel.Size = New System.Drawing.Size(125, 24)
+        Me.ItemTypePanel.Size = New System.Drawing.Size(179, 24)
         Me.ItemTypePanel.TabIndex = 1439
         '
         'rbtn_Ambient
         '
-        Me.rbtn_Ambient.Location = New System.Drawing.Point(60, 3)
+        Me.rbtn_Ambient.Location = New System.Drawing.Point(92, 3)
         Me.rbtn_Ambient.Name = "rbtn_Ambient"
-        Me.rbtn_Ambient.Size = New System.Drawing.Size(63, 18)
+        Me.rbtn_Ambient.Size = New System.Drawing.Size(58, 18)
         Me.rbtn_Ambient.TabIndex = 39
         Me.rbtn_Ambient.TabStop = False
-        Me.rbtn_Ambient.Text = "Ambient"
+        Me.rbtn_Ambient.Text = "Taxable"
         '
         'rbtn_Fresh
         '
         Me.rbtn_Fresh.CheckState = System.Windows.Forms.CheckState.Checked
         Me.rbtn_Fresh.Location = New System.Drawing.Point(5, 3)
         Me.rbtn_Fresh.Name = "rbtn_Fresh"
-        Me.rbtn_Fresh.Size = New System.Drawing.Size(47, 18)
+        Me.rbtn_Fresh.Size = New System.Drawing.Size(84, 18)
         Me.rbtn_Fresh.TabIndex = 38
-        Me.rbtn_Fresh.Text = "Fresh"
+        Me.rbtn_Fresh.Text = "Non-Taxable"
         Me.rbtn_Fresh.ToggleState = Telerik.WinControls.Enumerations.ToggleState.[On]
         '
         'pnl_damage
@@ -779,6 +781,7 @@ Partial Class frmSaleReturnDairy
         '
         'pnlPCJ
         '
+        Me.pnlPCJ.Controls.Add(Me.chkWithoutInvoice)
         Me.pnlPCJ.Controls.Add(Me.chkBoothWiseReturn)
         Me.pnlPCJ.Controls.Add(Me.fndProject)
         Me.pnlPCJ.Controls.Add(Me.MyLabel4)
@@ -798,7 +801,7 @@ Partial Class frmSaleReturnDairy
         'chkBoothWiseReturn
         '
         Me.chkBoothWiseReturn.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkBoothWiseReturn.Location = New System.Drawing.Point(266, 3)
+        Me.chkBoothWiseReturn.Location = New System.Drawing.Point(153, 3)
         Me.chkBoothWiseReturn.Name = "chkBoothWiseReturn"
         Me.chkBoothWiseReturn.Size = New System.Drawing.Size(147, 16)
         Me.chkBoothWiseReturn.TabIndex = 1476
@@ -3358,6 +3361,15 @@ Partial Class frmSaleReturnDairy
         WindowsSettings1.RoundedCornersStyle = Telerik.WinControls.RoundedCornersStyle.Round
         Me.RadMenuItem2.WindowsSettings = WindowsSettings1
         '
+        'chkWithoutInvoice
+        '
+        Me.chkWithoutInvoice.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkWithoutInvoice.Location = New System.Drawing.Point(302, 2)
+        Me.chkWithoutInvoice.Name = "chkWithoutInvoice"
+        Me.chkWithoutInvoice.Size = New System.Drawing.Size(98, 16)
+        Me.chkWithoutInvoice.TabIndex = 1477
+        Me.chkWithoutInvoice.Text = "Without Invoice"
+        '
         'frmSaleReturnDairy
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -3572,6 +3584,7 @@ Partial Class frmSaleReturnDairy
         CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
         CType(Me.RadMenuItem2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkWithoutInvoice, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -3773,5 +3786,6 @@ Partial Class frmSaleReturnDairy
     Friend WithEvents MyLabel61 As common.Controls.MyLabel
     Friend WithEvents btnUpdateEinvoice As RadButton
     Friend WithEvents TxtEInvoiceUpdateQCCode As common.Controls.MyTextBox
+    Friend WithEvents chkWithoutInvoice As RadCheckBox
 End Class
 

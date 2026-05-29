@@ -1250,15 +1250,15 @@ where  ITEM_CODE = TSPL_SD_SHIPMENT_DETAIL.Item_Code and EFFECTIVE_DATE <= '" & 
 
             Qry = " SELECT '" + clsCommon.GetPrintDate(txtFromDate.Value) + "' as Fromdate,'" + clsCommon.GetPrintDate(txtToDate.Value) + "' as ToDate,
                    
-	                   " & IIf(clsCommon.CompairString(ddlType.SelectedValue, "Dispatch") = CompairStringResult.Equal, "max(" & TableName & "_DETAIL.DOCUMENT_CODE) as DOCUMENT_CODE", "" & TableName & "_DETAIL.DOCUMENT_CODE ") & " ,
+	                   " & IIf(clsCommon.CompairString(ddlType.SelectedValue, "Dispatch") = CompairStringResult.Equal, "(" & TableName & "_DETAIL.DOCUMENT_CODE) as DOCUMENT_CODE", "" & TableName & "_DETAIL.DOCUMENT_CODE ") & " ,
     MAX(TSPL_ITEM_MASTER.Item_Desc) AS Item_Desc, 
     MAX(TSPL_ITEM_MASTER.Item_Code) AS Item_Code, 
     MAX(" & TableName & "_DETAIL.Unit_code) AS Unit_code, SUM(" & TableName & "_DETAIL.Qty * ItemConvinUOM.Conversion_Factor / ItemConvDefaultUOM.Conversion_Factor ) AS Qty,
     SUM(
         " & TableName & "_DETAIL.Qty * ItemConvinUOM.Conversion_Factor / ItemConvReportUOM.Conversion_Factor
     ) AS QtyAccToReportUOM,
-    SUM(Amount - ISNULL(Transporter_Commission_Amt, 0) + 
-        CASE 
+   SUM(Amount) - max(ISNULL(" & TableName & "_HEAD.Transporter_Commission_TotalAmt, 0)) + 
+       sum( CASE 
             WHEN " & TableName & "_HEAD.TAX1 = 'TCS' THEN " & TableName & "_DETAIL.TAX1_Amt
             WHEN " & TableName & "_HEAD.TAX2 = 'TCS' THEN " & TableName & "_DETAIL.TAX2_Amt
             WHEN " & TableName & "_HEAD.TAX3 = 'TCS' THEN " & TableName & "_DETAIL.TAX3_Amt
@@ -1270,8 +1270,8 @@ where  ITEM_CODE = TSPL_SD_SHIPMENT_DETAIL.Item_Code and EFFECTIVE_DATE <= '" & 
             WHEN " & TableName & "_HEAD.TAX9 = 'TCS' THEN " & TableName & "_DETAIL.TAX9_Amt
             WHEN " & TableName & "_HEAD.TAX10 = 'TCS' THEN " & TableName & "_DETAIL.TAX10_Amt 
             ELSE 0 
-        END
-    ) AS Total_Amount,
+        END)
+    AS Total_Amount,
     MAX(ItemConvReportUOM.UOM_Code) AS UOM_Code, 
     MAX(TSPL_COMPANY_MASTER.Comp_Name) AS Comp_Name, 
     MAX(TSPL_COMPANY_MASTER.Add1) AS Add1, 
@@ -1325,7 +1325,7 @@ LEFT JOIN TSPL_COMPANY_MASTER
             If txtItem.arrValueMember IsNot Nothing Then
                 Qry += " And " & TableName & "_DETAIL.Item_Code in (" & clsCommon.GetMulcallString(txtItem.arrValueMember) & ") "
             End If
-            Qry += " Group BY " & IIf(clsCommon.CompairString(ddlType.SelectedValue, "Dispatch") = CompairStringResult.Equal, "Sale_Invoice_No order by Sale_Invoice_No ", TableName & "_DETAIL.DOCUMENT_CODE order by Document_Code ") & " , Item_Desc"
+            Qry += " Group BY " & IIf(clsCommon.CompairString(ddlType.SelectedValue, "Dispatch") = CompairStringResult.Equal, "Sale_Invoice_No,TSPL_SD_SHIPMENT_DETAIL.DOCUMENT_CODE order by Sale_Invoice_No ", TableName & "_DETAIL.DOCUMENT_CODE order by Document_Code ") & " , Item_Desc"
             dt = clsDBFuncationality.GetDataTable(Qry)
 
             If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
