@@ -3145,6 +3145,8 @@ Public Class clsFixedParameter
         InsertDefaultValueFixedParameter(clsFixedParameterType.PurchaseSlab, clsFixedParameterCode.RangePO, "10000.01-100000", "PO Mandatory")
         InsertDefaultValueFixedParameter(clsFixedParameterType.PurchaseSlab, clsFixedParameterCode.RangeRAL, "100000.01-999999999999", "RAL Mandatory")
         InsertDefaultValueFixedParameter(clsFixedParameterType.RefreshDBTReco, clsFixedParameterCode.RefreshDBTReco, "0", "0:OFF;1:ON")
+        InsertDefaultValueFixedParameter(clsFixedParameterType.DBTMilkQtyCapping, clsFixedParameterCode.DBTMilkQtyCapping, "0", "0:OFF;1:ON")
+
         InsertDefaultValueFixedParameter(clsFixedParameterType.DistributorWiseBilling, clsFixedParameterCode.DistributorWiseBilling, "0", "0:OFF;1:ON")
         InsertDefaultValueFixedParameter(clsFixedParameterType.AndroidSaleOrder, clsFixedParameterCode.BackDays, "3", "Back Days of From Date")
         InsertDefaultValueFixedParameter(clsFixedParameterType.AndroidSaleOrder, clsFixedParameterCode.MaximumBackDays, "60", "Back Days of From Date")
@@ -4827,7 +4829,7 @@ Public Class clsFixedParameterProgramMapping
         InsertDefaultValue(clsUserMgtCode.MilkCollectionDCSMultipleDays, clsFixedParameterType.ApplyMergeForDCSMultipleDays, clsFixedParameterCode.ApplyMergeForDCSMultipleDays, EnumControlType.CheckBox)
         InsertDefaultValue(clsUserMgtCode.MilkVSPPayment, clsFixedParameterType.CalculateFATSNFLossCycleWise, clsFixedParameterCode.CalculateFATSNFLossCycleWise, EnumControlType.CheckBox)
         InsertDefaultValue(clsUserMgtCode.FATSNFDiffReport, clsFixedParameterType.CalculateFATSNFLossCycleWise, clsFixedParameterCode.CalculateFATSNFLossCycleWise, EnumControlType.CheckBox)
-        InsertDefaultValue(clsUserMgtCode.DCSMPIncentiveReco, clsFixedParameterType.DBTMilkQtyCapping, clsFixedParameterCode.DBTMilkQtyCapping, EnumControlType.NumericBox)
+        InsertDefaultValue(clsUserMgtCode.DCSMPIncentiveReco, clsFixedParameterType.DBTMilkQtyCapping, clsFixedParameterCode.DBTMilkQtyCapping, EnumControlType.CheckBox)
         InsertDefaultValue(clsUserMgtCode.DCSMPIncentiveReco, clsFixedParameterType.RefreshDBTReco, clsFixedParameterCode.RefreshDBTReco, EnumControlType.CheckBox)
         InsertDefaultValue(clsUserMgtCode.frmSaleDispatchDairy, clsFixedParameterType.DistributorWiseBilling, clsFixedParameterCode.DistributorWiseBilling, EnumControlType.CheckBox)
         InsertDefaultValue(clsUserMgtCode.frmVendorBankAdvice, clsFixedParameterType.RoundOffBankAdvice, clsFixedParameterCode.RoundOffBankAdvice, EnumControlType.CheckBox)

@@ -23,7 +23,7 @@ Public Class frmDBTCaping
     Public Const colCapingIncreaseBy As String = "colCapingIncreaseBy"
     Public Const colCapingIncreaseDate As String = "colCapingIncreaseDate"
     Public Const colCapingIncreaseRemarks As String = "colCapingIncreaseRemarks"
-
+    Public Const colThirdPartyCode As String = "colThirdPartyCode"
     Dim ButtonToolTip As ToolTip = New ToolTip()
     Private isNewEntry As Boolean = False
     Dim isCellValueChangedOpen As Boolean = False
@@ -254,6 +254,16 @@ Public Class frmDBTCaping
         farmercode.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
         gvItem.Columns.Add(farmercode)
 
+
+        farmercode = New GridViewTextBoxColumn()
+        farmercode.FormatString = ""
+        farmercode.HeaderText = "Third Party Code"
+        farmercode.Name = colThirdPartyCode
+        farmercode.ReadOnly = True
+        farmercode.IsVisible = True
+        farmercode.Width = 150
+        farmercode.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
+        gvItem.Columns.Add(farmercode)
 
         gvItem.AllowAddNewRow = False
         gvItem.AllowDeleteRow = False
@@ -622,6 +632,8 @@ order by TSPL_MCC_MASTER.Mcc_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Code_VLC
             gvItem.Columns(colCapingIncreaseBy).FieldName = "Capping_Increase_By"
             gvItem.Columns(colCapingIncreaseDate).FieldName = "Capping_Increase_Date"
             gvItem.Columns(colCapingIncreaseRemarks).FieldName = "Capping_Increase_Remarks"
+            gvItem.Columns(colThirdPartyCode).FieldName = "THIRD_PARTY_CODE"
+
         Else
             Throw New Exception("Data Not Found")
         End If

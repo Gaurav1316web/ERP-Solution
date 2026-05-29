@@ -243,7 +243,7 @@ where 2=2 and CONVERT(date,TSPL_MP_INCENTIVE_ENTRY_HEAD.From_Date,103)>='" + cls
             strColumnForTotal = ""
             If rbtnBankWise.IsChecked Then
                 strColumnForTotal = "Bank_Code"
-                Qry = "select max(Comp_Name) as Comp_Name,max(Comp_address) as Comp_address,max(Date_Range) as Date_Range, MCC_Code,max(MCC_Name) as MCC_Name,max(Route_Code) as Route_Code,max(ROUTE_NAME) as ROUTE_NAME,max(SupervisorOrRP) as SupervisorOrRP,max(SupervisorOrRPName) as  SupervisorOrRPName,VLC_Code,max(VLC_Code_VLC_Uploader) as VLC_Code_VLC_Uploader,max(VLC_Name) as VLC_Name,MP_Code,max(VLC_CODE_Uploader) as VLC_CODE_Uploader,max(Payee_Joint_Name) as Payee_Joint_Name,max([District Code]) as [District Code],max([District Name]) as [District Name] ,max([Zone Code]) as [Zone Code], max([Zone Name]) as [Zone Name],max([Block Code]) as [Block Code],max([Block Name]) as [Block Name] ,max([Revenue Village Code]) as [Revenue Village Code],max([Revenue Village Name]) as [Revenue Village Name],max([Grampanchayat Code]) as [Grampanchayat Code],max([Grampanchayat Name]) as [Grampanchayat Name],max([Panchayat Samiti Code]) as [Panchayat Samiti Code],max([Panchayat Samiti Name]) as [Panchayat Samiti Name],max([Vidhan Sabha Code]) as [Vidhan Sabha Code], max([Vidhan Sabha Name]) as [Vidhan Sabha Name],max([Created Month-Year]) as [Created Month-Year],max(THIRD_PARTY_CODE) as [THIRD PARTY CODE],Bank_Code,max(Bank_Code_Desc) as Bank_Code_Desc,max(Payee_Joint_Account_No) as Payee_Joint_Account_No,max(Payee_Joint_IFSC_Code) as Payee_Joint_IFSC_Code,sum(Qty) as Quantity,sum(Payable_Amount) as Payable_Amount from (" + BaseQry + ")xx group by MCC_Code,VLC_Code,MP_Code,Bank_Code order by [Created Month-Year],Bank_Code,MCC_Code, VLC_Code_VLC_Uploader,VLC_CODE_Uploader"
+                Qry = "select max(Comp_Name) as Comp_Name,max(Comp_address) as Comp_address,max(Date_Range) as Date_Range, MCC_Code,max(MCC_Name) as MCC_Name,max(Route_Code) as Route_Code,max(ROUTE_NAME) as ROUTE_NAME,max(SupervisorOrRP) as SupervisorOrRP,max(SupervisorOrRPName) as  SupervisorOrRPName,VLC_Code,max(VLC_Code_VLC_Uploader) as VLC_Code_VLC_Uploader,max(VLC_Name) as VLC_Name,MP_Code,max(VLC_CODE_Uploader) as VLC_CODE_Uploader,max(Payee_Joint_Name) as Payee_Joint_Name,max([District Code]) as [District Code],max([District Name]) as [District Name] ,max([Zone Code]) as [Zone Code], max([Zone Name]) as [Zone Name],max([Block Code]) as [Block Code],max([Block Name]) as [Block Name] ,max([Revenue Village Code]) as [Revenue Village Code],max([Revenue Village Name]) as [Revenue Village Name],max([Grampanchayat Code]) as [Grampanchayat Code],max([Grampanchayat Name]) as [Grampanchayat Name],max([Panchayat Samiti Code]) as [Panchayat Samiti Code],max([Panchayat Samiti Name]) as [Panchayat Samiti Name],max([Vidhan Sabha Code]) as [Vidhan Sabha Code], max([Vidhan Sabha Name]) as [Vidhan Sabha Name],max([Created Month-Year]) as [Created Month-Year],max(THIRD_PARTY_CODE) as THIRD_PARTY_CODE,Bank_Code,max(Bank_Code_Desc) as Bank_Code_Desc,max(Payee_Joint_Account_No) as Payee_Joint_Account_No,max(Payee_Joint_IFSC_Code) as Payee_Joint_IFSC_Code,sum(Qty) as Quantity,sum(Payable_Amount) as Payable_Amount,max(THIRD_PARTY_CODE) as [Third Party Code] from (" + BaseQry + ")xx group by MCC_Code,VLC_Code,MP_Code,Bank_Code order by [Created Month-Year],Bank_Code,MCC_Code, VLC_Code_VLC_Uploader,VLC_CODE_Uploader"
 
             ElseIf rbtnMCCWise.IsChecked Or rbtnDetails.IsChecked Then
                 strColumnForTotal = "MCC_Code"
@@ -258,7 +258,7 @@ max ([JA_dlNo]) as [JA_dlNo], max ([JA_dob]) as [JA_dob], max ([JA_eid]) as [JA_
                 End If
 
 
-                Qry += "  from (" + BaseQry + ")xx group by MCC_Code,VLC_Code,MP_Code,from_date,DocumentCode  order by [Created Month-Year],MCC_Code, VLC_Code_VLC_Uploader , VLC_CODE_Uploader"
+                Qry += " ,max(THIRD_PARTY_CODE)THIRD_PARTY_CODE from (" + BaseQry + ")xx group by MCC_Code,VLC_Code,MP_Code,from_date,DocumentCode  order by [Created Month-Year],MCC_Code, VLC_Code_VLC_Uploader , VLC_CODE_Uploader"
             ElseIf rbtnNEFT.IsChecked Then
                 Qry = "select   TSPL_MP_INCENTIVE_ENTRY_HEAD.MCC_Code,TSPL_MCC_MASTER.MCC_Name ,TSPL_MP_INCENTIVE_ENTRY_DETAIL.VLC_Code,TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader as VLC_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Name,TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,TSPL_MP_MASTER.MP_Code_VLC_Uploader as VLC_CODE_Uploader,TSPL_MP_MASTER.PayeeName as Payee_Joint_Name,TSPL_MP_MASTER.BankName as Bank_Code,TSPL_MP_MASTER.BankName as Bank_Code_Desc,TSPL_MP_MASTER.AccountNO as Payee_Joint_Account_No, TSPL_MP_MASTER.IFCICode as Payee_Joint_IFSC_Code,TSPL_MP_INCENTIVE_ENTRY_DETAIL.Qty as Quantity,TSPL_MP_INCENTIVE_ENTRY_DETAIL.Amount as Payable_Amount,(case when  isnull(TabLatestDBT.DBT_NEFT_REJECT_DETAIL_PK_Id,0)>0 and isnull(TabLatestDBT.DBT_NEFT_REJECT_Status,0)=0 then 'DBT Rejected' else (case when isnull(TabLatestDBT.DBT_NEFT_REJECT_Status,0)=1 then 'Pending For NEFT' else  (case when isnull(TabLatestDBT.DBT_NEFT_Status,0)=1 then 'DBT Succeed' else 'Pending For NEFT'  end) end)  end) as Status  from 
 TSPL_MP_INCENTIVE_ENTRY_DETAIL
@@ -318,28 +318,29 @@ where TSPL_MP_INCENTIVE_ENTRY_HEAD.Status=1  and CONVERT(date,TSPL_MP_INCENTIVE_
             ElseIf rbtnDuplicateJanAdharNo.IsChecked Then
                 Qry = "select Jan_Aadhar_No,sum(1) as Repeated from (" + BaseQry + ")xx group by Jan_Aadhar_No  having len(isnull(Jan_Aadhar_No,''))>0 and sum(1)>1"
             ElseIf rbtnFarmerBankWiseDetail.IsChecked Then
-                Qry = "select  ROW_NUMBER() over (Partition BY max(Bank_Code) order by max(Bank_Code)) as SNo,max(Comp_Name) as Comp_Name,max(Comp_address) as Comp_address,max(Date_Range) as Date_Range, max(MCC_Code) as MCC_Code,max(MCC_Name) as MCC_Name ,VLC_Code,max(VLC_Code_VLC_Uploader) as VLC_Code_VLC_Uploader,max(VLC_Name) as VLC_Name,MP_Code,max(VLC_CODE_Uploader) as VLC_CODE_Uploader,max(Payee_Joint_Name) as Payee_Joint_Name,max([Jan Aadhar Verified]) as Jan_Aadhar_No_Verified,max(Bank_Code) as Bank_Code,max(Bank_Code_Desc) as Bank_Code_Desc,max(Payee_Joint_Account_No) as Payee_Joint_Account_No,max(Payee_Joint_IFSC_Code) as Payee_Joint_IFSC_Code,sum(Qty) as Quantity,sum(Payable_Amount) as Payable_Amount from (" + BaseQry + ")xx group by VLC_Code,MP_Code order by Bank_Code, VLC_Code_VLC_Uploader,VLC_CODE_Uploader"
+                Qry = "select  ROW_NUMBER() over (Partition BY max(Bank_Code) order by max(Bank_Code)) as SNo,max(Comp_Name) as Comp_Name,max(Comp_address) as Comp_address,max(Date_Range) as Date_Range, max(MCC_Code) as MCC_Code,max(MCC_Name) as MCC_Name ,VLC_Code,max(VLC_Code_VLC_Uploader) as VLC_Code_VLC_Uploader,max(VLC_Name) as VLC_Name,MP_Code,max(VLC_CODE_Uploader) as VLC_CODE_Uploader,max(Payee_Joint_Name) as Payee_Joint_Name,max([Jan Aadhar Verified]) as Jan_Aadhar_No_Verified,max(Bank_Code) as Bank_Code,max(Bank_Code_Desc) as Bank_Code_Desc,max(Payee_Joint_Account_No) as Payee_Joint_Account_No,max(Payee_Joint_IFSC_Code) as Payee_Joint_IFSC_Code,sum(Qty) as Quantity,sum(Payable_Amount) as Payable_Amount,max(THIRD_PARTY_CODE)THIRD_PARTY_CODE from (" + BaseQry + ")xx group by VLC_Code,MP_Code order by Bank_Code, VLC_Code_VLC_Uploader,VLC_CODE_Uploader"
             ElseIf rbtnFarmerBankWiseSummary.IsChecked Then
-                Qry = "select max(Comp_Name) as Comp_Name,max(Comp_address) as Comp_address,max(MCC_Code) as MCC_Code,max(MCC_Name) as MCC_Name,max(Date_Range) as Date_Range,ROW_NUMBER() over ( order by Bank_Code) as SNO,Bank_Code,max(Bank_Code_Desc) as Bank_Code_Desc,sum(Qty) as Quantity,sum(Payable_Amount) as Payable_Amount from (" + BaseQry + ")xx group by Bank_Code order by Bank_Code"
+                Qry = "select max(Comp_Name) as Comp_Name,max(Comp_address) as Comp_address,max(MCC_Code) as MCC_Code,max(MCC_Name) as MCC_Name,max(Date_Range) as Date_Range,ROW_NUMBER() over ( order by Bank_Code) as SNO,Bank_Code,max(Bank_Code_Desc) as Bank_Code_Desc,sum(Qty) as Quantity,sum(Payable_Amount) as Payable_Amount,max(THIRD_PARTY_CODE)THIRD_PARTY_CODE from (" + BaseQry + ")xx group by Bank_Code order by Bank_Code"
                 'Qry = "select max(Comp_Name) as Comp_Name,max(Comp_address) as Comp_address,max(MCC_Code) as MCC_Code,max(MCC_Name) as MCC_Name,max(Date_Range) as Date_Range,ROW_NUMBER() over ( order by Bank_Code) as SNO,Bank_Code,max(Bank_Code_Desc) as Bank_Code_Desc,max(Qty) + min(Qty) as Quantity ,max(Payable_Amount)+min(Payable_Amount) as Payable_Amount from (" + BaseQry + ")xx group by Bank_Code order by Bank_Code"
             ElseIf rbtnPerNEFT.IsChecked Then
-                Qry = "SELECT 
-                   FORMAT(TSPL_MP_INCENTIVE_ENTRY_DETAIL.Created_Date, 'MMM-dd')Created_Date, TSPL_DBT_NEFT_DETAIL.VLC_Uploader_Code ,TSPL_VLC_MASTER_HEAD.VLC_Name,
-                  TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,TSPL_DBT_NEFT_DETAIL.MP_Uploader_Code,TSPL_DBT_NEFT_DETAIL.MP_NAME, 
-                  TSPL_MP_INCENTIVE_ENTRY_DETAIL.Qty,TSPL_DBT_NEFT_DETAIL.Amount FROM   TSPL_DBT_NEFT_DETAIL
-                  LEFT OUTER JOIN TSPL_DBT_NEFT_REJECT_DETAIL ON TSPL_DBT_NEFT_REJECT_DETAIL.Against_DBT_NEFT_TR = TSPL_DBT_NEFT_DETAIL.PK_Id
-	              LEFT OUTER JOIN TSPL_VLC_MASTER_HEAD ON TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader=TSPL_DBT_NEFT_DETAIL.VLC_Uploader_Code
-	              left outer join TSPL_MP_INCENTIVE_ENTRY_DETAIL on TSPL_MP_INCENTIVE_ENTRY_DETAIL.PK_Id=TSPL_DBT_NEFT_DETAIL.Against_MP_Incentive_TR
-                	left outer join TSPL_MP_INCENTIVE_ENTRY_HEAD on TSPL_MP_INCENTIVE_ENTRY_HEAD.Document_Code=TSPL_MP_INCENTIVE_ENTRY_DETAIL.Document_Code
-                 left outer join TSPL_MP_MASTER on TSPL_MP_MASTER.MP_Code=TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code
-				 left outer join TSPL_DBT_NEFT on TSPL_DBT_NEFT.Document_Code=TSPL_DBT_NEFT_DETAIL.Document_Code
-               WHERE 
-                 TSPL_DBT_NEFT_DETAIL.PK_Id IS NOT NULL
-                 AND TSPL_DBT_NEFT_DETAIL.PK_Id NOT IN (
-                 SELECT Against_DBT_NEFT_TR 
-                 FROM TSPL_DBT_NEFT_REJECT_DETAIL
-                 WHERE Against_DBT_NEFT_TR IS NOT NULL 
-and  TSPL_DBT_NEFT.Status=1  and CONVERT(date,TSPL_DBT_NEFT.From_Date,103)='" + clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") + "' and CONVERT(date,TSPL_DBT_NEFT.To_Date,103)='" + clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") + "') " + whre + "  
+                    Qry = "SELECT 
+                       FORMAT(TSPL_MP_INCENTIVE_ENTRY_DETAIL.Created_Date, 'MMM-dd')Created_Date, TSPL_DBT_NEFT_DETAIL.VLC_Uploader_Code ,TSPL_VLC_MASTER_HEAD.VLC_Name,
+                      TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,TSPL_DBT_NEFT_DETAIL.MP_Uploader_Code,TSPL_DBT_NEFT_DETAIL.MP_NAME, 
+                      TSPL_MP_INCENTIVE_ENTRY_DETAIL.Qty,TSPL_DBT_NEFT_DETAIL.Amount,TSPL_MP_MASTER.THIRD_PARTY_CODE
+                       FROM   TSPL_DBT_NEFT_DETAIL
+                      LEFT OUTER JOIN TSPL_DBT_NEFT_REJECT_DETAIL ON TSPL_DBT_NEFT_REJECT_DETAIL.Against_DBT_NEFT_TR = TSPL_DBT_NEFT_DETAIL.PK_Id
+	                  LEFT OUTER JOIN TSPL_VLC_MASTER_HEAD ON TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader=TSPL_DBT_NEFT_DETAIL.VLC_Uploader_Code
+	                  left outer join TSPL_MP_INCENTIVE_ENTRY_DETAIL on TSPL_MP_INCENTIVE_ENTRY_DETAIL.PK_Id=TSPL_DBT_NEFT_DETAIL.Against_MP_Incentive_TR
+                	    left outer join TSPL_MP_INCENTIVE_ENTRY_HEAD on TSPL_MP_INCENTIVE_ENTRY_HEAD.Document_Code=TSPL_MP_INCENTIVE_ENTRY_DETAIL.Document_Code
+                     left outer join TSPL_MP_MASTER on TSPL_MP_MASTER.MP_Code=TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code
+				     left outer join TSPL_DBT_NEFT on TSPL_DBT_NEFT.Document_Code=TSPL_DBT_NEFT_DETAIL.Document_Code
+                   WHERE 
+                     TSPL_DBT_NEFT_DETAIL.PK_Id IS NOT NULL
+                     AND TSPL_DBT_NEFT_DETAIL.PK_Id NOT IN (
+                     SELECT Against_DBT_NEFT_TR 
+                     FROM TSPL_DBT_NEFT_REJECT_DETAIL
+                     WHERE Against_DBT_NEFT_TR IS NOT NULL 
+    and  TSPL_DBT_NEFT.Status=1  and CONVERT(date,TSPL_DBT_NEFT.From_Date,103)='" + clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") + "' and CONVERT(date,TSPL_DBT_NEFT.To_Date,103)='" + clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") + "') " + whre + "  
 
     "
                 If txtMCC.arrValueMember IsNot Nothing AndAlso txtMCC.arrValueMember.Count > 0 Then
@@ -591,7 +592,8 @@ and  TSPL_DBT_NEFT.Status=1  and CONVERT(date,TSPL_DBT_NEFT.From_Date,103)='" + 
             Gv1.Columns("Payable_Amount").HeaderText = "Amount"
             Gv1.Columns("Payable_Amount").IsVisible = True
             Gv1.Columns("Quantity").IsVisible = True
-
+            Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
             Dim summaryRowItem As New GridViewSummaryRowItem()
             Dim item1 As New GridViewSummaryItem("Quantity", "{0:F2}", GridAggregateFunction.Sum)
             summaryRowItem.Add(item1)
@@ -619,6 +621,8 @@ and  TSPL_DBT_NEFT.Status=1  and CONVERT(date,TSPL_DBT_NEFT.From_Date,103)='" + 
             Gv1.Columns("Qty").IsVisible = True
             Gv1.Columns("Amount").HeaderText = "Amount"
             Gv1.Columns("Amount").IsVisible = True
+            Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
             Dim summaryRowItem As New GridViewSummaryRowItem()
             'Dim item1 As New GridViewSummaryItem("Qty", "{0:F2}", GridAggregateFunction.Sum)
             'summaryRowItem.Add(item1)
@@ -885,6 +889,8 @@ and  TSPL_DBT_NEFT.Status=1  and CONVERT(date,TSPL_DBT_NEFT.From_Date,103)='" + 
             Gv1.Columns("JA_voterId").HeaderText = "JA Voter ID"
             Gv1.Columns("JA_voterId").IsVisible = False
 
+            Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
 
 
             Gv1.Columns("Mineral_Mixture_Qty").HeaderText = "Mineral Mixture Qty"
@@ -1095,6 +1101,8 @@ and  TSPL_DBT_NEFT.Status=1  and CONVERT(date,TSPL_DBT_NEFT.From_Date,103)='" + 
             Gv1.Columns("Sailej_Amount").HeaderText = "Sailej Amount"
             Gv1.Columns("Total_Amount").HeaderText = "Total Amount"
 
+            Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
 
 
             If clsCommon.CompairString(ddlType.SelectedValue, "Mineral Mixture") = CompairStringResult.Equal Then
@@ -1389,7 +1397,8 @@ and  TSPL_DBT_NEFT.Status=1  and CONVERT(date,TSPL_DBT_NEFT.From_Date,103)='" + 
             Gv1.Columns("Payable_Amount").HeaderText = "Amount"
             Gv1.Columns("Payable_Amount").IsVisible = True
 
-
+            Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
         ElseIf rbtnFarmerBankWiseSummary.IsChecked Then
             Gv1.Columns("Comp_Name").HeaderText = "VLC Code"
             Gv1.Columns("Comp_Name").IsVisible = False
@@ -1421,6 +1430,8 @@ and  TSPL_DBT_NEFT.Status=1  and CONVERT(date,TSPL_DBT_NEFT.From_Date,103)='" + 
 
             Gv1.Columns("Quantity").HeaderText = "Quantity"
             Gv1.Columns("Quantity").IsVisible = True
+            Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
         End If
         Gv1.AutoSizeRows = False
         Gv1.BestFitColumns()
