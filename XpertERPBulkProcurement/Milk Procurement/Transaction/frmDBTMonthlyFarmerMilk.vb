@@ -12,6 +12,7 @@ Public Class frmDBTMonthlyFarmerMilk
     Public Const colMPUploaderCode As String = "MP_Uploader_Code"
     Public Const colMPName As String = "MP_Name"
     Public Const colQty As String = "Qty"
+    Public Const colTHIRDPARTYCODE As String = "THIRD_PARTY_CODE"
 
     Dim ButtonToolTip As ToolTip = New ToolTip()
     Private isNewEntry As Boolean = False
@@ -570,6 +571,11 @@ Public Class frmDBTMonthlyFarmerMilk
             gvItem.Columns(colQty).ReadOnly = False
             gvItem.Columns(colQty).TextAlignment = System.Drawing.ContentAlignment.MiddleRight
 
+            gvItem.Columns(colTHIRDPARTYCODE).HeaderText = "Third Party Code"
+            gvItem.Columns(colTHIRDPARTYCODE).Width = 120
+            gvItem.Columns(colTHIRDPARTYCODE).ReadOnly = False
+            gvItem.Columns(colTHIRDPARTYCODE).TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+
             gvItem.MasterTemplate.SummaryRowsBottom.Clear()
             Dim summaryRowItem As New GridViewSummaryRowItem()
             summaryRowItem.Add(New GridViewSummaryItem(colQty, "{0:n2}", GridAggregateFunction.Sum))
@@ -713,9 +719,9 @@ Public Class frmDBTMonthlyFarmerMilk
         End If
         loadBlankGrid()
         Dim Mcc_Uom As String = clsDBFuncationality.getSingleValue("select Uom_Code from TSPL_Mcc_UOM_DETAIL where Stocking_Unit='Y' and  MCC_CODE='" & txtDBTReco.Value & "'")
-        Dim Qry As String = "Select VLC_Code,max(Vlc_Code_VLC_Uploader) As Vlc_Code_VLC_Uploader,max(VLC_Name) As VLC_Name,MP_Code,max(MP_Uploader_Code) As MP_Uploader_Code,max(MP_Name) As MP_Name,sum(qty) As Qty from (  
+        Dim Qry As String = "Select VLC_Code,max(Vlc_Code_VLC_Uploader) As Vlc_Code_VLC_Uploader,max(VLC_Name) As VLC_Name,MP_Code,max(MP_Uploader_Code) As MP_Uploader_Code,max(MP_Name) As MP_Name,sum(qty) As Qty,MAX(THIRD_PARTY_CODE)THIRD_PARTY_CODE from (  
  select Doc_No,Convert(Varchar(10),Doc_Date,103)Doc_Date,shift,TSPL_VLC_MASTER_HEAD.VLC_Code, TSPL_VLC_MASTER_HEAD.Vlc_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Name,
-TSPl_MP_MAster.MP_CODE,TSPl_MP_MAster.MP_Name, TSPl_MP_MAster.MP_Code_VLC_Uploader As MP_Uploader_Code,TSPL_VLC_DATA_UPLOADER.qty 
+TSPl_MP_MAster.MP_CODE,TSPl_MP_MAster.MP_Name, TSPl_MP_MAster.MP_Code_VLC_Uploader As MP_Uploader_Code,TSPL_VLC_DATA_UPLOADER.qty ,TSPl_MP_MAster.THIRD_PARTY_CODE
 from TSPL_VLC_DATA_UPLOADER
 Left Join TSPL_VLC_MASTER_HEAD On TSPL_VLC_MASTER_HEAD.Vlc_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.VLC_CODE
 Left Join TSPl_MP_MAster On TSPl_MP_MAster.MP_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.MP_CODE and TSPl_MP_MAster.VLC_Code=TSPL_VLC_MASTER_HEAD.VLC_Code
@@ -725,7 +731,7 @@ where TSPL_VLC_DATA_UPLOADER.Doc_Date>='" & clsCommon.GetPrintDate(txtFromDate.V
  select  TSPL_VLC_DATA_UPLOADER_MASTER.Document_Code As Doc_No,
 Convert(Varchar(10),TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103) As Doc_Date, TSPL_VLC_DATA_UPLOADER_MASTER.Shift,TSPL_VLC_DATA_UPLOADER_MASTER.VLC_CODE,
 TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Name,TSPl_MP_MAster.MP_CODE,TSPl_MP_MAster.MP_Name,
-TSPl_MP_MAster.MP_Code_VLC_Uploader As MP_Uploader_Code,TSPL_VLC_DATA_UPLOADER_DETAIL.qty 
+TSPl_MP_MAster.MP_Code_VLC_Uploader As MP_Uploader_Code,TSPL_VLC_DATA_UPLOADER_DETAIL.qty ,TSPl_MP_MAster.THIRD_PARTY_CODE
 from TSPL_VLC_DATA_UPLOADER_DETAIL
 Left Outer Join TSPL_VLC_DATA_UPLOADER_MASTER On TSPL_VLC_DATA_UPLOADER_MASTER.Document_Code=TSPL_VLC_DATA_UPLOADER_DETAIL.Document_Code
 Left Join TSPL_VLC_MASTER_HEAD On TSPL_VLC_MASTER_HEAD.Vlc_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER_MASTER.VLC_CODE

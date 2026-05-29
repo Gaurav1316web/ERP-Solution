@@ -177,8 +177,15 @@ Public Class rptMccMasterDetail
                     qry += "   ,TSPL_COMPANY_MASTER.Comp_Code1 As [Comp Code],  TSPL_COMPANY_MASTER.Comp_Name "
                 End If
 
-                qry += " ,case when TSPL_VLC_MASTER_HEAD.Active='1' then 'Y' else 'N' end as Active
- ,TSPL_VENDOR_MASTER.Latitude as [Latitude],TSPL_VENDOR_MASTER.Longitude as [Longitude] from TSPL_VLC_MASTER_HEAD " &
+                qry += " ,case when TSPL_VLC_MASTER_HEAD.Active='1' then 'Y' else 'N' end as [DCS Active]
+              ,TSPL_VENDOR_MASTER.Latitude as [Latitude],TSPL_VENDOR_MASTER.Longitude as [Longitude] "
+
+                If clsCommon.CompairString(cmbReportType.Text, "MP Details") = CompairStringResult.Equal Then
+                    qry += " ,TSPL_MP_MASTER.THIRD_PARTY_CODE as [THIRD PARTY CODE],TSPL_MP_MASTER.Third_Party_Source as [Third Party Source],VLC_DATE.Min_Doc_Date AS [Min Date],
+                             VLC_DATE.Max_Doc_Date AS [Max Date] "
+                End If
+
+                qry += " from TSPL_VLC_MASTER_HEAD " &
               " left join TSPL_VENDOR_MASTER on TSPL_VENDOR_MASTER.Vendor_Code=TSPL_VLC_MASTER_HEAD.VSP_Code and TSPL_VENDOR_MASTER.Form_Type='VSP' " &
               " left join (select distinct Route_CODE , VLC_CODE from TSPL_MCC_ROUTE_VLC_MAPPING) as TSPL_MCC_ROUTE_VLC_MAPPING on TSPL_MCC_ROUTE_VLC_MAPPING.VLC_CODE=TSPL_VLC_MASTER_HEAD.VLC_Code " &
               " left join tspl_mcc_route_master on tspl_mcc_route_master.Route_Code=TSPL_MCC_ROUTE_VLC_MAPPING.Route_CODE " &
@@ -200,6 +207,10 @@ Public Class rptMccMasterDetail
                               left outer join TSPL_DISTRICT_MASTER on TSPL_DISTRICT_MASTER.Code = TSPL_MP_MASTER.DISTRICT_Code  
                               
                            "
+                    If clsCommon.CompairString(cmbReportType.Text, "MP Details") = CompairStringResult.Equal Then
+                        qry += " LEFT OUTER JOIN(SELECT MP_CODE,MIN(Doc_Date) AS Min_Doc_Date,MAX(Doc_Date) AS Max_Doc_Date
+                              FROM TSPL_VLC_DATA_UPLOADER GROUP BY MP_CODE) AS VLC_DATE ON VLC_DATE.MP_CODE = TSPL_MP_MASTER.MP_Code "
+                    End If
                 Else
                     qry += "  left outer join TSPL_ZONE_MASTER on TSPL_ZONE_MASTER.Zone_Code = TSPL_VENDOR_MASTER.Zone_Code
                               left outer join TSPL_BLOCK_MASTER on TSPL_BLOCK_MASTER.BLOCK_CODE = TSPL_VENDOR_MASTER.BLOCK_CODE
