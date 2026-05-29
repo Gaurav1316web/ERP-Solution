@@ -24,9 +24,10 @@ Partial Class frmDemandBooking
     Private Sub InitializeComponent()
         Dim RadListDataItem1 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
         Dim RadListDataItem2 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
+        Dim TableViewDefinition4 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Dim TableViewDefinition3 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
-        Dim TableViewDefinition2 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Dim TableViewDefinition1 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition2 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Me.RadSplitContainer1 = New Telerik.WinControls.UI.RadSplitContainer()
         Me.SplitPanel1 = New Telerik.WinControls.UI.SplitPanel()
         Me.gbShuffleDemand = New System.Windows.Forms.GroupBox()
@@ -38,6 +39,7 @@ Partial Class frmDemandBooking
         Me.MyLabel4 = New common.Controls.MyLabel()
         Me.txtShuffleDate = New common.Controls.MyDateTimePicker()
         Me.rgbDemandHead = New Telerik.WinControls.UI.RadGroupBox()
+        Me.chkNoCrateIssue = New Telerik.WinControls.UI.RadCheckBox()
         Me.txtDemandUniqueID = New common.Controls.MyLabel()
         Me.lblDemandUniqueID = New common.Controls.MyLabel()
         Me.btnQuickDemand = New Telerik.WinControls.UI.RadButton()
@@ -101,10 +103,12 @@ Partial Class frmDemandBooking
         Me.RadGroupBox2 = New Telerik.WinControls.UI.RadGroupBox()
         Me.gv2 = New common.UserControls.MyRadGridView()
         Me.gv1 = New common.UserControls.MyRadGridView()
+        Me.GVTruckSheet = New common.UserControls.MyRadGridView()
         Me.MyRadGridView1 = New common.UserControls.MyRadGridView()
         Me.chkEveningPosted = New Telerik.WinControls.UI.RadCheckBox()
         Me.chkMorningPosted = New Telerik.WinControls.UI.RadCheckBox()
         Me.SplitPanel2 = New Telerik.WinControls.UI.SplitPanel()
+        Me.btnGVTruckSheet = New Telerik.WinControls.UI.RadButton()
         Me.RadSplitButton1 = New Telerik.WinControls.UI.RadSplitButton()
         Me.rmi_BoothSlipExcel = New Telerik.WinControls.UI.RadMenuItem()
         Me.btnHistory = New Telerik.WinControls.UI.RadButton()
@@ -134,7 +138,6 @@ Partial Class frmDemandBooking
         Me.btnExport = New Telerik.WinControls.UI.RadMenuItem()
         Me.btnImport = New Telerik.WinControls.UI.RadMenuItem()
         Me.btnSendEmailSMS = New Telerik.WinControls.UI.RadMenuItem()
-        Me.chkNoCrateIssue = New Telerik.WinControls.UI.RadCheckBox()
         CType(Me.RadSplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RadSplitContainer1.SuspendLayout()
         CType(Me.SplitPanel1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -148,6 +151,7 @@ Partial Class frmDemandBooking
         CType(Me.txtShuffleDate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.rgbDemandHead, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.rgbDemandHead.SuspendLayout()
+        CType(Me.chkNoCrateIssue, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtDemandUniqueID, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lblDemandUniqueID, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnQuickDemand, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -213,12 +217,15 @@ Partial Class frmDemandBooking
         CType(Me.gv1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gv1.MasterTemplate, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.gv1.SuspendLayout()
+        CType(Me.GVTruckSheet, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.GVTruckSheet.MasterTemplate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyRadGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyRadGridView1.MasterTemplate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chkEveningPosted, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chkMorningPosted, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.SplitPanel2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitPanel2.SuspendLayout()
+        CType(Me.btnGVTruckSheet, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RadSplitButton1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnHistory, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnSplitPrint, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -237,7 +244,6 @@ Partial Class frmDemandBooking
         CType(Me.btnSave, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnreverse, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.chkNoCrateIssue, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -457,6 +463,14 @@ Partial Class frmDemandBooking
         Me.rgbDemandHead.Size = New System.Drawing.Size(1115, 183)
         Me.rgbDemandHead.TabIndex = 1471
         Me.rgbDemandHead.Text = "Demand Head"
+        '
+        'chkNoCrateIssue
+        '
+        Me.chkNoCrateIssue.Location = New System.Drawing.Point(597, 125)
+        Me.chkNoCrateIssue.Name = "chkNoCrateIssue"
+        Me.chkNoCrateIssue.Size = New System.Drawing.Size(93, 18)
+        Me.chkNoCrateIssue.TabIndex = 1457
+        Me.chkNoCrateIssue.Text = "No Crate Issue"
         '
         'txtDemandUniqueID
         '
@@ -1275,7 +1289,8 @@ Partial Class frmDemandBooking
         Me.gv2.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gv2.MasterTemplate.ShowHeaderCellButtons = True
         Me.gv2.MasterTemplate.VerticalScrollState = Telerik.WinControls.UI.ScrollState.AlwaysShow
-        Me.gv2.MasterTemplate.ViewDefinition = TableViewDefinition3
+        Me.gv2.MasterTemplate.ViewDefinition = TableViewDefinition4
+        Me.gv2.MyExportAPI = False
         Me.gv2.MyExportFilePath = ""
         Me.gv2.MyStopExport = False
         Me.gv2.Name = "gv2"
@@ -1291,6 +1306,7 @@ Partial Class frmDemandBooking
         '
         Me.gv1.AutoScroll = True
         Me.gv1.BackColor = System.Drawing.Color.FromArgb(CType(CType(233, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(249, Byte), Integer))
+        Me.gv1.Controls.Add(Me.GVTruckSheet)
         Me.gv1.Controls.Add(Me.MyRadGridView1)
         Me.gv1.Cursor = System.Windows.Forms.Cursors.Default
         Me.gv1.Dock = System.Windows.Forms.DockStyle.Fill
@@ -1306,7 +1322,8 @@ Partial Class frmDemandBooking
         Me.gv1.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gv1.MasterTemplate.ShowHeaderCellButtons = True
         Me.gv1.MasterTemplate.VerticalScrollState = Telerik.WinControls.UI.ScrollState.AlwaysShow
-        Me.gv1.MasterTemplate.ViewDefinition = TableViewDefinition2
+        Me.gv1.MasterTemplate.ViewDefinition = TableViewDefinition3
+        Me.gv1.MyExportAPI = False
         Me.gv1.MyExportFilePath = ""
         Me.gv1.MyStopExport = False
         Me.gv1.Name = "gv1"
@@ -1318,6 +1335,25 @@ Partial Class frmDemandBooking
         Me.gv1.TabStop = False
         Me.gv1.VarID = ""
         '
+        'GVTruckSheet
+        '
+        Me.GVTruckSheet.Location = New System.Drawing.Point(312, 13)
+        '
+        '
+        '
+        Me.GVTruckSheet.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
+        Me.GVTruckSheet.MasterTemplate.ShowHeaderCellButtons = True
+        Me.GVTruckSheet.MasterTemplate.ViewDefinition = TableViewDefinition1
+        Me.GVTruckSheet.MyExportAPI = False
+        Me.GVTruckSheet.MyExportFilePath = ""
+        Me.GVTruckSheet.MyStopExport = False
+        Me.GVTruckSheet.Name = "GVTruckSheet"
+        Me.GVTruckSheet.ShowHeaderCellButtons = True
+        Me.GVTruckSheet.Size = New System.Drawing.Size(289, 148)
+        Me.GVTruckSheet.TabIndex = 4
+        Me.GVTruckSheet.VarID = ""
+        Me.GVTruckSheet.Visible = False
+        '
         'MyRadGridView1
         '
         Me.MyRadGridView1.Location = New System.Drawing.Point(6, 13)
@@ -1326,7 +1362,8 @@ Partial Class frmDemandBooking
         '
         Me.MyRadGridView1.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.MyRadGridView1.MasterTemplate.ShowHeaderCellButtons = True
-        Me.MyRadGridView1.MasterTemplate.ViewDefinition = TableViewDefinition1
+        Me.MyRadGridView1.MasterTemplate.ViewDefinition = TableViewDefinition2
+        Me.MyRadGridView1.MyExportAPI = False
         Me.MyRadGridView1.MyExportFilePath = ""
         Me.MyRadGridView1.MyStopExport = False
         Me.MyRadGridView1.Name = "MyRadGridView1"
@@ -1358,6 +1395,7 @@ Partial Class frmDemandBooking
         '
         'SplitPanel2
         '
+        Me.SplitPanel2.Controls.Add(Me.btnGVTruckSheet)
         Me.SplitPanel2.Controls.Add(Me.RadSplitButton1)
         Me.SplitPanel2.Controls.Add(Me.btnHistory)
         Me.SplitPanel2.Controls.Add(Me.btnSplitPrint)
@@ -1387,6 +1425,16 @@ Partial Class frmDemandBooking
         Me.SplitPanel2.TabIndex = 1
         Me.SplitPanel2.TabStop = False
         Me.SplitPanel2.Text = "SplitPanel2"
+        '
+        'btnGVTruckSheet
+        '
+        Me.btnGVTruckSheet.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnGVTruckSheet.Location = New System.Drawing.Point(989, 11)
+        Me.btnGVTruckSheet.Name = "btnGVTruckSheet"
+        Me.btnGVTruckSheet.Size = New System.Drawing.Size(118, 20)
+        Me.btnGVTruckSheet.TabIndex = 55
+        Me.btnGVTruckSheet.Text = "Show Truck Sheet"
+        Me.btnGVTruckSheet.Visible = False
         '
         'RadSplitButton1
         '
@@ -1613,14 +1661,6 @@ Partial Class frmDemandBooking
         Me.btnSendEmailSMS.Name = "btnSendEmailSMS"
         Me.btnSendEmailSMS.Text = "E-Mail/SMS Setting"
         '
-        'chkNoCrateIssue
-        '
-        Me.chkNoCrateIssue.Location = New System.Drawing.Point(597, 125)
-        Me.chkNoCrateIssue.Name = "chkNoCrateIssue"
-        Me.chkNoCrateIssue.Size = New System.Drawing.Size(93, 18)
-        Me.chkNoCrateIssue.TabIndex = 1457
-        Me.chkNoCrateIssue.Text = "No Crate Issue"
-        '
         'frmDemandBooking
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1652,6 +1692,7 @@ Partial Class frmDemandBooking
         CType(Me.rgbDemandHead, System.ComponentModel.ISupportInitialize).EndInit()
         Me.rgbDemandHead.ResumeLayout(False)
         Me.rgbDemandHead.PerformLayout()
+        CType(Me.chkNoCrateIssue, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtDemandUniqueID, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.lblDemandUniqueID, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnQuickDemand, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1723,12 +1764,15 @@ Partial Class frmDemandBooking
         CType(Me.gv1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.gv1.ResumeLayout(False)
         Me.gv1.PerformLayout()
+        CType(Me.GVTruckSheet.MasterTemplate, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.GVTruckSheet, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyRadGridView1.MasterTemplate, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyRadGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.chkEveningPosted, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.chkMorningPosted, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.SplitPanel2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitPanel2.ResumeLayout(False)
+        CType(Me.btnGVTruckSheet, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RadSplitButton1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnHistory, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnSplitPrint, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1747,7 +1791,6 @@ Partial Class frmDemandBooking
         CType(Me.btnSave, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnreverse, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.chkNoCrateIssue, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -1861,5 +1904,7 @@ Partial Class frmDemandBooking
     Friend WithEvents RadSplitButton1 As RadSplitButton
     Friend WithEvents rmi_BoothSlipExcel As RadMenuItem
     Friend WithEvents chkNoCrateIssue As RadCheckBox
+    Friend WithEvents GVTruckSheet As common.UserControls.MyRadGridView
+    Friend WithEvents btnGVTruckSheet As RadButton
 End Class
 
