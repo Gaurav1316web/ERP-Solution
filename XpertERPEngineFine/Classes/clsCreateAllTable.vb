@@ -14351,8 +14351,15 @@ FROM TSPL_ITEM_MASTER"
             coll.Add("Aadhar_No_Verified", " integer null")
             coll.Add("DBT_Capping_Qty", " integer null")
             coll.Add("Jan_Aadhar_No_Verified_On", "datetime NULL")
+            coll.Add("THIRD_PARTY_CODE", "varchar(30) NULL")
+            coll.Add("Third_Party_Source", "char(4) NULL")
             clsDBFuncationality.ExecuteNonQuery("delete  from  TSPL_MP_MASTER_Hist_Data where MP_Code+convert(varchar, Hist_Version) in (select MP_Code+convert(varchar, Hist_Version) from(select LEN([MP_Code_VLC_Uploader]) as Lenth,MP_Code,Hist_Version from TSPL_MP_MASTER_Hist_Data)xx where Lenth > 7)")
             clsCommonFunctionality.CreateOrAlterTable(False, "TSPL_MP_MASTER", coll, Nothing, True)
+            Try
+                clsDBFuncationality.ExecuteNonQuery("CREATE UNIQUE INDEX Unique_THIRD_PARTY_CODE ON TSPL_MP_MASTER (THIRD_PARTY_CODE) WHERE THIRD_PARTY_CODE IS NOT NULL;")
+
+            Catch ex As Exception
+            End Try
             clsDBFuncationality.ExecuteNonQuery("update TSPL_MP_MASTER set Jan_Aadhar_No_Verified_ON=Modified_Date where  ISNULL(Jan_Aadhar_No_Verified,0) =1 and Jan_Aadhar_No_Verified_ON is null")
 
             coll = New Dictionary(Of String, String)()

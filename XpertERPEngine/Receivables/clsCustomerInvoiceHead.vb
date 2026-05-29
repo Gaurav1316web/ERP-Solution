@@ -1322,6 +1322,7 @@ where TSPL_Customer_Invoice_Head.document_No ='" & strDocNo & "'"
                 '    Throw New Exception("Already Post on :" + obj.Posting_Date)
                 'End If
                 clsCommonFunctionality.SaveDeletedData(objCommonVar.CurrentUserCode, strDocNo, "TSPL_Customer_Invoice_HEAD", "Document_No", "TSPL_Customer_Invoice_Detail", "Document_No", trans)
+                'clsCommonFunctionality.SaveDeletedData(objCommonVar.CurrentUserCode, strDocNo, "TSPL_Customer_Invoice_Detail", "Document_No", trans)
 
                 clsCommonFunctionality.SaveHistoryData(objCommonVar.CurrentUserCode, strDocNo, "TSPL_Customer_Invoice_HEAD", "Document_No", "TSPL_Customer_Invoice_Detail", "Document_No", trans)
                 Dim qry As String = "delete from TSPL_Customer_Invoice_Detail where Document_No='" + strDocNo + "'"
@@ -1356,7 +1357,7 @@ where TSPL_Customer_Invoice_Head.document_No ='" & strDocNo & "'"
                 End If
 
                 'Ticket No-TEC/06/09/19-001003,Save Deleted data ,sanjay
-                clsCommonFunctionality.SaveDeletedData(objCommonVar.CurrentUserCode, strDocNo, "TSPL_Customer_Invoice_Head", "Document_No", trans)
+                'clsCommonFunctionality.SaveDeletedData(objCommonVar.CurrentUserCode, strDocNo, "TSPL_Customer_Invoice_Head", "Document_No", trans)
 
                 qry = "delete from TSPL_REMITTANCE where Document_No='" + strDocNo + "'"
                 isSaved = isSaved AndAlso clsDBFuncationality.ExecuteNonQuery(qry, trans)

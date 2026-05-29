@@ -336,7 +336,7 @@ where convert(date,TSPL_DEMAND_BOOKING_MASTER.Document_Date,103)='" + clsCommon.
                             Throw New Exception("Demand Already Posted for Route_No Code [" + clsCommon.myCstr(cust) + "]")
                         End If
                         FindDemand(gv1.CurrentRow.Cells(colCustCode).Value, gv1.CurrentRow.Cells(colRouteNo).Value)
-
+                        gv1.CurrentRow.Cells(colCustCode).ReadOnly = True
                     End If
                     If e.Column.Name = colSetZero Then
                         UpdateCurrentRow(gv1.CurrentRow.Index)
@@ -1216,5 +1216,9 @@ where convert(date,TSPL_DEMAND_BOOKING_MASTER.Document_Date,103)='" + clsCommon.
             Throw New Exception(ex.Message)
         End Try
 
+    End Sub
+
+    Private Sub btnReset_Click(sender As Object, e As EventArgs) Handles btnReset.Click
+        AddNew()
     End Sub
 End Class

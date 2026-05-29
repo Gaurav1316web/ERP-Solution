@@ -325,6 +325,7 @@ Public Class clsVedorInvoiceHead
     Public Saving As Integer = 0
     Public arrSecurityAdjustment As ArrayList = Nothing
 #End Region
+
     Public Shared Function funAPInvoiceEntryPrint(ByVal Form_ID As String, ByVal strCancelDelete As String, ByVal strDate As DateTime, ByVal StrDocNo As String, ByVal SettingCostCenterlevel As Boolean) As Boolean
         Try
             Dim TSPL_VENDOR_INVOICE_HEAD As String = Nothing
@@ -4751,6 +4752,7 @@ Public Class clsVedorInvoiceHead
                     Throw New Exception("Already Post on :" + obj.Posting_Date)
                 End If
                 clsCommonFunctionality.SaveDeletedData(objCommonVar.CurrentUserCode, strDocNo, "TSPL_VENDOR_INVOICE_HEAD", "Document_No", "TSPL_VENDOR_INVOICE_DETAIL", "Document_No", trans)
+                'clsCommonFunctionality.SaveDeletedData(objCommonVar.CurrentUserCode, strDocNo, "TSPL_VENDOR_INVOICE_DETAIL", "Document_No", trans)
 
                 clsCommonFunctionality.SaveHistoryData(EnumSaveType.History, objCommonVar.CurrentUserCode, obj.Document_No, "TSPL_VENDOR_INVOICE_HEAD", "Document_No", "TSPL_VENDOR_INVOICE_DETAIL", "Document_No", "TSPL_AP_INVOICE_SECONDARY_TRANSPORTER_DEDUTION_DETAIL", "AP_Invoice_No", "TSPL_AP_Invoice_Asset_EMI_Details", "AP_Invoice_No", "", "", "", "", "", "", trans)
                 clsCommonFunctionality.SaveHistoryData(objCommonVar.CurrentUserCode, obj.Document_No, "TSPL_REMITTANCE", "Document_No", "TSPL_AP_INVOICE_ADVANCE_INTEREST", "AP_Invoice_No", "TSPL_PROVISION_ENTRY_KNOCKOFF", "AP_Invoice_No", trans)
@@ -4810,7 +4812,7 @@ Public Class clsVedorInvoiceHead
                 End If
 
                 'Ticket No-TEC/06/09/19-001003,Save Deleted data ,sanjay
-                clsCommonFunctionality.SaveDeletedData(objCommonVar.CurrentUserCode, strDocNo, "TSPL_VENDOR_INVOICE_HEAD", "Document_No", trans)
+                ' clsCommonFunctionality.SaveDeletedData(objCommonVar.CurrentUserCode, strDocNo, "TSPL_VENDOR_INVOICE_HEAD", "Document_No", trans)
 
                 qry = "delete from TSPL_REMITTANCE where Document_No='" + strDocNo + "'"
                 isSaved = isSaved AndAlso clsDBFuncationality.ExecuteNonQuery(qry, trans)
