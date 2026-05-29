@@ -381,28 +381,138 @@ where TSPL_DISTRIBUTOR_ROUTE.Code='" + txtDistributorTagging.Value + "' "
     Private Sub rmiExport_Click(sender As Object, e As EventArgs) Handles rmiExport.Click
         Export()
     End Sub
-    '    Public Sub Import()
-    '        Try
-    '            Dim gv As New UserControls.MyRadGridView
-    '            Me.Controls.Add(gv)
-    '            Dim obj As New List(Of clsDistributorCommissionDetails)
-    '            Dim currentdate As Date = Date.Today
-    '            If clsCommon.myLen(txtUOM.Value) > 0 Then
-    '                If transportSql.importExcel(gv, "Docuemnt Code", "Invoice No", "Customer Code") Then
-    '                    'Dim trans As SqlTransaction = Nothing
-    '                    Dim linno As Integer = 0
-    '                    Dim TempNewRecord As Boolean = False
-    '                    Try
-    '                        'trans = clsDBFuncationality.GetTransactin()
-    '                        clsCommon.ProgressBarPercentShow()
-    '                        For Each grow As GridViewRowInfo In gv.Rows
-    '                            linno += 1
-    '                            ''Updating Shipment Detail
-    '                            ''update Invoice Head
-    '                            ''-------------------
-    '                            Dim strQry As String = " update TSPL_SD_SHIPMENT_DETAIL set Distributor_Commission_PKID=xxx.DisPKID,Distributor_Commission_Rate=xxx.Rate,Distributor_Commission_RateWithTax=xxx.Rate,
+    '   Public Sub ImportTPT()
+    '       Try
+    '           Dim gv As New UserControls.MyRadGridView
+    '           Me.Controls.Add(gv)
+    '           Dim obj As New List(Of clsDistributorCommissionDetails)
+    '           Dim currentdate As Date = Date.Today
+    '           If clsCommon.myLen(txtUOM.Value) > 0 Then
+    '               If transportSql.importExcel(gv, "Docuemnt Code", "Invoice No", "Customer Code") Then
+    '                   'Dim trans As SqlTransaction = Nothing
+    '                   Dim linno As Integer = 0
+    '                   Dim TempNewRecord As Boolean = False
+    '                   Try
+    '                       'trans = clsDBFuncationality.GetTransactin()
+    '                       clsCommon.ProgressBarPercentShow()
+    '                       For Each grow As GridViewRowInfo In gv.Rows
+    '                           linno += 1
+    '                           ''Updating Shipment Detail
+    '                           ''update Invoice Head
+    '                           ''-------------------
+    '                           Dim strQry As String = " update TSPL_SD_SHIPMENT_DETAIL set Distributor_Commission_PKID=xxx.DisPKID,Transporter_Commission_Rate=xxx.Rate,Distributor_Commission_RateWithTax=xxx.Rate,
+    '   Transporter_Commission_Amt=xxx.Dis_Commision_Amt
+    'from (
+    '   select xx.Customer_Code,xx.Item_Code,xx.PK_ID,xx.QtyInCommission_Uom,TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Transporter_Rate as Rate,(xx.QtyInCommission_Uom * TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Transporter_Rate) as Dis_Commision_Amt,xx.DisPKID
+    '   from
+    '   (
+    '   select CurrentUOMCF.Conversion_Factor as CurrUintCF,LTRUOMMCF.Conversion_Factor as LtrUintCF,TSPL_SD_Shipment_Head.Customer_Code, TSPL_SD_SHIPMENT_DETAIL.Item_Code,TSPL_SD_SHIPMENT_DETAIL.Qty,(TSPL_SD_SHIPMENT_DETAIL.Qty*CurrentUOMCF.Conversion_Factor /LTRUOMMCF.Conversion_Factor) as QtyInCommission_Uom,TSPL_SD_SHIPMENT_DETAIL.PK_ID,
+    '   (select top 1 TSPL_DISTRIBUTOR_COMMISSION_DETAIL.PK_ID from TSPL_DISTRIBUTOR_COMMISSION_HEAD
+    '   left join TSPL_DISTRIBUTOR_COMMISSION_DETAIL on TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Doc_No=TSPL_DISTRIBUTOR_COMMISSION_HEAD.Doc_No
+    '   left join TSPL_DISTRIBUTOR_COMMISSION_ITEMS on TSPL_DISTRIBUTOR_COMMISSION_ITEMS.Doc_No=TSPL_DISTRIBUTOR_COMMISSION_HEAD.Doc_No
+    '   where TSPL_DISTRIBUTOR_COMMISSION_HEAD.Applicable_Date<=TSPL_SD_SHIPMENT_HEAD.Document_Date and TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Distributor_Code='" + clsCommon.myCstr(grow.Cells("Customer Code").Value) + "'  and TSPL_DISTRIBUTOR_COMMISSION_ITEMS.Item_Code=TSPL_SD_SHIPMENT_DETAIL.Item_Code and TSPL_DISTRIBUTOR_COMMISSION_HEAD.IsPosted=1 and TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Route_Code=TSPL_SD_SHIPMENT_HEAD.Route_No
+    '   order by TSPL_DISTRIBUTOR_COMMISSION_HEAD.Applicable_Date desc,TSPL_DISTRIBUTOR_COMMISSION_HEAD.Doc_No desc) as DisPKID
+    '   from TSPL_SD_SHIPMENT_HEAD
+    '   left join TSPL_SD_SHIPMENT_DETAIL on TSPL_SD_SHIPMENT_DETAIL.DOCUMENT_CODE=TSPL_SD_SHIPMENT_HEAD.DOCUMENT_CODE
+    '   left join TSPL_ITEM_UOM_DETAIL CurrentUOMCF on CurrentUOMCF.Item_Code=TSPL_SD_SHIPMENT_DETAIL.Item_Code and CurrentUOMCF.UOM_Code=TSPL_SD_SHIPMENT_DETAIL.Unit_code
+    '   left join TSPL_ITEM_UOM_DETAIL LTRUOMMCF on LTRUOMMCF.Item_Code=TSPL_SD_SHIPMENT_DETAIL.Item_Code and LTRUOMMCF.UOM_Code='LTR'
+    '   where TSPL_SD_SHIPMENT_HEAD.Document_Code='" + clsCommon.myCstr(grow.Cells("Docuemnt Code").Value) + "'
+    '   )xx 
+    '   left join TSPL_DISTRIBUTOR_COMMISSION_DETAIL on TSPL_DISTRIBUTOR_COMMISSION_DETAIL.PK_ID=XX.DisPKID
+    '   )xxx inner join TSPL_SD_SHIPMENT_DETAIL on TSPL_SD_SHIPMENT_DETAIL.pk_id=xxx.PK_ID  "
+    '                           clsDBFuncationality.ExecuteNonQuery(strQry)
+    '                           clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Shipment Detail  Doc No:" + clsCommon.myCstr(grow.Cells("Docuemnt Code").Value))
+    '                           ''update Shipment Head
+    '                           ''-------------------
+    '                           strQry = "update TSPL_SD_SHIPMENT_HEAD set Transporter_Commission_TotalAmt=xx.Distributor_Commission_Amt,	
+    '   Gross_Amount=(Total_Amt-xx.Distributor_Commission_Amt),Customer_Code='" + clsCommon.myCstr(grow.Cells("Customer Code").Value) + "'
+    '   from 
+    '   (
+    '   select TSPL_SD_SHIPMENT_DETAIL.Document_Code, sum(TSPL_SD_SHIPMENT_DETAIL.Transporter_Commission_Amt) as Distributor_Commission_Amt from TSPL_SD_SHIPMENT_HEAD
+    '   left join TSPL_SD_SHIPMENT_DETAIL on TSPL_SD_SHIPMENT_DETAIL.DOCUMENT_CODE=TSPL_SD_SHIPMENT_HEAD.Document_Code where TSPL_SD_SHIPMENT_HEAD.DOCUMENT_CODE='" + clsCommon.myCstr(grow.Cells("Docuemnt Code").Value) + "'
+    '   group by TSPL_SD_SHIPMENT_DETAIL.Document_Code
+    '   )XX
+    '   where TSPL_SD_SHIPMENT_HEAD.Document_Code=xx.DOCUMENT_CODE"
+    '                           clsDBFuncationality.ExecuteNonQuery(strQry)
+    '                           clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Shipment Head Doc No:" + clsCommon.myCstr(grow.Cells("Docuemnt Code").Value))
+    '                           ''update Invoice Detail
+    '                           ''-------------------
+    '                           strQry = " update TSPL_SD_SALE_INVOICE_DETAIL set Distributor_Commission_PKID=xxx.DisPKID,Transporter_Commission_Rate=xxx.Rate,
+    '   Transporter_Commission_Amt=xxx.Dis_Commision_Amt  from (
+    '   select xx.Customer_Code,xx.Item_Code,xx.QtyInCommission_Uom,TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Transporter_Rate as Rate,(xx.QtyInCommission_Uom * TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Transporter_Rate) as Dis_Commision_Amt,xx.DisPKID,xx.Unit_code,xx.Line_No,xx.DOCUMENT_CODE
+    '   from
+    '   (
+    '   select CurrentUOMCF.Conversion_Factor as CurrUintCF,LTRUOMMCF.Conversion_Factor as LtrUintCF,TSPL_SD_SALE_INVOICE_Head.Customer_Code, TSPL_SD_SALE_INVOICE_DETAIL.Item_Code,TSPL_SD_SALE_INVOICE_DETAIL.Qty,(TSPL_SD_SALE_INVOICE_DETAIL.Qty*CurrentUOMCF.Conversion_Factor /LTRUOMMCF.Conversion_Factor) as QtyInCommission_Uom ,--TSPL_SD_SALE_INVOICE_DETAIL.PK_ID,
+    '   TSPL_SD_SALE_INVOICE_DETAIL.Unit_code,TSPL_SD_SALE_INVOICE_DETAIL.Line_No,TSPL_SD_SALE_INVOICE_DETAIL.DOCUMENT_CODE,
+    '   (select top 1 TSPL_DISTRIBUTOR_COMMISSION_DETAIL.PK_ID from TSPL_DISTRIBUTOR_COMMISSION_HEAD
+    '   left join TSPL_DISTRIBUTOR_COMMISSION_DETAIL on TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Doc_No=TSPL_DISTRIBUTOR_COMMISSION_HEAD.Doc_No
+    '   left join TSPL_DISTRIBUTOR_COMMISSION_ITEMS on TSPL_DISTRIBUTOR_COMMISSION_ITEMS.Doc_No=TSPL_DISTRIBUTOR_COMMISSION_HEAD.Doc_No
+    '   where TSPL_DISTRIBUTOR_COMMISSION_HEAD.Applicable_Date<=TSPL_SD_SALE_INVOICE_Head.Document_Date and TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Distributor_Code='" + clsCommon.myCstr(grow.Cells("Customer Code").Value) + "'  and TSPL_DISTRIBUTOR_COMMISSION_ITEMS.Item_Code=TSPL_SD_SALE_INVOICE_DETAIL.Item_Code and TSPL_DISTRIBUTOR_COMMISSION_HEAD.IsPosted=1 and TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Route_Code=TSPL_SD_SALE_INVOICE_Head.Route_No
+    '   order by TSPL_DISTRIBUTOR_COMMISSION_HEAD.Applicable_Date desc,TSPL_DISTRIBUTOR_COMMISSION_HEAD.Doc_No desc) as DisPKID
+    '   from TSPL_SD_SALE_INVOICE_Head
+    '   left join TSPL_SD_SALE_INVOICE_DETAIL on TSPL_SD_SALE_INVOICE_DETAIL.DOCUMENT_CODE=TSPL_SD_SALE_INVOICE_Head.DOCUMENT_CODE
+    '   left join TSPL_ITEM_UOM_DETAIL CurrentUOMCF on CurrentUOMCF.Item_Code=TSPL_SD_SALE_INVOICE_DETAIL.Item_Code and CurrentUOMCF.UOM_Code=TSPL_SD_SALE_INVOICE_DETAIL.Unit_code
+    '   left join TSPL_ITEM_UOM_DETAIL LTRUOMMCF on LTRUOMMCF.Item_Code=TSPL_SD_SALE_INVOICE_DETAIL.Item_Code and LTRUOMMCF.UOM_Code='LTR'
+    '   where TSPL_SD_SALE_INVOICE_Head.Document_Code ='" + clsCommon.myCstr(grow.Cells("Invoice No").Value) + "'
+    '   )xx 
+    '   left join TSPL_DISTRIBUTOR_COMMISSION_DETAIL on TSPL_DISTRIBUTOR_COMMISSION_DETAIL.PK_ID=XX.DisPKID
+    '   )xxx inner join TSPL_SD_SALE_INVOICE_DETAIL on TSPL_SD_SALE_INVOICE_DETAIL.Item_Code=xxx.Item_Code and TSPL_SD_SALE_INVOICE_DETAIL.Line_No=xxx.Line_No and TSPL_SD_SALE_INVOICE_DETAIL.DOCUMENT_CODE=xxx.DOCUMENT_CODE "
+    '                           clsDBFuncationality.ExecuteNonQuery(strQry)
+    '                           clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Invoice Detail Doc No:" + clsCommon.myCstr(grow.Cells("Invoice No").Value))
+    '                           ''update Invoice Head
+    '                           ''-------------------
+    '                           strQry = " update TSPL_SD_SALE_INVOICE_Head set Transporter_Commission_TotalAmt=xx.Distributor_Commission_Amt,
+    '  Gross_Amount=(Total_Amt-xx.Distributor_Commission_Amt),Customer_Code='" + clsCommon.myCstr(grow.Cells("Customer Code").Value) + "'
+    '   from 
+    '   (
+    '   select TSPL_SD_SALE_INVOICE_DETAIL.Document_Code, sum(TSPL_SD_SALE_INVOICE_DETAIL.Transporter_Commission_Amt) as Distributor_Commission_Amt from TSPL_SD_SALE_INVOICE_Head
+    '   left join TSPL_SD_SALE_INVOICE_DETAIL on TSPL_SD_SALE_INVOICE_DETAIL.DOCUMENT_CODE=TSPL_SD_SALE_INVOICE_Head.Document_Code where TSPL_SD_SALE_INVOICE_Head.DOCUMENT_CODE ='" + clsCommon.myCstr(grow.Cells("Invoice No").Value) + "'
+    '   group by TSPL_SD_SALE_INVOICE_DETAIL.Document_Code
+    '   )XX
+    '   where TSPL_SD_SALE_INVOICE_Head.Document_Code=xx.DOCUMENT_CODE "
+    '                           clsDBFuncationality.ExecuteNonQuery(strQry)
+    '                           clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Invoice head Doc No:" + clsCommon.myCstr(grow.Cells("Invoice No").Value))
+    '                       Next
+    '                       clsCommon.ProgressBarPercentHide()
+    '                   Catch ex As Exception
+    '                       clsCommon.ProgressBarPercentHide()
+    '                       clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
+    '                   End Try
+    '               Else
+    '                   clsCommon.MyMessageBoxShow(Me, "Excel Sheet is not in expected format", Me.Text)
+    '               End If
+    '           Else
+    '               clsCommon.MyMessageBoxShow(Me, "Please Select Commission UOM", Me.Text)
+    '           End If
+    '           'clsCommon.ProgressBarHide()
+    '           Me.Controls.Remove(gv)
+    '       Catch ex As Exception
+    '           'clsCommon.ProgressBarHide()
+    '           clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
+    '       End Try
+    '   End Sub
+    'Public Sub Import()
+    '    Try
+    '        Dim gv As New UserControls.MyRadGridView
+    '        Me.Controls.Add(gv)
+    '        Dim obj As New List(Of clsDistributorCommissionDetails)
+    '        Dim currentdate As Date = Date.Today
+    '        If clsCommon.myLen(txtUOM.Value) > 0 Then
+    '            If transportSql.importExcel(gv, "Docuemnt Code", "Invoice No", "Customer Code") Then
+    '                'Dim trans As SqlTransaction = Nothing
+    '                Dim linno As Integer = 0
+    '                Dim TempNewRecord As Boolean = False
+    '                Try
+    '                    'trans = clsDBFuncationality.GetTransactin()
+    '                    clsCommon.ProgressBarPercentShow()
+    '                    For Each grow As GridViewRowInfo In gv.Rows
+    '                        linno += 1
+    '                        ''Updating Shipment Detail
+    '                        ''update Invoice Head
+    '                        ''-------------------
+    '                        Dim strQry As String = " update TSPL_SD_SHIPMENT_DETAIL set Distributor_Commission_PKID=xxx.DisPKID,Distributor_Commission_Rate=xxx.Rate,Distributor_Commission_RateWithTax=xxx.Rate,
     'Distributor_Commission_Amt=xxx.Dis_Commision_Amt,Disc_Amt=xxx.Dis_Commision_Amt,Total_Disc_Amt=xxx.Dis_Commision_Amt,Amt_Less_Discount=( Total_Basic_Amt-xxx.Dis_Commision_Amt),Item_Net_Amt=( Total_Basic_Amt-xxx.Dis_Commision_Amt),TAX1_Base_Amt=( Total_Basic_Amt-xxx.Dis_Commision_Amt),TAX2_Base_Amt=( Total_Basic_Amt-xxx.Dis_Commision_Amt)   from (
-    'select xx.Customer_Code,xx.Item_Code,xx.PK_ID,xx.QtyInCommission_Uom,TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Rate,(xx.QtyInCommission_Uom * TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Rate) as Dis_Commision_Amt,xx.DisPKID
+    'select xx.Customer_Code,xx.Item_Code,xx.PK_ID,xx.QtyInCommission_Uom,TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Transporter_Rate,(xx.QtyInCommission_Uom * TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Transporter_Rate) as Dis_Commision_Amt,xx.DisPKID
     'from
     '(
     'select CurrentUOMCF.Conversion_Factor as CurrUintCF,LTRUOMMCF.Conversion_Factor as LtrUintCF,TSPL_SD_Shipment_Head.Customer_Code, TSPL_SD_SHIPMENT_DETAIL.Item_Code,TSPL_SD_SHIPMENT_DETAIL.Qty,(TSPL_SD_SHIPMENT_DETAIL.Qty*CurrentUOMCF.Conversion_Factor /LTRUOMMCF.Conversion_Factor) as QtyInCommission_Uom,TSPL_SD_SHIPMENT_DETAIL.PK_ID,
@@ -419,11 +529,11 @@ where TSPL_DISTRIBUTOR_ROUTE.Code='" + txtDistributorTagging.Value + "' "
     ')xx 
     'left join TSPL_DISTRIBUTOR_COMMISSION_DETAIL on TSPL_DISTRIBUTOR_COMMISSION_DETAIL.PK_ID=XX.DisPKID
     ')xxx inner join TSPL_SD_SHIPMENT_DETAIL on TSPL_SD_SHIPMENT_DETAIL.pk_id=xxx.PK_ID "
-    '                            clsDBFuncationality.ExecuteNonQuery(strQry)
-    '                            clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Shipment Detail  Doc No:" + clsCommon.myCstr(grow.Cells("Docuemnt Code").Value))
-    '                            ''update Shipment Head
-    '                            ''-------------------
-    '                            strQry = "update TSPL_SD_SHIPMENT_HEAD set Distributor_Commission_TotalAmt=xx.Distributor_Commission_Amt,Discount_Amt=xx.Distributor_Commission_Amt,
+    '                        clsDBFuncationality.ExecuteNonQuery(strQry)
+    '                        clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Shipment Detail  Doc No:" + clsCommon.myCstr(grow.Cells("Docuemnt Code").Value))
+    '                        ''update Shipment Head
+    '                        ''-------------------
+    '                        strQry = "update TSPL_SD_SHIPMENT_HEAD set Distributor_Commission_TotalAmt=xx.Distributor_Commission_Amt,Discount_Amt=xx.Distributor_Commission_Amt,
     'Amount_Less_Discount=(Discount_Base-xx.Distributor_Commission_Amt),Total_Amt=(Discount_Base-xx.Distributor_Commission_Amt),Customer_Code='" + clsCommon.myCstr(grow.Cells("Customer Code").Value) + "',TAX1_Base_Amt=(Discount_Base-xx.Distributor_Commission_Amt),TAX2_Base_Amt=(Discount_Base-xx.Distributor_Commission_Amt)
     'from 
     '(
@@ -432,11 +542,11 @@ where TSPL_DISTRIBUTOR_ROUTE.Code='" + txtDistributorTagging.Value + "' "
     'group by TSPL_SD_SHIPMENT_DETAIL.Document_Code
     ')XX
     'where TSPL_SD_SHIPMENT_HEAD.Document_Code=xx.DOCUMENT_CODE"
-    '                            clsDBFuncationality.ExecuteNonQuery(strQry)
-    '                            clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Shipment Head Doc No:" + clsCommon.myCstr(grow.Cells("Docuemnt Code").Value))
-    '                            ''update Invoice Detail
-    '                            ''-------------------
-    '                            strQry = " update TSPL_SD_SALE_INVOICE_DETAIL set Distributor_Commission_PKID=xxx.DisPKID,Distributor_Commission_Rate=xxx.Rate,Distributor_Commission_RateWithTax=xxx.Rate,
+    '                        clsDBFuncationality.ExecuteNonQuery(strQry)
+    '                        clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Shipment Head Doc No:" + clsCommon.myCstr(grow.Cells("Docuemnt Code").Value))
+    '                        ''update Invoice Detail
+    '                        ''-------------------
+    '                        strQry = " update TSPL_SD_SALE_INVOICE_DETAIL set Distributor_Commission_PKID=xxx.DisPKID,Distributor_Commission_Rate=xxx.Rate,Distributor_Commission_RateWithTax=xxx.Rate,
     'Distributor_Commission_Amt=xxx.Dis_Commision_Amt,Disc_Amt=xxx.Dis_Commision_Amt,Total_Disc_Amt=xxx.Dis_Commision_Amt,Amt_Less_Discount=( Total_Basic_Amt-xxx.Dis_Commision_Amt),Item_Net_Amt=( Total_Basic_Amt-xxx.Dis_Commision_Amt),TAX1_Base_Amt=( Total_Basic_Amt-xxx.Dis_Commision_Amt),TAX2_Base_Amt=( Total_Basic_Amt-xxx.Dis_Commision_Amt)  from (
     'select xx.Customer_Code,xx.Item_Code,xx.QtyInCommission_Uom,TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Rate,(xx.QtyInCommission_Uom * TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Rate) as Dis_Commision_Amt,xx.DisPKID,xx.Unit_code,xx.Line_No,xx.DOCUMENT_CODE
     'from
@@ -456,11 +566,11 @@ where TSPL_DISTRIBUTOR_ROUTE.Code='" + txtDistributorTagging.Value + "' "
     ')xx 
     'left join TSPL_DISTRIBUTOR_COMMISSION_DETAIL on TSPL_DISTRIBUTOR_COMMISSION_DETAIL.PK_ID=XX.DisPKID
     ')xxx inner join TSPL_SD_SALE_INVOICE_DETAIL on TSPL_SD_SALE_INVOICE_DETAIL.Item_Code=xxx.Item_Code and TSPL_SD_SALE_INVOICE_DETAIL.Line_No=xxx.Line_No and TSPL_SD_SALE_INVOICE_DETAIL.DOCUMENT_CODE=xxx.DOCUMENT_CODE "
-    '                            clsDBFuncationality.ExecuteNonQuery(strQry)
-    '                            clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Invoice Detail Doc No:" + clsCommon.myCstr(grow.Cells("Invoice No").Value))
-    '                            ''update Invoice Head
-    '                            ''-------------------
-    '                            strQry = "update TSPL_SD_SALE_INVOICE_Head set Distributor_Commission_TotalAmt=xx.Distributor_Commission_Amt,Discount_Amt=xx.Distributor_Commission_Amt,
+    '                        clsDBFuncationality.ExecuteNonQuery(strQry)
+    '                        clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Invoice Detail Doc No:" + clsCommon.myCstr(grow.Cells("Invoice No").Value))
+    '                        ''update Invoice Head
+    '                        ''-------------------
+    '                        strQry = "update TSPL_SD_SALE_INVOICE_Head set Distributor_Commission_TotalAmt=xx.Distributor_Commission_Amt,Discount_Amt=xx.Distributor_Commission_Amt,
     'Amount_Less_Discount=(Discount_Base-xx.Distributor_Commission_Amt),Total_Amt=(Discount_Base-xx.Distributor_Commission_Amt),Customer_Code='" + clsCommon.myCstr(grow.Cells("Customer Code").Value) + "',TAX1_Base_Amt=(Discount_Base-xx.Distributor_Commission_Amt),TAX2_Base_Amt=(Discount_Base-xx.Distributor_Commission_Amt)
     'from 
     '(
@@ -469,27 +579,27 @@ where TSPL_DISTRIBUTOR_ROUTE.Code='" + txtDistributorTagging.Value + "' "
     'group by TSPL_SD_SALE_INVOICE_DETAIL.Document_Code
     ')XX
     'where TSPL_SD_SALE_INVOICE_Head.Document_Code=xx.DOCUMENT_CODE"
-    '                            clsDBFuncationality.ExecuteNonQuery(strQry)
-    '                            clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Invoice head Doc No:" + clsCommon.myCstr(grow.Cells("Invoice No").Value))
-    '                        Next
-    '                        clsCommon.ProgressBarPercentHide()
-    '                    Catch ex As Exception
-    '                        clsCommon.ProgressBarPercentHide()
-    '                        clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
-    '                    End Try
-    '                Else
-    '                    clsCommon.MyMessageBoxShow(Me, "Excel Sheet is not in expected format", Me.Text)
-    '                End If
+    '                        clsDBFuncationality.ExecuteNonQuery(strQry)
+    '                        clsCommon.ProgressBarPercentUpdate(((linno) * 100 / (gv.Rows.Count)), "Updating Invoice head Doc No:" + clsCommon.myCstr(grow.Cells("Invoice No").Value))
+    '                    Next
+    '                    clsCommon.ProgressBarPercentHide()
+    '                Catch ex As Exception
+    '                    clsCommon.ProgressBarPercentHide()
+    '                    clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
+    '                End Try
     '            Else
-    '                clsCommon.MyMessageBoxShow(Me, "Please Select Commission UOM", Me.Text)
+    '                clsCommon.MyMessageBoxShow(Me, "Excel Sheet is not in expected format", Me.Text)
     '            End If
-    '            'clsCommon.ProgressBarHide()
-    '            Me.Controls.Remove(gv)
-    '        Catch ex As Exception
-    '            'clsCommon.ProgressBarHide()
-    '            clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
-    '        End Try
-    '    End Sub
+    '        Else
+    '            clsCommon.MyMessageBoxShow(Me, "Please Select Commission UOM", Me.Text)
+    '        End If
+    '        'clsCommon.ProgressBarHide()
+    '        Me.Controls.Remove(gv)
+    '    Catch ex As Exception
+    '        'clsCommon.ProgressBarHide()
+    '        clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
+    '    End Try
+    'End Sub
     Public Sub Import()
         Try
             Dim gv As New UserControls.MyRadGridView

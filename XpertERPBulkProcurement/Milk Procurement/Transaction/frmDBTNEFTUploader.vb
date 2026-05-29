@@ -742,13 +742,15 @@ where 2=2 "
         qry += "," + TableName + ".MP_IFSC_No AS [" + clsDBTNEFTPerforma.colMPIFSCCode + "]
 ," + TableName + ".MP_Bank AS [" + clsDBTNEFTPerforma.colMPBank + "]," + TableName + ".MP_Mobile_No AS [" + clsDBTNEFTPerforma.colMPMobileNo + "]
 ," + TableName + ".MP_Account_No AS [" + clsDBTNEFTPerforma.colMPAccountNo + "]," + TableName + ".MP_Name AS [" + clsDBTNEFTPerforma.colMPName + "]
-,TSPL_VLC_MASTER_HEAD.VLC_Name as [" + clsDBTNEFTPerforma.colSocietyName + "],TSPL_ZONE_MASTER.Description as [" + clsDBTNEFTPerforma.colZoneName + "],TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code as [" + clsDBTNEFTPerforma.colFarmerCode + "]
+,TSPL_VLC_MASTER_HEAD.VLC_Name as [" + clsDBTNEFTPerforma.colSocietyName + "],TSPL_ZONE_MASTER.Description as [" + clsDBTNEFTPerforma.colZoneName + "],TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code as [" + clsDBTNEFTPerforma.colFarmerCode + "],tspl_mp_master.THIRD_PARTY_CODE as [" + clsDBTNEFTPerforma.colTHIRDPARTYCODE + "]
 from " + TableName + " 
 Left Outer Join TSPL_MP_INCENTIVE_ENTRY_DETAIL On TSPL_MP_INCENTIVE_ENTRY_DETAIL.PK_Id=" + TableName + ".Against_MP_Incentive_TR   
 left outer join TSPL_MP_INCENTIVE_ENTRY_HEAD on TSPL_MP_INCENTIVE_ENTRY_HEAD.Document_Code=TSPL_MP_INCENTIVE_ENTRY_DETAIL.Document_Code
 left outer join TSPL_VLC_MASTER_HEAD on TSPL_VLC_MASTER_HEAD.VLC_Code=TSPL_MP_INCENTIVE_ENTRY_DETAIL.VLC_Code
 left outer join TSPL_VENDOR_MASTER on TSPL_VENDOR_MASTER.vendor_code=TSPL_VLC_MASTER_HEAD.VSP_Code
 left outer join TSPL_ZONE_MASTER on TSPL_ZONE_MASTER.Zone_Code=TSPL_VENDOR_MASTER.Zone_Code
+left outer join tspl_mp_master on tspl_mp_master.MP_Code=TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code
+
 where " + TableName + ".Document_Code='" & txtDocumentNo.Value & "'"
         If lstMPCode IsNot Nothing AndAlso lstMPCode.Count > 0 Then
             qry += " and TSPL_DBT_NEFT_DETAIL.MP_Uploader_Code in (" & clsCommon.GetMulcallString(lstMPCode) & ")"
@@ -778,7 +780,7 @@ where " + TableName + ".Document_Code='" & txtDocumentNo.Value & "'"
                 End If
             End If
         Next
-        strMain += " from (" + qry + ")xxx order by [" + clsDBTNEFTPerforma.colSlNo + "]"
+        strMain += " ,[Third Party Code] from (" + qry + ")xxx order by [" + clsDBTNEFTPerforma.colSlNo + "]"
 
         Return strMain
     End Function

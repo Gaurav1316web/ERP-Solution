@@ -13176,7 +13176,7 @@ left join TSPL_BATCH_ITEM on TSPL_SD_SHIPMENT_DETAIL.Item_Code=TSPL_BATCH_ITEM.I
 left join TSPL_SD_SALE_INVOICE_HEAD on TSPL_SD_SHIPMENT_HEAD.Sale_Invoice_No=TSPL_SD_SALE_INVOICE_HEAD.Document_Code
 left join TSPL_VEHICLE_MASTER on TSPL_VEHICLE_MASTER.Vehicle_Id=TSPL_SD_SHIPMENT_HEAD.Vehicle_Code
 left join TSPL_VENDOR_MASTER on TSPL_VENDOR_MASTER.Vendor_Code=TSPL_VEHICLE_MASTER.Transport_Id
-where TSPL_SD_SHIPMENT_HEAD.Document_Code='" + txtDocNo.Value + "' and TSPL_SD_SHIPMENT_HEAD.Status=1"
+where TSPL_SD_SHIPMENT_HEAD.Document_Code='" + txtDocNo.Value + "'"
                 Dim dt As DataTable = clsDBFuncationality.GetDataTable(strQry)
                 If dt.Rows.Count > 0 Then
                     Dim frmCRV As New frmCrystalReportViewer()

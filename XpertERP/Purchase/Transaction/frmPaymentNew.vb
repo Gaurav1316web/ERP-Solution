@@ -847,24 +847,24 @@ Public Class FrmPaymentNew
                 End If
 
             ElseIf clsCommon.CompairString(ddlPaymentType.SelectedValue, "AD") = CompairStringResult.Equal Then
-                    lblTotPayment.Text = "Total Payment"
-                    txtPaymentAmt.ReadOnly = True
-                    gvDetails.Visible = True
-                    btnViewTDSDetails.Enabled = False
-                    chkCheckPrint.Visible = True
-                    lblDocumentNo.Visible = True
-                    txtDocumentNo.Visible = True
-                    lblBalAmt.Visible = True
-                    ChkSecurity.Visible = False
-                    ChkRetention.Visible = False
-                    lblpaymentcode.Visible = False
-                    txtPaymentMode.Visible = False
-                    pnlCheque.Visible = False
-                    txtBankCharges.Visible = False
-                    MyLabel3.Visible = False
-                    txtPaymentMode.Value = ""
-                    txtBankCharges.Text = "0"
-                    ChkAdvSalary.Visible = False
+                lblTotPayment.Text = "Total Payment"
+                txtPaymentAmt.ReadOnly = True
+                gvDetails.Visible = True
+                btnViewTDSDetails.Enabled = False
+                chkCheckPrint.Visible = True
+                lblDocumentNo.Visible = True
+                txtDocumentNo.Visible = True
+                lblBalAmt.Visible = True
+                ChkSecurity.Visible = False
+                ChkRetention.Visible = False
+                lblpaymentcode.Visible = False
+                txtPaymentMode.Visible = False
+                pnlCheque.Visible = False
+                txtBankCharges.Visible = False
+                MyLabel3.Visible = False
+                txtPaymentMode.Value = ""
+                txtBankCharges.Text = "0"
+                ChkAdvSalary.Visible = False
                 ChkAdvSalary.Checked = False
                 ' If autoadjustdebitcreditnote = True Then
                 txtmulPI.Visible = False
@@ -872,8 +872,27 @@ Public Class FrmPaymentNew
 
                 MyLabel15.Visible = False
             ElseIf clsCommon.CompairString(ddlPaymentType.SelectedValue, "AV") = CompairStringResult.Equal Or clsCommon.CompairString(ddlPaymentType.SelectedValue, "OA") = CompairStringResult.Equal Then
-                    pnlAdvance.Visible = True
-                    lblTotPayment.Text = "Payment Amount"
+                pnlAdvance.Visible = True
+                lblTotPayment.Text = "Payment Amount"
+                lblpaymentcode.Visible = True
+                txtPaymentMode.Visible = True
+                pnlCheque.Visible = True
+                txtBankCharges.Visible = True
+                MyLabel3.Visible = True
+                ChkSecurity.Visible = False
+                ChkRetention.Visible = False
+                txtPaymentAmt.ReadOnly = False
+                gvDetails.Visible = False
+                btnViewTDSDetails.Enabled = False
+                ChkAdvSalary.Visible = True
+                pnlEMI.Visible = True
+                chkSaving.Visible = False
+
+                txtmulPI.Visible = False
+
+                MyLabel15.Visible = False
+                If clsCommon.CompairString(ddlPaymentType.SelectedValue, "AV") = CompairStringResult.Equal Then
+                    pnlmemorndm.Visible = True
                     lblpaymentcode.Visible = True
                     txtPaymentMode.Visible = True
                     pnlCheque.Visible = True
@@ -881,97 +900,78 @@ Public Class FrmPaymentNew
                     MyLabel3.Visible = True
                     ChkSecurity.Visible = False
                     ChkRetention.Visible = False
-                    txtPaymentAmt.ReadOnly = False
-                    gvDetails.Visible = False
-                    btnViewTDSDetails.Enabled = False
-                    ChkAdvSalary.Visible = True
-                    pnlEMI.Visible = True
-                chkSaving.Visible = False
-
-                txtmulPI.Visible = False
-
-                    MyLabel15.Visible = False
-                    If clsCommon.CompairString(ddlPaymentType.SelectedValue, "AV") = CompairStringResult.Equal Then
-                        pnlmemorndm.Visible = True
-                        lblpaymentcode.Visible = True
-                        txtPaymentMode.Visible = True
-                        pnlCheque.Visible = True
-                        txtBankCharges.Visible = True
-                        MyLabel3.Visible = True
-                        ChkSecurity.Visible = False
-                        ChkRetention.Visible = False
-                        LblPONo.Visible = True
-                        txtPONo.Visible = True
-                        txtmulPI.Visible = False
-
-                        MyLabel15.Visible = False
-                    Else
-                        chkSaving.Visible = True
-                    End If
-                    If objCommonVar.IsDemoERP = True Then
-                        pnlCform.Visible = True
-                    Else
-                        pnlCform.Visible = False
-                    End If
-                    chkCheckPrint.Visible = True
-                    If isApplyBranchAccounting = True Then
-                        RadLabel18.Visible = True
-                        txtlocation.Visible = True
-                        LblLocDesp.Visible = True
-                        txtlocation.Value = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Loc_Segment_Code from TSPL_LOCATION_MASTER where Location_Code in (select Default_Location from TSPL_USER_MASTER where User_Code='" + objCommonVar.CurrentUserCode + "' ) "))
-                        If clsCommon.myLen(clsCommon.myCstr(txtlocation.Value)) > 0 Then
-                            LblLocDesp.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("SELECT ISNULL(Description,'') As Description FROM TSPL_GL_SEGMENT_CODE WHERE Segment_code ='" & clsCommon.myCstr(txtlocation.Value) & "'"))
-                        Else
-                            LblLocDesp.Text = ""
-                        End If
-                    Else
-                        RadLabel18.Visible = False
-                        txtlocation.Visible = False
-                        LblLocDesp.Visible = False
-                        txtlocation.Value = ""
-                        LblLocDesp.Text = ""
-                    End If
-
-                ElseIf clsCommon.CompairString(ddlPaymentType.SelectedValue, "RC") = CompairStringResult.Equal Then
-                    lblTotPayment.Text = "Payment Amount"
-                    lblpaymentcode.Visible = True
-                    txtPaymentMode.Visible = True
-                    pnlCheque.Visible = True
-                    txtBankCharges.Visible = True
-                    MyLabel3.Visible = True
-                    txtPaymentAmt.ReadOnly = False
-                    gvDetails.Visible = False
-                    btnViewTDSDetails.Enabled = False
-                    txtBankCharges.Enabled = False
-                    chkCheckPrint.Checked = False
-                    chkCheckPrint.Visible = False
-                    ChkSecurity.Visible = True
-                    ChkRetention.Visible = True
-                    ChkAdvSalary.Visible = True
-                    ChkAdvSalary.Checked = False
+                    LblPONo.Visible = True
+                    txtPONo.Visible = True
                     txtmulPI.Visible = False
 
                     MyLabel15.Visible = False
-                    If isApplyBranchAccounting = True Then
-                        RadLabel18.Visible = True
-                        txtlocation.Visible = True
-                        LblLocDesp.Visible = True
-                        txtlocation.Value = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Loc_Segment_Code from TSPL_LOCATION_MASTER where Location_Code in (select Default_Location from TSPL_USER_MASTER where User_Code='" + objCommonVar.CurrentUserCode + "' ) "))
-                        If clsCommon.myLen(clsCommon.myCstr(txtlocation.Value)) > 0 Then
-                            LblLocDesp.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("SELECT ISNULL(Description,'') As Description FROM TSPL_GL_SEGMENT_CODE WHERE Segment_code ='" & clsCommon.myCstr(txtlocation.Value) & "'"))
-                        Else
-                            LblLocDesp.Text = ""
-                        End If
+                Else
+                    chkSaving.Visible = True
+                End If
+                If objCommonVar.IsDemoERP = True Then
+                    pnlCform.Visible = True
+                Else
+                    pnlCform.Visible = False
+                End If
+                chkCheckPrint.Visible = True
+                If isApplyBranchAccounting = True Then
+                    RadLabel18.Visible = True
+                    txtlocation.Visible = True
+                    LblLocDesp.Visible = True
+                    txtlocation.Value = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Loc_Segment_Code from TSPL_LOCATION_MASTER where Location_Code in (select Default_Location from TSPL_USER_MASTER where User_Code='" + objCommonVar.CurrentUserCode + "' ) "))
+                    If clsCommon.myLen(clsCommon.myCstr(txtlocation.Value)) > 0 Then
+                        LblLocDesp.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("SELECT ISNULL(Description,'') As Description FROM TSPL_GL_SEGMENT_CODE WHERE Segment_code ='" & clsCommon.myCstr(txtlocation.Value) & "'"))
                     Else
-                        RadLabel18.Visible = False
-                        txtlocation.Visible = False
-                        LblLocDesp.Visible = False
-                        txtlocation.Value = ""
                         LblLocDesp.Text = ""
                     End If
+                Else
+                    RadLabel18.Visible = False
+                    txtlocation.Visible = False
+                    LblLocDesp.Visible = False
+                    txtlocation.Value = ""
+                    LblLocDesp.Text = ""
+                End If
 
-                ElseIf clsCommon.CompairString(ddlPaymentType.SelectedValue, "MI") = CompairStringResult.Equal Then
-                    pnlMiscPayment.Visible = True
+            ElseIf clsCommon.CompairString(ddlPaymentType.SelectedValue, "RC") = CompairStringResult.Equal Then
+                lblTotPayment.Text = "Payment Amount"
+                lblpaymentcode.Visible = True
+                txtPaymentMode.Visible = True
+                pnlCheque.Visible = True
+                txtBankCharges.Visible = True
+                MyLabel3.Visible = True
+                txtPaymentAmt.ReadOnly = False
+                gvDetails.Visible = False
+                btnViewTDSDetails.Enabled = False
+                txtBankCharges.Enabled = False
+                chkCheckPrint.Checked = False
+                chkCheckPrint.Visible = False
+                ChkSecurity.Visible = True
+                ChkRetention.Visible = True
+                ChkAdvSalary.Visible = True
+                ChkAdvSalary.Checked = False
+                txtmulPI.Visible = False
+
+                MyLabel15.Visible = False
+                If isApplyBranchAccounting = True Then
+                    RadLabel18.Visible = True
+                    txtlocation.Visible = True
+                    LblLocDesp.Visible = True
+                    txtlocation.Value = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Loc_Segment_Code from TSPL_LOCATION_MASTER where Location_Code in (select Default_Location from TSPL_USER_MASTER where User_Code='" + objCommonVar.CurrentUserCode + "' ) "))
+                    If clsCommon.myLen(clsCommon.myCstr(txtlocation.Value)) > 0 Then
+                        LblLocDesp.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("SELECT ISNULL(Description,'') As Description FROM TSPL_GL_SEGMENT_CODE WHERE Segment_code ='" & clsCommon.myCstr(txtlocation.Value) & "'"))
+                    Else
+                        LblLocDesp.Text = ""
+                    End If
+                Else
+                    RadLabel18.Visible = False
+                    txtlocation.Visible = False
+                    LblLocDesp.Visible = False
+                    txtlocation.Value = ""
+                    LblLocDesp.Text = ""
+                End If
+
+            ElseIf clsCommon.CompairString(ddlPaymentType.SelectedValue, "MI") = CompairStringResult.Equal Then
+                pnlMiscPayment.Visible = True
                 lblTotPayment.Text = " Total Amount"
                 lblpaymentcode.Visible = True
                 txtPaymentMode.Visible = True
@@ -983,27 +983,30 @@ Public Class FrmPaymentNew
 
                 MyLabel15.Visible = False
                 txtPaymentAmt.ReadOnly = False
-                    gvDetails.Visible = True
-                    btnViewTDSDetails.Enabled = False
-                    pnlVendor.Visible = False
-                    lblLoadOutNo.Visible = True
-                    txtLoadOutno.Visible = True
-                    lblMPAdv.Visible = True
-                    txtMPAdv.Visible = True
-                    chkIsReceipt.Visible = True
-                    If objCommonVar.IsDemoERP = True Then
-                        pnlPJC.Visible = True
-                    Else
-                        pnlPJC.Visible = False
-                    End If
-                    chkCheckPrint.Visible = True
-                    ChkSecurity.Visible = False
-                    ChkRetention.Visible = False
-                    ChkAdvSalary.Visible = False
-                    ChkAdvSalary.Checked = False
-                    txtBankCharges.Enabled = False
+                gvDetails.Visible = True
+                btnViewTDSDetails.Enabled = False
+                pnlVendor.Visible = False
+                lblLoadOutNo.Visible = True
+                txtLoadOutno.Visible = True
+                lblMPAdv.Visible = True
+                txtMPAdv.Visible = True
+                chkIsReceipt.Visible = True
+                If objCommonVar.IsDemoERP = True Then
+                    pnlPJC.Visible = True
+                Else
+                    pnlPJC.Visible = False
                 End If
+                chkCheckPrint.Visible = True
+                ChkSecurity.Visible = False
+                ChkRetention.Visible = False
+                ChkAdvSalary.Visible = False
+                ChkAdvSalary.Checked = False
+                txtBankCharges.Enabled = False
+            ElseIf clsCommon.CompairString(ddlPaymentType.SelectedValue, "MD") = CompairStringResult.Equal Then
+                txtPaymentAmt.ReadOnly = False
+                lblTotPayment.Text = "Payment Amount"
             End If
+        End If
         If clsCommon.CompairString(clsCommon.myCstr(ddlPaymentType.SelectedValue), "MI") = CompairStringResult.Equal Then
             gvDetails.Rows.AddNew()
             ChkSecurity.Visible = False
@@ -2379,7 +2382,7 @@ left outer join TSPL_REMITTANCE on TSPL_REMITTANCE.Document_No=TSPL_VENDOR_INVOI
                     'End If
 
                 End If
-                If clsCommon.CompairString(ddlPaymentType.SelectedValue, "PY") = CompairStringResult.Equal Or clsCommon.CompairString(ddlPaymentType.SelectedValue, "RC") = CompairStringResult.Equal Or clsCommon.CompairString(ddlPaymentType.SelectedValue, "AD") = CompairStringResult.Equal Or clsCommon.CompairString(ddlPaymentType.SelectedValue, "SR") = CompairStringResult.Equal Then
+                If clsCommon.CompairString(ddlPaymentType.SelectedValue, "PY") = CompairStringResult.Equal Or clsCommon.CompairString(ddlPaymentType.SelectedValue, "RC") = CompairStringResult.Equal Or clsCommon.CompairString(ddlPaymentType.SelectedValue, "AD") = CompairStringResult.Equal Or clsCommon.CompairString(ddlPaymentType.SelectedValue, "SR") = CompairStringResult.Equal Or clsCommon.CompairString(ddlPaymentType.SelectedValue, "MD") = CompairStringResult.Equal Then
                     obj.Payment_Amount = clsCommon.myCdbl(txtPaymentAmt.Text) - OutstandingAmt
                     obj.Balance_Amt = clsCommon.myCdbl(txtPaymentAmt.Text) - OutstandingAmt
                     ' '' Anubhooti 24-Sep-2014 

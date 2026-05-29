@@ -3515,7 +3515,7 @@ Public Class FrmARInvoiceEntry
             If FlagDocumentIsTaxable = 1 AndAlso clsERPFuncationality.GetEInvoiceStatus(txtDate.Value) = True AndAlso clsCommon.CompairString(EInvoiceType, "BB") = CompairStringResult.Equal Then
                 IsEInvoiceApply = 1
             End If
-            clsReceiptInvoiceHead.funARInvoicePrint(MyBase.Form_ID, False, txtDate.Value, txtDocNo.Value, IsEInvoiceApply, SettingCostCenterlevel)
+            clsReceiptInvoiceHead.funARInvoicePrint(MyBase.Form_ID, Nothing, txtDate.Value, txtDocNo.Value, IsEInvoiceApply, SettingCostCenterlevel)
             'Dim qry As String = "SELECT cast(TSPL_Customer_Invoice_Head.BarCode_Img as image) As BarCode_Img,isnull (TSPL_Customer_Invoice_Head.IRN_No,'') as IRN_No,isnull (TSPL_Customer_Invoice_Head.Ack_No,'') as Ack_No,case when len(isnull (TSPL_Customer_Invoice_Head.Ack_No,'')) > 0 then convert (varchar, TSPL_Customer_Invoice_Head.Ack_Date,103) else ''  end as Ack_Date, " + clsCommon.myCstr(IsEInvoiceApply) + " as  IsEInvoiceApply," &
             '  " XXX.RefDocNo, tspl_state_master_for_location_state.GST_STATE_Code as LOC_GST_State_Code,TSPL_LOCATION_MASTER.GSTNO as Loc_GstInNo ,TSPL_CUSTOMER_MASTER.GSTNO AS Vendor_GSTIN_NO,TSPL_STATE_MASTER.GST_STATE_Code AS Vendor_GST_StateCode,TSPL_STATE_MASTER.state_name AS Vendor_State_Name, XXX.Loc_Code, locAdd, XXX.Location_Desc,xxx.Tin_No,XXX.PAN,TSPL_COMPANY_MASTER.Add1 + case When TSPL_COMPANY_MASTER.Add2='' Then '' else ', '+ Convert(Varchar(50),TSPL_COMPANY_MASTER.Add2, 103) End + Case When TSPL_COMPANY_MASTER.Add3='' Then '' Else ', '+ COnvert( Varchar,TSPL_COMPANY_MASTER.Add3,103) end + case When TSPL_COMPANY_MASTER.City_Code ='' then '' else ', '+ Convert(Varchar,TSPL_COMPANY_MASTER.City_Code, 103) end+ Case When TSPL_COMPANY_MASTER.State='' Then '' else ', '+Convert(Varchar, TSPL_COMPANY_MASTER.State) end +  Case When TSPL_COMPANY_MASTER.Pincode='' Then '' Else ', '+ Convert(Varchar,TSPL_COMPANY_MASTER.Pincode, 103)  end  as CompAdd , " &
             '"XXX.Description,XXX.Account_Code,XXX.Account_Desc ,XXX.DrAmt ,XXX.CrAmt ,XXX.Document_No ,XXX.Document_Date,XXX.Status , " &
@@ -5252,97 +5252,99 @@ Public Class FrmARInvoiceEntry
             If FlagDocumentIsTaxable = 1 AndAlso clsERPFuncationality.GetEInvoiceStatus(txtDate.Value) = True AndAlso clsCommon.CompairString(EInvoiceType, "BB") = CompairStringResult.Equal Then
                 IsEInvoiceApply = 1
             End If
+            clsReceiptInvoiceHead.funPrintServiceInvoicePrint(MyBase.Form_ID, Nothing, txtDate.Value, txtDocNo.Value, IsEInvoiceApply)
+
             'Dim qry As String = " Select * from ( 
-            Dim qry As String = "   Select  tspl_company_master.Access_Officer as FSSAI,cast(TSPL_Customer_Invoice_Head.BarCode_Img as image) As BarCode_Img,isnull (TSPL_Customer_Invoice_Head.IRN_No,'') as IRN_No,isnull (TSPL_Customer_Invoice_Head.Ack_No,'') as Ack_No,case when len(isnull (TSPL_Customer_Invoice_Head.Ack_No,'')) > 0 then convert (varchar, TSPL_Customer_Invoice_Head.Ack_Date,103) else ''  end as Ack_Date, " + clsCommon.myCstr(IsEInvoiceApply) + " as  IsEInvoiceApply,'1' as CopyType, TSPL_COMPANY_MASTER.TIN_NO , TSPL_COMPANY_MASTER.CST_LST ,TSPL_COMPANY_MASTER.Pan_No,tspl_location_master.PAN_NO as LocationPAN," &
-                                    " TSPL_COMPANY_MASTER.Add1 + case When TSPL_COMPANY_MASTER.Add2='' Then '' else ', '+ Convert(Varchar(50),TSPL_COMPANY_MASTER.Add2, 103) End + Case When TSPL_COMPANY_MASTER.Add3='' Then '' Else ', '+ COnvert( Varchar,TSPL_COMPANY_MASTER.Add3,103) end + case When TSPL_COMPANY_MASTER.City_Code ='' then '' else ', '+ Convert(Varchar,TSPL_COMPANY_MASTER.City_Code, 103) end+ Case When TSPL_COMPANY_MASTER.State='' Then '' else ', '+Convert(Varchar, TSPL_COMPANY_MASTER.State) end +  Case When TSPL_COMPANY_MASTER.Pincode='' Then '' Else ', '+ Convert(Varchar,TSPL_COMPANY_MASTER.Pincode, 103)  end  as CompAdd ," &
-                                    " " &
-                                    " tspl_state_master_For_Comp.GST_STATE_Code as Comp_GST_STATE_CODE , tspl_state_master_For_Comp.State_Name as Comp_State_Name,tspl_state_master_For_Comp.STATE_CODE as Comp_State_Code,TSPL_COMPANY_MASTER.Email as Comp_Email, TSPL_COMPANY_MASTER.CINNO as Comp_CINNO, TSPL_COMPANY_MASTER.GSTReg_No as Comp_GSTReg_No," &
-                                    " TSPL_COMPANY_MASTER.Add1 as Comp_Add1, TSPL_COMPANY_MASTER.Add2 as Comp_Add2, TSPL_COMPANY_MASTER.add3 as Comp_Add3," &
-                                    " " &
-                                    " XXX.Customer_Code ,XXX.Customer_Name ," &
-                                    " TSPL_CUSTOMER_MASTER.Add1 as Cust_Add1, TSPL_CUSTOMER_MASTER.Add2 as Cust_Add2, TSPL_CUSTOMER_MASTER .Add3 as Cust_Add3,TSPL_CUSTOMER_MASTER.GSTNO AS Vendor_GSTIN_NO,TSPL_STATE_MASTER.GST_STATE_Code AS Vendor_GST_StateCode,TSPL_STATE_MASTER.state_name AS Vendor_State_Name,xxx.Tin_No as Customer_Tin_No,XXX.PAN as Customer_PAN_NO," &
-                                    " " &
-                                    " XXX.Loc_Code,locAdd,XXX.Loc_Add1,XXX.Loc_Add2,XXX.Loc_Add3,XXX.Loc_City_Code,XXX.Loc_City_Name,XXX.Loc_State_Name,XXX.Loc_Pin_code,XXX.Location_Desc," &
-                                    " TSPL_LOCATION_MASTER.Email as Loc_Email,tspl_state_master_for_location_state.GST_STATE_Code as LOC_GST_State_Code,TSPL_LOCATION_MASTER.GSTNO as Loc_GstInNo," &
-                                    " " &
-                                    "  XXX.RefDocNo    , XXX.Description  ,XXX.Document_No ,Convert (varchar,XXX.Document_Date,103) as Document_Date ,XXX.Status , XXX.AddChargeCode ,XXX.AddChargeDesc,XXX.SAC_Code,XXX.SNo,XXX.Amount_less_Discount,XXX.Document_Type ,XXX.Account_Set ,XXX.DocAmt,XXX.Created_By ,XXX.Modify_By , XXX .Comp_Code,TSPL_COMPANY_MASTER.Comp_Name,TSPL_COMPANY_MASTER.Logo_Img ,TSPL_COMPANY_MASTER.Logo_Img2,XXX.Taxdesc1,XXX.Taxdesc2,XXX.Taxdesc3,XXX.Taxdesc4,XXX.Taxdesc5,XXX.Taxdesc6,XXX.Taxdesc7,XXX.Taxdesc8,XXX.Taxdesc9,XXX.Taxdesc10,XXX.TAX1_Amt,XXX.TAX2_Amt,XXX.TAX3_Amt,XXX.TAX4_Amt,XXX.TAX5_Amt,XXX.TAX6_Amt,XXX.TAX7_Amt,XXX.TAX8_Amt,XXX.TAX9_Amt,XXX.TAX10_Amt,XXX.Tax1_Rate,XXX.Tax2_Rate,XXX.Tax3_Rate,XXX.Tax4_Rate,XXX.Tax5_Rate,XXX.Tax6_Rate,XXX.Tax7_Rate,XXX.Tax8_Rate,XXX.Tax9_Rate,XXX.Tax10_Rate,TSPL_COMPANY_MASTER.Bank_Name,TSPL_COMPANY_MASTER.BankAccountNo,TSPL_COMPANY_MASTER.BankIFSCCode,TSPL_COMPANY_MASTER.BankBranchAddress,TSPL_LOCATION_MASTER.ACType,TSPL_LOCATION_MASTER.accountholdername,TSPL_CUSTOMER_MASTER.PIN_NO  ,TSPL_CUSTOMER_MASTER.PIN_Code,TSPL_Customer_Invoice_Head.Balance_Amt,TSPL_Customer_Invoice_Head.Discount_Amount,TSPL_Customer_Invoice_Head.Total_Tax  from (" &
-                                    "  " &
-                                    "  select distinct Loc_Code,RefDocNo, locAdd,Final.Loc_Add1,final.Loc_Add2,Final.Loc_Add3,final.Loc_City_Code,Final.Loc_City_Name,Final.Loc_State_Name,Final.Loc_Pin_code,Location_Desc,Tin_No,PAN ,final.Document_No ,final.Document_Date, final.Status ,final.Document_Type ,final.Account_Set ,final.DocAmt,final.Customer_Code ,final.Customer_Name ,final.Created_By , final.Modify_By  ,final .Comp_Code,Description ,final.AddChargeCode ,final.AddChargeDesc,final.SAC_Code,final.SNo,final.Amount_less_Discount," &
-                                    "  final.Taxdesc1,final.Taxdesc2,final.Taxdesc3,final.Taxdesc4,final.Taxdesc5,final.Taxdesc6,final.Taxdesc7,final.Taxdesc8,final.Taxdesc9,final.Taxdesc10,final.TAX1_Amt,final.TAX2_Amt,final.TAX3_Amt,final.TAX4_Amt,final.TAX5_Amt,final.TAX6_Amt,final.TAX7_Amt,final.TAX8_Amt,final.TAX9_Amt,final.TAX10_Amt,final.Tax1_Rate,final.Tax2_Rate,final.Tax3_Rate,final.Tax4_Rate,final.Tax5_Rate,final.Tax6_Rate,final.Tax7_Rate,final.Tax8_Rate,final.Tax9_Rate,final.Tax10_Rate" &
-                                    "   from (" &
-                                    "  " &
-                                    "  select isnull(TSPL_Customer_Invoice_Head.RefDocNo,'') as RefDocNo, TSPL_Customer_Invoice_Head.Loc_Code, TSPL_LOCATION_MASTER.Add1 + case When TSPL_LOCATION_MASTER.Add2='' Then '' else ', '+ Convert(Varchar(50),TSPL_LOCATION_MASTER.Add2, 103) End + Case When TSPL_LOCATION_MASTER.Add3='' Then '' Else ', '+ COnvert( Varchar,TSPL_LOCATION_MASTER.Add3,103) end + case When TSPL_LOCATION_MASTER.City_Code ='' then '' else ', '+ Convert(Varchar,TSPL_LOCATION_MASTER.City_Code, 103) end+ Case When TSPL_LOCATION_MASTER.State='' Then '' else ', '+Convert(Varchar, loc_state.STATE_NAME ) end +  Case When TSPL_LOCATION_MASTER.Pin_code='' Then '' Else ', '+ Convert(Varchar,TSPL_LOCATION_MASTER.Pin_code, 103)  end  as locAdd, " &
-                                    "  TSPL_LOCATION_MASTER.Add1 as Loc_Add1, TSPL_LOCATION_MASTER.Add2 as Loc_Add2, TSPL_LOCATION_MASTER.Add3 as Loc_Add3, TSPL_LOCATION_MASTER.City_Code as Loc_City_Code,TSPL_CITY_MASTER.City_Name as Loc_City_Name , loc_state.STATE_NAME as Loc_State_Name,TSPL_LOCATION_MASTER.Pin_code as Loc_Pin_code ," &
-                                    "  Location_Desc,TSPL_CUSTOMER_MASTER.Tin_No,TSPL_CUSTOMER_MASTER.PAN,TSPL_Customer_Invoice_Head.Description,TSPL_Customer_Invoice_Detail.AddChargeCode,TSPL_Customer_Invoice_Detail.AddChargeDesc,TSPL_Additional_Charges.SAC_Code,TSPL_Customer_Invoice_Detail.SNo,TSPL_Customer_Invoice_Detail.Amount_less_Discount," &
-                                    "  " &
-                                    "   TSPL_Customer_Invoice_Head.Document_No, Document_Date , case when TSPL_Customer_Invoice_Head.Status=1 then 'Authorized' else 'UnAuthorized' end as Status ,  case when TSPL_Customer_Invoice_Head.Document_Type='I' then 'Tax Invoice' else case when TSPL_Customer_Invoice_Head.Document_Type='D' then 'Debit Note' else case when TSPL_Customer_Invoice_Head.Document_Type='C' then 'Credit Note' else '' end end end as Document_Type, Account_Set,Document_Total as DocAmt,  Customer_Code ,TSPL_Customer_Invoice_Head.Customer_Name,tspl_user_master.User_Name as Created_By,user_master_modify.User_Name as Modify_By  ," &
-                                    " " &
-                                    "   TSPL_Customer_Invoice_Head.Comp_Code ," &
-                                    " " &
-                                    "    isnull(Tspl_Tax1.Tax_Code,'') as Taxdesc1,isnull(Tspl_Tax2.Tax_Code,'') as Taxdesc2,isnull(Tspl_Tax3.Tax_Code,'') as Taxdesc3,isnull(Tspl_Tax4.Tax_Code,'') as Taxdesc4,isnull(Tspl_Tax5.Tax_Code,'') as Taxdesc5,isnull(Tspl_Tax6.Tax_Code,'') as Taxdesc6,isnull(Tspl_Tax7.Tax_Code,'') as Taxdesc7,isnull(Tspl_Tax8.Tax_Code,'') as Taxdesc8,isnull(Tspl_Tax8.Tax_Code,'') as Taxdesc9,isnull(Tspl_Tax10.Tax_Code,'') as Taxdesc10, TSPL_Customer_Invoice_Detail.Tax1_Rate,TSPL_Customer_Invoice_Detail.Tax2_Rate,TSPL_Customer_Invoice_Detail.Tax3_Rate,TSPL_Customer_Invoice_Detail.Tax4_Rate,TSPL_Customer_Invoice_Detail.Tax5_Rate,TSPL_Customer_Invoice_Detail.Tax6_Rate,TSPL_Customer_Invoice_Detail.Tax7_Rate,TSPL_Customer_Invoice_Detail.Tax8_Rate,TSPL_Customer_Invoice_Detail.Tax9_Rate,TSPL_Customer_Invoice_Detail.Tax10_Rate," &
-                                    "    TSPL_Customer_Invoice_Detail.TAX1_Amt,TSPL_Customer_Invoice_Detail.TAX2_Amt,TSPL_Customer_Invoice_Detail.TAX3_Amt,TSPL_Customer_Invoice_Detail.TAX4_Amt,TSPL_Customer_Invoice_Detail.TAX5_Amt,TSPL_Customer_Invoice_Detail.TAX6_Amt,TSPL_Customer_Invoice_Detail.TAX7_Amt,TSPL_Customer_Invoice_Detail.TAX8_Amt,TSPL_Customer_Invoice_Detail.TAX9_Amt,TSPL_Customer_Invoice_Detail.TAX10_Amt,TSPL_Customer_Invoice_Detail.Total_Tax" &
-                                    "  " &
-                                    "  from TSPL_Customer_Invoice_Head  " &
-                                    " left outer join TSPL_Customer_Invoice_Detail on  TSPL_Customer_Invoice_Detail.Document_No = TSPL_Customer_Invoice_Head.Document_No" &
-                                    "  " &
-                                    "     left outer join TSPL_CUSTOMER_MASTER on TSPL_CUSTOMER_MASTER.Cust_Code=TSPL_Customer_Invoice_Head.Customer_Code "
-
-            If objCommonVar.RCDFCFP Then
-                qry += "  left outer join TSPL_LOCATION_MASTER on TSPL_LOCATION_MASTER.Loc_Segment_Code=TSPL_Customer_Invoice_Head.Loc_Code   "
-            Else
-                qry += "  left outer join TSPL_LOCATION_MASTER on TSPL_LOCATION_MASTER.Location_Code=TSPL_Customer_Invoice_Head.Loc_Code   "
-            End If
-
-            qry += " 	left outer join TSPL_STATE_MASTER as loc_state on loc_state.STATE_CODE =TSPL_LOCATION_MASTER.State   left outer join tspl_user_master on tspl_user_master.User_Code=TSPL_Customer_Invoice_Head.Created_By  left outer join tspl_user_master as user_master_modify on user_master_modify.User_Code=TSPL_Customer_Invoice_Head.Modify_By " &
-                                    " left outer join TSPL_Additional_Charges on 	TSPL_Additional_Charges.Code = TSPL_Customer_Invoice_Detail.AddChargeCode" &
-                                    " " &
-                                    "  left outer join TSPL_TAX_MASTER Tspl_Tax1 on Tspl_Tax1.Tax_Code =TSPL_Customer_Invoice_Head.TAX1 " &
-                                    "  left outer join TSPL_TAX_MASTER Tspl_Tax2 on Tspl_Tax2.Tax_Code =TSPL_Customer_Invoice_Head.TAX2  " &
-                                    "  left outer join TSPL_TAX_MASTER Tspl_Tax3 on Tspl_Tax3.Tax_Code =TSPL_Customer_Invoice_Head.TAX3  " &
-                                    "  left outer join TSPL_TAX_MASTER Tspl_Tax4 on Tspl_Tax4.Tax_Code =TSPL_Customer_Invoice_Head.TAX4  " &
-                                    "  left outer join TSPL_TAX_MASTER Tspl_Tax5 on Tspl_Tax5.Tax_Code =TSPL_Customer_Invoice_Head.TAX5  " &
-                                    "  left outer join TSPL_TAX_MASTER Tspl_Tax6 on Tspl_Tax6.Tax_Code =TSPL_Customer_Invoice_Head.TAX6  " &
-                                    "  left outer join TSPL_TAX_MASTER Tspl_Tax7 on Tspl_Tax7.Tax_Code =TSPL_Customer_Invoice_Head.TAX7  " &
-                                    "  left outer join TSPL_TAX_MASTER Tspl_Tax8 on Tspl_Tax8.Tax_Code =TSPL_Customer_Invoice_Head.TAX8  " &
-                                    "  left outer join TSPL_TAX_MASTER Tspl_Tax9 on Tspl_Tax9.Tax_Code =TSPL_Customer_Invoice_Head.TAX9  " &
-                                    "  left outer join TSPL_TAX_MASTER Tspl_Tax10 on Tspl_Tax10.Tax_Code =TSPL_Customer_Invoice_Head.TAX10 " &
-                                    "  left outer join TSPL_CITY_MASTER on TSPL_CITY_MASTER.City_Code = TSPL_LOCATION_MASTER.City_Code " &
-                                    " 	where TSPL_Customer_Invoice_Head.Document_No ='" & txtDocNo.Value & "'" &
-                                    " " &
-                                    " 	 )final   )XXX left outer join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code = XXX.Comp_Code  left outer join TSPL_CUSTOMER_MASTER on TSPL_CUSTOMER_MASTER.Cust_Code = XXX.Customer_Code left outer join TSPL_STATE_MASTER on TSPL_CUSTOMER_MASTER.State = TSPL_STATE_MASTER.STATE_CODE "
-            If objCommonVar.RCDFCFP Then
-                qry += " left outer join TSPL_LOCATION_MASTER  on TSPL_LOCATION_MASTER.Loc_Segment_Code = XXX.Loc_Code "
-            Else
-                qry += " left outer join TSPL_LOCATION_MASTER  on TSPL_LOCATION_MASTER.Location_Code = XXX.Loc_Code "
-            End If
-
-
-            qry += "  left outer join tspl_state_master as tspl_state_master_for_location_state on  tspl_state_master_for_location_state.state_code=tspl_location_master.state    " &
-                                    " " &
-                                    "  left outer join tspl_state_master as tspl_state_master_For_Comp on tspl_state_master_For_Comp.state_code = TSPL_COMPANY_MASTER.State" &
-                                    "  left outer join TSPL_Customer_Invoice_Head on TSPL_Customer_Invoice_Head.Document_No=XXX.DOCUMENT_NO "
-
-            '&
-            '                        "  ) XXXX LEFT OUTER JOIN (Select '1' as COL1, 1 as COL2,  'ORIGINAL' as CopyType1 UNION Select '1' as COL1, 2 as COL2,  'DUPLICATE' as CopyType1 UNION Select '1' as COL1, 3 as COL2,  'TRIPLICATE' as CopyType1) YYY ON YYY.COL1=XXXX.CopyType ORDER BY YYY.COL2 ,XXXX.SNO  " &
+            'Dim qry As String = "   Select  tspl_company_master.Access_Officer as FSSAI,cast(TSPL_Customer_Invoice_Head.BarCode_Img as image) As BarCode_Img,isnull (TSPL_Customer_Invoice_Head.IRN_No,'') as IRN_No,isnull (TSPL_Customer_Invoice_Head.Ack_No,'') as Ack_No,case when len(isnull (TSPL_Customer_Invoice_Head.Ack_No,'')) > 0 then convert (varchar, TSPL_Customer_Invoice_Head.Ack_Date,103) else ''  end as Ack_Date, " + clsCommon.myCstr(IsEInvoiceApply) + " as  IsEInvoiceApply,'1' as CopyType, TSPL_COMPANY_MASTER.TIN_NO , TSPL_COMPANY_MASTER.CST_LST ,TSPL_COMPANY_MASTER.Pan_No,tspl_location_master.PAN_NO as LocationPAN," &
+            '                        " TSPL_COMPANY_MASTER.Add1 + case When TSPL_COMPANY_MASTER.Add2='' Then '' else ', '+ Convert(Varchar(50),TSPL_COMPANY_MASTER.Add2, 103) End + Case When TSPL_COMPANY_MASTER.Add3='' Then '' Else ', '+ COnvert( Varchar,TSPL_COMPANY_MASTER.Add3,103) end + case When TSPL_COMPANY_MASTER.City_Code ='' then '' else ', '+ Convert(Varchar,TSPL_COMPANY_MASTER.City_Code, 103) end+ Case When TSPL_COMPANY_MASTER.State='' Then '' else ', '+Convert(Varchar, TSPL_COMPANY_MASTER.State) end +  Case When TSPL_COMPANY_MASTER.Pincode='' Then '' Else ', '+ Convert(Varchar,TSPL_COMPANY_MASTER.Pincode, 103)  end  as CompAdd ," &
             '                        " " &
-            '                        " "
-            Dim dt As DataTable = clsDBFuncationality.GetDataTable(qry)
-            qry = "  select TSPL_Additional_Charges.SAC_Code, sum (TSPL_Customer_Invoice_Detail.Amount_Less_Discount) as Amount_Less_Discount  from TSPL_Customer_Invoice_Detail " &
-                  "  left outer join TSPL_Additional_Charges on 	TSPL_Additional_Charges.Code = TSPL_Customer_Invoice_Detail.AddChargeCode " &
-                  " where  Document_No ='" & txtDocNo.Value & "' group by TSPL_Additional_Charges.SAC_Code "
-            Dim dt2 As DataTable = clsDBFuncationality.GetDataTable(qry)
-            If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
-                Dim frmCRV As New frmCrystalReportViewer()
-                'frmCRV.funsubreportWithdt(CrystalReportFolder.SalesReport, dt, dt2, "crptAPServiceInvc", "rptAPInvBySAC.rpt", clsCommon.myCDate(dt.Rows(0)("Document_Date")), "rptAPInvBySAC.rpt", "Address.rpt")
-                If objCommonVar.RCDFCFP Then
-                    frmCRV.funsubreportWithdt(MyBase.Form_ID, CrystalReportFolder.SalesReport, dt, dt2, "crptAPServiceInvcnew", "rptAPInvBySAC.rpt", clsCommon.myCDate(dt.Rows(0)("Document_Date")), "rptAPInvBySAC.rpt", "Address.rpt")
-                Else
-                    frmCRV.funsubreportWithdt(MyBase.Form_ID, CrystalReportFolder.SalesReport, dt, dt2, "crptAPServiceInvcnewForAll", "rptAPInvBySAC.rpt", clsCommon.myCDate(dt.Rows(0)("Document_Date")), "rptAPInvBySAC.rpt", "Address.rpt")
-                End If
-                frmCRV = Nothing
-            Else
-                clsCommon.MyMessageBoxShow(Me, "No Data Found", Me.Text)
-            End If
+            '                        " tspl_state_master_For_Comp.GST_STATE_Code as Comp_GST_STATE_CODE , tspl_state_master_For_Comp.State_Name as Comp_State_Name,tspl_state_master_For_Comp.STATE_CODE as Comp_State_Code,TSPL_COMPANY_MASTER.Email as Comp_Email, TSPL_COMPANY_MASTER.CINNO as Comp_CINNO, TSPL_COMPANY_MASTER.GSTReg_No as Comp_GSTReg_No," &
+            '                        " TSPL_COMPANY_MASTER.Add1 as Comp_Add1, TSPL_COMPANY_MASTER.Add2 as Comp_Add2, TSPL_COMPANY_MASTER.add3 as Comp_Add3," &
+            '                        " " &
+            '                        " XXX.Customer_Code ,XXX.Customer_Name ," &
+            '                        " TSPL_CUSTOMER_MASTER.Add1 as Cust_Add1, TSPL_CUSTOMER_MASTER.Add2 as Cust_Add2, TSPL_CUSTOMER_MASTER .Add3 as Cust_Add3,TSPL_CUSTOMER_MASTER.GSTNO AS Vendor_GSTIN_NO,TSPL_STATE_MASTER.GST_STATE_Code AS Vendor_GST_StateCode,TSPL_STATE_MASTER.state_name AS Vendor_State_Name,xxx.Tin_No as Customer_Tin_No,XXX.PAN as Customer_PAN_NO," &
+            '                        " " &
+            '                        " XXX.Loc_Code,locAdd,XXX.Loc_Add1,XXX.Loc_Add2,XXX.Loc_Add3,XXX.Loc_City_Code,XXX.Loc_City_Name,XXX.Loc_State_Name,XXX.Loc_Pin_code,XXX.Location_Desc," &
+            '                        " TSPL_LOCATION_MASTER.Email as Loc_Email,tspl_state_master_for_location_state.GST_STATE_Code as LOC_GST_State_Code,TSPL_LOCATION_MASTER.GSTNO as Loc_GstInNo," &
+            '                        " " &
+            '                        "  XXX.RefDocNo    , XXX.Description  ,XXX.Document_No ,Convert (varchar,XXX.Document_Date,103) as Document_Date ,XXX.Status , XXX.AddChargeCode ,XXX.AddChargeDesc,XXX.SAC_Code,XXX.SNo,XXX.Amount_less_Discount,XXX.Document_Type ,XXX.Account_Set ,XXX.DocAmt,XXX.Created_By ,XXX.Modify_By , XXX .Comp_Code,TSPL_COMPANY_MASTER.Comp_Name,TSPL_COMPANY_MASTER.Logo_Img ,TSPL_COMPANY_MASTER.Logo_Img2,XXX.Taxdesc1,XXX.Taxdesc2,XXX.Taxdesc3,XXX.Taxdesc4,XXX.Taxdesc5,XXX.Taxdesc6,XXX.Taxdesc7,XXX.Taxdesc8,XXX.Taxdesc9,XXX.Taxdesc10,XXX.TAX1_Amt,XXX.TAX2_Amt,XXX.TAX3_Amt,XXX.TAX4_Amt,XXX.TAX5_Amt,XXX.TAX6_Amt,XXX.TAX7_Amt,XXX.TAX8_Amt,XXX.TAX9_Amt,XXX.TAX10_Amt,XXX.Tax1_Rate,XXX.Tax2_Rate,XXX.Tax3_Rate,XXX.Tax4_Rate,XXX.Tax5_Rate,XXX.Tax6_Rate,XXX.Tax7_Rate,XXX.Tax8_Rate,XXX.Tax9_Rate,XXX.Tax10_Rate,TSPL_COMPANY_MASTER.Bank_Name,TSPL_COMPANY_MASTER.BankAccountNo,TSPL_COMPANY_MASTER.BankIFSCCode,TSPL_COMPANY_MASTER.BankBranchAddress,TSPL_LOCATION_MASTER.ACType,TSPL_LOCATION_MASTER.accountholdername,TSPL_CUSTOMER_MASTER.PIN_NO  ,TSPL_CUSTOMER_MASTER.PIN_Code,TSPL_Customer_Invoice_Head.Balance_Amt,TSPL_Customer_Invoice_Head.Discount_Amount,TSPL_Customer_Invoice_Head.Total_Tax  from (" &
+            '                        "  " &
+            '                        "  select distinct Loc_Code,RefDocNo, locAdd,Final.Loc_Add1,final.Loc_Add2,Final.Loc_Add3,final.Loc_City_Code,Final.Loc_City_Name,Final.Loc_State_Name,Final.Loc_Pin_code,Location_Desc,Tin_No,PAN ,final.Document_No ,final.Document_Date, final.Status ,final.Document_Type ,final.Account_Set ,final.DocAmt,final.Customer_Code ,final.Customer_Name ,final.Created_By , final.Modify_By  ,final .Comp_Code,Description ,final.AddChargeCode ,final.AddChargeDesc,final.SAC_Code,final.SNo,final.Amount_less_Discount," &
+            '                        "  final.Taxdesc1,final.Taxdesc2,final.Taxdesc3,final.Taxdesc4,final.Taxdesc5,final.Taxdesc6,final.Taxdesc7,final.Taxdesc8,final.Taxdesc9,final.Taxdesc10,final.TAX1_Amt,final.TAX2_Amt,final.TAX3_Amt,final.TAX4_Amt,final.TAX5_Amt,final.TAX6_Amt,final.TAX7_Amt,final.TAX8_Amt,final.TAX9_Amt,final.TAX10_Amt,final.Tax1_Rate,final.Tax2_Rate,final.Tax3_Rate,final.Tax4_Rate,final.Tax5_Rate,final.Tax6_Rate,final.Tax7_Rate,final.Tax8_Rate,final.Tax9_Rate,final.Tax10_Rate" &
+            '                        "   from (" &
+            '                        "  " &
+            '                        "  select isnull(TSPL_Customer_Invoice_Head.RefDocNo,'') as RefDocNo, TSPL_Customer_Invoice_Head.Loc_Code, TSPL_LOCATION_MASTER.Add1 + case When TSPL_LOCATION_MASTER.Add2='' Then '' else ', '+ Convert(Varchar(50),TSPL_LOCATION_MASTER.Add2, 103) End + Case When TSPL_LOCATION_MASTER.Add3='' Then '' Else ', '+ COnvert( Varchar,TSPL_LOCATION_MASTER.Add3,103) end + case When TSPL_LOCATION_MASTER.City_Code ='' then '' else ', '+ Convert(Varchar,TSPL_LOCATION_MASTER.City_Code, 103) end+ Case When TSPL_LOCATION_MASTER.State='' Then '' else ', '+Convert(Varchar, loc_state.STATE_NAME ) end +  Case When TSPL_LOCATION_MASTER.Pin_code='' Then '' Else ', '+ Convert(Varchar,TSPL_LOCATION_MASTER.Pin_code, 103)  end  as locAdd, " &
+            '                        "  TSPL_LOCATION_MASTER.Add1 as Loc_Add1, TSPL_LOCATION_MASTER.Add2 as Loc_Add2, TSPL_LOCATION_MASTER.Add3 as Loc_Add3, TSPL_LOCATION_MASTER.City_Code as Loc_City_Code,TSPL_CITY_MASTER.City_Name as Loc_City_Name , loc_state.STATE_NAME as Loc_State_Name,TSPL_LOCATION_MASTER.Pin_code as Loc_Pin_code ," &
+            '                        "  Location_Desc,TSPL_CUSTOMER_MASTER.Tin_No,TSPL_CUSTOMER_MASTER.PAN,TSPL_Customer_Invoice_Head.Description,TSPL_Customer_Invoice_Detail.AddChargeCode,TSPL_Customer_Invoice_Detail.AddChargeDesc,TSPL_Additional_Charges.SAC_Code,TSPL_Customer_Invoice_Detail.SNo,TSPL_Customer_Invoice_Detail.Amount_less_Discount," &
+            '                        "  " &
+            '                        "   TSPL_Customer_Invoice_Head.Document_No, Document_Date , case when TSPL_Customer_Invoice_Head.Status=1 then 'Authorized' else 'UnAuthorized' end as Status ,  case when TSPL_Customer_Invoice_Head.Document_Type='I' then 'Tax Invoice' else case when TSPL_Customer_Invoice_Head.Document_Type='D' then 'Debit Note' else case when TSPL_Customer_Invoice_Head.Document_Type='C' then 'Credit Note' else '' end end end as Document_Type, Account_Set,Document_Total as DocAmt,  Customer_Code ,TSPL_Customer_Invoice_Head.Customer_Name,tspl_user_master.User_Name as Created_By,user_master_modify.User_Name as Modify_By  ," &
+            '                        " " &
+            '                        "   TSPL_Customer_Invoice_Head.Comp_Code ," &
+            '                        " " &
+            '                        "    isnull(Tspl_Tax1.Tax_Code,'') as Taxdesc1,isnull(Tspl_Tax2.Tax_Code,'') as Taxdesc2,isnull(Tspl_Tax3.Tax_Code,'') as Taxdesc3,isnull(Tspl_Tax4.Tax_Code,'') as Taxdesc4,isnull(Tspl_Tax5.Tax_Code,'') as Taxdesc5,isnull(Tspl_Tax6.Tax_Code,'') as Taxdesc6,isnull(Tspl_Tax7.Tax_Code,'') as Taxdesc7,isnull(Tspl_Tax8.Tax_Code,'') as Taxdesc8,isnull(Tspl_Tax8.Tax_Code,'') as Taxdesc9,isnull(Tspl_Tax10.Tax_Code,'') as Taxdesc10, TSPL_Customer_Invoice_Detail.Tax1_Rate,TSPL_Customer_Invoice_Detail.Tax2_Rate,TSPL_Customer_Invoice_Detail.Tax3_Rate,TSPL_Customer_Invoice_Detail.Tax4_Rate,TSPL_Customer_Invoice_Detail.Tax5_Rate,TSPL_Customer_Invoice_Detail.Tax6_Rate,TSPL_Customer_Invoice_Detail.Tax7_Rate,TSPL_Customer_Invoice_Detail.Tax8_Rate,TSPL_Customer_Invoice_Detail.Tax9_Rate,TSPL_Customer_Invoice_Detail.Tax10_Rate," &
+            '                        "    TSPL_Customer_Invoice_Detail.TAX1_Amt,TSPL_Customer_Invoice_Detail.TAX2_Amt,TSPL_Customer_Invoice_Detail.TAX3_Amt,TSPL_Customer_Invoice_Detail.TAX4_Amt,TSPL_Customer_Invoice_Detail.TAX5_Amt,TSPL_Customer_Invoice_Detail.TAX6_Amt,TSPL_Customer_Invoice_Detail.TAX7_Amt,TSPL_Customer_Invoice_Detail.TAX8_Amt,TSPL_Customer_Invoice_Detail.TAX9_Amt,TSPL_Customer_Invoice_Detail.TAX10_Amt,TSPL_Customer_Invoice_Detail.Total_Tax" &
+            '                        "  " &
+            '                        "  from TSPL_Customer_Invoice_Head  " &
+            '                        " left outer join TSPL_Customer_Invoice_Detail on  TSPL_Customer_Invoice_Detail.Document_No = TSPL_Customer_Invoice_Head.Document_No" &
+            '                        "  " &
+            '                        "     left outer join TSPL_CUSTOMER_MASTER on TSPL_CUSTOMER_MASTER.Cust_Code=TSPL_Customer_Invoice_Head.Customer_Code "
+
+            'If objCommonVar.RCDFCFP Then
+            '    qry += "  left outer join TSPL_LOCATION_MASTER on TSPL_LOCATION_MASTER.Loc_Segment_Code=TSPL_Customer_Invoice_Head.Loc_Code   "
+            'Else
+            '    qry += "  left outer join TSPL_LOCATION_MASTER on TSPL_LOCATION_MASTER.Location_Code=TSPL_Customer_Invoice_Head.Loc_Code   "
+            'End If
+
+            'qry += " 	left outer join TSPL_STATE_MASTER as loc_state on loc_state.STATE_CODE =TSPL_LOCATION_MASTER.State   left outer join tspl_user_master on tspl_user_master.User_Code=TSPL_Customer_Invoice_Head.Created_By  left outer join tspl_user_master as user_master_modify on user_master_modify.User_Code=TSPL_Customer_Invoice_Head.Modify_By " &
+            '                        " left outer join TSPL_Additional_Charges on 	TSPL_Additional_Charges.Code = TSPL_Customer_Invoice_Detail.AddChargeCode" &
+            '                        " " &
+            '                        "  left outer join TSPL_TAX_MASTER Tspl_Tax1 on Tspl_Tax1.Tax_Code =TSPL_Customer_Invoice_Head.TAX1 " &
+            '                        "  left outer join TSPL_TAX_MASTER Tspl_Tax2 on Tspl_Tax2.Tax_Code =TSPL_Customer_Invoice_Head.TAX2  " &
+            '                        "  left outer join TSPL_TAX_MASTER Tspl_Tax3 on Tspl_Tax3.Tax_Code =TSPL_Customer_Invoice_Head.TAX3  " &
+            '                        "  left outer join TSPL_TAX_MASTER Tspl_Tax4 on Tspl_Tax4.Tax_Code =TSPL_Customer_Invoice_Head.TAX4  " &
+            '                        "  left outer join TSPL_TAX_MASTER Tspl_Tax5 on Tspl_Tax5.Tax_Code =TSPL_Customer_Invoice_Head.TAX5  " &
+            '                        "  left outer join TSPL_TAX_MASTER Tspl_Tax6 on Tspl_Tax6.Tax_Code =TSPL_Customer_Invoice_Head.TAX6  " &
+            '                        "  left outer join TSPL_TAX_MASTER Tspl_Tax7 on Tspl_Tax7.Tax_Code =TSPL_Customer_Invoice_Head.TAX7  " &
+            '                        "  left outer join TSPL_TAX_MASTER Tspl_Tax8 on Tspl_Tax8.Tax_Code =TSPL_Customer_Invoice_Head.TAX8  " &
+            '                        "  left outer join TSPL_TAX_MASTER Tspl_Tax9 on Tspl_Tax9.Tax_Code =TSPL_Customer_Invoice_Head.TAX9  " &
+            '                        "  left outer join TSPL_TAX_MASTER Tspl_Tax10 on Tspl_Tax10.Tax_Code =TSPL_Customer_Invoice_Head.TAX10 " &
+            '                        "  left outer join TSPL_CITY_MASTER on TSPL_CITY_MASTER.City_Code = TSPL_LOCATION_MASTER.City_Code " &
+            '                        " 	where TSPL_Customer_Invoice_Head.Document_No ='" & txtDocNo.Value & "'" &
+            '                        " " &
+            '                        " 	 )final   )XXX left outer join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code = XXX.Comp_Code  left outer join TSPL_CUSTOMER_MASTER on TSPL_CUSTOMER_MASTER.Cust_Code = XXX.Customer_Code left outer join TSPL_STATE_MASTER on TSPL_CUSTOMER_MASTER.State = TSPL_STATE_MASTER.STATE_CODE "
+            'If objCommonVar.RCDFCFP Then
+            '    qry += " left outer join TSPL_LOCATION_MASTER  on TSPL_LOCATION_MASTER.Loc_Segment_Code = XXX.Loc_Code "
+            'Else
+            '    qry += " left outer join TSPL_LOCATION_MASTER  on TSPL_LOCATION_MASTER.Location_Code = XXX.Loc_Code "
+            'End If
+
+
+            'qry += "  left outer join tspl_state_master as tspl_state_master_for_location_state on  tspl_state_master_for_location_state.state_code=tspl_location_master.state    " &
+            '                        " " &
+            '                        "  left outer join tspl_state_master as tspl_state_master_For_Comp on tspl_state_master_For_Comp.state_code = TSPL_COMPANY_MASTER.State" &
+            '                        "  left outer join TSPL_Customer_Invoice_Head on TSPL_Customer_Invoice_Head.Document_No=XXX.DOCUMENT_NO "
+
+            ''&
+            ''                        "  ) XXXX LEFT OUTER JOIN (Select '1' as COL1, 1 as COL2,  'ORIGINAL' as CopyType1 UNION Select '1' as COL1, 2 as COL2,  'DUPLICATE' as CopyType1 UNION Select '1' as COL1, 3 as COL2,  'TRIPLICATE' as CopyType1) YYY ON YYY.COL1=XXXX.CopyType ORDER BY YYY.COL2 ,XXXX.SNO  " &
+            ''                        " " &
+            ''                        " "
+            'Dim dt As DataTable = clsDBFuncationality.GetDataTable(qry)
+            'qry = "  select TSPL_Additional_Charges.SAC_Code, sum (TSPL_Customer_Invoice_Detail.Amount_Less_Discount) as Amount_Less_Discount  from TSPL_Customer_Invoice_Detail " &
+            '      "  left outer join TSPL_Additional_Charges on 	TSPL_Additional_Charges.Code = TSPL_Customer_Invoice_Detail.AddChargeCode " &
+            '      " where  Document_No ='" & txtDocNo.Value & "' group by TSPL_Additional_Charges.SAC_Code "
+            'Dim dt2 As DataTable = clsDBFuncationality.GetDataTable(qry)
+            'If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+            '    Dim frmCRV As New frmCrystalReportViewer()
+            '    'frmCRV.funsubreportWithdt(CrystalReportFolder.SalesReport, dt, dt2, "crptAPServiceInvc", "rptAPInvBySAC.rpt", clsCommon.myCDate(dt.Rows(0)("Document_Date")), "rptAPInvBySAC.rpt", "Address.rpt")
+            '    If objCommonVar.RCDFCFP Then
+            '        frmCRV.funsubreportWithdt(MyBase.Form_ID, CrystalReportFolder.SalesReport, dt, dt2, "crptAPServiceInvcnew", "rptAPInvBySAC.rpt", clsCommon.myCDate(dt.Rows(0)("Document_Date")), "rptAPInvBySAC.rpt", "Address.rpt")
+            '    Else
+            '        frmCRV.funsubreportWithdt(MyBase.Form_ID, CrystalReportFolder.SalesReport, dt, dt2, "crptAPServiceInvcnewForAll", "rptAPInvBySAC.rpt", clsCommon.myCDate(dt.Rows(0)("Document_Date")), "rptAPInvBySAC.rpt", "Address.rpt")
+            '    End If
+            '    frmCRV = Nothing
+            'Else
+            '    clsCommon.MyMessageBoxShow(Me, "No Data Found", Me.Text)
+            'End If
         Catch ex As Exception
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try

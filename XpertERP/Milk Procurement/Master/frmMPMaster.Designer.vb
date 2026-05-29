@@ -33,6 +33,10 @@ Partial Class FrmMPMaster
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
         Me.RadPageViewPage1 = New Telerik.WinControls.UI.RadPageViewPage()
+        Me.LblThirdPartySource = New common.Controls.MyLabel()
+        Me.MylblThirdPartySource = New common.Controls.MyLabel()
+        Me.TxtThirdPartyCode = New common.Controls.MyLabel()
+        Me.ThirdPartyCode = New common.Controls.MyLabel()
         Me.txtDistrict = New common.UserControls.txtFinder()
         Me.lblDistrict = New common.Controls.MyLabel()
         Me.MyLabel38 = New common.Controls.MyLabel()
@@ -215,12 +219,13 @@ Partial Class FrmMPMaster
         Me.RadPageViewPage6 = New Telerik.WinControls.UI.RadPageViewPage()
         Me.UcAttachment1 = New XpertERPEngine.ucAttachment()
         Me.RadMenu1 = New Telerik.WinControls.UI.RadMenu()
-        Me.RadMenuItem1 = New Telerik.WinControls.UI.RadMenuItem()
+        Me.THIRD_PARTY_CODE = New Telerik.WinControls.UI.RadMenuItem()
         Me.mnuExport = New Telerik.WinControls.UI.RadMenuItem()
         Me.mnuMpDetailsExport = New Telerik.WinControls.UI.RadMenuItem()
         Me.mnuCowDetailsExport = New Telerik.WinControls.UI.RadMenuItem()
         Me.mnuBuffaloesDetailsExport = New Telerik.WinControls.UI.RadMenuItem()
         Me.mnuExportAnimalDetails = New Telerik.WinControls.UI.RadMenuItem()
+        Me.MunTHIRD_PARTY_CODE = New Telerik.WinControls.UI.RadMenuItem()
         Me.mnuImport = New Telerik.WinControls.UI.RadMenuItem()
         Me.mnuMpDetailsImport = New Telerik.WinControls.UI.RadMenuItem()
         Me.mnuBuffaloesDetailsImport = New Telerik.WinControls.UI.RadMenuItem()
@@ -228,6 +233,7 @@ Partial Class FrmMPMaster
         Me.mnuImportAnimalDetails = New Telerik.WinControls.UI.RadMenuItem()
         Me.RadMenuItem2 = New Telerik.WinControls.UI.RadMenuItem()
         Me.RadMnuMPName = New Telerik.WinControls.UI.RadMenuItem()
+        Me.RadMenuItem4 = New Telerik.WinControls.UI.RadMenuItem()
         Me.mnuExit = New Telerik.WinControls.UI.RadMenuItem()
         Me.mnuExportMPCode = New Telerik.WinControls.UI.RadMenuItem()
         Me.mnuExportMPName = New Telerik.WinControls.UI.RadMenuItem()
@@ -237,12 +243,22 @@ Partial Class FrmMPMaster
         Me.btnClose = New Telerik.WinControls.UI.RadButton()
         Me.btnDelete = New Telerik.WinControls.UI.RadButton()
         Me.btnSave = New Telerik.WinControls.UI.RadButton()
+        Me.MP_Name = New Telerik.WinControls.UI.RadMenuItem()
+        Me.Mp_Uploder_No = New Telerik.WinControls.UI.RadMenuItem()
+        Me.Mp_Code = New Telerik.WinControls.UI.RadMenuItem()
+        Me.Dcs_Uploder = New Telerik.WinControls.UI.RadMenuItem()
+        Me.Dcs_Name = New Telerik.WinControls.UI.RadMenuItem()
+        Me.RadMenuItem1 = New Telerik.WinControls.UI.RadMenuItem()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
         CType(Me.RadPageView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RadPageView1.SuspendLayout()
         Me.RadPageViewPage1.SuspendLayout()
+        CType(Me.LblThirdPartySource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MylblThirdPartySource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TxtThirdPartyCode, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.ThirdPartyCode, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lblDistrict, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel38, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lblZone, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -454,6 +470,10 @@ Partial Class FrmMPMaster
         '
         'RadPageViewPage1
         '
+        Me.RadPageViewPage1.Controls.Add(Me.LblThirdPartySource)
+        Me.RadPageViewPage1.Controls.Add(Me.MylblThirdPartySource)
+        Me.RadPageViewPage1.Controls.Add(Me.TxtThirdPartyCode)
+        Me.RadPageViewPage1.Controls.Add(Me.ThirdPartyCode)
         Me.RadPageViewPage1.Controls.Add(Me.txtDistrict)
         Me.RadPageViewPage1.Controls.Add(Me.lblDistrict)
         Me.RadPageViewPage1.Controls.Add(Me.MyLabel38)
@@ -560,6 +580,50 @@ Partial Class FrmMPMaster
         Me.RadPageViewPage1.Name = "RadPageViewPage1"
         Me.RadPageViewPage1.Size = New System.Drawing.Size(1027, 547)
         Me.RadPageViewPage1.Text = "General"
+        '
+        'LblThirdPartySource
+        '
+        Me.LblThirdPartySource.FieldName = Nothing
+        Me.LblThirdPartySource.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblThirdPartySource.Location = New System.Drawing.Point(653, 496)
+        Me.LblThirdPartySource.Name = "LblThirdPartySource"
+        Me.LblThirdPartySource.Size = New System.Drawing.Size(101, 16)
+        Me.LblThirdPartySource.TabIndex = 408
+        Me.LblThirdPartySource.Text = "Third Party Source"
+        '
+        'MylblThirdPartySource
+        '
+        Me.MylblThirdPartySource.AutoSize = False
+        Me.MylblThirdPartySource.BorderVisible = True
+        Me.MylblThirdPartySource.FieldName = Nothing
+        Me.MylblThirdPartySource.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MylblThirdPartySource.Location = New System.Drawing.Point(766, 494)
+        Me.MylblThirdPartySource.Name = "MylblThirdPartySource"
+        Me.MylblThirdPartySource.Size = New System.Drawing.Size(182, 18)
+        Me.MylblThirdPartySource.TabIndex = 407
+        Me.MylblThirdPartySource.TextWrap = False
+        '
+        'TxtThirdPartyCode
+        '
+        Me.TxtThirdPartyCode.AutoSize = False
+        Me.TxtThirdPartyCode.BorderVisible = True
+        Me.TxtThirdPartyCode.FieldName = Nothing
+        Me.TxtThirdPartyCode.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtThirdPartyCode.Location = New System.Drawing.Point(766, 470)
+        Me.TxtThirdPartyCode.Name = "TxtThirdPartyCode"
+        Me.TxtThirdPartyCode.Size = New System.Drawing.Size(182, 18)
+        Me.TxtThirdPartyCode.TabIndex = 406
+        Me.TxtThirdPartyCode.TextWrap = False
+        '
+        'ThirdPartyCode
+        '
+        Me.ThirdPartyCode.FieldName = Nothing
+        Me.ThirdPartyCode.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ThirdPartyCode.Location = New System.Drawing.Point(653, 469)
+        Me.ThirdPartyCode.Name = "ThirdPartyCode"
+        Me.ThirdPartyCode.Size = New System.Drawing.Size(92, 16)
+        Me.ThirdPartyCode.TabIndex = 404
+        Me.ThirdPartyCode.Text = "Third Party Code"
         '
         'txtDistrict
         '
@@ -3666,88 +3730,112 @@ Partial Class FrmMPMaster
         '
         'RadMenu1
         '
-        Me.RadMenu1.Items.AddRange(New Telerik.WinControls.RadItem() {Me.RadMenuItem1})
+        Me.RadMenu1.Items.AddRange(New Telerik.WinControls.RadItem() {Me.THIRD_PARTY_CODE})
         Me.RadMenu1.Location = New System.Drawing.Point(0, 0)
         Me.RadMenu1.Name = "RadMenu1"
         Me.RadMenu1.Size = New System.Drawing.Size(1048, 20)
         Me.RadMenu1.TabIndex = 1
         '
-        'RadMenuItem1
+        'THIRD_PARTY_CODE
         '
-        Me.RadMenuItem1.Items.AddRange(New Telerik.WinControls.RadItem() {Me.mnuExport, Me.mnuImport, Me.mnuExit, Me.mnuExportMPCode, Me.mnuExportMPName})
-        Me.RadMenuItem1.Name = "RadMenuItem1"
-        Me.RadMenuItem1.Text = "&File"
+        Me.THIRD_PARTY_CODE.Items.AddRange(New Telerik.WinControls.RadItem() {Me.mnuExport, Me.mnuImport, Me.mnuExit, Me.mnuExportMPCode, Me.mnuExportMPName})
+        Me.THIRD_PARTY_CODE.Name = "THIRD_PARTY_CODE"
+        Me.THIRD_PARTY_CODE.Text = "&File"
+        Me.THIRD_PARTY_CODE.UseCompatibleTextRendering = False
         '
         'mnuExport
         '
         Me.mnuExport.AccessibleDescription = "RadMenuItem2"
         Me.mnuExport.AccessibleName = "RadMenuItem2"
-        Me.mnuExport.Items.AddRange(New Telerik.WinControls.RadItem() {Me.mnuMpDetailsExport, Me.mnuCowDetailsExport, Me.mnuBuffaloesDetailsExport, Me.mnuExportAnimalDetails})
+        Me.mnuExport.Items.AddRange(New Telerik.WinControls.RadItem() {Me.mnuMpDetailsExport, Me.mnuCowDetailsExport, Me.mnuBuffaloesDetailsExport, Me.mnuExportAnimalDetails, Me.MunTHIRD_PARTY_CODE})
         Me.mnuExport.Name = "mnuExport"
         Me.mnuExport.Text = "Export"
+        Me.mnuExport.UseCompatibleTextRendering = False
         '
         'mnuMpDetailsExport
         '
         Me.mnuMpDetailsExport.Name = "mnuMpDetailsExport"
         Me.mnuMpDetailsExport.Text = "Export MP Details"
+        Me.mnuMpDetailsExport.UseCompatibleTextRendering = False
         '
         'mnuCowDetailsExport
         '
         Me.mnuCowDetailsExport.Name = "mnuCowDetailsExport"
         Me.mnuCowDetailsExport.Text = "Cow Details"
+        Me.mnuCowDetailsExport.UseCompatibleTextRendering = False
         Me.mnuCowDetailsExport.Visibility = Telerik.WinControls.ElementVisibility.Hidden
         '
         'mnuBuffaloesDetailsExport
         '
         Me.mnuBuffaloesDetailsExport.Name = "mnuBuffaloesDetailsExport"
         Me.mnuBuffaloesDetailsExport.Text = "Buffaloes Details"
+        Me.mnuBuffaloesDetailsExport.UseCompatibleTextRendering = False
         Me.mnuBuffaloesDetailsExport.Visibility = Telerik.WinControls.ElementVisibility.Hidden
         '
         'mnuExportAnimalDetails
         '
         Me.mnuExportAnimalDetails.Name = "mnuExportAnimalDetails"
         Me.mnuExportAnimalDetails.Text = "Animal Details"
+        Me.mnuExportAnimalDetails.UseCompatibleTextRendering = False
+        '
+        'MunTHIRD_PARTY_CODE
+        '
+        Me.MunTHIRD_PARTY_CODE.Name = "MunTHIRD_PARTY_CODE"
+        Me.MunTHIRD_PARTY_CODE.Text = "THIRD PARTY CODE"
         '
         'mnuImport
         '
         Me.mnuImport.AccessibleDescription = "RadMenuItem3"
         Me.mnuImport.AccessibleName = "RadMenuItem3"
-        Me.mnuImport.Items.AddRange(New Telerik.WinControls.RadItem() {Me.mnuMpDetailsImport, Me.mnuBuffaloesDetailsImport, Me.mnuCowDetailsImport, Me.mnuImportAnimalDetails, Me.RadMenuItem2, Me.RadMnuMPName})
+        Me.mnuImport.Items.AddRange(New Telerik.WinControls.RadItem() {Me.mnuMpDetailsImport, Me.mnuBuffaloesDetailsImport, Me.mnuCowDetailsImport, Me.mnuImportAnimalDetails, Me.RadMenuItem2, Me.RadMnuMPName, Me.RadMenuItem4})
         Me.mnuImport.Name = "mnuImport"
         Me.mnuImport.Text = "Import"
+        Me.mnuImport.UseCompatibleTextRendering = False
         '
         'mnuMpDetailsImport
         '
         Me.mnuMpDetailsImport.Name = "mnuMpDetailsImport"
         Me.mnuMpDetailsImport.Text = "MP Details"
+        Me.mnuMpDetailsImport.UseCompatibleTextRendering = False
         '
         'mnuBuffaloesDetailsImport
         '
         Me.mnuBuffaloesDetailsImport.Name = "mnuBuffaloesDetailsImport"
         Me.mnuBuffaloesDetailsImport.Text = "Buffaloes Details"
+        Me.mnuBuffaloesDetailsImport.UseCompatibleTextRendering = False
         Me.mnuBuffaloesDetailsImport.Visibility = Telerik.WinControls.ElementVisibility.Hidden
         '
         'mnuCowDetailsImport
         '
         Me.mnuCowDetailsImport.Name = "mnuCowDetailsImport"
         Me.mnuCowDetailsImport.Text = "Cow Details"
+        Me.mnuCowDetailsImport.UseCompatibleTextRendering = False
         Me.mnuCowDetailsImport.Visibility = Telerik.WinControls.ElementVisibility.Hidden
         '
         'mnuImportAnimalDetails
         '
         Me.mnuImportAnimalDetails.Name = "mnuImportAnimalDetails"
         Me.mnuImportAnimalDetails.Text = "Animal Details"
+        Me.mnuImportAnimalDetails.UseCompatibleTextRendering = False
         '
         'RadMenuItem2
         '
         Me.RadMenuItem2.Name = "RadMenuItem2"
         Me.RadMenuItem2.Text = "Templete Wise"
+        Me.RadMenuItem2.UseCompatibleTextRendering = False
         '
         'RadMnuMPName
         '
         Me.RadMnuMPName.Name = "RadMnuMPName"
         Me.RadMnuMPName.Text = "Import MP Name"
+        Me.RadMnuMPName.UseCompatibleTextRendering = False
         Me.RadMnuMPName.Visibility = Telerik.WinControls.ElementVisibility.Hidden
+        '
+        'RadMenuItem4
+        '
+        Me.RadMenuItem4.Name = "RadMenuItem4"
+        Me.RadMenuItem4.Text = "THIRD PARTY CODE"
+        Me.RadMenuItem4.UseCompatibleTextRendering = False
         '
         'mnuExit
         '
@@ -3755,22 +3843,26 @@ Partial Class FrmMPMaster
         Me.mnuExit.AccessibleName = "RadMenuItem4"
         Me.mnuExit.Name = "mnuExit"
         Me.mnuExit.Text = "Exit"
+        Me.mnuExit.UseCompatibleTextRendering = False
         '
         'mnuExportMPCode
         '
         Me.mnuExportMPCode.Name = "mnuExportMPCode"
         Me.mnuExportMPCode.Text = "Export MP Code In Text File"
+        Me.mnuExportMPCode.UseCompatibleTextRendering = False
         '
         'mnuExportMPName
         '
         Me.mnuExportMPName.Items.AddRange(New Telerik.WinControls.RadItem() {Me.RadMenuItem3})
         Me.mnuExportMPName.Name = "mnuExportMPName"
         Me.mnuExportMPName.Text = "Export Farmer Name"
+        Me.mnuExportMPName.UseCompatibleTextRendering = False
         '
         'RadMenuItem3
         '
         Me.RadMenuItem3.Name = "RadMenuItem3"
         Me.RadMenuItem3.Text = "Import Farmer Name"
+        Me.RadMenuItem3.UseCompatibleTextRendering = False
         '
         'btnHistory
         '
@@ -3819,6 +3911,42 @@ Partial Class FrmMPMaster
         Me.btnSave.TabIndex = 0
         Me.btnSave.Text = "&Save"
         '
+        'MP_Name
+        '
+        Me.MP_Name.Name = "MP_Name"
+        Me.MP_Name.Text = "MP_Name"
+        Me.MP_Name.UseCompatibleTextRendering = False
+        '
+        'Mp_Uploder_No
+        '
+        Me.Mp_Uploder_No.Name = "Mp_Uploder_No"
+        Me.Mp_Uploder_No.Text = "Mp_Uploder_No"
+        Me.Mp_Uploder_No.UseCompatibleTextRendering = False
+        '
+        'Mp_Code
+        '
+        Me.Mp_Code.Name = "Mp_Code"
+        Me.Mp_Code.Text = "Mp_Code"
+        Me.Mp_Code.UseCompatibleTextRendering = False
+        '
+        'Dcs_Uploder
+        '
+        Me.Dcs_Uploder.Name = "Dcs_Uploder"
+        Me.Dcs_Uploder.Text = "Dcs_Uploder"
+        Me.Dcs_Uploder.UseCompatibleTextRendering = False
+        '
+        'Dcs_Name
+        '
+        Me.Dcs_Name.Name = "Dcs_Name"
+        Me.Dcs_Name.Text = "Dcs_Name"
+        Me.Dcs_Name.UseCompatibleTextRendering = False
+        '
+        'RadMenuItem1
+        '
+        Me.RadMenuItem1.Name = "RadMenuItem1"
+        Me.RadMenuItem1.Text = "RadMenuItem1"
+        Me.RadMenuItem1.UseCompatibleTextRendering = False
+        '
         'FrmMPMaster
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -3839,6 +3967,10 @@ Partial Class FrmMPMaster
         Me.RadPageView1.ResumeLayout(False)
         Me.RadPageViewPage1.ResumeLayout(False)
         Me.RadPageViewPage1.PerformLayout()
+        CType(Me.LblThirdPartySource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MylblThirdPartySource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TxtThirdPartyCode, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.ThirdPartyCode, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.lblDistrict, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel38, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.lblZone, System.ComponentModel.ISupportInitialize).EndInit()
@@ -4023,11 +4155,7 @@ Partial Class FrmMPMaster
     Friend WithEvents RadPageViewPage2 As Telerik.WinControls.UI.RadPageViewPage
     Friend WithEvents RadPageViewPage3 As Telerik.WinControls.UI.RadPageViewPage
     Friend WithEvents RadPageViewPage5 As Telerik.WinControls.UI.RadPageViewPage
-    Friend WithEvents RadMenu1 As Telerik.WinControls.UI.RadMenu
-    Friend WithEvents RadMenuItem1 As Telerik.WinControls.UI.RadMenuItem
-    Friend WithEvents mnuExport As Telerik.WinControls.UI.RadMenuItem
-    Friend WithEvents mnuImport As Telerik.WinControls.UI.RadMenuItem
-    Friend WithEvents mnuExit As Telerik.WinControls.UI.RadMenuItem
+    Friend WithEvents THIRD_PARTY_CODE As Telerik.WinControls.UI.RadMenuItem
     Friend WithEvents txtBankName As common.Controls.MyTextBox
     Friend WithEvents txtBankCode As common.UserControls.txtFinder
     Friend WithEvents lblBankState As common.Controls.MyLabel
@@ -4096,12 +4224,6 @@ Partial Class FrmMPMaster
     Friend WithEvents txtNoOfBreadableMilkAnimal As common.Controls.MyTextBox
     Friend WithEvents lblNoOfBreadableMilkAnimal As common.Controls.MyLabel
     Friend WithEvents UcAttachment1 As XpertERPEngine.ucAttachment
-    Friend WithEvents mnuMpDetailsExport As Telerik.WinControls.UI.RadMenuItem
-    Friend WithEvents mnuCowDetailsExport As Telerik.WinControls.UI.RadMenuItem
-    Friend WithEvents mnuBuffaloesDetailsExport As Telerik.WinControls.UI.RadMenuItem
-    Friend WithEvents mnuMpDetailsImport As Telerik.WinControls.UI.RadMenuItem
-    Friend WithEvents mnuBuffaloesDetailsImport As Telerik.WinControls.UI.RadMenuItem
-    Friend WithEvents mnuCowDetailsImport As Telerik.WinControls.UI.RadMenuItem
     Friend WithEvents btnClose As Telerik.WinControls.UI.RadButton
     Friend WithEvents btnDelete As Telerik.WinControls.UI.RadButton
     Friend WithEvents btnSave As Telerik.WinControls.UI.RadButton
@@ -4128,11 +4250,8 @@ Partial Class FrmMPMaster
     Friend WithEvents MyLabel2 As common.Controls.MyLabel
     Friend WithEvents txtNoOfChildrenMember As common.Controls.MyTextBox
     Friend WithEvents MyLabel1 As common.Controls.MyLabel
-    Friend WithEvents mnuImportAnimalDetails As Telerik.WinControls.UI.RadMenuItem
-    Friend WithEvents mnuExportAnimalDetails As Telerik.WinControls.UI.RadMenuItem
     Friend WithEvents cmbAccount_Type As common.Controls.MyComboBox
     Friend WithEvents lblAccountType As common.Controls.MyLabel
-    Friend WithEvents mnuExportMPCode As Telerik.WinControls.UI.RadMenuItem
     Friend WithEvents pvpCustomFields As Telerik.WinControls.UI.RadPageViewPage
     Friend WithEvents UcCustomFields1 As XpertERPEngine.ucCustomFields
     Friend WithEvents UcCamControl1 As XpertERPEngine.ucCamControl
@@ -4192,7 +4311,6 @@ Partial Class FrmMPMaster
     Friend WithEvents txtJanAadharNo As common.Controls.MyTextBox
     Friend WithEvents MyLabel14 As common.Controls.MyLabel
     Friend WithEvents Panel1 As Panel
-    Friend WithEvents RadMenuItem2 As RadMenuItem
     Friend WithEvents txtMPNameHindi As common.Controls.MyTextBox
     Friend WithEvents lblCastCategory As common.Controls.MyLabel
     Friend WithEvents txtCastCategory As common.UserControls.txtFinder
@@ -4221,8 +4339,34 @@ Partial Class FrmMPMaster
     Friend WithEvents btnImportBankDetails As RadButton
     Friend WithEvents RadGroupBox2 As RadGroupBox
     Friend WithEvents btnExportBlankSheet As RadButton
-    Friend WithEvents mnuExportMPName As RadMenuItem
+    Friend WithEvents ThirdPartyCode As common.Controls.MyLabel
+    Friend WithEvents RadMenu1 As RadMenu
+    Friend WithEvents mnuExport As RadMenuItem
+    Friend WithEvents mnuMpDetailsExport As RadMenuItem
+    Friend WithEvents mnuCowDetailsExport As RadMenuItem
+    Friend WithEvents mnuBuffaloesDetailsExport As RadMenuItem
+    Friend WithEvents mnuExportAnimalDetails As RadMenuItem
+    Friend WithEvents MunTHIRD_PARTY_CODE As RadMenuItem
+    Friend WithEvents mnuImport As RadMenuItem
+    Friend WithEvents mnuMpDetailsImport As RadMenuItem
+    Friend WithEvents mnuBuffaloesDetailsImport As RadMenuItem
+    Friend WithEvents mnuCowDetailsImport As RadMenuItem
+    Friend WithEvents mnuImportAnimalDetails As RadMenuItem
+    Friend WithEvents RadMenuItem2 As RadMenuItem
     Friend WithEvents RadMnuMPName As RadMenuItem
+    Friend WithEvents RadMenuItem4 As RadMenuItem
+    Friend WithEvents mnuExit As RadMenuItem
+    Friend WithEvents mnuExportMPCode As RadMenuItem
+    Friend WithEvents mnuExportMPName As RadMenuItem
     Friend WithEvents RadMenuItem3 As RadMenuItem
+    Friend WithEvents MP_Name As RadMenuItem
+    Friend WithEvents Mp_Uploder_No As RadMenuItem
+    Friend WithEvents Mp_Code As RadMenuItem
+    Friend WithEvents Dcs_Uploder As RadMenuItem
+    Friend WithEvents Dcs_Name As RadMenuItem
+    Friend WithEvents RadMenuItem1 As RadMenuItem
+    Friend WithEvents TxtThirdPartyCode As common.Controls.MyLabel
+    Friend WithEvents LblThirdPartySource As common.Controls.MyLabel
+    Friend WithEvents MylblThirdPartySource As common.Controls.MyLabel
 End Class
 

@@ -32,14 +32,34 @@ Public Class clsItemUOMDetails
         dt.Rows.Add(dr)
 
         dr = dt.NewRow()
+        dr("Code") = "3"
+        dr("Name") = "Crate and LTR"
+        dt.Rows.Add(dr)
+        dr = dt.NewRow()
+        dr("Code") = "4"
+        dr("Name") = "Pouch and LTR"
+        dt.Rows.Add(dr)
+
+        dr = dt.NewRow()
         dr("Code") = "1"
         dr("Name") = "Crate"
+        dt.Rows.Add(dr)
+
+        dr = dt.NewRow()
+        dr("Code") = "5"
+        dr("Name") = "Pouch"
         dt.Rows.Add(dr)
 
         dr = dt.NewRow()
         dr("Code") = "2"
         dr("Name") = "LTR"
         dt.Rows.Add(dr)
+
+        dr = dt.NewRow()
+        dr("Code") = "6"
+        dr("Name") = "ALL"
+        dt.Rows.Add(dr)
+
         Return dt
     End Function
 

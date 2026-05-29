@@ -152,6 +152,9 @@ Public Class ClsScrapSaleHeadReturn
         If clsCommon.CompairString(strCancelDelete, "Cancel") = CompairStringResult.Equal Then
             TSPL_SCRAPSALE_HEAD_RETURN = "TSPL_SCRAPSALE_HEAD_RETURN_Cancel_data"
             TSPL_SCRAPSALE_DETAIL_RETURN = "TSPL_SCRAPSALE_DETAIL_RETURN_cancel_data"
+        ElseIf clsCommon.CompairString(strCancelDelete, "Delete") = CompairStringResult.Equal Then
+            TSPL_SCRAPSALE_HEAD_RETURN = "TSPL_SCRAPSALE_HEAD_RETURN_Delete_data"
+            TSPL_SCRAPSALE_DETAIL_RETURN = "TSPL_SCRAPSALE_DETAIL_RETURN_Delete_data"
         Else
             TSPL_SCRAPSALE_HEAD_RETURN = "TSPL_SCRAPSALE_HEAD_RETURN"
             TSPL_SCRAPSALE_DETAIL_RETURN = "TSPL_SCRAPSALE_DETAIL_RETURN"

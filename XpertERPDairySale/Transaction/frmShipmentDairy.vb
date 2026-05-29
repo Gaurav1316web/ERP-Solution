@@ -6233,7 +6233,7 @@ where  TSPL_SCHEME_BENEFICIARY.Cust_Code='" + txtVendorNo.Value + "' and Convert
     End Sub
     Public Sub GetDCDetails(ByVal trans As SqlTransaction)
         'If clsCommon.CompairString(clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Credit_Customer from TSPL_CUSTOMER_MASTER where Cust_Code='" + clsCommon.myCstr(txtVendorNo.Value) + "'", trans)), "N") = CompairStringResult.Equal OrElse IIf(clsCommon.CompairString(objCommonVar.CurrComp_Code1, "JPR") = CompairStringResult.Equal, False, DispatchPriceCodeForCreditCustomer) Then
-        If (clsCommon.CompairString(clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Credit_Customer from TSPL_CUSTOMER_MASTER where Cust_Code='" + clsCommon.myCstr(txtVendorNo.Value) + "'", trans)), "N") = CompairStringResult.Equal AndAlso clsCommon.CompairString(clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Cash_Customer from TSPL_CUSTOMER_MASTER where Cust_Code='" + clsCommon.myCstr(txtVendorNo.Value) + "'", trans)), "N") = CompairStringResult.Equal) OrElse ApplyCommissionTPTForCreditCustomer Then
+        If (clsCommon.CompairString(clsCommon.myCstr(clsDBFuncationality.getSingleValue("select isnull(Credit_Customer,'N') as Credit_Customer  from TSPL_CUSTOMER_MASTER where Cust_Code='" + clsCommon.myCstr(txtVendorNo.Value) + "'", trans)), "N") = CompairStringResult.Equal AndAlso clsCommon.CompairString(clsCommon.myCstr(clsDBFuncationality.getSingleValue("select isnull(Cash_Customer,'N') as Cash_Customer  from TSPL_CUSTOMER_MASTER where Cust_Code='" + clsCommon.myCstr(txtVendorNo.Value) + "'", trans)), "N") = CompairStringResult.Equal) OrElse ApplyCommissionTPTForCreditCustomer Then
             Dim DCQry As String = "select top 1 TSPL_DISTRIBUTOR_COMMISSION_HEAD.Doc_No,TSPL_DISTRIBUTOR_COMMISSION_HEAD.Commision_UOM,TSPL_DISTRIBUTOR_COMMISSION_DETAIL.PK_ID,TSPL_DISTRIBUTOR_COMMISSION_HEAD.Applicable_Date,TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Distributor_Code,TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Rate,TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Transporter_Rate,TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Security_Rate,TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Booth_Security_Rate from TSPL_DISTRIBUTOR_COMMISSION_HEAD
 left join TSPL_DISTRIBUTOR_COMMISSION_DETAIL on TSPL_DISTRIBUTOR_COMMISSION_DETAIL.Doc_No=TSPL_DISTRIBUTOR_COMMISSION_HEAD.Doc_No
 left join TSPL_DISTRIBUTOR_COMMISSION_ITEMS on TSPL_DISTRIBUTOR_COMMISSION_ITEMS.Doc_No=TSPL_DISTRIBUTOR_COMMISSION_HEAD.Doc_No
@@ -7219,7 +7219,15 @@ where TSPL_DISTRIBUTOR_COMMISSION_HEAD.Applicable_Date<='" + clsCommon.GetPrintD
         Try
             Xtra.TransactionValidity(txtDate.Value)
             If SettDistributorWiseBilling Then
-                MergeDistributorItems(True, False, trans)
+                Dim isCreditCust As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Credit_Customer from TSPL_CUSTOMER_MASTER where Cust_Code='" + txtVendorNo.Value + "'", Nothing))
+                Dim isCashCust As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Cash_Customer from TSPL_CUSTOMER_MASTER where Cust_Code='" + txtVendorNo.Value + "'", Nothing))
+
+                If clsCommon.CompairString(isCreditCust, "Y") = CompairStringResult.Equal OrElse clsCommon.CompairString(isCashCust, "Y") = CompairStringResult.Equal Then
+                    MergeDistributorItems(True, True, trans)
+                Else
+                    MergeDistributorItems(True, False, trans)
+
+                End If
 
             End If
             If ServerDateTimeForTaxableInvoice Then
@@ -17220,7 +17228,10 @@ where  TSPL_SCHEME_BENEFICIARY.Cust_Code='" + txtVendorNo.Value + "' and Convert
                             If clsCommon.CompairString(isCreditCust, "Y") = CompairStringResult.Equal OrElse clsCommon.CompairString(isCashCust, "Y") = CompairStringResult.Equal Then
                                 IsCreditCustomer = True
                                 isCashcredit = "Y"
-                                'strKey = clsCommon.myCstr(gvDistributor.Rows(ii).Cells("Item_Code").Value) + clsCommon.myCstr(gvDistributor.Rows(ii).Cells("Unit_code").Value) + clsCommon.myCstr(gvDistributor.Rows(ii).Cells("Cust_Code").Value)
+                                'If clsCommon.myLen(txtDocNo.Value) > 0 Then
+                                '    'strKey = clsCommon.myCstr(gvDistributor.Rows(ii).Cells("Item_Code").Value) + clsCommon.myCstr(gvDistributor.Rows(ii).Cells("Unit_code").Value) + clsCommon.myCstr(gvDistributor.Rows(ii).Cells("Cust_Code").Value)
+                                '    strKey = strKey.ToUpper()
+                                'End If
                             Else
                                 IsOnlyCreditCust = False
                                 If AllowGatePassDemandTripWise Then
@@ -17314,6 +17325,11 @@ where  TSPL_SCHEME_BENEFICIARY.Cust_Code='" + txtVendorNo.Value + "' and Convert
                                 End If
                             End If
                         End If
+                        If ConvertIntoBillingUOM Then
+                            gvDistributor.Rows(ii).Cells("Unit_code").Value = DisBilling_UOM
+                            gvDistributor.Rows(ii).Cells("Qty").Value = Math.Ceiling(DispatchQty / DisBillingUOMConvFactor)
+                        End If
+
                     End If
                 Next
                 If myDictionary.Count > 0 Then

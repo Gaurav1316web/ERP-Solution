@@ -19,6 +19,8 @@ Public Class clsMpMaster
     Public Email As String = String.Empty
     Public Fax As String = String.Empty
     Public Jan_Aadhar_No As String = String.Empty
+    Public THIRD_PARTY_CODE As String = String.Empty
+    Public Third_Party_Source As String = String.Empty
     Public DOB As Date = Nothing
     Public Education As String = String.Empty
     Public Land_Holding As Double = 0
@@ -87,7 +89,7 @@ Public Class clsMpMaster
     Public Shared Function getFinder(ByVal whrcls As String, ByVal curcode As String, ByVal isButtonClicked As Boolean) As String
         Dim str As String = ""
         Try
-            Dim qry As String = " select tspl_mp_master.MP_Code as [Code] ,tspl_mp_master.MP_Name as [MP Name] ,tspl_mp_master.VLC_Code as [DCS Code],VLCH.VLC_Name as [DCS Name],VLCH.VLC_Code_VLC_Uploader as [DCS Uploader Code],tspl_mp_master.Village_Code as [Village Code] ,tspl_mp_master.Father_Name as [Father Name] ,tspl_mp_master.Add1 as [Address1] ,tspl_mp_master.Add2 as [Address2] ,tspl_mp_master.Zila as [Zila] ,tspl_mp_master.Tehsil as [Tehsil] ,tspl_mp_master.City_code as [City Code] ,tspl_mp_master.State_Code as [State Code] ,tspl_mp_master.Country_code as [Country Code] ,tspl_mp_master.Pin_code as [Pin Code] ,tspl_mp_master.Telphone as [Telphone] ,tspl_mp_master.Email as [Email] ,tspl_mp_master.Fax as [Fax],tspl_mp_master.Jan_Aadhar_No as [Jan Aadhar No] ,tspl_mp_master.DOB as [Date Of Birth] ,tspl_mp_master.Education as [Education] ,tspl_mp_master.Land_Holding as [Land Holding] ,tspl_mp_master.No_Of_Buffaloes as [No Of Buffaloes] ,tspl_mp_master.No_Of_Cows as [No Of Cows] ,tspl_mp_master.No_Of_breedable_milk_animal as [No Of Breedable Milk Animal] ,tspl_mp_master.Milk_production as [Total Milk Production] ,tspl_mp_master.Milk_Home_consumption as [Total Milk Home Consumption] ,tspl_mp_master.Milk_For_sale as [Remaining Milk For Sale] ,tspl_mp_master.PayeeName as [Payee Name] ,tspl_mp_master.BankName as [Bank Name] ,tspl_mp_master.BankBranch as [Bank Branch] ,tspl_mp_master.BankCityCode as [Bank City Code] ,tspl_mp_master.BankStateCode as [Bank State Code] ,tspl_mp_master.IFCICode as [IFCI Code] ,convert(varchar,tspl_mp_master.AccountNO) as [Account No] ,tspl_mp_master.Created_By as [Created By] ,tspl_mp_master.Created_Date as [Created Date] ,tspl_mp_master.Modified_By as [Modified By] ,tspl_mp_master.Modified_Date as [Modified Date] ,tspl_mp_master.Comp_Code as [Company Code],tspl_mp_master.Mp_code_Vlc_uploader as [MP Code VLC Uploder],VLCH.MCC as [MCC Code]  From tspl_mp_master left join TSPL_VLC_MASTER_HEAD VLCH on tspl_mp_master.VLC_Code=VLCH.VLC_Code"
+            Dim qry As String = " select tspl_mp_master.MP_Code as [Code] ,tspl_mp_master.MP_Name as [MP Name] ,tspl_mp_master.VLC_Code as [DCS Code],VLCH.VLC_Name as [DCS Name],VLCH.VLC_Code_VLC_Uploader as [DCS Uploader Code],tspl_mp_master.Village_Code as [Village Code] ,tspl_mp_master.Father_Name as [Father Name] ,tspl_mp_master.Add1 as [Address1] ,tspl_mp_master.Add2 as [Address2] ,tspl_mp_master.Zila as [Zila] ,tspl_mp_master.Tehsil as [Tehsil] ,tspl_mp_master.City_code as [City Code] ,tspl_mp_master.State_Code as [State Code] ,tspl_mp_master.Country_code as [Country Code] ,tspl_mp_master.Pin_code as [Pin Code] ,tspl_mp_master.Telphone as [Telphone] ,tspl_mp_master.Email as [Email] ,tspl_mp_master.Fax as [Fax],tspl_mp_master.Jan_Aadhar_No as [Jan Aadhar No] ,tspl_mp_master.THIRD_PARTY_CODE as [THIRD PARTY CODE] ,tspl_mp_master.Third_Party_Source as [THIRD PARTY SOURCE],tspl_mp_master.DOB as [Date Of Birth] ,tspl_mp_master.Education as [Education] ,tspl_mp_master.Land_Holding as [Land Holding] ,tspl_mp_master.No_Of_Buffaloes as [No Of Buffaloes] ,tspl_mp_master.No_Of_Cows as [No Of Cows] ,tspl_mp_master.No_Of_breedable_milk_animal as [No Of Breedable Milk Animal] ,tspl_mp_master.Milk_production as [Total Milk Production] ,tspl_mp_master.Milk_Home_consumption as [Total Milk Home Consumption] ,tspl_mp_master.Milk_For_sale as [Remaining Milk For Sale] ,tspl_mp_master.PayeeName as [Payee Name] ,tspl_mp_master.BankName as [Bank Name] ,tspl_mp_master.BankBranch as [Bank Branch] ,tspl_mp_master.BankCityCode as [Bank City Code] ,tspl_mp_master.BankStateCode as [Bank State Code] ,tspl_mp_master.IFCICode as [IFCI Code] ,convert(varchar,tspl_mp_master.AccountNO) as [Account No] ,tspl_mp_master.Created_By as [Created By] ,tspl_mp_master.Created_Date as [Created Date] ,tspl_mp_master.Modified_By as [Modified By] ,tspl_mp_master.Modified_Date as [Modified Date] ,tspl_mp_master.Comp_Code as [Company Code],tspl_mp_master.Mp_code_Vlc_uploader as [MP Code VLC Uploder],VLCH.MCC as [MCC Code]  From tspl_mp_master left join TSPL_VLC_MASTER_HEAD VLCH on tspl_mp_master.VLC_Code=VLCH.VLC_Code"
             str = clsCommon.ShowSelectForm("FNDMPMST", qry, "Code", whrcls, curcode, "Code", isButtonClicked)
         Catch ex As Exception
             Throw New Exception(ex.Message)
@@ -181,6 +183,8 @@ Public Class clsMpMaster
                 obj.Email = clsCommon.myCstr(dt.Rows(0)("Email"))
                 obj.Fax = clsCommon.myCstr(dt.Rows(0)("Fax"))
                 obj.Jan_Aadhar_No = clsCommon.myCstr(dt.Rows(0)("Jan_Aadhar_No"))
+                obj.THIRD_PARTY_CODE = clsCommon.myCstr(dt.Rows(0)("THIRD_PARTY_CODE"))
+                obj.Third_Party_Source = clsCommon.myCstr(dt.Rows(0)("Third_Party_Source"))
                 If dt.Rows(0)("DOB") IsNot DBNull.Value Then
                     obj.DOB = clsCommon.myCDate(dt.Rows(0)("DOB"))
                 End If
@@ -280,6 +284,8 @@ Public Class clsMpMaster
             clsCommon.AddColumnsForChange(coll, "Email", obj.Email)
             clsCommon.AddColumnsForChange(coll, "Fax", obj.Fax)
             clsCommon.AddColumnsForChange(coll, "Jan_Aadhar_No", obj.Jan_Aadhar_No)
+            clsCommon.AddColumnsForChange(coll, "THIRD_PARTY_CODE", obj.THIRD_PARTY_CODE)
+            clsCommon.AddColumnsForChange(coll, "Third_Party_Source", obj.Third_Party_Source)
             clsCommon.AddColumnsForChange(coll, "DOB", clsCommon.GetPrintDate(obj.DOB, "dd/MMM/yyyy"))
             clsCommon.AddColumnsForChange(coll, "MP_CODE_VLC_UPLOADER", clsCommon.myCstr(obj.MP_CODE_VLC_UPLOADER))
             clsCommon.AddColumnsForChange(coll, "Education", obj.Education)
@@ -1169,6 +1175,7 @@ Public Class clsAnimalDetails
     Public Type_Of_Animal As String = String.Empty
     Public Count_Of_animal As Integer = 0
     Public Animal_Staus As String = Nothing
+    Public MP_Code As String = String.Empty
     Public Shared Function SaveData(ByVal arr As List(Of clsAnimalDetails), ByVal Trans As SqlTransaction) As Boolean
         Try
             Dim i As Integer = 0
