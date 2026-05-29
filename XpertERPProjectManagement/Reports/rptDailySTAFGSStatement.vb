@@ -88,27 +88,33 @@ Public Class rptDailySTAFGSStatement
     Private Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
         Try
             atchqry = GetAttachQry()
-            Dim dt As DataTable = clsDBFuncationality.GetDataTable(atchqry)
 
-            If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
-                Gv1.DataSource = Nothing
-                Gv1.GroupDescriptors.Clear()
-                Gv1.SummaryRowsBottom.Clear()
-                Gv1.DataSource = dt
-                'gv1.Columns("TransType").IsVisible = False
-                'gv1.Columns("PROD_ENTRY_CODE").IsVisible = False
-                RadPageView1.SelectedPage = RadPageViewPage2
-                'FormatGrid()
-                'View()
-                FormatGrid()
+            If clsCommon.myLen(atchqry) > 0 Then
+                Dim dt As DataTable = clsDBFuncationality.GetDataTable(atchqry)
 
-                Gv1.BestFitColumns()
+                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                    Gv1.DataSource = Nothing
+                    Gv1.GroupDescriptors.Clear()
+                    Gv1.SummaryRowsBottom.Clear()
+                    Gv1.DataSource = dt
+                    'gv1.Columns("TransType").IsVisible = False
+                    'gv1.Columns("PROD_ENTRY_CODE").IsVisible = False
+                    RadPageView1.SelectedPage = RadPageViewPage2
+                    'FormatGrid()
+                    'View()
+                    FormatGrid()
 
-                EnableDisableCntrl(False)
-                'ReStoreGridLayout()
+                    Gv1.BestFitColumns()
+
+                    EnableDisableCntrl(False)
+                    'ReStoreGridLayout()
+                Else
+                    clsCommon.MyMessageBoxShow(Me, "No data found to display.", "Item Stock Report")
+                End If
             Else
                 clsCommon.MyMessageBoxShow(Me, "No data found to display.", "Item Stock Report")
             End If
+
         Catch ex As Exception
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try
