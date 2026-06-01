@@ -12,6 +12,7 @@ Public Class frmDBTMonthlyFarmerMilk
     Public Const colMPUploaderCode As String = "MP_Uploader_Code"
     Public Const colMPName As String = "MP_Name"
     Public Const colQty As String = "Qty"
+    Public Const colCollectionQty As String = "Collection_Qty"
     Public Const colTHIRDPARTYCODE As String = "THIRD_PARTY_CODE"
 
     Dim ButtonToolTip As ToolTip = New ToolTip()
@@ -25,7 +26,6 @@ Public Class frmDBTMonthlyFarmerMilk
     Private Sub FrmVLCDataUploaderManual_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         SetUserMgmtNew()
         Reset()
-
 
         ButtonToolTip.SetToolTip(btnsave, "Press Alt+S for Save/Update Transaction")
         ButtonToolTip.SetToolTip(btnDelete, "Press Alt+D Delete Transaction")
@@ -49,7 +49,7 @@ Public Class frmDBTMonthlyFarmerMilk
         ElseIf e.Alt AndAlso e.KeyCode = Keys.C AndAlso btnclose.Enabled Then
             CloseForm()
         ElseIf e.Alt AndAlso e.KeyCode = Keys.P AndAlso btnclose.Enabled Then
-            'PostData()
+            PostData()
         ElseIf e.Alt AndAlso e.Shift AndAlso e.Control And e.KeyCode = Keys.F12 Then
             ButtonToolTip.SetToolTip(btnsave, "Press Alt+S for Save/Update Trasnaction" + Environment.NewLine +
                       "========Table Name=========" + Environment.NewLine +
@@ -68,350 +68,15 @@ Public Class frmDBTMonthlyFarmerMilk
             gvItem.Columns.Clear()
         Catch ex As Exception
         End Try
-
-        Exit Sub
-
-        'gvItem.Rows.Clear()
-        'gvItem.Columns.Clear()
-        'gvItem.DataSource = Nothing
-
-        'gvItem.MasterTemplate.SummaryRowsBottom.Clear()
-
-        'Dim lineNo As New GridViewTextBoxColumn()
-        'lineNo.FormatString = ""
-        'lineNo.HeaderText = "PKID."
-        'lineNo.Name = clsMPIncetiveEntryColumns.colPKID
-        'lineNo.IsVisible = False
-        'lineNo.ReadOnly = True
-        'lineNo.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(lineNo)
-
-        'lineNo = New GridViewTextBoxColumn()
-        'lineNo.FormatString = ""
-        'lineNo.HeaderText = "SNo."
-        'lineNo.Name = clsMPIncetiveEntryColumns.colSlNo
-        'lineNo.Width = 60
-        'lineNo.ReadOnly = True
-        'lineNo.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(lineNo)
-
-        'Dim farmercode As New GridViewTextBoxColumn()
-        'farmercode.FormatString = ""
-        'farmercode.HeaderText = "VLC"
-        'farmercode.Name = clsMPIncetiveEntryColumns.colVLCUploaderCode
-        'farmercode.ReadOnly = True
-        'farmercode.IsVisible = True
-        'farmercode.Width = 100
-        'farmercode.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(farmercode)
-
-        'farmercode = New GridViewTextBoxColumn()
-        'farmercode.FormatString = ""
-        'farmercode.HeaderText = "VLC Code"
-        'farmercode.Name = clsMPIncetiveEntryColumns.colVLCCode
-        'farmercode.ReadOnly = True
-        'farmercode.IsVisible = False
-        'farmercode.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(farmercode)
-
-        'farmercode = New GridViewTextBoxColumn()
-        'farmercode.FormatString = ""
-        'farmercode.HeaderText = "VLC Name"
-        'farmercode.Name = clsMPIncetiveEntryColumns.colVLCName
-        'farmercode.ReadOnly = True
-        'farmercode.IsVisible = False
-        'farmercode.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(farmercode)
-
-
-        'Dim farmercode_VlcUploader As New GridViewTextBoxColumn()
-        'farmercode_VlcUploader.FormatString = ""
-        'farmercode_VlcUploader.HeaderText = "Farmer"
-        'farmercode_VlcUploader.Name = clsMPIncetiveEntryColumns.colMPUploaderCode
-        'farmercode_VlcUploader.Width = 100
-        'farmercode_VlcUploader.ReadOnly = True
-        'farmercode_VlcUploader.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(farmercode_VlcUploader)
-
-        'farmercode = New GridViewTextBoxColumn()
-        'farmercode.FormatString = ""
-        'farmercode.HeaderText = "Farmer Code"
-        'farmercode.Name = clsMPIncetiveEntryColumns.colMPCode
-        'farmercode.ReadOnly = True
-        'farmercode.IsVisible = True
-        'farmercode.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(farmercode)
-
-
-
-        'Dim farmername As New GridViewTextBoxColumn()
-        'farmername.FormatString = ""
-        'farmername.HeaderText = "Farmer Name"
-        'farmername.Name = clsMPIncetiveEntryColumns.colMPName
-        'farmername.Width = 200
-        'farmername.ReadOnly = True
-        'farmername.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(farmername)
-
-        'farmername = New GridViewTextBoxColumn()
-        'farmername.FormatString = ""
-        'farmername.HeaderText = "Bank"
-        'farmername.Name = clsMPIncetiveEntryColumns.colMPBank
-        'farmername.Width = 100
-        'farmername.ReadOnly = True
-        'farmername.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(farmername)
-
-
-        'farmername = New GridViewTextBoxColumn()
-        'farmername.FormatString = ""
-        'farmername.HeaderText = "Account No"
-        'farmername.Name = clsMPIncetiveEntryColumns.colMPAccountNo
-        'farmername.Width = 150
-        'farmername.ReadOnly = True
-        'farmername.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(farmername)
-
-        'farmername = New GridViewTextBoxColumn()
-        'farmername.FormatString = ""
-        'farmername.HeaderText = "IFSC"
-        'farmername.Name = clsMPIncetiveEntryColumns.colMPIFSCCode
-        'farmername.Width = 150
-        'farmername.ReadOnly = True
-        'farmername.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(farmername)
-
-        'farmername = New GridViewTextBoxColumn()
-        'farmername.FormatString = ""
-        'farmername.HeaderText = "Phone No"
-        'farmername.Name = clsMPIncetiveEntryColumns.colMPPhoneNo
-        'farmername.Width = 150
-        'farmername.ReadOnly = True
-        'farmername.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(farmername)
-
-        'farmername = New GridViewTextBoxColumn()
-        'farmername.FormatString = ""
-        'farmername.HeaderText = "Aadhar No"
-        'farmername.Name = clsMPIncetiveEntryColumns.colMPAadharNo
-        'farmername.Width = 150
-        'farmername.ReadOnly = True
-        'farmername.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(farmername)
-
-
-        'Dim Qty As New GridViewDecimalColumn
-        'Qty.FormatString = ""
-        'Qty.HeaderText = "Qty"
-        'Qty.Name = clsMPIncetiveEntryColumns.colQty
-        'Qty.Width = 120
-        'Qty.ReadOnly = False
-        'Qty.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Qty)
-
-        'Dim UOM As New GridViewTextBoxColumn()
-        'UOM.FormatString = ""
-        'UOM.HeaderText = "UOM"
-        'UOM.Name = clsMPIncetiveEntryColumns.colUOM
-        'UOM.Width = 80
-        'UOM.ReadOnly = True
-        'UOM.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
-        'gvItem.Columns.Add(UOM)
-
-        'Qty = New GridViewDecimalColumn
-        'Qty.FormatString = ""
-        'Qty.HeaderText = "FAT"
-        'Qty.Name = clsMPIncetiveEntryColumns.colFAT
-        'Qty.Width = 120
-        'Qty.ReadOnly = False
-        'Qty.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Qty)
-
-        'Qty = New GridViewDecimalColumn
-        'Qty.FormatString = ""
-        'Qty.HeaderText = "SNF"
-        'Qty.Name = clsMPIncetiveEntryColumns.colSNF
-        'Qty.Width = 120
-        'Qty.ReadOnly = False
-        'Qty.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Qty)
-
-
-
-        'Dim Amount As New GridViewDecimalColumn
-        'Amount.FormatString = ""
-        'Amount.HeaderText = "Amount"
-        'Amount.Name = clsMPIncetiveEntryColumns.colAmount
-        'Amount.Width = 100
-        'Amount.FormatString = "{0:n2}"
-        'Amount.ReadOnly = Not SettApplyPashuAaharAndMineralMixture
-        'Amount.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Amount)
-
-        'Dim AmountActual As New GridViewDecimalColumn
-        'AmountActual.FormatString = ""
-        'AmountActual.HeaderText = "Amount Actual"
-        'AmountActual.Name = clsMPIncetiveEntryColumns.colAmountActual
-        'AmountActual.Width = 100
-        'AmountActual.FormatString = "{0:n2}"
-        'AmountActual.ReadOnly = True
-        'AmountActual.IsVisible = False
-        'AmountActual.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(AmountActual)
-
-
-        'Amount = New GridViewDecimalColumn
-        'Amount.FormatString = ""
-        'Amount.HeaderText = "Pashu Aahar Qty"
-        'Amount.Name = clsMPIncetiveEntryColumns.colPashuAaharQty
-        'Amount.Width = 100
-        'Amount.FormatString = "{0:n2}"
-        'Amount.ReadOnly = Not SettApplyPashuAaharAndMineralMixture
-        'Amount.IsVisible = SettApplyPashuAaharAndMineralMixture
-        'Amount.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Amount)
-
-        'Amount = New GridViewDecimalColumn
-        'Amount.FormatString = ""
-        'Amount.HeaderText = "Pashu Aahar Amount"
-        'Amount.Name = clsMPIncetiveEntryColumns.colPashuAaharAmt
-        'Amount.Width = 100
-        'Amount.FormatString = "{0:n2}"
-        'Amount.ReadOnly = True
-        'Amount.IsVisible = SettApplyPashuAaharAndMineralMixture
-        'Amount.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Amount)
-
-        'Amount = New GridViewDecimalColumn
-        'Amount.FormatString = ""
-        'Amount.HeaderText = "Mineral Mixture Qty"
-        'Amount.Name = clsMPIncetiveEntryColumns.colMineralMixtureQty
-        'Amount.Width = 100
-        'Amount.FormatString = "{0:n2}"
-        'Amount.ReadOnly = Not SettApplyPashuAaharAndMineralMixture
-        'Amount.IsVisible = SettApplyPashuAaharAndMineralMixture
-        'Amount.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Amount)
-
-        'Amount = New GridViewDecimalColumn
-        'Amount.FormatString = ""
-        'Amount.HeaderText = "Mineral Mixture Amount"
-        'Amount.Name = clsMPIncetiveEntryColumns.colMineralMixtureAmt
-        'Amount.Width = 100
-        'Amount.FormatString = "{0:n2}"
-        'Amount.ReadOnly = True
-        'Amount.IsVisible = SettApplyPashuAaharAndMineralMixture
-        'Amount.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Amount)
-
-        'Amount = New GridViewDecimalColumn
-        'Amount.FormatString = ""
-        'Amount.HeaderText = "Sailej Qty"
-        'Amount.Name = clsMPIncetiveEntryColumns.colSailejQty
-        'Amount.Width = 100
-        'Amount.FormatString = "{0:n2}"
-        'Amount.ReadOnly = Not SettApplyPashuAaharAndMineralMixture
-        'Amount.IsVisible = SettApplyPashuAaharAndMineralMixture
-        'Amount.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Amount)
-
-        'Amount = New GridViewDecimalColumn
-        'Amount.FormatString = ""
-        'Amount.HeaderText = "Sailej Amount"
-        'Amount.Name = clsMPIncetiveEntryColumns.colSailejAmt
-        'Amount.Width = 100
-        'Amount.FormatString = "{0:n2}"
-        'Amount.ReadOnly = True
-        'Amount.IsVisible = SettApplyPashuAaharAndMineralMixture
-        'Amount.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Amount)
-
-
-        'Amount = New GridViewDecimalColumn
-        'Amount.FormatString = ""
-        'Amount.HeaderText = "Rahat Kampekat Feed Qty"
-        'Amount.Name = clsMPIncetiveEntryColumns.colRahatKampekatFeedQty
-        'Amount.Width = 100
-        'Amount.FormatString = "{0:n2}"
-        'Amount.ReadOnly = Not SettApplyPashuAaharAndMineralMixture
-        'Amount.IsVisible = SettApplyPashuAaharAndMineralMixture
-        'Amount.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Amount)
-
-        'Amount = New GridViewDecimalColumn
-        'Amount.FormatString = ""
-        'Amount.HeaderText = "Rahat Kampekat Feed Amount"
-        'Amount.Name = clsMPIncetiveEntryColumns.colRahatKampekatFeedAmt
-        'Amount.Width = 100
-        'Amount.FormatString = "{0:n2}"
-        'Amount.ReadOnly = True
-        'Amount.IsVisible = SettApplyPashuAaharAndMineralMixture
-        'Amount.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Amount)
-
-
-
-
-        'Amount = New GridViewDecimalColumn
-        'Amount.FormatString = ""
-        'Amount.HeaderText = "Total Amount"
-        'Amount.Name = clsMPIncetiveEntryColumns.colTotAmount
-        'Amount.Width = 100
-        'Amount.FormatString = "{0:n2}"
-        'Amount.ReadOnly = True
-        'Amount.IsVisible = True
-        'Amount.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        'gvItem.Columns.Add(Amount)
-
-
-        'gvItem.AllowAddNewRow = False
-        'gvItem.AllowDeleteRow = True
-        'gvItem.AllowRowReorder = False
-        'gvItem.ShowGroupPanel = False
-        'gvItem.EnableFiltering = True
-        'gvItem.ShowFilteringRow = True
-        'gvItem.EnableSorting = False
-        'gvItem.EnableGrouping = False
-        'gvItem.AddNewRowPosition = Telerik.WinControls.UI.SystemRowPosition.Bottom
-        'gvItem.GridBehavior = New MyBehavior()
-
-
-        'Dim summaryRowItem As New GridViewSummaryRowItem()
-        'summaryRowItem.Add(New GridViewSummaryItem(clsMPIncetiveEntryColumns.colQty, "{0:n2}", GridAggregateFunction.Sum))
-        'summaryRowItem.Add(New GridViewSummaryItem(clsMPIncetiveEntryColumns.colAmount, "{0:n2}", GridAggregateFunction.Sum))
-        'summaryRowItem.Add(New GridViewSummaryItem(clsMPIncetiveEntryColumns.colAmountActual, "{0:n2}", GridAggregateFunction.Sum))
-        'summaryRowItem.Add(New GridViewSummaryItem(clsMPIncetiveEntryColumns.colPashuAaharAmt, "{0:n2}", GridAggregateFunction.Sum))
-        'summaryRowItem.Add(New GridViewSummaryItem(clsMPIncetiveEntryColumns.colMineralMixtureQty, "{0:n2}", GridAggregateFunction.Sum))
-        'summaryRowItem.Add(New GridViewSummaryItem(clsMPIncetiveEntryColumns.colMineralMixtureAmt, "{0:n2}", GridAggregateFunction.Sum))
-        'summaryRowItem.Add(New GridViewSummaryItem(clsMPIncetiveEntryColumns.colSailejQty, "{0:n2}", GridAggregateFunction.Sum))
-        'summaryRowItem.Add(New GridViewSummaryItem(clsMPIncetiveEntryColumns.colSailejAmt, "{0:n2}", GridAggregateFunction.Sum))
-        'summaryRowItem.Add(New GridViewSummaryItem(clsMPIncetiveEntryColumns.colRahatKampekatFeedQty, "{0:n2}", GridAggregateFunction.Sum))
-        'summaryRowItem.Add(New GridViewSummaryItem(clsMPIncetiveEntryColumns.colRahatKampekatFeedAmt, "{0:n2}", GridAggregateFunction.Sum))
-        'summaryRowItem.Add(New GridViewSummaryItem(clsMPIncetiveEntryColumns.colTotAmount, "{0:n2}", GridAggregateFunction.Sum))
-        'gvItem.MasterTemplate.SummaryRowsBottom.Add(summaryRowItem)
-
     End Sub
     Private Sub SetUserMgmtNew()
-        ''MyBase.SetUserMgmt(clsUserMgtCode.FrmVLCDataUploaderManual)
-        'If Not (MyBase.isReadFlag) Then
-        '    Throw New Exception("Permission Denied")
-        'End If
-        'btnsave.Visible = MyBase.isModifyFlag
-        'btnDelete.Visible = MyBase.isDeleteFlag
-        'btnPost.Visible = MyBase.isPostFlag
-        'If MyBase.isExport = True Then
-        '    rmimport.Enabled = True
-        '    rmExport.Enabled = True
-        '    RadMenuItem4.Enabled = True
-        '    RadMenuItem5.Enabled = True
-        'Else
-        '    rmimport.Enabled = False
-        '    rmExport.Enabled = False
-        '    RadMenuItem4.Enabled = False
-        '    RadMenuItem5.Enabled = False
-        'End If
-
-        'RadMenu1.Visible = MyBase.isExport
+        'MyBase.SetUserMgmt(clsUserMgtCode.FrmVLCDataUploaderManual)
+        If Not (MyBase.isReadFlag) Then
+            Throw New Exception("Permission Denied")
+        End If
+        btnsave.Visible = MyBase.isModifyFlag
+        btndelete.Visible = MyBase.isDeleteFlag
+        btnPost.Visible = MyBase.isPostFlag
     End Sub
     Sub Reset()
         loadBlankGrid()
@@ -466,6 +131,7 @@ Public Class frmDBTMonthlyFarmerMilk
                         objTr = New clsDBTMonthlyFarmerMilkDetail()
                         objTr.VLC_Code = clsCommon.myCstr(grow.Cells(colVLCCode).Value)
                         objTr.MP_Code = clsCommon.myCstr(grow.Cells(colMPCode).Value)
+                        objTr.Collection_Qty = clsCommon.myCdbl(grow.Cells(colCollectionQty).Value)
                         objTr.Qty = clsCommon.myCdbl(grow.Cells(colQty).Value)
                         obj.arr.Add(objTr)
                     End If
@@ -566,6 +232,11 @@ Public Class frmDBTMonthlyFarmerMilk
             gvItem.Columns(colMPName).ReadOnly = True
             gvItem.Columns(colMPName).TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
 
+            gvItem.Columns(colCollectionQty).HeaderText = "Collection Quantity"
+            gvItem.Columns(colCollectionQty).Width = 120
+            gvItem.Columns(colCollectionQty).ReadOnly = False
+            gvItem.Columns(colCollectionQty).TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+
             gvItem.Columns(colQty).HeaderText = "Quantity"
             gvItem.Columns(colQty).Width = 120
             gvItem.Columns(colQty).ReadOnly = False
@@ -582,6 +253,8 @@ Public Class frmDBTMonthlyFarmerMilk
 
             gvItem.MasterTemplate.SummaryRowsBottom.Clear()
             Dim summaryRowItem As New GridViewSummaryRowItem()
+            summaryRowItem.Add(New GridViewSummaryItem(colCollectionQty, "{0:n2}", GridAggregateFunction.Sum))
+            gvItem.MasterTemplate.SummaryRowsBottom.Add(summaryRowItem)
             summaryRowItem.Add(New GridViewSummaryItem(colQty, "{0:n2}", GridAggregateFunction.Sum))
             gvItem.MasterTemplate.SummaryRowsBottom.Add(summaryRowItem)
             gvItem.MasterView.SummaryRows(0).PinPosition = PinnedRowPosition.Bottom
@@ -722,10 +395,11 @@ Public Class frmDBTMonthlyFarmerMilk
             Throw New Exception("Please select " + txtDBTReco.MyLinkLable1.Text)
         End If
         loadBlankGrid()
-        Dim Mcc_Uom As String = clsDBFuncationality.getSingleValue("select Uom_Code from TSPL_Mcc_UOM_DETAIL where Stocking_Unit='Y' and  MCC_CODE='" & txtDBTReco.Value & "'")
-        Dim Qry As String = "Select VLC_Code,max(Vlc_Code_VLC_Uploader) As Vlc_Code_VLC_Uploader,max(VLC_Name) As VLC_Name,MP_Code,max(MP_Uploader_Code) As MP_Uploader_Code,max(MP_Name) As MP_Name,sum(qty) As Qty,MAX(THIRD_PARTY_CODE)THIRD_PARTY_CODE from (  
+        'Dim Mcc_Uom As String = clsDBFuncationality.getSingleValue("select Uom_Code from TSPL_Mcc_UOM_DETAIL where Stocking_Unit='Y' and  MCC_CODE='" & txtDBTReco.Value & "'")
+        Dim Qry As String = "Select VLC_Code,max(Vlc_Code_VLC_Uploader) As Vlc_Code_VLC_Uploader,max(VLC_Name) As VLC_Name,MP_Code,max(MP_Uploader_Code) As MP_Uploader_Code,max(MP_Name) As MP_Name,sum(Collection_Qty) As Collection_Qty,sum(qty) As Qty,MAX(THIRD_PARTY_CODE)THIRD_PARTY_CODE from (
+select Doc_Date,VLC_Code,max(Vlc_Code_VLC_Uploader) As Vlc_Code_VLC_Uploader,max(VLC_Name) As VLC_Name,MP_Code,max(MP_Uploader_Code) As MP_Uploader_Code,max(MP_Name) As MP_Name,sum(qty) as Collection_Qty ,(case when max(DBT_Capping_Qty)>0 and sum(qty)>max(DBT_Capping_Qty) then  max(DBT_Capping_Qty) else sum(qty) end)  As Qty,MAX(THIRD_PARTY_CODE)THIRD_PARTY_CODE from (
  select Doc_No,Convert(Varchar(10),Doc_Date,103)Doc_Date,shift,TSPL_VLC_MASTER_HEAD.VLC_Code, TSPL_VLC_MASTER_HEAD.Vlc_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Name,
-TSPl_MP_MAster.MP_CODE,TSPl_MP_MAster.MP_Name, TSPl_MP_MAster.MP_Code_VLC_Uploader As MP_Uploader_Code,TSPL_VLC_DATA_UPLOADER.qty ,TSPl_MP_MAster.THIRD_PARTY_CODE
+TSPl_MP_MAster.MP_CODE,TSPl_MP_MAster.MP_Name, TSPl_MP_MAster.MP_Code_VLC_Uploader As MP_Uploader_Code,TSPL_VLC_DATA_UPLOADER.qty ,TSPl_MP_MAster.THIRD_PARTY_CODE,isnull(TSPl_MP_MAster.DBT_Capping_Qty,0) as DBT_Capping_Qty
 from TSPL_VLC_DATA_UPLOADER
 Left Join TSPL_VLC_MASTER_HEAD On TSPL_VLC_MASTER_HEAD.Vlc_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.VLC_CODE
 Left Join TSPl_MP_MAster On TSPl_MP_MAster.MP_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.MP_CODE and TSPl_MP_MAster.VLC_Code=TSPL_VLC_MASTER_HEAD.VLC_Code
@@ -735,13 +409,14 @@ where TSPL_VLC_DATA_UPLOADER.Doc_Date>='" & clsCommon.GetPrintDate(txtFromDate.V
  select  TSPL_VLC_DATA_UPLOADER_MASTER.Document_Code As Doc_No,
 Convert(Varchar(10),TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103) As Doc_Date, TSPL_VLC_DATA_UPLOADER_MASTER.Shift,TSPL_VLC_DATA_UPLOADER_MASTER.VLC_CODE,
 TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Name,TSPl_MP_MAster.MP_CODE,TSPl_MP_MAster.MP_Name,
-TSPl_MP_MAster.MP_Code_VLC_Uploader As MP_Uploader_Code,TSPL_VLC_DATA_UPLOADER_DETAIL.qty ,TSPl_MP_MAster.THIRD_PARTY_CODE
+TSPl_MP_MAster.MP_Code_VLC_Uploader As MP_Uploader_Code,TSPL_VLC_DATA_UPLOADER_DETAIL.qty ,TSPl_MP_MAster.THIRD_PARTY_CODE,isnull(TSPl_MP_MAster.DBT_Capping_Qty,0) as DBT_Capping_Qty
 from TSPL_VLC_DATA_UPLOADER_DETAIL
 Left Outer Join TSPL_VLC_DATA_UPLOADER_MASTER On TSPL_VLC_DATA_UPLOADER_MASTER.Document_Code=TSPL_VLC_DATA_UPLOADER_DETAIL.Document_Code
 Left Join TSPL_VLC_MASTER_HEAD On TSPL_VLC_MASTER_HEAD.Vlc_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER_MASTER.VLC_CODE
 Left Join TSPl_MP_MAster On TSPl_MP_MAster.MP_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER_DETAIL.Farmer_Code and TSPl_MP_MAster.VLC_Code=TSPL_VLC_MASTER_HEAD.VLC_Code
  inner join (select VLC_Code,Document_Code from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL union all select VLC_Code,Document_Code from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID) as TSPL_DCS_MP_INCENTIVE_RECO_DETAIL on TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.VLC_Code=TSPL_VLC_DATA_UPLOADER_MASTER.VLC_CODE
  where  convert(date,TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103) >='" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "' And convert(date,TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103)<= '" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "'  and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code='" & txtDBTReco.Value & "' 
+) x group by VLC_Code,MP_CODE,Doc_Date
 ) xx where MP_CODE is not null group by VLC_Code,MP_CODE  order by Vlc_Code_VLC_Uploader,MP_Uploader_Code"
         Dim dt As DataTable = clsDBFuncationality.GetDataTable(Qry)
         If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
@@ -750,12 +425,11 @@ Left Join TSPl_MP_MAster On TSPl_MP_MAster.MP_Code_VLC_Uploader=TSPL_VLC_DATA_UP
         End If
     End Sub
 
-
-
-
-
-
     Private Sub btnPost_Click(sender As Object, e As EventArgs) Handles btnPost.Click
+        PostData()
+    End Sub
+
+    Private Sub PostData()
         Try
             Dim qry As String = ""
             Dim msg As String = ""
@@ -770,8 +444,6 @@ Left Join TSPl_MP_MAster On TSPl_MP_MAster.MP_Code_VLC_Uploader=TSPL_VLC_DATA_UP
             common.clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try
     End Sub
-
-
 
     Private Sub gvItem_CellValueChanged(sender As Object, e As GridViewCellEventArgs) Handles gvItem.CellValueChanged
         'Try

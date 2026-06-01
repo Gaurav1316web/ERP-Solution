@@ -167,6 +167,7 @@ Public Class clsDBTMonthlyFarmerMilkDetail
     Public MP_Code As String = Nothing
     Public MP_Uploader_Code As String = Nothing ''Not a Table Column
     Public MP_Name As String = Nothing ''Not a Table Column
+    Public Collection_Qty As Decimal
     Public Qty As Decimal
 #End Region
     Public Shared Function SaveData(ByVal FromDate As Date, ByVal arrObj As List(Of clsDBTMonthlyFarmerMilkDetail), ByVal strDocNo As String, ByVal trans As SqlTransaction) As Boolean
@@ -183,6 +184,7 @@ Public Class clsDBTMonthlyFarmerMilkDetail
                     clsCommon.AddColumnsForChange(coll, "Cycle_No", 1)
                     clsCommon.AddColumnsForChange(coll, "Cycle_Month", FromDate.Month)
                     clsCommon.AddColumnsForChange(coll, "Cycle_Year", FromDate.Year)
+                    clsCommon.AddColumnsForChange(coll, "Collection_Qty", obj.Collection_Qty)
                     clsCommon.AddColumnsForChange(coll, "Qty", obj.Qty)
                     clsCommonFunctionality.UpdateDataTable(coll, "TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL", OMInsertOrUpdate.Insert, "", trans)
                 Next
@@ -214,6 +216,7 @@ where TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.Document_Code='" & strDocNo & "'"
                     obj.MP_Code = clsCommon.myCstr(dt.Rows(i)("MP_Code"))
                     obj.MP_Uploader_Code = clsCommon.myCstr(dt.Rows(i)("MP_Code_VLC_Uploader"))
                     obj.MP_Name = clsCommon.myCstr(dt.Rows(i)("MP_Name"))
+                    obj.Collection_Qty = clsCommon.myCdbl(dt.Rows(i)("Collection_Qty"))
                     obj.Qty = clsCommon.myCdbl(dt.Rows(i)("Qty"))
                     arrObj.Add(obj)
                 Next
@@ -226,7 +229,7 @@ where TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.Document_Code='" & strDocNo & "'"
 
     Public Shared Function GetQry(ByVal strDocNo As String) As String
         Dim qry As String = ""
-        qry = "Select  TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.VLC_Code,TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Name,TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.MP_Code,TSPL_MP_MASTER.MP_Code_VLC_Uploader as MP_Uploader_Code,TSPL_MP_MASTER.MP_Name,TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.Qty,TSPL_MP_MASTER.THIRD_PARTY_CODE
+        qry = "Select  TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.VLC_Code,TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Name,TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.MP_Code,TSPL_MP_MASTER.MP_Code_VLC_Uploader as MP_Uploader_Code,TSPL_MP_MASTER.MP_Name,TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.Collection_Qty,TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.Qty,TSPL_MP_MASTER.THIRD_PARTY_CODE
 from TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL 
 left outer join TSPL_DBT_MONTHLY_FARMER_MILK on TSPL_DBT_MONTHLY_FARMER_MILK.Document_Code=TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.Document_Code
 Left Outer Join TSPL_MP_MASTER On TSPL_MP_MASTER.MP_Code=TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.MP_Code   

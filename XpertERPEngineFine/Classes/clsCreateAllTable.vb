@@ -57487,6 +57487,7 @@ where len( ISNULL(Bank_Code_Saving,''))>0 and TSPL_PAYMENT_PROCESS_DETAIL.Bank_A
             coll.Add("Cycle_Month", "integer NULL ")
             coll.Add("Cycle_Year", "integer NULL ")
             coll.Add("Qty", "Decimal(18,2) null")
+            coll.Add("Collection_Qty", "Decimal(18,2) null")
             clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL", coll, "", True, False, "TSPL_MP_INCENTIVE_ENTRY_HEAD", "Document_Code", "")
 
 
