@@ -593,7 +593,10 @@ where TSPL_MP_INCENTIVE_ENTRY_HEAD.Status=1  and CONVERT(date,TSPL_MP_INCENTIVE_
             Gv1.Columns("Payable_Amount").IsVisible = True
             Gv1.Columns("Quantity").IsVisible = True
             Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
-            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
+
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = False
+            Gv1.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
+
             Dim summaryRowItem As New GridViewSummaryRowItem()
             Dim item1 As New GridViewSummaryItem("Quantity", "{0:F2}", GridAggregateFunction.Sum)
             summaryRowItem.Add(item1)
@@ -622,7 +625,9 @@ where TSPL_MP_INCENTIVE_ENTRY_HEAD.Status=1  and CONVERT(date,TSPL_MP_INCENTIVE_
             Gv1.Columns("Amount").HeaderText = "Amount"
             Gv1.Columns("Amount").IsVisible = True
             Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
-            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = False
+            Gv1.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
+
             Dim summaryRowItem As New GridViewSummaryRowItem()
             'Dim item1 As New GridViewSummaryItem("Qty", "{0:F2}", GridAggregateFunction.Sum)
             'summaryRowItem.Add(item1)
@@ -890,7 +895,8 @@ where TSPL_MP_INCENTIVE_ENTRY_HEAD.Status=1  and CONVERT(date,TSPL_MP_INCENTIVE_
             Gv1.Columns("JA_voterId").IsVisible = False
 
             Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
-            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = False
+            Gv1.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
 
 
             Gv1.Columns("Mineral_Mixture_Qty").HeaderText = "Mineral Mixture Qty"
@@ -1102,7 +1108,8 @@ where TSPL_MP_INCENTIVE_ENTRY_HEAD.Status=1  and CONVERT(date,TSPL_MP_INCENTIVE_
             Gv1.Columns("Total_Amount").HeaderText = "Total Amount"
 
             Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
-            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = False
+            Gv1.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
 
 
             If clsCommon.CompairString(ddlType.SelectedValue, "Mineral Mixture") = CompairStringResult.Equal Then
@@ -1398,7 +1405,9 @@ where TSPL_MP_INCENTIVE_ENTRY_HEAD.Status=1  and CONVERT(date,TSPL_MP_INCENTIVE_
             Gv1.Columns("Payable_Amount").IsVisible = True
 
             Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
-            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = False
+            Gv1.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
+
         ElseIf rbtnFarmerBankWiseSummary.IsChecked Then
             Gv1.Columns("Comp_Name").HeaderText = "VLC Code"
             Gv1.Columns("Comp_Name").IsVisible = False
@@ -1430,8 +1439,13 @@ where TSPL_MP_INCENTIVE_ENTRY_HEAD.Status=1  and CONVERT(date,TSPL_MP_INCENTIVE_
 
             Gv1.Columns("Quantity").HeaderText = "Quantity"
             Gv1.Columns("Quantity").IsVisible = True
+
             Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
-            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = True
+            Gv1.Columns("THIRD_PARTY_CODE").IsVisible = False
+            Gv1.Columns("THIRD_PARTY_CODE").ReadOnly = True
+
+            Gv1.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
+
         End If
         Gv1.AutoSizeRows = False
         Gv1.BestFitColumns()

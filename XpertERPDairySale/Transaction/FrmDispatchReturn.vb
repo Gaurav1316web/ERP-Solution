@@ -8995,7 +8995,7 @@ left join TSPL_DISTRIBUTOR_ROUTE on TSPL_DISTRIBUTOR_ROUTE_CUSTOMER.Code=TSPL_DI
                 End If
             End If
 
-            clsDSSalesReturnHead.CancelData(Me.Form_ID, txtDocNo.Value, NavigatorType.Current)
+            clsDSSalesReturnHead.CancelData(Me.Form_ID, txtDocNo.Value, NavigatorType.Current, False)
             clsCommon.MyMessageBoxShow(Me, "Successfully Cancelled", Me.Text)
             AddNew()
         Catch ex As Exception

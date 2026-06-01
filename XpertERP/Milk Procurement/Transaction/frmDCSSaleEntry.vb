@@ -2888,21 +2888,23 @@ left outer join  TSPL_ITEM_CATEGORY_LEVEL_VALUES on TSPL_ITEM_CATEGORY_LEVEL_VAL
                     Dim isTaxable As Boolean = clsCommon.myCBool(clsDBFuncationality.getSingleValue("select istaxable from tspl_item_master where item_code ='" + clsCommon.myCstr(gv1.CurrentRow.Cells(colICode).Value) + "'") = 1)
                     GSTStatus = clsERPFuncationality.GetGSTStatus(txtDate.Value)
                     Dim TaxGroup As String = ""
-                    If GSTStatus = False OrElse (isTaxable AndAlso GSTStatus) Then
-                        TaxGroup = clsLocationWiseTax.GetDefaultTaxGroup(txtBillToLocation.Value, txtVendorNo.Value, "S", txtDate.Value)
-                    Else
-                        If isTaxable = False Then
-                            TaxGroup = clsLocationWiseTax.GetExempedDefaultTaxGroup(True, txtBillToLocation.Value, txtVendorNo.Value, "S", txtDate.Value)
-                        End If
-                    End If
+                    ' If GSTStatus = False OrElse (isTaxable AndAlso GSTStatus) Then
+                    TaxGroup = clsTaxGroupMaster.GetTaxGroupFromTaxGroupMaster(txtBillToLocation.Value, txtVendorNo.Value, "S", isTaxable, txtDate.Value)
+                    'Else
+                    '    If isTaxable = False Then
+                    '        TaxGroup = clsLocationWiseTax.GetExempedDefaultTaxGroup(True, txtBillToLocation.Value, txtVendorNo.Value, "S", txtDate.Value)
+                    '    End If
+                    'End If
 
                     Dim qry1 As String = " select Top 1 TSPL_ITEM_WISE_TAX_GROUP.Tax_Group_Code from TSPL_ITEM_WISE_TAX Inner Join TSPL_ITEM_WISE_TAX_AUTHORITY On TSPL_ITEM_WISE_TAX_AUTHORITY.HCODE=TSPL_ITEM_WISE_TAX.HCODE
 Inner Join TSPL_ITEM_WISE_TAX_GROUP On TSPL_ITEM_WISE_TAX_GROUP.HCODE=TSPL_ITEM_WISE_TAX_AUTHORITY.HCODE
-where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_WISE_TAX_GROUP.Item_Code='" + clsCommon.myCstr(gv1.CurrentRow.Cells(colICode).Value) + "' Group By CONVERT(date,TSPL_ITEM_WISE_TAX.DOC_DATE,103),TSPL_ITEM_WISE_TAX_GROUP.Tax_Group_Code "
+where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_WISE_TAX_GROUP.Item_Code='" + clsCommon.myCstr(gv1.CurrentRow.Cells(colICode).Value) + "' "
+
                     If clsCommon.myLen(TaxGroup) > 0 Then
-                        qry += "  and TSPL_ITEM_WISE_TAX_GROUP.Tax_Group_Code ='" & TaxGroup & "'"
+                        qry1 += "  and TSPL_ITEM_WISE_TAX_GROUP.Tax_Group_Code ='" & TaxGroup & "'"
                     End If
-                    qry += " Order By CONVERT(date,TSPL_ITEM_WISE_TAX.DOC_DATE,103) Desc"
+                    qry1 += " Group By CONVERT(date,TSPL_ITEM_WISE_TAX.DOC_DATE,103),TSPL_ITEM_WISE_TAX_GROUP.Tax_Group_Code "
+                    qry1 += " Order By CONVERT(date,TSPL_ITEM_WISE_TAX.DOC_DATE,103) Desc"
 
                     If isTaxable Then
                         gv1.CurrentRow.Cells(colTaxGroup).Value = clsDBFuncationality.getSingleValue(qry1)
@@ -4703,7 +4705,7 @@ left outer join TSPL_VENDOR_MASTER on TSPL_VENDOR_MASTER.Vendor_Code= TSPL_CUSTO
     End Sub
 
     Sub SetTaxDetails(ByVal intRow As Integer)
-        Dim dt As DataTable = clsTaxGroupMaster.GetTaxDetailsByLocation(gv1.Rows(intRow).Cells(colTaxGroup).Value, "S", txtVendorNo.Value, txtBillToLocation.Value)
+        Dim dt As DataTable = clsTaxGroupMaster.GetTaxDetailsOfSale(gv1.Rows(intRow).Cells(colTaxGroup).Value, "S")
         If (dt IsNot Nothing AndAlso dt.Rows.Count > 0) Then
             If (dt.Rows.Count > 10) Then
                 MessageBox.Show("Can't Handle More than 10 Tax Types in a Group")
@@ -4768,7 +4770,7 @@ left outer join TSPL_VENDOR_MASTER on TSPL_VENDOR_MASTER.Vendor_Code= TSPL_CUSTO
         UpdateAllTotals()
     End Sub
     Sub SetitemWiseTaxSetting(ByVal isChangeRate As Boolean, ByVal isForCurrentRow As Boolean, ByVal intRowNo As Integer)
-        Dim dt As DataTable = clsTaxGroupMaster.GetTaxDetailsByLocation(gv1.Rows(intRowNo).Cells(colTaxGroup).Value, "S", txtVendorNo.Value, txtBillToLocation.Value)
+        Dim dt As DataTable = clsTaxGroupMaster.GetTaxDetailsOfSale(gv1.Rows(intRowNo).Cells(colTaxGroup).Value, "S")
         If (dt IsNot Nothing AndAlso dt.Rows.Count > 0) Then
             If isForCurrentRow Then
                 BlankTaxDetails(gv1.CurrentRow.Index, isChangeRate)

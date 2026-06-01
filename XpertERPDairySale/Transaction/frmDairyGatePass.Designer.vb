@@ -1701,7 +1701,7 @@ Partial Class frmDairyGatePass
         '
         Me.btnHistory.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnHistory.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnHistory.Location = New System.Drawing.Point(746, 4)
+        Me.btnHistory.Location = New System.Drawing.Point(746, 3)
         Me.btnHistory.Name = "btnHistory"
         Me.btnHistory.Size = New System.Drawing.Size(68, 24)
         Me.btnHistory.TabIndex = 1036
@@ -1711,9 +1711,9 @@ Partial Class frmDairyGatePass
         '
         Me.btnBoothSlip.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnBoothSlip.Items.AddRange(New Telerik.WinControls.RadItem() {Me.RadMenuItem3, Me.btnExcel})
-        Me.btnBoothSlip.Location = New System.Drawing.Point(646, 5)
+        Me.btnBoothSlip.Location = New System.Drawing.Point(646, 3)
         Me.btnBoothSlip.Name = "btnBoothSlip"
-        Me.btnBoothSlip.Size = New System.Drawing.Size(80, 23)
+        Me.btnBoothSlip.Size = New System.Drawing.Size(80, 24)
         Me.btnBoothSlip.TabIndex = 1035
         Me.btnBoothSlip.Text = "Booth Slip"
         '
@@ -1731,7 +1731,7 @@ Partial Class frmDairyGatePass
         '
         Me.btnPrint2.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnPrint2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPrint2.Location = New System.Drawing.Point(287, 5)
+        Me.btnPrint2.Location = New System.Drawing.Point(286, 3)
         Me.btnPrint2.Name = "btnPrint2"
         Me.btnPrint2.Size = New System.Drawing.Size(68, 24)
         Me.btnPrint2.TabIndex = 2
@@ -1741,7 +1741,7 @@ Partial Class frmDairyGatePass
         '
         Me.btnGPCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnGPCancel.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnGPCancel.Location = New System.Drawing.Point(503, 5)
+        Me.btnGPCancel.Location = New System.Drawing.Point(504, 3)
         Me.btnGPCancel.Name = "btnGPCancel"
         Me.btnGPCancel.Size = New System.Drawing.Size(69, 24)
         Me.btnGPCancel.TabIndex = 1034
@@ -1763,7 +1763,7 @@ Partial Class frmDairyGatePass
         '
         Me.btnReverse.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnReverse.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnReverse.Location = New System.Drawing.Point(575, 5)
+        Me.btnReverse.Location = New System.Drawing.Point(575, 3)
         Me.btnReverse.Name = "btnReverse"
         Me.btnReverse.Size = New System.Drawing.Size(69, 24)
         Me.btnReverse.TabIndex = 7
@@ -1774,7 +1774,7 @@ Partial Class frmDairyGatePass
         '
         Me.btnDelete.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnDelete.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnDelete.Location = New System.Drawing.Point(218, 5)
+        Me.btnDelete.Location = New System.Drawing.Point(216, 3)
         Me.btnDelete.Name = "btnDelete"
         Me.btnDelete.Size = New System.Drawing.Size(68, 24)
         Me.btnDelete.TabIndex = 6
@@ -1785,7 +1785,7 @@ Partial Class frmDairyGatePass
         '
         Me.btnPrint.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnPrint.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPrint.Location = New System.Drawing.Point(147, 5)
+        Me.btnPrint.Location = New System.Drawing.Point(146, 3)
         Me.btnPrint.Name = "btnPrint"
         Me.btnPrint.Size = New System.Drawing.Size(68, 24)
         Me.btnPrint.TabIndex = 1
@@ -1795,9 +1795,9 @@ Partial Class frmDairyGatePass
         '
         Me.RadSplitButton1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.RadSplitButton1.Items.AddRange(New Telerik.WinControls.RadItem() {Me.RadMenuItem1, Me.RadMenuItem2, Me.RadMenuItem4})
-        Me.RadSplitButton1.Location = New System.Drawing.Point(356, 5)
+        Me.RadSplitButton1.Location = New System.Drawing.Point(356, 3)
         Me.RadSplitButton1.Name = "RadSplitButton1"
-        Me.RadSplitButton1.Size = New System.Drawing.Size(80, 23)
+        Me.RadSplitButton1.Size = New System.Drawing.Size(80, 24)
         Me.RadSplitButton1.TabIndex = 3
         Me.RadSplitButton1.Text = "Print"
         Me.RadSplitButton1.Visible = False
@@ -1821,7 +1821,7 @@ Partial Class frmDairyGatePass
         '
         Me.btnPost.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnPost.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPost.Location = New System.Drawing.Point(76, 5)
+        Me.btnPost.Location = New System.Drawing.Point(76, 3)
         Me.btnPost.Name = "btnPost"
         Me.btnPost.Size = New System.Drawing.Size(68, 24)
         Me.btnPost.TabIndex = 4
@@ -1831,7 +1831,7 @@ Partial Class frmDairyGatePass
         '
         Me.btnSelect.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnSelect.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSelect.Location = New System.Drawing.Point(437, 5)
+        Me.btnSelect.Location = New System.Drawing.Point(438, 3)
         Me.btnSelect.Name = "btnSelect"
         Me.btnSelect.Size = New System.Drawing.Size(64, 24)
         Me.btnSelect.TabIndex = 2
@@ -1842,7 +1842,7 @@ Partial Class frmDairyGatePass
         '
         Me.btnSave.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnSave.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSave.Location = New System.Drawing.Point(6, 5)
+        Me.btnSave.Location = New System.Drawing.Point(6, 3)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(68, 24)
         Me.btnSave.TabIndex = 0
@@ -1852,7 +1852,7 @@ Partial Class frmDairyGatePass
         '
         Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.btnClose.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnClose.Location = New System.Drawing.Point(1101, 4)
+        Me.btnClose.Location = New System.Drawing.Point(1101, 3)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(68, 24)
         Me.btnClose.TabIndex = 5

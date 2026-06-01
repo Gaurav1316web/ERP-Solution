@@ -17,6 +17,7 @@ Public Class frmBatchItemOut
     Public isCencelButtonClicked As Boolean = False
     Public strLoadoutNo As String = ""
     Public strShipmentNo As String = ""
+    Public strIsWithoutInvoice As Boolean = False
     Public ArrTransferNo As New ArrayList()
 
     Const colManualBatch As String = "colManualBatch"
@@ -626,7 +627,10 @@ Public Class frmBatchItemOut
                 ElseIf clsCommon.CompairString(strCurrDocType.ToUpper(), "SRN") = CompairStringResult.Equal Then
                     qry += " and(TSPL_BATCH_ITEM.Document_Type =" + "'" + strCurrDocType + "' and TSPL_BATCH_ITEM.Document_Code in ('" + strCurrDocNo + "'))  "
                 Else
-                    qry += " and(TSPL_BATCH_ITEM.Document_Type =" + "'" + strCurrDocType.Substring(0, 2) + "-SH' and TSPL_BATCH_ITEM.Document_Code in (select Document_Code from TSPL_SD_SHIPMENT_HEAD where Document_Code='" + strShipmentNo + "'))  "
+                    If Not strIsWithoutInvoice Then
+                        qry += " and(TSPL_BATCH_ITEM.Document_Type =" + "'" + strCurrDocType.Substring(0, 2) + "-SH' and TSPL_BATCH_ITEM.Document_Code in (select Document_Code from TSPL_SD_SHIPMENT_HEAD where Document_Code='" + strShipmentNo + "'))  "
+
+                    End If
                 End If
 
                 qry += "" + Environment.NewLine
