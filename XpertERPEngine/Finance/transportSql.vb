@@ -1241,12 +1241,14 @@ xxx:
 
             'End If
 
+            Dim MergedHeaderRowIndex As Integer
             If doubleheadershowninExcel Then
                 Dim view As New ColumnGroupsViewDefinition()
                 view = gv.ViewDefinition
                 Dim j1 As Integer = 1
                 If view.ColumnGroups.Count > 0 Then
                     Dim chartRange As Excel.Range
+                    MergedHeaderRowIndex = rowIndex
                     For i As Integer = 0 To view.ColumnGroups.Count - 1
                         Dim visibleColCount As Integer = 0
                         'Count only visible columns
@@ -1427,6 +1429,10 @@ xxx:
             If AllCellsInString Then
                 wSheet.Rows.AutoFit()
                 wSheet.Columns.AutoFit()
+            End If
+
+            If doubleheadershowninExcel AndAlso MergedHeaderRowIndex > 0 Then
+                wSheet.Rows(MergedHeaderRowIndex).RowHeight = 50
             End If
 
             'Manadatory Field Coloring
