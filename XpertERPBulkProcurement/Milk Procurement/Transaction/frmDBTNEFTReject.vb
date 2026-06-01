@@ -432,6 +432,8 @@ group by xx.PK_Id having sum(RI)>0"
             gvItem.Columns("TRANSACTION DESC CREDIT").HeaderText = "TRANSACTION DESC CREDIT"
             gvItem.Columns("Remarks").HeaderText = "Status"
             gvItem.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
+            gvItem.Columns("THIRD_PARTY_CODE").IsVisible = False
+            gvItem.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
 
             gvItem.AllowAddNewRow = False
             gvItem.AllowDeleteRow = True

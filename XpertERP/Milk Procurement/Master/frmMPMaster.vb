@@ -2346,212 +2346,563 @@ Public Class FrmMPMaster
 
         Dim strdate As Date = clsCommon.GETSERVERDATE(trans, "dd/MMM/yyyy")
 
+        'If transportSql.importExcel(gv, "MP Code", "MP Name", "Mp uploder Code", "Dcs Code", "Dcs Name", "THIRD PARTY CODE", "Third Party Source") Then
+
+        '    Try
+
+        '        clsCommon.ProgressBarShow()
+
+        '        Dim arrMP As New List(Of String)
+
+        '        For Each grow As GridViewRowInfo In gv.Rows
+
+        '            Dim strData As String = clsCommon.myCstr(grow.Cells("MP Code").Value)
+
+        '            If clsCommon.myLen(strData) > 0 Then
+
+        '                If Not arrMP.Contains(strData) Then
+        '                    arrMP.Add(strData)
+        '                End If
+
+        '            End If
+
+        '        Next
+
+        '        For Each grow As GridViewRowInfo In gv.Rows
+
+        '            Dim obj As New clsAnimalDetails
+
+        '            i = i + 1
+
+        '            '========================
+        '            ' MP CODE
+        '            '========================
+
+        '            Dim strData As String = clsCommon.myCstr(grow.Cells("MP Code").Value)
+
+        '            If clsCommon.myLen(strData) <= 0 Then
+        '                Throw New Exception("MP Code Can Not Be Left Blank")
+        '            End If
+
+        '            If clsCommon.myLen(strData) > 30 Then
+        '                Throw New Exception("MP Code Can Not Be Larger Then 30 Character")
+        '            End If
+
+        '            If clsDBFuncationality.getSingleValue(
+        '                "select count(*) from tspl_mp_master where mp_code='" & strData & "'",
+        '                trans) = 0 Then
+
+        '                Throw New Exception("Invalid MP Code. Code Not Found In Master")
+
+        '            End If
+
+        '            obj.Trans_Code = strData
+        '            mpCode = obj.Trans_Code
+
+        '            '========================
+        '            ' MP NAME
+        '            '========================
+
+        '            strData = clsCommon.myCstr(grow.Cells("MP Name").Value)
+
+        '            If clsCommon.myLen(strData) <= 0 Then
+        '                Throw New Exception("MP Name Can Not Be Left Blank")
+        '            End If
+
+        '            'obj.Line_No = strData
+
+        '            '========================
+        '            ' MP UPLODER CODE
+        '            '========================
+
+        '            strData = clsCommon.myCstr(grow.Cells("Mp uploder Code").Value)
+
+        '            If clsCommon.myLen(strData) <= 0 Then
+        '                Throw New Exception("Mp uploder Code Can Not Be Left Blank")
+        '            End If
+
+        '            '========================
+        '            ' DCS CODE
+        '            '========================
+
+        '            'Dim dblData As String = clsCommon.myCstr(grow.Cells("Dcs Code").Value)
+
+        '            'If dblData <= 0 Then
+        '            '    Throw New Exception("Dcs Code Can not be <=0")
+        '            'End If
+
+        '            Dim dcsCode As String = clsCommon.myCstr(grow.Cells("Dcs Code").Value)
+
+        '            If clsCommon.myLen(dcsCode) <= 0 Then
+        '                Throw New Exception("Dcs Code Can Not Be Blank")
+        '            End If
+
+        '            '========================
+        '            ' DCS NAME
+        '            '========================
+
+        '            'Dim dblDcsName As String = clsCommon.myCstr(grow.Cells("Dcs Name").Value)
+
+        '            'If dblDcsName <= 0 Then
+        '            '    Throw New Exception("Dcs Name Can not be <=0")
+        '            'End If
+
+        '            Dim dcsName As String = clsCommon.myCstr(grow.Cells("Dcs Name").Value)
+
+        '            If clsCommon.myLen(dcsName) <= 0 Then
+        '                Throw New Exception("Dcs Name Can Not Be Blank")
+        '            End If
+
+        '            '========================
+        '            ' THIRD PARTY CODE
+        '            '========================
+
+        '            Dim dblTHIRDPARTYCODE As String =
+        '                clsCommon.myCstr(grow.Cells("THIRD PARTY CODE").Value)
+
+        '            If clsCommon.myLen(dblTHIRDPARTYCODE) <= 0 Then
+        '                Throw New Exception("THIRD PARTY CODE Can Not Be Blank")
+        '            End If
+
+        '            '========================
+        '            ' THIRD PARTY CODE
+        '            '========================
+
+        '            Dim THIRDPARTYSOURCE As String =
+        '                clsCommon.myCstr(grow.Cells("THIRD PARTY SOURCE").Value)
+
+        '            If clsCommon.myLen(THIRDPARTYSOURCE) <= 0 Then
+        '                Throw New Exception("THIRD PARTY SOURCE Can Not Be Blank")
+        '            End If
+        '            If clsCommon.CompairString("REIL", THIRDPARTYSOURCE) = CompairStringResult.Equal OrElse clsCommon.CompairString("KTPL", THIRDPARTYSOURCE) = CompairStringResult.Equal OrElse clsCommon.CompairString("STAP", THIRDPARTYSOURCE) = CompairStringResult.Equal OrElse clsCommon.CompairString("EVST", THIRDPARTYSOURCE) = CompairStringResult.Equal Then
+        '            Else
+        '                Throw New Exception("INVALID MACHINE NAME ")
+        '            End If
+
+        '            '========================
+        '            ' SAVE DATA
+        '            '========================
+
+        '            clsAnimalDetails.SaveData(False, obj, trans)
+
+        '            ''========================
+        '            '' UPDATE THIRD PARTY CODE
+        '            ''========================
+
+        '            'clsDBFuncationality.ExecuteNonQuery(
+        '            '    "UPDATE TSPL_MP_MASTER " &
+        '            '    "SET THIRD_PARTY_CODE='" & dblTHIRDPARTYCODE & "', " &
+        '            '    "Third_Party_Source='" & THIRDPARTYSOURCE & "' " &
+        '            '    "WHERE MP_CODE='" & mpCode & "'",
+        '            '    trans)
+
+
+        '            '========================
+        '            ' CHECK DUPLICATE THIRD PARTY CODE
+        '            '========================
+
+        '            Dim duplicateCount As Integer = clsCommon.myCstr(
+        '                clsDBFuncationality.getSingleValue(
+        '                    "SELECT COUNT(*) 
+        '                     FROM TSPL_MP_MASTER 
+        '                     WHERE THIRD_PARTY_CODE='" & dblTHIRDPARTYCODE & "' 
+        '                     AND MP_CODE<>'" & mpCode & "'",
+        '                    trans))
+
+        '            If duplicateCount > 0 Then
+
+        '                Throw New Exception(
+        '                    "THIRD PARTY CODE : " & dblTHIRDPARTYCODE &
+        '                    " already exists.")
+
+        '            End If
+
+        '            '========================
+        '            ' UPDATE DATA
+        '            '========================
+
+        '            clsDBFuncationality.ExecuteNonQuery("UPDATE TSPL_MP_MASTER " & "SET THIRD_PARTY_CODE='" & dblTHIRDPARTYCODE & "', " & "Third_Party_Source='" & THIRDPARTYSOURCE & "' " &
+        '                "WHERE MP_CODE='" & mpCode & "'", trans)
+        '            clsCommonFunctionality.SaveHistoryData(objCommonVar.CurrentUserCode, mpCode, "TSPL_MP_MASTER", "MP_CODE", trans)
+
+        '            ''========================
+        '            '' UPDATE ANIMAL COUNT
+        '            ''========================
+
+        '            'clsDBFuncationality.ExecuteNonQuery(
+        '            '    "UPDATE tspl_mp_master " &
+        '            '    "SET No_Of_breedable_milk_animal=" &
+        '            '    clsCommon.myCdbl(
+        '            '        clsDBFuncationality.getSingleValue(
+        '            '            "select sum(THIRD_PARTY_CODE) " &
+        '            '            "from TSPL_MP_MASTER " &
+        '            '            "where mp_code='" & mpCode & "'",
+        '            '            trans)) &
+        '            '    " WHERE mp_code='" & mpCode & "'",
+        '            '    trans)
+
+        '        Next
+
+        '        trans.Commit()
+
+        '        clsCommon.ProgressBarHide()
+
+        '        common.clsCommon.MyMessageBoxShow(
+        '            Me,
+        '            "Data Transfer Completed!",
+        '            Me.Text,
+        '            MessageBoxButtons.OK)
+
+        '    Catch ex As Exception
+
+        '        trans.Rollback()
+
+        '        clsCommon.ProgressBarHide()
+
+        '        clsCommon.MyMessageBoxShow(
+        '            Me,
+        '            ex.Message & " At Line No : " & i,
+        '            Me.Text)
+
+        '    End Try
+
+        'End If
+
+        'Me.Controls.Remove(gv)
+
+
+
         If transportSql.importExcel(gv, "MP Code", "MP Name", "Mp uploder Code", "Dcs Code", "Dcs Name", "THIRD PARTY CODE", "Third Party Source") Then
 
             Try
 
                 clsCommon.ProgressBarShow()
 
+                '=========================================
+                ' ERROR TABLE
+                '=========================================
+
+                Dim dtError As New DataTable
+
+                dtError.Columns.Add("LineNo")
+                dtError.Columns.Add("MPCode")
+                dtError.Columns.Add("ErrorMessage")
+
+                '=========================================
+                ' DUPLICATE CHECK ARRAY
+                '=========================================
+
                 Dim arrMP As New List(Of String)
 
                 For Each grow As GridViewRowInfo In gv.Rows
 
-                    Dim strData As String = clsCommon.myCstr(grow.Cells("MP Code").Value)
+                    Dim excelMPCode As String =
+                clsCommon.myCstr(grow.Cells("MP Code").Value)
 
-                    If clsCommon.myLen(strData) > 0 Then
+                    If clsCommon.myLen(excelMPCode) > 0 Then
 
-                        If Not arrMP.Contains(strData) Then
-                            arrMP.Add(strData)
+                        If arrMP.Contains(excelMPCode) Then
+
+                            dtError.Rows.Add(
+                        gv.Rows.IndexOf(grow) + 1,
+                        excelMPCode,
+                        "Duplicate MP Code Found In Excel")
+
+                        Else
+
+                            arrMP.Add(excelMPCode)
+
                         End If
 
                     End If
 
                 Next
 
+                '=========================================
+                ' MAIN LOOP
+                '=========================================
+
+                Dim lineNo As Integer = 0
+
                 For Each grow As GridViewRowInfo In gv.Rows
 
-                    Dim obj As New clsAnimalDetails
+                    lineNo += 1
 
-                    i = i + 1
+                    Try
 
-                    '========================
-                    ' MP CODE
-                    '========================
+                        Dim errMsg As String = ""
 
-                    Dim strData As String = clsCommon.myCstr(grow.Cells("MP Code").Value)
+                        Dim obj As New clsAnimalDetails
 
-                    If clsCommon.myLen(strData) <= 0 Then
-                        Throw New Exception("MP Code Can Not Be Left Blank")
-                    End If
+                        '=========================================
+                        ' MP CODE
+                        '=========================================
 
-                    If clsCommon.myLen(strData) > 30 Then
-                        Throw New Exception("MP Code Can Not Be Larger Then 30 Character")
-                    End If
+                        Dim currentMPCode As String =
+                    clsCommon.myCstr(
+                        grow.Cells("MP Code").Value)
 
-                    If clsDBFuncationality.getSingleValue(
-                        "select count(*) from tspl_mp_master where mp_code='" & strData & "'",
+                        If clsCommon.myLen(currentMPCode) <= 0 Then
+
+                            errMsg &= "MP Code Blank, "
+
+                        End If
+
+                        If clsCommon.myLen(currentMPCode) > 30 Then
+
+                            errMsg &= "MP Code Greater Than 30 Character, "
+
+                        End If
+
+                        If clsCommon.myLen(currentMPCode) > 0 Then
+
+                            If clsDBFuncationality.getSingleValue(
+                        "SELECT COUNT(*) 
+                         FROM TSPL_MP_MASTER 
+                         WHERE MP_CODE='" &
+                         currentMPCode & "'",
                         trans) = 0 Then
 
-                        Throw New Exception("Invalid MP Code. Code Not Found In Master")
+                                errMsg &= "Invalid MP Code, "
 
-                    End If
+                            End If
 
-                    obj.Trans_Code = strData
-                    mpCode = obj.Trans_Code
+                        End If
 
-                    '========================
-                    ' MP NAME
-                    '========================
+                        obj.Trans_Code = currentMPCode
 
-                    strData = clsCommon.myCstr(grow.Cells("MP Name").Value)
+                        '=========================================
+                        ' MP NAME
+                        '=========================================
 
-                    If clsCommon.myLen(strData) <= 0 Then
-                        Throw New Exception("MP Name Can Not Be Left Blank")
-                    End If
+                        Dim mpName As String =
+                    clsCommon.myCstr(
+                        grow.Cells("MP Name").Value)
 
-                    'obj.Line_No = strData
+                        If clsCommon.myLen(mpName) <= 0 Then
 
-                    '========================
-                    ' MP UPLODER CODE
-                    '========================
+                            errMsg &= "MP Name Blank, "
 
-                    strData = clsCommon.myCstr(grow.Cells("Mp uploder Code").Value)
+                        End If
 
-                    If clsCommon.myLen(strData) <= 0 Then
-                        Throw New Exception("Mp uploder Code Can Not Be Left Blank")
-                    End If
+                        '=========================================
+                        ' MP UPLODER CODE
+                        '=========================================
 
-                    '========================
-                    ' DCS CODE
-                    '========================
+                        Dim mpUploaderCode As String =
+                    clsCommon.myCstr(
+                        grow.Cells("Mp uploder Code").Value)
 
-                    'Dim dblData As String = clsCommon.myCstr(grow.Cells("Dcs Code").Value)
+                        If clsCommon.myLen(mpUploaderCode) <= 0 Then
 
-                    'If dblData <= 0 Then
-                    '    Throw New Exception("Dcs Code Can not be <=0")
-                    'End If
+                            errMsg &= "Mp uploder Code Blank, "
 
-                    Dim dcsCode As String = clsCommon.myCstr(grow.Cells("Dcs Code").Value)
+                        End If
 
-                    If clsCommon.myLen(dcsCode) <= 0 Then
-                        Throw New Exception("Dcs Code Can Not Be Blank")
-                    End If
+                        '=========================================
+                        ' DCS CODE
+                        '=========================================
 
-                    '========================
-                    ' DCS NAME
-                    '========================
+                        Dim dcsCode As String =
+                    clsCommon.myCstr(
+                        grow.Cells("Dcs Code").Value)
 
-                    'Dim dblDcsName As String = clsCommon.myCstr(grow.Cells("Dcs Name").Value)
+                        If clsCommon.myLen(dcsCode) <= 0 Then
 
-                    'If dblDcsName <= 0 Then
-                    '    Throw New Exception("Dcs Name Can not be <=0")
-                    'End If
+                            errMsg &= "Dcs Code Blank, "
 
-                    Dim dcsName As String = clsCommon.myCstr(grow.Cells("Dcs Name").Value)
+                        End If
 
-                    If clsCommon.myLen(dcsName) <= 0 Then
-                        Throw New Exception("Dcs Name Can Not Be Blank")
-                    End If
+                        '=========================================
+                        ' DCS NAME
+                        '=========================================
 
-                    '========================
-                    ' THIRD PARTY CODE
-                    '========================
+                        Dim dcsName As String =
+                    clsCommon.myCstr(
+                        grow.Cells("Dcs Name").Value)
 
-                    Dim dblTHIRDPARTYCODE As String =
-                        clsCommon.myCstr(grow.Cells("THIRD PARTY CODE").Value)
+                        If clsCommon.myLen(dcsName) <= 0 Then
 
-                    If clsCommon.myLen(dblTHIRDPARTYCODE) <= 0 Then
-                        Throw New Exception("THIRD PARTY CODE Can Not Be Blank")
-                    End If
+                            errMsg &= "Dcs Name Blank, "
 
-                    '========================
-                    ' THIRD PARTY CODE
-                    '========================
+                        End If
 
-                    Dim THIRDPARTYSOURCE As String =
-                        clsCommon.myCstr(grow.Cells("THIRD PARTY SOURCE").Value)
+                        '=========================================
+                        ' THIRD PARTY CODE
+                        '=========================================
 
-                    If clsCommon.myLen(THIRDPARTYSOURCE) <= 0 Then
-                        Throw New Exception("THIRD PARTY SOURCE Can Not Be Blank")
-                    End If
-                    If clsCommon.CompairString("REIL", THIRDPARTYSOURCE) = CompairStringResult.Equal OrElse clsCommon.CompairString("KTPL", THIRDPARTYSOURCE) = CompairStringResult.Equal OrElse clsCommon.CompairString("STAP", THIRDPARTYSOURCE) = CompairStringResult.Equal OrElse clsCommon.CompairString("EVST", THIRDPARTYSOURCE) = CompairStringResult.Equal Then
-                    Else
-                        Throw New Exception("INVALID MACHINE NAME ")
-                    End If
+                        Dim thirdPartyCode As String =
+                    clsCommon.myCstr(
+                        grow.Cells("THIRD PARTY CODE").Value)
 
-                    '========================
-                    ' SAVE DATA
-                    '========================
+                        If clsCommon.myLen(thirdPartyCode) <= 0 Then
 
-                    clsAnimalDetails.SaveData(False, obj, trans)
+                            errMsg &= "THIRD PARTY CODE Blank, "
 
-                    ''========================
-                    '' UPDATE THIRD PARTY CODE
-                    ''========================
+                        End If
 
-                    'clsDBFuncationality.ExecuteNonQuery(
-                    '    "UPDATE TSPL_MP_MASTER " &
-                    '    "SET THIRD_PARTY_CODE='" & dblTHIRDPARTYCODE & "', " &
-                    '    "Third_Party_Source='" & THIRDPARTYSOURCE & "' " &
-                    '    "WHERE MP_CODE='" & mpCode & "'",
-                    '    trans)
+                        '=========================================
+                        ' THIRD PARTY SOURCE
+                        '=========================================
 
+                        Dim thirdPartySource As String =
+                    clsCommon.myCstr(
+                        grow.Cells("THIRD PARTY SOURCE").Value)
 
-                    '========================
-                    ' CHECK DUPLICATE THIRD PARTY CODE
-                    '========================
+                        If clsCommon.myLen(thirdPartySource) <= 0 Then
 
-                    Dim duplicateCount As Integer = clsCommon.myCstr(
-                        clsDBFuncationality.getSingleValue(
-                            "SELECT COUNT(*) 
-                             FROM TSPL_MP_MASTER 
-                             WHERE THIRD_PARTY_CODE='" & dblTHIRDPARTYCODE & "' 
-                             AND MP_CODE<>'" & mpCode & "'",
-                            trans))
+                            errMsg &= "THIRD PARTY SOURCE Blank, "
 
-                    If duplicateCount > 0 Then
+                        Else
 
-                        Throw New Exception(
-                            "THIRD PARTY CODE : " & dblTHIRDPARTYCODE &
-                            " already exists.")
+                            If clsCommon.CompairString(
+                        "REIL",
+                        thirdPartySource) <> CompairStringResult.Equal _
+                    AndAlso clsCommon.CompairString(
+                        "KTPL",
+                        thirdPartySource) <> CompairStringResult.Equal _
+                    AndAlso clsCommon.CompairString(
+                        "STAP",
+                        thirdPartySource) <> CompairStringResult.Equal _
+                    AndAlso clsCommon.CompairString(
+                        "EVST",
+                        thirdPartySource) <> CompairStringResult.Equal Then
 
-                    End If
+                                errMsg &= "INVALID MACHINE NAME, "
 
-                    '========================
-                    ' UPDATE DATA
-                    '========================
+                            End If
 
-                    clsDBFuncationality.ExecuteNonQuery("UPDATE TSPL_MP_MASTER " & "SET THIRD_PARTY_CODE='" & dblTHIRDPARTYCODE & "', " & "Third_Party_Source='" & THIRDPARTYSOURCE & "' " &
-                        "WHERE MP_CODE='" & mpCode & "'", trans)
-                    clsCommonFunctionality.SaveHistoryData(objCommonVar.CurrentUserCode, mpCode, "TSPL_MP_MASTER", "MP_CODE", trans)
+                        End If
 
-                    ''========================
-                    '' UPDATE ANIMAL COUNT
-                    ''========================
+                        '=========================================
+                        ' DUPLICATE THIRD PARTY CODE
+                        '=========================================
 
-                    'clsDBFuncationality.ExecuteNonQuery(
-                    '    "UPDATE tspl_mp_master " &
-                    '    "SET No_Of_breedable_milk_animal=" &
-                    '    clsCommon.myCdbl(
-                    '        clsDBFuncationality.getSingleValue(
-                    '            "select sum(THIRD_PARTY_CODE) " &
-                    '            "from TSPL_MP_MASTER " &
-                    '            "where mp_code='" & mpCode & "'",
-                    '            trans)) &
-                    '    " WHERE mp_code='" & mpCode & "'",
-                    '    trans)
+                        If clsCommon.myLen(thirdPartyCode) > 0 Then
+
+                            Dim duplicateCount As Integer =
+                        Convert.ToInt32(
+                            clsDBFuncationality.getSingleValue(
+                                "SELECT COUNT(*) 
+                                 FROM TSPL_MP_MASTER 
+                                 WHERE THIRD_PARTY_CODE='" &
+                                 thirdPartyCode & "'
+                                 AND MP_CODE<>'" &
+                                 currentMPCode & "'",
+                                trans))
+
+                            If duplicateCount > 0 Then
+
+                                errMsg &=
+                            "THIRD PARTY CODE Already Exists, "
+
+                            End If
+
+                        End If
+
+                        '=========================================
+                        ' IF ERROR FOUND
+                        '=========================================
+
+                        If errMsg <> "" Then
+
+                            dtError.Rows.Add(
+                        lineNo,
+                        currentMPCode,
+                        errMsg)
+
+                            Continue For
+
+                        End If
+
+                        '=========================================
+                        ' SAVE DATA
+                        '=========================================
+
+                        clsAnimalDetails.SaveData(
+                    False,
+                    obj,
+                    trans)
+
+                        '=========================================
+                        ' UPDATE DATA
+                        '=========================================
+
+                        clsDBFuncationality.ExecuteNonQuery(
+                    "UPDATE TSPL_MP_MASTER 
+                     SET THIRD_PARTY_CODE='" &
+                     thirdPartyCode & "',
+                     Third_Party_Source='" &
+                     thirdPartySource & "'
+                     WHERE MP_CODE='" &
+                     currentMPCode & "'",
+                    trans)
+
+                        '=========================================
+                        ' SAVE HISTORY
+                        '=========================================
+
+                        clsCommonFunctionality.SaveHistoryData(
+                    objCommonVar.CurrentUserCode,
+                    currentMPCode,
+                    "TSPL_MP_MASTER",
+                    "MP_CODE",
+                    trans)
+
+                    Catch ex As Exception
+
+                        dtError.Rows.Add(
+                    lineNo,
+                    "",
+                    ex.Message)
+
+                    End Try
 
                 Next
 
-                trans.Commit()
+                '=========================================
+                ' SHOW ERRORS
+                '=========================================
 
-                clsCommon.ProgressBarHide()
+                If dtError.Rows.Count > 0 Then
 
-                common.clsCommon.MyMessageBoxShow(
-                    Me,
-                    "Data Transfer Completed!",
-                    Me.Text,
-                    MessageBoxButtons.OK)
+                    trans.Rollback()
+
+                    clsCommon.ProgressBarHide()
+
+                    Dim msg As String = ""
+
+                    For Each dr As DataRow In dtError.Rows
+
+                        msg &=
+                    "Line No : " &
+                    dr("LineNo").ToString() &
+                    " | MP Code : " &
+                    dr("MPCode").ToString() &
+                    " | Error : " &
+                    dr("ErrorMessage").ToString() &
+                    vbCrLf & vbCrLf
+
+                    Next
+
+                    clsCommon.MyMessageBoxShow(
+                Me,
+                msg,
+                Me.Text)
+
+                Else
+
+                    trans.Commit()
+
+                    clsCommon.ProgressBarHide()
+
+                    clsCommon.MyMessageBoxShow(
+                Me,
+                "Data Transfer Completed!",
+                Me.Text,
+                MessageBoxButtons.OK)
+
+                End If
 
             Catch ex As Exception
 
@@ -2560,9 +2911,9 @@ Public Class FrmMPMaster
                 clsCommon.ProgressBarHide()
 
                 clsCommon.MyMessageBoxShow(
-                    Me,
-                    ex.Message & " At Line No : " & i,
-                    Me.Text)
+            Me,
+            ex.Message,
+            Me.Text)
 
             End Try
 
@@ -2570,90 +2921,7 @@ Public Class FrmMPMaster
 
         Me.Controls.Remove(gv)
 
-        'Dim gv As New UserControls.MyRadGridView
-        'Me.Controls.Add(gv)
-        'Dim i As Integer = 0
-        'Dim totalAnimal As Double = 0
-        'Dim trans As SqlTransaction
-        'connectSql.OpenConnection()
-        'Dim mpCode As String = String.Empty
-        'trans = clsDBFuncationality.GetTransactin()
-        'Dim strdate As Date = clsCommon.GETSERVERDATE(trans, "dd/MMM/yyyy")
-        'If transportSql.importExcel(gv, "MP Code", "MP Name", "Mp uploder Code", "Dcs Code", "Dcs Name", "THIRD PARTY CODE") Then
-        '    Try
-        '        clsCommon.ProgressBarShow()
-        '        Dim arrMP As New List(Of String)
-        '        For Each grow As GridViewRowInfo In gv.Rows
-        '            Dim strData As String = clsCommon.myCstr(grow.Cells("MP Code").Value)
-        '            If clsCommon.myLen(strData) > 0 Then
-        '                If Not arrMP.Contains(strData) Then
-        '                    arrMP.Add(strData)
-        '                End If
-        '            End If
-        '        Next
-        '        'If arrMP IsNot Nothing AndAlso arrMP.Count > 0 Then
-        '        '    Dim qry As String = "delete from tspl_mp_master where prog_code='" & Me.Form_ID & "' and trans_code in (" + clsCommon.GetMulcallString(arrMP) + ")"
-        '        '    clsDBFuncationality.ExecuteNonQuery(qry, trans)
-        '        'End If
 
-        '        For Each grow As GridViewRowInfo In gv.Rows
-        '            'totalAnimal = 0
-        '            Dim obj As New clsAnimalDetails
-        '            i = i + 1
-        '            Dim strData As String = clsCommon.myCstr(grow.Cells("MP Code").Value)
-        '            If clsCommon.myLen(strData) <= 0 Then
-        '                Throw New Exception("MP Code Can Not Be Left Blank")
-        '            End If
-        '            If clsCommon.myLen(strData) > 30 Then
-        '                Throw New Exception("MP Code Can Not Be Larger Then 30 Charachter")
-        '            End If
-
-        '            If clsDBFuncationality.getSingleValue("select count(*) from tspl_mp_master where mp_code='" & strData & "'", trans) = 0 Then
-        '                Throw New Exception("Invalid MP Code. Code Not Found In Master")
-        '            End If
-        '            obj.Trans_Code = strData
-        '            mpCode = obj.Trans_Code
-        '            strData = clsCommon.myCstr(grow.Cells("MP Name").Value)
-        '            If clsCommon.myLen(strData) <= 0 Then
-        '                Throw New Exception("Line No Can Not Be Left Blank")
-        '            End If
-        '            obj.Line_No = strData
-
-        '            strData = clsCommon.myCstr(grow.Cells("Mp uploder Code").Value)
-        '            If clsCommon.myLen(strData) <= 0 Then
-        '                Throw New Exception("Type Of Animal  Can Not Be Left Blank")
-        '            End If
-
-        '            Dim dblData As String = clsCommon.myCstr(grow.Cells("Dcs Code").Value)
-        '            If dblData <= 0 Then
-        '                Throw New Exception("Count Of Animal  Can not be <=0")
-        '            End If
-
-        '            Dim dblDcsName As String = clsCommon.myCstr(grow.Cells("Dcs Name").Value)
-        '            If dblDcsName <= 0 Then
-        '                Throw New Exception("Count Of Animal  Can not be <=0")
-        '            End If
-
-        '            Dim dblTHIRDPARTYCODE As Double = clsCommon.myCdbl(grow.Cells("THIRD PARTY CODE").Value)
-        '            If dblTHIRDPARTYCODE <= 0 Then
-        '                Throw New Exception("Count Of Animal  Can not be <=0")
-        '            End If
-        '            clsAnimalDetails.SaveData(False, obj, trans)
-        '            clsDBFuncationality.ExecuteNonQuery("Update tspl_mp_master set No_Of_breedable_milk_animal=" & clsCommon.myCdbl(clsDBFuncationality.getSingleValue("select sum(count_of_animal) from tspl_Animal_Details where trans_code='" & mpCode & "'", trans)) & " where mp_code='" & mpCode & "'", trans)
-        '        Next
-
-
-        '        trans.Commit()
-        '        clsCommon.ProgressBarHide()
-        '        common.clsCommon.MyMessageBoxShow(Me, "Data Transfer Completed!, ", Me.Text, MessageBoxButtons.OK)
-        '    Catch ex As Exception
-        '        trans.Rollback()
-        '        clsCommon.ProgressBarHide()
-        '        clsCommon.MyMessageBoxShow(Me, ex.Message & " At Line No : " & i, Me.Text)
-        '    End Try
-
-        'End If
-        'Me.Controls.Remove(gv)
     End Sub
 
 
