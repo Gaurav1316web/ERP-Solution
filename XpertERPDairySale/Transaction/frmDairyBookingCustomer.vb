@@ -4360,6 +4360,7 @@ and TSPL_BOOKING_DETAIL.document_No in ( SELECT DISTINCT TSPL_BOOKING_DETAIL.Doc
         Try
             Dim dblTotalDocAmt As Decimal = 0
             Dim qry As String = ""
+            Dim DocDate As DateTime = clsCommon.GETSERVERDATE
             Dim obj As New clsBookingEntryDairySale
             'Dim intRow As Integer
             obj = clsBookingEntryDairySale.GetData(strCode, NavTyep, clsUserMgtCode.frmDairyBookingCustomer)
@@ -4425,6 +4426,7 @@ and TSPL_BOOKING_DETAIL.document_No in ( SELECT DISTINCT TSPL_BOOKING_DETAIL.Doc
                 txtVendorNo.Enabled = False
                 txtDocNo.Value = obj.Document_No
                 txtDate.Value = obj.Document_Date
+                DocDate = obj.Document_Date
                 txtSupplyDate.Value = obj.Supply_Date
                 'GetUnbilledAmt(obj.Document_Date, txtVendorNo.Value)
                 If clsCommon.myLen(obj.Against_Receipt_No) > 0 Then
@@ -5080,6 +5082,9 @@ and TSPL_BOOKING_DETAIL.document_No in ( SELECT DISTINCT TSPL_BOOKING_DETAIL.Doc
             End If
             'End If
             ChkTaxNonTax()
+            If ServerDateTimeForTaxableInvoice Then
+                txtDate.Value = DocDate
+            End If
         Catch ex As Exception
             common.clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         Finally
