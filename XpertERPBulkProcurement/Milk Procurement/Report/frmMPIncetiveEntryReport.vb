@@ -1439,8 +1439,11 @@ where TSPL_MP_INCENTIVE_ENTRY_HEAD.Status=1  and CONVERT(date,TSPL_MP_INCENTIVE_
 
             Gv1.Columns("Quantity").HeaderText = "Quantity"
             Gv1.Columns("Quantity").IsVisible = True
+
             Gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
             Gv1.Columns("THIRD_PARTY_CODE").IsVisible = False
+            Gv1.Columns("THIRD_PARTY_CODE").ReadOnly = True
+
             Gv1.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
 
         End If

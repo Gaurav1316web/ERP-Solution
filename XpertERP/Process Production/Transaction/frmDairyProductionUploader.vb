@@ -225,6 +225,8 @@ Public Class frmDairyProductionUploader
                         OpenUOM(False)
                     ElseIf e.Column Is gv1.Columns(colShift) Then
                         OpenShiftCode(False)
+                        'ElseIf e.Column Is gv1.Columns(colBatchNo) Then
+                        '    OpenBatchDate()
                     End If
                     isCellValueChangedOpen = False
                 End If
@@ -233,7 +235,24 @@ Public Class frmDairyProductionUploader
             common.clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try
     End Sub
+    Sub OpenBatchDate()
 
+        Dim itemCode As String = clsCommon.myCstr(gv1.CurrentRow.Cells(colItemCode).Value)
+        Dim BACTH As String = clsCommon.myCstr(gv1.CurrentRow.Cells(colBatchNo).Value)
+        Dim qry As String = "SELECT Expiry_Date " &
+                        "FROM TSPL_BATCH_ITEM " &
+                        "WHERE Item_Code = '" & itemCode & "' AND Batch_No= '" + BACTH + "'"
+
+        Dim expiryDate As Object = clsDBFuncationality.getSingleValue(qry)
+
+        If expiryDate IsNot Nothing AndAlso Not IsDBNull(expiryDate) Then
+            gv1.CurrentRow.Cells(colBatchDate).Value =
+            Convert.ToDateTime(expiryDate).ToString("dd/MM/yyyy")
+        Else
+            gv1.CurrentRow.Cells(colBatchDate).Value = ""
+        End If
+
+    End Sub
     Sub OpenItem(ByVal isButtonClicked As Boolean)
         gv1.CurrentRow.Cells(colItemCode).Value = clsItemMaster.getFinder(" tspl_item_master.item_type in ('F') and tspl_item_master.Active='1' ", clsCommon.myCstr(gv1.CurrentRow.Cells(colItemCode).Value), isButtonClicked)
         gv1.CurrentRow.Cells(colItemName).Value = clsItemMaster.GetItemName(clsCommon.myCstr(gv1.CurrentRow.Cells(colItemCode).Value), Nothing)

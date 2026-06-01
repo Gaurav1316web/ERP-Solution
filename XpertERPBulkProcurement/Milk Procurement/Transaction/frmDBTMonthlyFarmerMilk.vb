@@ -573,6 +573,8 @@ Public Class frmDBTMonthlyFarmerMilk
 
             gvItem.Columns(colTHIRDPARTYCODE).HeaderText = "Third Party Code"
             gvItem.Columns(colTHIRDPARTYCODE).Width = 120
+            gvItem.Columns(colTHIRDPARTYCODE).ReadOnly = True
+
             gvItem.Columns(colTHIRDPARTYCODE).IsVisible = False
             gvItem.Columns(colTHIRDPARTYCODE).VisibleInColumnChooser = True
 
