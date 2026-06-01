@@ -15926,6 +15926,9 @@ END"
             coll.Add("Inactive", "integer null")
             coll.Add("Ice_Charge", "float")
             coll.Add("Private_Tanker", "integer null")
+            coll.Add("Labour_Charge", "float")
+            coll.Add("PFRULE_CODE", "Varchar(30)  null ")
+            coll.Add("ESIRULE_CODE", "Varchar(30)  null ")
             'clsCommonFunctionality.CreateOrAlterTable(False, "TSPL_TANKER_MASTER", coll, Nothing, True)
             clsCommonFunctionality.CreateOrAlterTable(False, False, "TSPL_TANKER_MASTER", coll, "", True, False, "", "", "", True)
 
