@@ -28,7 +28,7 @@ Public Class frmDBTMonthlyFarmerMilk
         Reset()
 
         ButtonToolTip.SetToolTip(btnsave, "Press Alt+S for Save/Update Transaction")
-        ButtonToolTip.SetToolTip(btnDelete, "Press Alt+D Delete Transaction")
+        ButtonToolTip.SetToolTip(btndelete, "Press Alt+D Delete Transaction")
         ButtonToolTip.SetToolTip(btnclose, "Press Alt+C Close the Window")
         ButtonToolTip.SetToolTip(btnReset, "Press Alt+N New Transaction")
         ButtonToolTip.SetToolTip(btnPost, "Press Alt+P Post Trasnaction")
@@ -44,7 +44,7 @@ Public Class frmDBTMonthlyFarmerMilk
             Reset()
         ElseIf e.Alt AndAlso e.KeyCode = Keys.S AndAlso MyBase.isModifyFlag AndAlso btnsave.Enabled Then
             SaveData()
-        ElseIf e.Alt AndAlso e.KeyCode = Keys.D AndAlso MyBase.isDeleteFlag AndAlso btnDelete.Enabled Then
+        ElseIf e.Alt AndAlso e.KeyCode = Keys.D AndAlso MyBase.isDeleteFlag AndAlso btndelete.Enabled Then
             DeleteData()
         ElseIf e.Alt AndAlso e.KeyCode = Keys.C AndAlso btnclose.Enabled Then
             CloseForm()
