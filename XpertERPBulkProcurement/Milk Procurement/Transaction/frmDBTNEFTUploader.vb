@@ -440,9 +440,16 @@ where TSPL_BANK_MASTER.NEFT_DBT_Default=1 order by TRCode"
                 gv.Columns(clsCommon.myCstr(dtPerforma.Rows(ii)("NEFT_Col_Code"))).HeaderText = clsCommon.myCstr(dtPerforma.Rows(ii)("NEFT_Col_Name"))
                 gv.Columns(clsCommon.myCstr(dtPerforma.Rows(ii)("NEFT_Col_Code"))).IsVisible = Not clsCommon.myCBool(dtPerforma.Rows(ii)("NEFT_Col_Hide"))
             Next
-            gvItem.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
-            gvItem.Columns("THIRD_PARTY_CODE").IsVisible = False
-            gvItem.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
+            gv.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
+            gv.Columns("THIRD_PARTY_CODE").IsVisible = False
+            gv.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
+
+            'gvFarmer.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
+            'gvFarmer.Columns("THIRD_PARTY_CODE").IsVisible = False
+            'gvFarmer.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
+
+
+
             gv.Columns(clsDBTNEFTPerforma.colAmount).FormatString = "{0:n2}"
             gv.Columns(clsDBTNEFTPerforma.colAmount).TextAlignment = System.Drawing.ContentAlignment.MiddleRight
 
