@@ -3336,7 +3336,7 @@ select  cast(" + UserStaus + " as bit) as UserStatus, TSPL_GRN_HEAD.GRN_No,conve
             qry += "case when isnull(TSPL_SRN_TENDER_CALC.Penalty, 0)=0 then null else TSPL_SRN_TENDER_CALC.Qty end as LatePenaltyQty,case when isnull(TSPL_SRN_TENDER_CALC.Penalty,0)=0 then null else TSPL_TENDER_SCHEDULE_PENALTY.Penalty end as LatePenaltyPer,TSPL_SRN_TENDER_CALC.Penalty as LatePenaltyAmt,"
         End If
         qry += "(case when isnull(TSPL_MRN_HEAD.NIR_QC,0)=0 then 1 else (case when (isnull(TSPL_NIR_QC.QC_Status,0)=1 And isnull(TSPL_NIR_QC.Status,0)=1 And TSPL_QC_CHECK_HEAD.Posted=1) then 1 else 0 end) end) as NIRQCStatus
-," + UserStaus + " as FinalStatus,CONVERT(date, TSPL_GRN_HEAD.GRN_Date,103) as FilterGRN_Date,isnull(TSPL_SRN_HEAD.Status,0) as FilterSRNStatus
+," + UserStaus + " as FinalStatus, TSPL_GRN_HEAD.GRN_Date as FilterGRN_Date,isnull(TSPL_SRN_HEAD.Status,0) as FilterSRNStatus
 from TSPL_GRN_DETAIL
 left outer join TSPL_GRN_HEAD on TSPL_GRN_HEAD.GRN_No=TSPL_GRN_DETAIL.GRN_No
 left outer join TSPL_MRN_HEAD on TSPL_MRN_HEAD.Against_GRN=TSPL_GRN_DETAIL.GRN_No

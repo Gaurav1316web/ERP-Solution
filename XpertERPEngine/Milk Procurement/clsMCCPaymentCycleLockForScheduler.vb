@@ -4075,7 +4075,6 @@ left outer join TSPL_MILK_REJECT_TYPE on TSPL_MILK_REJECT_TYPE.Code= COALESCE(TS
 where  TSPL_MILK_SRN_HEAD.DOC_CODE in (" + clsCommon.GetMulcallString(strSRN_No) + ")
 ) xx group by DOC_DATE"
                 Dim TotalApplicableQty As Decimal = 0
-                Dim MinmumQtyCheck As Boolean = True
                 Dim Head_Load_Cycle As Decimal = 0
                 Dim Head_Load_Amount_Exact As Decimal = 0
 
@@ -4116,9 +4115,7 @@ where  TSPL_MILK_SRN_HEAD.DOC_CODE in (" + clsCommon.GetMulcallString(strSRN_No)
                             If ApplicableQty < 0 Then
                                 ApplicableQty = 0
                             End If
-                            If ApplicableQty >= objHeadLoad.Header_Cycle_Min_Qty Then
-                                MinmumQtyCheck = False
-                            Else
+                            If ApplicableQty < objHeadLoad.Header_Cycle_Min_Qty Then
                                 TotalApplicableQty += ApplicableQty
                                 ApplicableQty = 0
                             End If
@@ -4151,29 +4148,39 @@ where  TSPL_MILK_SRN_HEAD.DOC_CODE in (" + clsCommon.GetMulcallString(strSRN_No)
                         Next
                     End If
 
-                    ''Now Create Cr Note
-                    qry = "select sum(Amt) as NoteAmt  from TSPL_MILK_PURCHASE_INVOICE_DAY_WISE_HEAD_LOAD where InvoiceNo='" + objHead.DOC_CODE + "'"
-                    dtAmt = clsDBFuncationality.GetDataTable(qry, trans)
-                    dblAmount = Math.Abs(clsCommon.myCDecimal(dtAmt.Rows(0)("NoteAmt")))
-
-
-                    If Not MinmumQtyCheck Then
+                    If TotalApplicableQty > 0 Then
+                        Head_Load_Amount_Exact = 0
                         If clsCommon.CompairString(clsCommon.myCstr(objHeadLoad.Head_Load_Basis), "K") = CompairStringResult.Equal OrElse clsCommon.CompairString(clsCommon.myCstr(objHeadLoad.Head_Load_Basis), "L") = CompairStringResult.Equal Then
                             If TotalApplicableQty >= MinimumQtyForHeadLoad Then
                                 Head_Load_Amount_Exact = Math.Round(TotalApplicableQty * objHeadLoad.Head_Load_Rate * dclDistanceKM, 6)
                             End If
                         ElseIf clsCommon.CompairString(clsCommon.myCstr(objHeadLoad.Head_Load_Basis), "CK") = CompairStringResult.Equal OrElse clsCommon.CompairString(clsCommon.myCstr(objHeadLoad.Head_Load_Basis), "CL") = CompairStringResult.Equal Then
-                            Head_Load_Cycle = Math.Ceiling(clsCommon.myCDivide(TotalApplicableQty, objHeadLoad.Cycle_Frequency))
-                            If Head_Load_Cycle < 0 Then
-                                Head_Load_Cycle = 0
+                            If TotalApplicableQty >= objHeadLoad.Header_Cycle_Min_Qty Then
+                                Head_Load_Cycle = Math.Ceiling(clsCommon.myCDivide(TotalApplicableQty, objHeadLoad.Cycle_Frequency))
+                                If Head_Load_Cycle < 0 Then
+                                    Head_Load_Cycle = 0
+                                End If
+                                Head_Load_Amount_Exact = Math.Round(Head_Load_Cycle * objHeadLoad.Head_Load_Rate, 6)
                             End If
-                            Head_Load_Amount_Exact = Math.Round(Head_Load_Cycle * objHeadLoad.Head_Load_Rate, 6)
                         End If
-                        dblAmount += Math.Round(Head_Load_Amount_Exact, 2)
+                        Head_Load_Amount_Exact = Math.Round(Head_Load_Amount_Exact, 2)
+
+                        Dim coll As New Hashtable()
+                        clsCommon.AddColumnsForChange(coll, "InvoiceNo", objHead.DOC_CODE)
+                        clsCommon.AddColumnsForChange(coll, "Apply_Date", clsCommon.GetPrintDate(dt.Rows(dt.Rows.Count - 1)("DOC_DATE"), "dd/MMM/yyyy"))
+                        clsCommon.AddColumnsForChange(coll, "Against_Head_Load_PKID", objHeadLoad.PK_Id)
+                        clsCommon.AddColumnsForChange(coll, "Qty", TotalApplicableQty)
+                        clsCommon.AddColumnsForChange(coll, "Rate", objHeadLoad.Head_Load_Rate)
+                        clsCommon.AddColumnsForChange(coll, "Amt", Head_Load_Amount_Exact)
+                        clsCommon.AddColumnsForChange(coll, "Head_Load_Cycle", Head_Load_Cycle)
+                        clsCommonFunctionality.UpdateDataTable(coll, "TSPL_MILK_PURCHASE_INVOICE_DAY_WISE_HEAD_LOAD", OMInsertOrUpdate.Insert, "", trans)
                     End If
 
-
+                    ''Now Create Cr Note
+                    qry = "select sum(Amt) as NoteAmt  from TSPL_MILK_PURCHASE_INVOICE_DAY_WISE_HEAD_LOAD where InvoiceNo='" + objHead.DOC_CODE + "'"
+                    dtAmt = clsDBFuncationality.GetDataTable(qry, trans)
                     If dtAmt IsNot Nothing AndAlso dtAmt.Rows.Count > 0 Then
+                        dblAmount = Math.Abs(clsCommon.myCDecimal(dtAmt.Rows(0)("NoteAmt")))
                         If dblAmount > 0 Then
                             Dim objVendorInvHead As New clsVedorInvoiceHead()
                             objVendorInvHead.isDeduction = 0

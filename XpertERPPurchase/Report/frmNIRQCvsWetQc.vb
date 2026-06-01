@@ -7,7 +7,18 @@ Public Class frmNIRQCvsWetQc
     Private Sub frmNIRQCvsWetQc_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         txtFromDate.Value = clsCommon.GETSERVERDATE()
         txtToDate.Value = clsCommon.GETSERVERDATE()
-
+        'If clsCommon.myLen(objCommonVar.arrCurrUserLocations) > 0 Then
+        '    Dim Union As ArrayList = Nothing
+        '    Dim qry As String = " Select DataBase_Name from TSPL_USER_MASTER where User_Code = '" + objCommonVar.CurrentUserCode + "'"
+        '    Dim dt As DataTable = clsDBFuncationality.GetDataTable(qry)
+        '    If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+        '        Union = New ArrayList()
+        '        For Each drZone As DataRow In dt.Rows
+        '            Union.Add(clsCommon.myCstr(drZone("DataBase_Name")))
+        '        Next
+        '    End If
+        '    txtLocation.arrValueMember = Union
+        'End If
     End Sub
     Sub Reset()
         Try
@@ -38,6 +49,16 @@ Public Class frmNIRQCvsWetQc
                 qry += " and  TSPL_LOCATION_MASTER.Location_Code in (" + objCommonVar.strCurrUserLocations + ")"
             End If
             txtLocation.arrValueMember = clsCommon.ShowMultipleSelectForm("LocMulSel", qry, "Code", "Name", txtLocation.arrValueMember, txtLocation.arrDispalyMember)
+
+            'Dim dt As DataTable
+            'Dim qry As String = ""
+            'qry = "select Location_Code as Code,Location_Desc as Name from TSPL_LOCATION_MASTER where Location_Type='Physical' "
+            ''qry += " where 2=2 and Seg_No = '7' AND GIT='N' "
+            'If clsCommon.myLen(objCommonVar.strCurrUserLocations) > 0 Then
+            '    qry += " and  tspl_location_master.location_code in (" + objCommonVar.strCurrUserLocations + ")"
+            'End If
+
+            'txtLocation.arrValueMember = clsCommon.ShowMultipleSelectForm("LocMulSel", qry, "Code", "Name", txtLocation.arrValueMember, txtLocation.arrDispalyMember)
 
         Catch ex As Exception
             common.clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)

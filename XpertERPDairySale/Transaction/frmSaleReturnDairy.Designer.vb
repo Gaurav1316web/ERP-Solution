@@ -49,6 +49,7 @@ Partial Class frmSaleReturnDairy
         Me.rbtn_leak = New System.Windows.Forms.RadioButton()
         Me.rbtn_expire = New System.Windows.Forms.RadioButton()
         Me.pnlPCJ = New System.Windows.Forms.Panel()
+        Me.chkWithoutInvoice = New Telerik.WinControls.UI.RadCheckBox()
         Me.chkBoothWiseReturn = New Telerik.WinControls.UI.RadCheckBox()
         Me.fndProject = New common.Controls.MyLabel()
         Me.MyLabel4 = New common.Controls.MyLabel()
@@ -156,6 +157,7 @@ Partial Class frmSaleReturnDairy
         Me.Attachments = New Telerik.WinControls.UI.RadPageViewPage()
         Me.UcAttachment1 = New XpertERPEngine.ucAttachment()
         Me.RadPageViewPage4 = New Telerik.WinControls.UI.RadPageViewPage()
+        Me.btnAdminCancel = New Telerik.WinControls.UI.RadButton()
         Me.btnCancel = New Telerik.WinControls.UI.RadButton()
         Me.MyLabel13 = New common.Controls.MyLabel()
         Me.TxtRoundoff = New common.Controls.MyLabel()
@@ -245,6 +247,7 @@ Partial Class frmSaleReturnDairy
         CType(Me.rbtn_Fresh, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnl_damage.SuspendLayout()
         Me.pnlPCJ.SuspendLayout()
+        CType(Me.chkWithoutInvoice, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.chkBoothWiseReturn, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.fndProject, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel4, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -347,6 +350,7 @@ Partial Class frmSaleReturnDairy
         Me.pvpCustomFields.SuspendLayout()
         Me.Attachments.SuspendLayout()
         Me.RadPageViewPage4.SuspendLayout()
+        CType(Me.btnAdminCancel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnCancel, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel13, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtRoundoff, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -456,7 +460,7 @@ Partial Class frmSaleReturnDairy
         Me.RadPageView1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RadPageView1.Location = New System.Drawing.Point(0, 0)
         Me.RadPageView1.Name = "RadPageView1"
-        Me.RadPageView1.SelectedPage = Me.RadPageViewPage1
+        Me.RadPageView1.SelectedPage = Me.RadPageViewPage4
         Me.RadPageView1.Size = New System.Drawing.Size(1218, 480)
         Me.RadPageView1.TabIndex = 0
         CType(Me.RadPageView1.GetChildAt(0), Telerik.WinControls.UI.RadPageViewStripElement).StripButtons = Telerik.WinControls.UI.StripViewButtons.None
@@ -711,7 +715,7 @@ Partial Class frmSaleReturnDairy
         'chkCncelDSR
         '
         Me.chkCncelDSR.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkCncelDSR.Location = New System.Drawing.Point(741, 151)
+        Me.chkCncelDSR.Location = New System.Drawing.Point(628, 151)
         Me.chkCncelDSR.Name = "chkCncelDSR"
         Me.chkCncelDSR.Size = New System.Drawing.Size(55, 16)
         Me.chkCncelDSR.TabIndex = 1440
@@ -723,26 +727,26 @@ Partial Class frmSaleReturnDairy
         Me.ItemTypePanel.Controls.Add(Me.rbtn_Fresh)
         Me.ItemTypePanel.Location = New System.Drawing.Point(950, -1)
         Me.ItemTypePanel.Name = "ItemTypePanel"
-        Me.ItemTypePanel.Size = New System.Drawing.Size(125, 24)
+        Me.ItemTypePanel.Size = New System.Drawing.Size(179, 24)
         Me.ItemTypePanel.TabIndex = 1439
         '
         'rbtn_Ambient
         '
-        Me.rbtn_Ambient.Location = New System.Drawing.Point(60, 3)
+        Me.rbtn_Ambient.Location = New System.Drawing.Point(92, 3)
         Me.rbtn_Ambient.Name = "rbtn_Ambient"
-        Me.rbtn_Ambient.Size = New System.Drawing.Size(63, 18)
+        Me.rbtn_Ambient.Size = New System.Drawing.Size(58, 18)
         Me.rbtn_Ambient.TabIndex = 39
         Me.rbtn_Ambient.TabStop = False
-        Me.rbtn_Ambient.Text = "Ambient"
+        Me.rbtn_Ambient.Text = "Taxable"
         '
         'rbtn_Fresh
         '
         Me.rbtn_Fresh.CheckState = System.Windows.Forms.CheckState.Checked
         Me.rbtn_Fresh.Location = New System.Drawing.Point(5, 3)
         Me.rbtn_Fresh.Name = "rbtn_Fresh"
-        Me.rbtn_Fresh.Size = New System.Drawing.Size(47, 18)
+        Me.rbtn_Fresh.Size = New System.Drawing.Size(84, 18)
         Me.rbtn_Fresh.TabIndex = 38
-        Me.rbtn_Fresh.Text = "Fresh"
+        Me.rbtn_Fresh.Text = "Non-Taxable"
         Me.rbtn_Fresh.ToggleState = Telerik.WinControls.Enumerations.ToggleState.[On]
         '
         'pnl_damage
@@ -779,6 +783,7 @@ Partial Class frmSaleReturnDairy
         '
         'pnlPCJ
         '
+        Me.pnlPCJ.Controls.Add(Me.chkWithoutInvoice)
         Me.pnlPCJ.Controls.Add(Me.chkBoothWiseReturn)
         Me.pnlPCJ.Controls.Add(Me.fndProject)
         Me.pnlPCJ.Controls.Add(Me.MyLabel4)
@@ -795,10 +800,19 @@ Partial Class frmSaleReturnDairy
         Me.pnlPCJ.Size = New System.Drawing.Size(417, 22)
         Me.pnlPCJ.TabIndex = 56
         '
+        'chkWithoutInvoice
+        '
+        Me.chkWithoutInvoice.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkWithoutInvoice.Location = New System.Drawing.Point(302, 2)
+        Me.chkWithoutInvoice.Name = "chkWithoutInvoice"
+        Me.chkWithoutInvoice.Size = New System.Drawing.Size(98, 16)
+        Me.chkWithoutInvoice.TabIndex = 1477
+        Me.chkWithoutInvoice.Text = "Without Invoice"
+        '
         'chkBoothWiseReturn
         '
         Me.chkBoothWiseReturn.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkBoothWiseReturn.Location = New System.Drawing.Point(266, 3)
+        Me.chkBoothWiseReturn.Location = New System.Drawing.Point(153, 3)
         Me.chkBoothWiseReturn.Name = "chkBoothWiseReturn"
         Me.chkBoothWiseReturn.Size = New System.Drawing.Size(147, 16)
         Me.chkBoothWiseReturn.TabIndex = 1476
@@ -2513,6 +2527,7 @@ Partial Class frmSaleReturnDairy
         '
         'RadPageViewPage4
         '
+        Me.RadPageViewPage4.Controls.Add(Me.btnAdminCancel)
         Me.RadPageViewPage4.Controls.Add(Me.btnCancel)
         Me.RadPageViewPage4.Controls.Add(Me.MyLabel13)
         Me.RadPageViewPage4.Controls.Add(Me.TxtRoundoff)
@@ -2541,15 +2556,26 @@ Partial Class frmSaleReturnDairy
         Me.RadPageViewPage4.ItemSize = New System.Drawing.SizeF(41.0!, 26.0!)
         Me.RadPageViewPage4.Location = New System.Drawing.Point(10, 35)
         Me.RadPageViewPage4.Name = "RadPageViewPage4"
-        Me.RadPageViewPage4.Size = New System.Drawing.Size(1197, 353)
+        Me.RadPageViewPage4.Size = New System.Drawing.Size(1197, 434)
         Me.RadPageViewPage4.Text = "Total"
+        '
+        'btnAdminCancel
+        '
+        Me.btnAdminCancel.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnAdminCancel.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAdminCancel.Location = New System.Drawing.Point(655, 176)
+        Me.btnAdminCancel.Name = "btnAdminCancel"
+        Me.btnAdminCancel.Size = New System.Drawing.Size(121, 22)
+        Me.btnAdminCancel.TabIndex = 1571
+        Me.btnAdminCancel.Text = "Cancel By Admin"
+        Me.btnAdminCancel.Visible = False
         '
         'btnCancel
         '
         Me.btnCancel.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(655, 273)
+        Me.btnCancel.Location = New System.Drawing.Point(655, 137)
         Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(110, 22)
+        Me.btnCancel.Size = New System.Drawing.Size(121, 22)
         Me.btnCancel.TabIndex = 167
         Me.btnCancel.Text = "Cancel"
         '
@@ -3401,6 +3427,7 @@ Partial Class frmSaleReturnDairy
         Me.pnl_damage.PerformLayout()
         Me.pnlPCJ.ResumeLayout(False)
         Me.pnlPCJ.PerformLayout()
+        CType(Me.chkWithoutInvoice, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.chkBoothWiseReturn, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.fndProject, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel4, System.ComponentModel.ISupportInitialize).EndInit()
@@ -3510,6 +3537,7 @@ Partial Class frmSaleReturnDairy
         Me.Attachments.ResumeLayout(False)
         Me.RadPageViewPage4.ResumeLayout(False)
         Me.RadPageViewPage4.PerformLayout()
+        CType(Me.btnAdminCancel, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnCancel, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel13, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtRoundoff, System.ComponentModel.ISupportInitialize).EndInit()
@@ -3773,5 +3801,7 @@ Partial Class frmSaleReturnDairy
     Friend WithEvents MyLabel61 As common.Controls.MyLabel
     Friend WithEvents btnUpdateEinvoice As RadButton
     Friend WithEvents TxtEInvoiceUpdateQCCode As common.Controls.MyTextBox
+    Friend WithEvents chkWithoutInvoice As RadCheckBox
+    Friend WithEvents btnAdminCancel As RadButton
 End Class
 
