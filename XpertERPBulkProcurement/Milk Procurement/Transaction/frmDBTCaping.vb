@@ -260,10 +260,14 @@ Public Class frmDBTCaping
         farmercode.HeaderText = "Third Party Code"
         farmercode.Name = colThirdPartyCode
         farmercode.ReadOnly = True
-        farmercode.IsVisible = True
-        farmercode.Width = 150
+        farmercode.IsVisible = False
+        ' farmercode.VisibleInColumnChooser = True
         farmercode.TextAlignment = System.Drawing.ContentAlignment.MiddleLeft
         gvItem.Columns.Add(farmercode)
+
+
+
+
 
         gvItem.AllowAddNewRow = False
         gvItem.AllowDeleteRow = False
