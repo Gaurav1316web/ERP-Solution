@@ -2051,7 +2051,7 @@ from
         End If
     End Sub
 
-    Public Shared Function CancelData(ByVal Form_Id As String, ByVal Doc_No As String, ByVal NavType As NavigatorType) As Boolean
+    Public Shared Function CancelData(ByVal Form_Id As String, ByVal Doc_No As String, ByVal NavType As NavigatorType, ByVal isCancelByAdmin As Boolean) As Boolean
         '' created by Sanjay
         Dim qry As String = ""
         Dim trans As SqlTransaction = clsDBFuncationality.GetTransactin()
@@ -2066,7 +2066,7 @@ from
             ''richa agarwal 06 Jan,2021
             Dim dtirn As DataTable = clsDBFuncationality.GetDataTable("select Einvoice_type,IRN_No from TSPL_SD_SALE_RETURN_HEAD where Document_Code='" & Doc_No & "'", trans)
             If dtirn IsNot Nothing AndAlso dtirn.Rows.Count > 0 Then
-                If clsCommon.CompairString(clsCommon.myCstr(dtirn.Rows(0)("Einvoice_type")), "BB") = CompairStringResult.Equal AndAlso clsCommon.CompairString(clsCommon.myCstr(obj.Is_Taxable), "1") = CompairStringResult.Equal AndAlso clsERPFuncationality.GetEInvoiceStatus(obj.Document_Date, trans) = True Then
+                If clsCommon.CompairString(clsCommon.myCstr(dtirn.Rows(0)("Einvoice_type")), "BB") = CompairStringResult.Equal AndAlso clsCommon.CompairString(clsCommon.myCstr(obj.Is_Taxable), "1") = CompairStringResult.Equal AndAlso clsERPFuncationality.GetEInvoiceStatus(obj.Document_Date, trans) = True AndAlso Not isCancelByAdmin Then
                     If ClsEInvoiceOFAPIs.EInvoice_Cancellation(Doc_No, clsCommon.myCstr(dtirn.Rows(0)("IRN_No")), obj.Bill_To_Location, trans) = True Then
                     Else
                         Throw New Exception("Invalid JSON Value")

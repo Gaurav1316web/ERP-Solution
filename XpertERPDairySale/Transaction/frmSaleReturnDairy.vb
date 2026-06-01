@@ -3098,6 +3098,7 @@ where TSPL_DISTRIBUTOR_COMMISSION_HEAD.Applicable_Date<='" & IIf(clsCommon.myLen
                             'End If
                             If chkWithoutInvoice.Checked Then
                                 gv1.CurrentRow.Cells(colQty).Value = dblActualqty
+                                OpenBatchItem()
                             End If
                             ItemPrice(strICode, strActualUOM, clsCommon.myCdbl(gv1.CurrentRow.Cells(colActualQty).Value), gv1.CurrentRow.Index, False)
                             UpdateAllTotals()
@@ -3771,6 +3772,9 @@ Where TSPL_ITEM_MASTER.Item_Code='" + itemCode + "' And TSPL_ITEM_UOM_DETAIL.UOM
         gv1.CurrentRow.Cells(colICodeGrp).Value = clsDBFuncationality.getSingleValue("select CSA_TYPE from TSPL_ITEM_MASTER where Item_Code='" & gv1.CurrentRow.Cells(colICode).Value & "' ")
         gv1.CurrentRow.Cells(colUnit).Value = clsDBFuncationality.getSingleValue("select UOM_Code from TSPL_ITEM_UOM_DETAIL where Default_UOM=1 and Item_Code='" & gv1.CurrentRow.Cells(colICode).Value & "' ")
         gv1.CurrentRow.Cells(colOrgUnit).Value = gv1.CurrentRow.Cells(colUnit).Value
+        If chkWithoutInvoice.Checked Then
+            gv1.CurrentRow.Cells(colIsBatchItem).Value = clsItemMaster.IsBatchItem(gv1.CurrentRow.Cells(colICode).Value)
+        End If
         If clsCommon.CompairString(ddlReturnType.SelectedValue, "P") = CompairStringResult.Equal Then
             gv1.CurrentRow.Cells(colQty).Value = 1
         End If
@@ -6384,6 +6388,7 @@ Where TSPL_ITEM_MASTER.Item_Code='" + itemCode + "' And TSPL_ITEM_UOM_DETAIL.UOM
                 frm.ShowDialog()
                 If frm.isPasswordCorrect Then
                     btnReverseAndUnpost.Visible = True
+                    btnAdminCancel.Visible = True
                 End If
             Else
                 clsCommon.MyMessageBoxShow(Me, "You are not authorized to perform this action.", Me.Text, MessageBoxButtons.OK, Telerik.WinControls.RadMessageIcon.Error)
@@ -10120,6 +10125,7 @@ left join TSPL_DISTRIBUTOR_ROUTE on TSPL_DISTRIBUTOR_ROUTE_CUSTOMER.Code=TSPL_DI
             End If
             frm.strSplTransaction = "DSSaleReturn"
             frm.strShipmentNo = clsDBFuncationality.getSingleValue("select Against_Shipment_No from TSPL_SD_SALE_INVOICE_HEAD where Document_Code='" & txtReqNo.Value & "'")
+            frm.strIsWithoutInvoice = chkWithoutInvoice.Checked
 
             frm.arr = TryCast(gv1.CurrentRow.Cells(colICode).Tag, List(Of clsBatchInventory))
             frm.ShowDialog()
@@ -10152,10 +10158,10 @@ left join TSPL_DISTRIBUTOR_ROUTE on TSPL_DISTRIBUTOR_ROUTE_CUSTOMER.Code=TSPL_DI
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
-        CancelData()
+        CancelData(False)
     End Sub
 
-    Function CancelData() As Boolean
+    Function CancelData(ByVal IsCancelByAdmin As Boolean) As Boolean
         Try
             Dim isEinvoiceCancelled As Boolean = False
             If clsCommon.myLen(txtDocNo.Value) <= 0 Then
@@ -10164,9 +10170,12 @@ left join TSPL_DISTRIBUTOR_ROUTE on TSPL_DISTRIBUTOR_ROUTE_CUSTOMER.Code=TSPL_DI
             If clsCommon.MyMessageBoxShow("Are you sure to Cancel the Record?", "", MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.No Then
                 Return False
             End If
-            If clsCommon.MyMessageBoxShow(Me, "Is E-invoice Cancelled on GST Portal?", "", MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.Yes Then
-                isEinvoiceCancelled = True
+            If IsCancelByAdmin Then
+                If clsCommon.MyMessageBoxShow(Me, "Is E-invoice Cancelled on GST Portal?", "", MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.Yes Then
+                    isEinvoiceCancelled = True
+                End If
             End If
+
 
             Dim strReceiptCount As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("Select receipt_no from TSPL_RECEIPT_DETAIL where Document_No in (Select Document_No from TSPL_Customer_Invoice_Head  where Against_Sale_Return_No='" & txtDocNo.Value & "') "))
             If clsCommon.myLen(strReceiptCount) > 0 Then
@@ -10181,7 +10190,7 @@ left join TSPL_DISTRIBUTOR_ROUTE on TSPL_DISTRIBUTOR_ROUTE_CUSTOMER.Code=TSPL_DI
                 End If
             End If
 
-            clsDSSalesReturnHead.CancelData(Me.Form_ID, txtDocNo.Value, NavigatorType.Current)
+            clsDSSalesReturnHead.CancelData(Me.Form_ID, txtDocNo.Value, NavigatorType.Current, isEinvoiceCancelled)
             clsCommon.MyMessageBoxShow(Me, "Successfully Cancelled", Me.Text)
             AddNew()
         Catch ex As Exception
@@ -10425,5 +10434,9 @@ left join TSPL_DISTRIBUTOR_ROUTE on TSPL_DISTRIBUTOR_ROUTE_CUSTOMER.Code=TSPL_DI
             Tran.Rollback()
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try
+    End Sub
+
+    Private Sub btnAdminCancel_Click(sender As Object, e As EventArgs) Handles btnAdminCancel.Click
+        CancelData(True)
     End Sub
 End Class
