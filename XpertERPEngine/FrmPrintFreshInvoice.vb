@@ -1301,7 +1301,9 @@ Pivot(max(Item_Cagetory_Values) For Item_Category_Code   In ( [CATEGORY RM], [BR
             If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "BKN") = CompairStringResult.Equal Then
                 Qry += " Group By Document_Code,Item_Code "
             End If
-            If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal OrElse clsCommon.CompairString(objCommonVar.CurrComp_Code1, "TNK") = CompairStringResult.Equal Then
+            If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
+                Qry += " Order By Sku_Seq "
+            ElseIf clsCommon.CompairString(objCommonVar.CurrComp_Code1, "TNK") = CompairStringResult.Equal Then
                 Qry += " Order By Print_Sequence "
             End If
             If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "RJS") = CompairStringResult.Equal Then
