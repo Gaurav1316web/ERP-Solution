@@ -97,9 +97,9 @@ Public Class rptDBTCappingReport
             gv1.Columns(ii).BestFit()
         Next
         gv1.Columns("THIRD_PARTY_CODE").HeaderText = "Third Party Code"
+        gv1.Columns("THIRD_PARTY_CODE").ReadOnly = True
 
         gv1.Columns("THIRD_PARTY_CODE").IsVisible = False
-        gv1.Columns("THIRD_PARTY_CODE").ReadOnly = True
 
         gv1.Columns("THIRD_PARTY_CODE").VisibleInColumnChooser = True
         gv1.ShowGroupPanel = False
