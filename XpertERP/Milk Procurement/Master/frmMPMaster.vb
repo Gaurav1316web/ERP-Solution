@@ -135,6 +135,7 @@ Public Class FrmMPMaster
             txtJanAadharNo.Text = ""
             TxtThirdPartyCode.Text = ""
             MylblThirdPartySource.Text = ""
+            LblCappingQty.Text = ""
             txtEmail.Text = ""
             txtEducation.Text = ""
             dtpDOB.Value = clsCommon.GETSERVERDATE()
@@ -809,6 +810,7 @@ Public Class FrmMPMaster
             obj.Jan_Aadhar_No = txtJanAadharNo.Text
             obj.THIRD_PARTY_CODE = TxtThirdPartyCode.Text
             obj.Third_Party_Source = MylblThirdPartySource.Text
+            obj.DBT_Capping_Qty = LblCappingQty.Text
             obj.DOB = clsCommon.myCDate(dtpDOB.Value, "dd/MMM/yyyy")
             obj.Education = clsCommon.myCstr(txtEducation.Text)
             obj.Land_Holding = clsCommon.myCdbl(txtLandHolding.Text)
@@ -1054,7 +1056,8 @@ Public Class FrmMPMaster
                 txtFAX.Text = obj.Fax
                 txtJanAadharNo.Text = obj.Jan_Aadhar_No
                 TxtThirdPartyCode.Text = obj.THIRD_PARTY_CODE
-                MylblThirdPartySource.Text = obj.third_party_source
+                MylblThirdPartySource.Text = obj.Third_Party_Source
+                LblCappingQty.Text = obj.DBT_Capping_Qty
                 dtpDOB.Value = obj.DOB
                 txtEducation.Text = obj.Education
                 txtLandHolding.Text = obj.Land_Holding
@@ -3774,5 +3777,389 @@ Public Class FrmMPMaster
 
     Private Sub RadMenuItem3_Click(sender As Object, e As EventArgs) Handles RadMenuItem3.Click
         funImportMPName()
+    End Sub
+
+    Private Sub CappingQty_Click(sender As Object, e As EventArgs) Handles CappingQty.Click
+        Try
+            Dim str As String = "select count(*) from TSPL_MP_MASTER"
+            Dim check As Integer = clsDBFuncationality.getSingleValue(str)
+
+            If check > 0 Then
+                str = "Select MP_Code as [MP Code],MP_Name as [MP Name],MP_Code_VLC_Uploader as [Mp uploder Code],VLCH.VLC_Code as [Dcs Code],VLCH.VLC_Name as [Dcs Name],TSPL_MP_MASTER.DBT_Capping_Qty as [DBT Capping Qty] from TSPL_MP_MASTER
+                        left join TSPL_VLC_MASTER_HEAD VLCH on tspl_mp_master.VLC_Code=VLCH.VLC_Code"
+            Else
+                str = "select '' as [MP Code] ,'' as [MP Name] ,'' as [Mp uploder Code],0 as [Dcs Code],'' as [Dcs Name], '' as [DBT Capping Qty]"
+            End If
+            ListImpExpColumnsMandatory = New List(Of String)({"MP Code", "MP Name", "Mp uploder Code", "Dcs Code", "Dcs Name", "DBT Capping Qty"})
+            ListImpExpColumnsSuperMandatory = New List(Of String)({"MP Code"})
+            transportSql.ExporttoExcel(str, "", "", Me, ListImpExpColumnsMandatory, ListImpExpColumnsSuperMandatory, MyBase.Form_ID + "DBT_Capping_Qty")
+        Catch ex As Exception
+            clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
+        End Try
+    End Sub
+
+    Private Sub RadMenuItem5_Click(sender As Object, e As EventArgs) Handles RadMenuItem5.Click
+        Dim gv As New UserControls.MyRadGridView
+        Me.Controls.Add(gv)
+
+        Dim i As Integer = 0
+        Dim totalAnimal As Double = 0
+        Dim trans As SqlTransaction
+
+        connectSql.OpenConnection()
+
+        Dim mpCode As String = String.Empty
+
+        trans = clsDBFuncationality.GetTransactin()
+
+        Dim strdate As Date = clsCommon.GETSERVERDATE(trans, "dd/MMM/yyyy")
+
+        If transportSql.importExcel(gv, "MP Code", "MP Name", "Mp uploder Code", "Dcs Code", "Dcs Name", "DBT Capping Qty") Then
+
+            Try
+
+                clsCommon.ProgressBarShow()
+
+                '=========================================
+                ' ERROR TABLE
+                '=========================================
+
+                Dim dtError As New DataTable
+
+                dtError.Columns.Add("LineNo")
+                dtError.Columns.Add("MPCode")
+                dtError.Columns.Add("ErrorMessage")
+
+                '=========================================
+                ' DUPLICATE CHECK ARRAY
+                '=========================================
+
+                Dim arrMP As New List(Of String)
+
+                For Each grow As GridViewRowInfo In gv.Rows
+
+                    Dim excelMPCode As String =
+                clsCommon.myCstr(grow.Cells("MP Code").Value)
+
+                    If clsCommon.myLen(excelMPCode) > 0 Then
+
+                        If arrMP.Contains(excelMPCode) Then
+
+                            dtError.Rows.Add(
+                        gv.Rows.IndexOf(grow) + 1,
+                        excelMPCode,
+                        "Duplicate MP Code Found In Excel")
+
+                        Else
+
+                            arrMP.Add(excelMPCode)
+
+                        End If
+
+                    End If
+
+                Next
+
+                '=========================================
+                ' MAIN LOOP
+                '=========================================
+
+                Dim lineNo As Integer = 0
+
+                For Each grow As GridViewRowInfo In gv.Rows
+
+                    lineNo += 1
+
+                    Try
+
+                        Dim errMsg As String = ""
+
+                        Dim obj As New clsAnimalDetails
+
+                        '=========================================
+                        ' MP CODE
+                        '=========================================
+
+                        Dim currentMPCode As String =
+                    clsCommon.myCstr(
+                        grow.Cells("MP Code").Value)
+
+                        If clsCommon.myLen(currentMPCode) <= 0 Then
+
+                            errMsg &= "MP Code Blank, "
+
+                        End If
+
+                        If clsCommon.myLen(currentMPCode) > 30 Then
+
+                            errMsg &= "MP Code Greater Than 30 Character, "
+
+                        End If
+
+                        If clsCommon.myLen(currentMPCode) > 0 Then
+
+                            If clsDBFuncationality.getSingleValue(
+                        "SELECT COUNT(*) 
+                         FROM TSPL_MP_MASTER 
+                         WHERE MP_CODE='" &
+                         currentMPCode & "'",
+                        trans) = 0 Then
+
+                                errMsg &= "Invalid MP Code, "
+
+                            End If
+
+                        End If
+
+                        obj.Trans_Code = currentMPCode
+
+                        '=========================================
+                        ' MP NAME
+                        '=========================================
+
+                        Dim mpName As String =
+                    clsCommon.myCstr(
+                        grow.Cells("MP Name").Value)
+
+                        If clsCommon.myLen(mpName) <= 0 Then
+
+                            errMsg &= "MP Name Blank, "
+
+                        End If
+
+                        '=========================================
+                        ' MP UPLODER CODE
+                        '=========================================
+
+                        Dim mpUploaderCode As String =
+                    clsCommon.myCstr(
+                        grow.Cells("Mp uploder Code").Value)
+
+                        If clsCommon.myLen(mpUploaderCode) <= 0 Then
+
+                            errMsg &= "Mp uploder Code Blank, "
+
+                        End If
+
+                        '=========================================
+                        ' DCS CODE
+                        '=========================================
+
+                        Dim dcsCode As String =
+                    clsCommon.myCstr(
+                        grow.Cells("Dcs Code").Value)
+
+                        If clsCommon.myLen(dcsCode) <= 0 Then
+
+                            errMsg &= "Dcs Code Blank, "
+
+                        End If
+
+                        '=========================================
+                        ' DCS NAME
+                        '=========================================
+
+                        Dim dcsName As String =
+                    clsCommon.myCstr(
+                        grow.Cells("Dcs Name").Value)
+
+                        If clsCommon.myLen(dcsName) <= 0 Then
+
+                            errMsg &= "Dcs Name Blank, "
+
+                        End If
+
+                        '=========================================
+                        ' THIRD PARTY CODE
+                        '=========================================
+
+                        Dim DBTCappingQty As String =
+                    clsCommon.myCstr(
+                        grow.Cells("DBT Capping Qty").Value)
+
+                        If clsCommon.myLen(DBTCappingQty) <= 0 Then
+
+                            errMsg &= "THIRD PARTY CODE Blank, "
+
+                        End If
+
+                        '=========================================
+                        ' THIRD PARTY SOURCE
+                        '=========================================
+
+                        '    Dim thirdPartySource As String =
+                        'clsCommon.myCstr(
+                        '    grow.Cells("THIRD PARTY SOURCE").Value)
+
+                        '    If clsCommon.myLen(thirdPartySource) <= 0 Then
+
+                        '        errMsg &= "THIRD PARTY SOURCE Blank, "
+
+                        '    Else
+
+                        '        If clsCommon.CompairString(
+                        '    "REIL",
+                        '    thirdPartySource) <> CompairStringResult.Equal _
+                        'AndAlso clsCommon.CompairString(
+                        '    "KTPL",
+                        '    thirdPartySource) <> CompairStringResult.Equal _
+                        'AndAlso clsCommon.CompairString(
+                        '    "STAP",
+                        '    thirdPartySource) <> CompairStringResult.Equal _
+                        'AndAlso clsCommon.CompairString(
+                        '    "EVST",
+                        '    thirdPartySource) <> CompairStringResult.Equal Then
+
+                        '            errMsg &= "INVALID MACHINE NAME, "
+
+                        '        End If
+
+                        '    End If
+
+                        '=========================================
+                        ' DUPLICATE THIRD PARTY CODE
+                        '=========================================
+
+                        If clsCommon.myLen(DBTCappingQty) > 0 Then
+
+                            Dim duplicateCount As Integer = Convert.ToInt32(
+                            clsDBFuncationality.getSingleValue(
+                                "SELECT COUNT(*) 
+                                 FROM TSPL_MP_MASTER 
+                                 WHERE DBT_Capping_Qty='" &
+                                 DBTCappingQty & "'
+                                 AND MP_CODE<>'" &
+                                 currentMPCode & "'",
+                                trans))
+
+                            If duplicateCount > 0 Then
+
+                                errMsg &=
+                            "DBT Capping Qty Already Exists, "
+
+                            End If
+
+                        End If
+
+                        '=========================================
+                        ' IF ERROR FOUND
+                        '=========================================
+
+                        If errMsg <> "" Then
+
+                            dtError.Rows.Add(
+                        lineNo,
+                        currentMPCode,
+                        errMsg)
+
+                            Continue For
+
+                        End If
+
+                        '=========================================
+                        ' SAVE DATA
+                        '=========================================
+
+                        clsAnimalDetails.SaveData(
+                    False,
+                    obj,
+                    trans)
+
+                        '=========================================
+                        ' UPDATE DATA
+                        '=========================================
+
+                        clsDBFuncationality.ExecuteNonQuery(
+                    "UPDATE TSPL_MP_MASTER 
+                     SET
+                     DBT_Capping_Qty='" &
+                     DBTCappingQty & "'
+                     WHERE MP_CODE='" &
+                     currentMPCode & "'",
+                    trans)
+
+                        '=========================================
+                        ' SAVE HISTORY
+                        '=========================================
+
+                        clsCommonFunctionality.SaveHistoryData(
+                    objCommonVar.CurrentUserCode,
+                    currentMPCode,
+                    "TSPL_MP_MASTER",
+                    "MP_CODE",
+                    trans)
+
+                    Catch ex As Exception
+
+                        dtError.Rows.Add(
+                    lineNo,
+                    "",
+                    ex.Message)
+
+                    End Try
+
+                Next
+
+                '=========================================
+                ' SHOW ERRORS
+                '=========================================
+
+                If dtError.Rows.Count > 0 Then
+
+                    trans.Rollback()
+
+                    clsCommon.ProgressBarHide()
+
+                    Dim msg As String = ""
+
+                    For Each dr As DataRow In dtError.Rows
+
+                        msg &=
+                    "Line No : " &
+                    dr("LineNo").ToString() &
+                    " | MP Code : " &
+                    dr("MPCode").ToString() &
+                    " | Error : " &
+                    dr("ErrorMessage").ToString() &
+                    vbCrLf & vbCrLf
+
+                    Next
+
+                    clsCommon.MyMessageBoxShow(
+                Me,
+                msg,
+                Me.Text)
+
+                Else
+
+                    trans.Commit()
+
+                    clsCommon.ProgressBarHide()
+
+                    clsCommon.MyMessageBoxShow(
+                Me,
+                "Data Transfer Completed!",
+                Me.Text,
+                MessageBoxButtons.OK)
+
+                End If
+
+            Catch ex As Exception
+
+                trans.Rollback()
+
+                clsCommon.ProgressBarHide()
+
+                clsCommon.MyMessageBoxShow(
+            Me,
+            ex.Message,
+            Me.Text)
+
+            End Try
+
+        End If
+
+        Me.Controls.Remove(gv)
+
     End Sub
 End Class
