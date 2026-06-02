@@ -226,7 +226,7 @@ Public Class frmDairyProductionUploader
                     ElseIf e.Column Is gv1.Columns(colShift) Then
                         OpenShiftCode(False)
                         'ElseIf e.Column Is gv1.Columns(colBatchNo) Then
-                        '    OpenBatchDate()
+                        '  OpenBatchDate()
                     End If
                     isCellValueChangedOpen = False
                 End If
@@ -493,6 +493,21 @@ left outer join TSPL_LOCATION_MASTER as TSPL_LOCATION_MASTER_PK on TSPL_LOCATION
                         If clsCommon.myLen(objTr.Shift_Code) <= 0 Then
                             Throw New Exception("Please select Shift at line no [" + clsCommon.myCstr(ii + 1) + "]")
                         End If
+                        Dim MinShelfLife As Integer = Val(clsDBFuncationality.getSingleValue(
+    "SELECT ISNULL(Min_shelf_life,0) " &
+    "FROM tspl_item_master " &
+    "WHERE Item_Code='" & objTr.Item_Code & "'"))
+
+                        ' Expiry Date = Batch Date + Min Shelf Life Days
+                        Dim ExpiryDate As Date = objTr.Batch_Date.AddDays(MinShelfLife)
+
+                        Dim strQry As String = "UPDATE TSPL_BATCH_ITEM " &
+                       "SET Expiry_Date = '" & Format(ExpiryDate, "dd-MMM-yyyy") & "' " &
+                       "WHERE Item_Code = '" & objTr.Item_Code & "' " &
+                       "AND Batch_No = '" & objTr.Batch_No & "'"
+
+                        clsDBFuncationality.ExecuteNonQuery(strQry)
+
                         objTr.QC_Status = clsCommon.myCBool(gv1.Rows(ii).Cells(ColQCStatus).Value)
                         objTr.ArrQC = TryCast(gv1.Rows(ii).Cells(ColQCStatus).Tag, List(Of clsDairyProductionUploaderQC))
                         obj.Arr.Add(objTr)
