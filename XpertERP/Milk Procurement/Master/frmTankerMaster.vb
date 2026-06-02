@@ -118,8 +118,11 @@ Public Class FrmTankerMaster
         txtname.Text = ""
         fndNo.Value = ""
         txttank_transcode.Value = ""
+        TxtESIRule.Value = ""
+        TxtEPFRule.Value = ""
         txtstorage.Value = 0
         TxtIceCharge.Value = 0
+        NLabourCharge.Value = 0
         txtyear.Text = ""
         rbtninner_yes.IsChecked = False
         rbtinner_no.IsChecked = False
@@ -505,6 +508,8 @@ Public Class FrmTankerMaster
 
             Dim obj As New clsfrmTankerMaster()
             obj.code = clsCommon.myCstr(txttank_transcode.Value)
+            obj.ESIRule = clsCommon.myCstr(TxtESIRule.Value)
+            obj.EPFRule = clsCommon.myCstr(TxtEPFRule.Value)
             obj.desc = clsCommon.myCstr(txtname.Text)
             obj.tankerno = clsCommon.myCstr(fndNo.Value)
             obj.storagecap = clsCommon.myCdbl(txtstorage.Value)
@@ -513,6 +518,7 @@ Public Class FrmTankerMaster
             Else
                 obj.IceCharge = clsCommon.myCdbl(TxtIceCharge.Value)
             End If
+
             obj.year = clsCommon.myCstr(txtyear.Text)
             obj.tanker_name = clsCommon.myCstr(txtdesc.Text.Replace("'", "`"))
             ''richa Against Ticket No. BM00000003713 on 03/09/2014
@@ -534,6 +540,7 @@ Public Class FrmTankerMaster
             obj.rate_km = clsCommon.myCdbl(txt_km.Text)
             obj.Rate_Type = clsCommon.myCstr(cmbLtrKG.Text)
             obj.Price_Ltr_KG = clsCommon.myCdbl(txt_ltr.Text)
+            obj.Labour_Charge = clsCommon.myCdbl(NLabourCharge.Value)
             obj.RentalType = clsCommon.myCstr(cmbRentalType.Text)
             obj.RentalAmount = clsCommon.myCdbl(txtRentalAmt.Text)
 
@@ -830,6 +837,7 @@ Public Class FrmTankerMaster
 
                     cmbLtrKG.Text = clsCommon.myCstr(grow.Cells("Rate_Type").Value)
                     txt_ltr.Text = clsCommon.myCdbl(grow.Cells("Price_Ltr_KG").Value)
+                    NLabourCharge.Value = clsCommon.myCdbl(grow.Cells("Labour_Charge").Value)
                     rbtnrateltr.Checked = False
                     If clsCommon.myLen(cmbLtrKG.Text) > 0 Or clsCommon.myCdbl(txt_ltr.Text) > 0 Then
                         rbtnrateltr.Checked = True
@@ -1007,8 +1015,11 @@ Public Class FrmTankerMaster
                 txtdesc.Text = obj.tanker_name
                 txtname.Text = obj.desc
                 txttank_transcode.Value = obj.code
+                TxtESIRule.Value = obj.ESIRule
+                TxtEPFRule.Value = obj.EPFRule
                 txtstorage.Value = obj.storagecap
                 TxtIceCharge.Value = obj.IceCharge
+                NLabourCharge.Value = obj.Labour_Charge
                 ''richa Against Ticket No. BM00000003713 on 03/09/2014
                 ddlStorageCapacityDescription.Text = obj.StorageCapacityDesc
                 ''----------------------------------------------------
@@ -1485,6 +1496,40 @@ Public Class FrmTankerMaster
                 Exit Sub
             End If
             clsERPFuncationalityOLD.ShowHistoryData(fndNo.Value, "Tanker_No", "TSPL_TANKER_MASTER")
+        Catch ex As Exception
+            Throw New Exception(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub TxtEPFRule__MYValidating(sender As Object, e As EventArgs, isButtonClicked As Boolean) Handles TxtEPFRule._MYValidating
+        Try
+            Dim qry As String = "  select TSPL_PF_RULE_MASTER.PFRULE_CODE as [Code] ,TSPL_PF_RULE_MASTER.APPLICABLE_FROM as [Applicable From] ,
+                               TSPL_PF_RULE_MASTER.COEPF_PER as [Coepf Per] ,TSPL_PF_RULE_MASTER.COEPF_ROUNDOFF_YPE as [Coepf Roundoff Ype] ,
+                               TSPL_PF_RULE_MASTER.COEPS_PER as [Coeps Per] ,TSPL_PF_RULE_MASTER.EPS_MAX as [Eps Max] ,TSPL_PF_RULE_MASTER.EMPEPF_PER as [Empepf Per] 
+                               From TSPL_PF_RULE_MASTER  "
+            TxtEPFRule.Value = clsCommon.ShowSelectForm("RoutMasFND", qry, "Code", "", TxtEPFRule.Value, "", isButtonClicked)
+
+        Catch ex As Exception
+            Throw New Exception(ex.Message)
+        End Try
+
+        'txttank_transcode.Value = clsVendorMaster.getFinder(" TSPL_VENDOR_MASTER.Form_Type='TTM' and TSPL_VENDOR_MASTER.isBulkProcurement=0 ", txttank_transcode.Value, isButtonClicked)
+
+        'If clsCommon.myLen(txttank_transcode.Value) > 0 Then
+        '    txtname.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select vendor_name  from tspl_vendor_master where form_type='TTM' and vendor_code='" & txttank_transcode.Value & "'"))
+        'Else
+        '    txtname.Text = ""
+        'End If
+    End Sub
+
+    Private Sub TxtESIRule__MYValidating(sender As Object, e As EventArgs, isButtonClicked As Boolean) Handles TxtESIRule._MYValidating
+        Try
+            Dim qry As String = "  select TSPL_ESI_RULE_MASTER.ESIRULE_CODE as [Code] ,TSPL_ESI_RULE_MASTER.APPLICABLE_FROM as [Applicable From] ,
+                                   TSPL_ESI_RULE_MASTER.COESI_PER as [Coesi Per] ,TSPL_ESI_RULE_MASTER.EMPESI_PER as [Empesi Per] ,
+                                   TSPL_ESI_RULE_MASTER.COESI_ROUNDOFF_YPE as [Coesi Roundoff Ype] ,TSPL_ESI_RULE_MASTER.TOTALEARNING_MAX as [Totalearning Max]  
+                                   From TSPL_ESI_RULE_MASTER  "
+            TxtESIRule.Value = clsCommon.ShowSelectForm("RoutMasFND", qry, "Code", "", TxtESIRule.Value, "", isButtonClicked)
+
         Catch ex As Exception
             Throw New Exception(ex.Message)
         End Try

@@ -323,6 +323,8 @@ End Class
 Public Class clsfrmTankerMaster
 #Region "Variable"
     Public code As String = Nothing
+    Public ESIRule As String = Nothing
+    Public EPFRule As String = Nothing
     Public desc As String = Nothing
     Public tankerno As String = Nothing
     Public storagecap As Decimal = Nothing
@@ -345,6 +347,7 @@ Public Class clsfrmTankerMaster
     Public RentalAmount As Double = 0
     Public Rate_Type As String = String.Empty
     Public Price_Ltr_KG As Double = 0
+    Public Labour_Charge As Double = 0
     Public Status As String = String.Empty
     Public Total_Chamber As Integer
     Public arrChamber As List(Of clsTankerChamberDetail) = Nothing
@@ -390,6 +393,8 @@ Public Class clsfrmTankerMaster
             Dim coll As New Hashtable()
             clsCommon.AddColumnsForChange(coll, "comp_code", objCommonVar.CurrentCompanyCode)
             clsCommon.AddColumnsForChange(coll, "Tanker_Transporter_Code", obj.code)
+            clsCommon.AddColumnsForChange(coll, "PFRULE_CODE", obj.EPFRule, True)
+            clsCommon.AddColumnsForChange(coll, "ESIRULE_CODE", obj.ESIRule, True)
             clsCommon.AddColumnsForChange(coll, "Description", obj.desc)
             clsCommon.AddColumnsForChange(coll, "Tanker_No", obj.tankerno)
             clsCommon.AddColumnsForChange(coll, "Tanker_Name", obj.tanker_name)
@@ -415,6 +420,7 @@ Public Class clsfrmTankerMaster
             'clsCommon.AddColumnsForChange(coll, "Ltr_KG", obj.ltr_kg)
             clsCommon.AddColumnsForChange(coll, "Rate_Type", clsCommon.myCstr(obj.Rate_Type))
             clsCommon.AddColumnsForChange(coll, "Price_Ltr_KG", clsCommon.myCdbl(obj.Price_Ltr_KG))
+            clsCommon.AddColumnsForChange(coll, "Labour_Charge", clsCommon.myCdbl(obj.Labour_Charge))
             clsCommon.AddColumnsForChange(coll, "Modified_Date", clsCommon.myCstr(clsCommon.GetPrintDate(clsCommon.GETSERVERDATE(trans), "dd/MM/yyyy")))
             clsCommon.AddColumnsForChange(coll, "Status", clsCommon.myCstr(obj.Status))
 
@@ -441,7 +447,7 @@ Public Class clsfrmTankerMaster
     Public Shared Function GetData(ByVal tankerno As String, ByVal NavType As NavigatorType) As clsfrmTankerMaster
         Try
             Dim obj As New clsfrmTankerMaster()
-            Dim qry As String = "select TSPL_TANKER_MASTER.tanker_transporter_code as Vendor_Code,TSPL_VENDOR_MASTER.Vendor_Name,TSPL_TANKER_MASTER.Tanker_No,TSPL_TANKER_MASTER.tanker_name,TSPL_TANKER_MASTER.Storage_Capacity,TSPL_TANKER_MASTER.Ice_Charge,TSPL_TANKER_MASTER.StorageCapacityDesc,TSPL_TANKER_MASTER.Year,TSPL_TANKER_MASTER.Inner_SS,TSPL_TANKER_MASTER.Outer_SS,TSPL_TANKER_MASTER.Shift_Charges,TSPL_TANKER_MASTER.Avg_KM_Ltr,TSPL_TANKER_MASTER.Diesel_Rate,TSPL_TANKER_MASTER.Price_KM,TSPL_TANKER_MASTER.Rate_Type,TSPL_TANKER_MASTER.Price_Ltr_Kg,TSPL_TANKER_MASTER.Rental_Type,TSPL_TANKER_MASTER.Rental_Amount,TSPL_TANKER_MASTER.Status,TSPL_TANKER_MASTER.Total_Chamber ,TSPL_TANKER_MASTER.Provision_Min_Qty,TSPL_TANKER_MASTER.Inactive ,TSPL_TANKER_MASTER.Private_Tanker
+            Dim qry As String = "select TSPL_TANKER_MASTER.tanker_transporter_code as Vendor_Code,TSPL_VENDOR_MASTER.Vendor_Name,TSPL_TANKER_MASTER.Tanker_No,TSPL_TANKER_MASTER.tanker_name,TSPL_TANKER_MASTER.Storage_Capacity,TSPL_TANKER_MASTER.Ice_Charge,TSPL_TANKER_MASTER.StorageCapacityDesc,TSPL_TANKER_MASTER.Year,TSPL_TANKER_MASTER.Inner_SS,TSPL_TANKER_MASTER.Outer_SS,TSPL_TANKER_MASTER.Shift_Charges,TSPL_TANKER_MASTER.Avg_KM_Ltr,TSPL_TANKER_MASTER.Diesel_Rate,TSPL_TANKER_MASTER.Price_KM,TSPL_TANKER_MASTER.Rate_Type,TSPL_TANKER_MASTER.Price_Ltr_Kg,TSPL_TANKER_MASTER.Rental_Type,TSPL_TANKER_MASTER.Rental_Amount,TSPL_TANKER_MASTER.Status,TSPL_TANKER_MASTER.Total_Chamber ,TSPL_TANKER_MASTER.Provision_Min_Qty,TSPL_TANKER_MASTER.Inactive ,TSPL_TANKER_MASTER.Private_Tanker,TSPL_TANKER_MASTER.PFRULE_CODE,TSPL_TANKER_MASTER.ESIRULE_CODE,TSPL_TANKER_MASTER.Labour_Charge
 from TSPL_VENDOR_MASTER 
 right outer join TSPL_TANKER_MASTER on TSPL_TANKER_MASTER.Tanker_Transporter_Code=TSPL_VENDOR_MASTER.Vendor_Code "
 
@@ -477,6 +483,7 @@ right outer join TSPL_TANKER_MASTER on TSPL_TANKER_MASTER.Tanker_Transporter_Cod
                 obj.RentalAmount = clsCommon.myCdbl(dt.Rows(0)("Rental_Amount"))
                 obj.Rate_Type = clsCommon.myCstr(dt.Rows(0)("Rate_type"))
                 obj.Price_Ltr_KG = clsCommon.myCdbl(dt.Rows(0)("Price_Ltr_Kg"))
+                obj.Labour_Charge = clsCommon.myCdbl(dt.Rows(0)("Labour_Charge"))
                 obj.Status = clsCommon.myCstr(dt.Rows(0)("Status"))
                 'obj.ltr_kg = clsCommon.myCdbl(dt.Rows(0)("Ltr_KG"))
                 'obj.rate_ltr = clsCommon.myCdbl(dt.Rows(0)("Price_Ltr"))
@@ -496,6 +503,8 @@ right outer join TSPL_TANKER_MASTER on TSPL_TANKER_MASTER.Tanker_Transporter_Cod
                 obj.Inactive = (clsCommon.myCDecimal(dt.Rows(0)("Inactive")) = 1)
                 obj.PrivateTanker = (clsCommon.myCDecimal(dt.Rows(0)("Private_Tanker")) = 1)
                 obj.arrChamber = clsTankerChamberDetail.GetData(obj.tankerno)
+                obj.ESIRule = clsCommon.myCstr(dt.Rows(0)("ESIRULE_CODE"))
+                obj.EPFRule = clsCommon.myCstr(dt.Rows(0)("PFRULE_CODE"))
             End If
             Return obj
         Catch ex As Exception

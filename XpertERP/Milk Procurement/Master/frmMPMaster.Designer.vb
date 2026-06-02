@@ -249,6 +249,10 @@ Partial Class FrmMPMaster
         Me.Dcs_Uploder = New Telerik.WinControls.UI.RadMenuItem()
         Me.Dcs_Name = New Telerik.WinControls.UI.RadMenuItem()
         Me.RadMenuItem1 = New Telerik.WinControls.UI.RadMenuItem()
+        Me.CappingQty = New Telerik.WinControls.UI.RadMenuItem()
+        Me.RadMenuItem5 = New Telerik.WinControls.UI.RadMenuItem()
+        Me.MyLabel16 = New common.Controls.MyLabel()
+        Me.LblCappingQty = New common.Controls.MyLabel()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -425,6 +429,8 @@ Partial Class FrmMPMaster
         CType(Me.btnClose, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnDelete, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnSave, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel16, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.LblCappingQty, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -470,6 +476,8 @@ Partial Class FrmMPMaster
         '
         'RadPageViewPage1
         '
+        Me.RadPageViewPage1.Controls.Add(Me.LblCappingQty)
+        Me.RadPageViewPage1.Controls.Add(Me.MyLabel16)
         Me.RadPageViewPage1.Controls.Add(Me.LblThirdPartySource)
         Me.RadPageViewPage1.Controls.Add(Me.MylblThirdPartySource)
         Me.RadPageViewPage1.Controls.Add(Me.TxtThirdPartyCode)
@@ -3747,7 +3755,7 @@ Partial Class FrmMPMaster
         '
         Me.mnuExport.AccessibleDescription = "RadMenuItem2"
         Me.mnuExport.AccessibleName = "RadMenuItem2"
-        Me.mnuExport.Items.AddRange(New Telerik.WinControls.RadItem() {Me.mnuMpDetailsExport, Me.mnuCowDetailsExport, Me.mnuBuffaloesDetailsExport, Me.mnuExportAnimalDetails, Me.MunTHIRD_PARTY_CODE})
+        Me.mnuExport.Items.AddRange(New Telerik.WinControls.RadItem() {Me.mnuMpDetailsExport, Me.mnuCowDetailsExport, Me.mnuBuffaloesDetailsExport, Me.mnuExportAnimalDetails, Me.MunTHIRD_PARTY_CODE, Me.CappingQty})
         Me.mnuExport.Name = "mnuExport"
         Me.mnuExport.Text = "Export"
         Me.mnuExport.UseCompatibleTextRendering = False
@@ -3787,7 +3795,7 @@ Partial Class FrmMPMaster
         '
         Me.mnuImport.AccessibleDescription = "RadMenuItem3"
         Me.mnuImport.AccessibleName = "RadMenuItem3"
-        Me.mnuImport.Items.AddRange(New Telerik.WinControls.RadItem() {Me.mnuMpDetailsImport, Me.mnuBuffaloesDetailsImport, Me.mnuCowDetailsImport, Me.mnuImportAnimalDetails, Me.RadMenuItem2, Me.RadMnuMPName, Me.RadMenuItem4})
+        Me.mnuImport.Items.AddRange(New Telerik.WinControls.RadItem() {Me.mnuMpDetailsImport, Me.mnuBuffaloesDetailsImport, Me.mnuCowDetailsImport, Me.mnuImportAnimalDetails, Me.RadMenuItem2, Me.RadMnuMPName, Me.RadMenuItem4, Me.RadMenuItem5})
         Me.mnuImport.Name = "mnuImport"
         Me.mnuImport.Text = "Import"
         Me.mnuImport.UseCompatibleTextRendering = False
@@ -3946,6 +3954,38 @@ Partial Class FrmMPMaster
         Me.RadMenuItem1.Name = "RadMenuItem1"
         Me.RadMenuItem1.Text = "RadMenuItem1"
         Me.RadMenuItem1.UseCompatibleTextRendering = False
+        '
+        'CappingQty
+        '
+        Me.CappingQty.Name = "CappingQty"
+        Me.CappingQty.Text = "Capping Qty"
+        '
+        'RadMenuItem5
+        '
+        Me.RadMenuItem5.Name = "RadMenuItem5"
+        Me.RadMenuItem5.Text = "Capping Qty"
+        '
+        'MyLabel16
+        '
+        Me.MyLabel16.FieldName = Nothing
+        Me.MyLabel16.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel16.Location = New System.Drawing.Point(653, 519)
+        Me.MyLabel16.Name = "MyLabel16"
+        Me.MyLabel16.Size = New System.Drawing.Size(69, 16)
+        Me.MyLabel16.TabIndex = 409
+        Me.MyLabel16.Text = "Capping Qty"
+        '
+        'LblCappingQty
+        '
+        Me.LblCappingQty.AutoSize = False
+        Me.LblCappingQty.BorderVisible = True
+        Me.LblCappingQty.FieldName = Nothing
+        Me.LblCappingQty.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LblCappingQty.Location = New System.Drawing.Point(766, 518)
+        Me.LblCappingQty.Name = "LblCappingQty"
+        Me.LblCappingQty.Size = New System.Drawing.Size(182, 18)
+        Me.LblCappingQty.TabIndex = 410
+        Me.LblCappingQty.TextWrap = False
         '
         'FrmMPMaster
         '
@@ -4145,6 +4185,8 @@ Partial Class FrmMPMaster
         CType(Me.btnClose, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnDelete, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnSave, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel16, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.LblCappingQty, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -4368,5 +4410,9 @@ Partial Class FrmMPMaster
     Friend WithEvents TxtThirdPartyCode As common.Controls.MyLabel
     Friend WithEvents LblThirdPartySource As common.Controls.MyLabel
     Friend WithEvents MylblThirdPartySource As common.Controls.MyLabel
+    Friend WithEvents CappingQty As RadMenuItem
+    Friend WithEvents RadMenuItem5 As RadMenuItem
+    Friend WithEvents LblCappingQty As common.Controls.MyLabel
+    Friend WithEvents MyLabel16 As common.Controls.MyLabel
 End Class
 

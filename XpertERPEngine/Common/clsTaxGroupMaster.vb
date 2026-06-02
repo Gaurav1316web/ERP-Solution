@@ -67,6 +67,37 @@ Public Class clsTaxGroupMaster
         End If
         Return obj
     End Function
+    Public Shared Function GetTaxGroupFromTaxGroupMaster(ByVal strTransLocation As String, ByVal strVendorCustomerCode As String, ByVal strTaxType As String, ByVal isTaxable As Boolean, ByVal tranDate As Date?) As String
+        Return GetTaxGroupFromTaxGroupMaster(strTransLocation, strVendorCustomerCode, strTaxType, isTaxable, tranDate, Nothing)
+    End Function
+    Public Shared Function GetTaxGroupFromTaxGroupMaster(ByVal strTransLocation As String, ByVal strVendorCustomerCode As String, ByVal strTaxType As String, ByVal isTaxable As Boolean, ByVal tranDate As Date?, ByVal trans As SqlTransaction) As String
+        Dim qry As String = "  "
+        Dim TaxQry = " SELECT Tax_Group_Code From TSPL_TAX_GROUP_MASTER where 2=2 "
+        Dim GSTStatus As Boolean = clsERPFuncationality.GetGSTStatus(tranDate)
+        If GSTStatus = False OrElse (isTaxable AndAlso GSTStatus) Then
+            qry += " select case when MIN(x.State)=MAX(x.State) then 'L' else 'I' end  from  (select State   from TSPL_LOCATION_MASTER where Location_Code='" + strTransLocation + "' union all   "
+            If clsCommon.CompairString("S", strTaxType) = CompairStringResult.Equal Then
+                qry += "  select   State from TSPL_CUSTOMER_MASTER where Cust_Code='" + strVendorCustomerCode + "' "
+            ElseIf clsCommon.CompairString("P", strTaxType) = CompairStringResult.Equal Then
+                qry += "   select  State_Code as State from TSPL_VENDOR_MASTER where Vendor_Code='" + strVendorCustomerCode + "' "
+            Else
+                Throw New Exception("Please enter valid Tax Type it should be 'P' or 'S'")
+            End If
+            qry += " )x "
+            Dim State As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue(qry, trans))
+            If clsCommon.CompairString(State, "L") = CompairStringResult.Equal Then
+                TaxQry += " and Default_Type=3 "
+            ElseIf clsCommon.CompairString(State, "I") = CompairStringResult.Equal Then
+                TaxQry += " and Default_Type=2 "
+            End If
+        Else
+            TaxQry += " and Default_Type=1 "
+        End If
+
+        Return clsCommon.myCstr(clsDBFuncationality.getSingleValue(TaxQry, trans))
+
+    End Function
+
     Public Shared Function GetTaxDetailsByLocation(ByVal GrpCode As String, ByVal strTaxType As String, ByVal strVendorCustomerCode As String, ByVal strLocation As String) As DataTable
         Dim openTaxcond As String = ""
         Dim whrCls As String = " and TSPL_LOCATION_WISE_TAX_MASTER.Tax_Type='" + strTaxType + "' "
@@ -226,6 +257,10 @@ Public Class clsTaxGroupMaster
     Public Shared Function GetTaxDetails(ByVal GrpCode As String) As DataTable
         Dim qry As String = "select TSPL_TAX_GROUP_DETAILS.Tax_Group_Code ,TSPL_TAX_GROUP_MASTER.Tax_Group_Desc,TSPL_TAX_GROUP_DETAILS.Tax_Code,TSPL_TAX_GROUP_DETAILS.Tax_Code_Desc,TSPL_TAX_GROUP_DETAILS.Tax_On_Base_Amount,Surtax,Surtax_Tax_Code,(select Tax_Rate from TSPL_TAX_RATES WHERE Tax_Rate_Code=1 AND Tax_Code=TSPL_TAX_GROUP_DETAILS.Tax_Code and TSPL_TAX_RATES.Tax_Type='P') AS TaxRate,TSPL_TAX_GROUP_DETAILS.Taxable, TSPL_TAX_MASTER.Excisable , TSPL_TAX_MASTER.Tax_Recoverable,TSPL_TAX_MASTER.Type,TSPL_TAX_MASTER.Is_TCS  from TSPL_TAX_GROUP_DETAILS left outer join TSPL_TAX_GROUP_MASTER on TSPL_TAX_GROUP_MASTER.Tax_Group_Code=TSPL_TAX_GROUP_DETAILS.Tax_Group_Code left outer join TSPL_TAX_MASTER on TSPL_TAX_MASTER.Tax_Code=TSPL_TAX_GROUP_DETAILS.Tax_Code where TSPL_TAX_GROUP_DETAILS.Tax_Group_Code='" + GrpCode + "' and TSPL_TAX_GROUP_MASTER.Tax_Group_Type='P' and TSPL_TAX_GROUP_DETAILS.Tax_Group_Type='P' order by Trans_Code"
 
+        Return clsDBFuncationality.GetDataTable(qry)
+    End Function
+    Public Shared Function GetTaxDetailsOfSale(ByVal GrpCode As String, ByVal strTaxType As String) As DataTable
+        Dim qry As String = "select TSPL_TAX_GROUP_DETAILS.Tax_Group_Code ,TSPL_TAX_GROUP_MASTER.Tax_Group_Desc,TSPL_TAX_GROUP_DETAILS.Tax_Code,TSPL_TAX_GROUP_DETAILS.Tax_Code_Desc,TSPL_TAX_GROUP_DETAILS.Tax_On_Base_Amount,Surtax,Surtax_Tax_Code,isnull((select Tax_Rate from TSPL_TAX_RATES WHERE Tax_Rate_Code=1 AND Tax_Code=TSPL_TAX_GROUP_DETAILS.Tax_Code and TSPL_TAX_RATES.Tax_Type='P'),0) AS TaxRate,TSPL_TAX_GROUP_DETAILS.Taxable, TSPL_TAX_MASTER.Excisable , TSPL_TAX_MASTER.Tax_Recoverable,TSPL_TAX_MASTER.Type,TSPL_TAX_MASTER.Is_TCS  from TSPL_TAX_GROUP_DETAILS left outer join TSPL_TAX_GROUP_MASTER on TSPL_TAX_GROUP_MASTER.Tax_Group_Code=TSPL_TAX_GROUP_DETAILS.Tax_Group_Code left outer join TSPL_TAX_MASTER on TSPL_TAX_MASTER.Tax_Code=TSPL_TAX_GROUP_DETAILS.Tax_Code where TSPL_TAX_GROUP_DETAILS.Tax_Group_Code='" + GrpCode + "' and TSPL_TAX_GROUP_MASTER.Tax_Group_Type='" & strTaxType & "' and TSPL_TAX_GROUP_DETAILS.Tax_Group_Type='" & strTaxType & "' order by Trans_Code"
         Return clsDBFuncationality.GetDataTable(qry)
     End Function
     Public Shared Function GetTaxDetails_Union(ByVal GrpCode As String, ByVal HCode As String) As DataTable

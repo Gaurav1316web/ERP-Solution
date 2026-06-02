@@ -321,6 +321,9 @@ Public Class frmDCSSaleEntry
         LoadBlankGridAC()
         AddNew()
         SetLength()
+        LoadShiftType()
+        cmbShift.Enabled = True
+        txtSupplyDate.Value = txtDate.Value
         If MultiplySubsidyWithQuantity Then
             txtRateAmt.Enabled = True
             txtDiscAmt.Enabled = True
@@ -385,6 +388,26 @@ Public Class frmDCSSaleEntry
         If objCommonVar.CreateAutoReceiptEntryDCSSale Then
             txtReceiptNo.Enabled = False
         End If
+    End Sub
+    Sub LoadShiftType()
+        Dim dt As DataTable = New DataTable()
+        dt.Columns.Add("Code", GetType(String))
+        dt.Columns.Add("Name", GetType(String))
+        Dim dr As DataRow = dt.NewRow()
+        dr("Code") = ""
+        dr("Name") = "Select"
+        dt.Rows.Add(dr)
+        dr = dt.NewRow()
+        dr("Code") = "AM"
+        dr("Name") = "Morning"
+        dt.Rows.Add(dr)
+        dr = dt.NewRow()
+        dr("Code") = "PM"
+        dr("Name") = "Evening"
+        dt.Rows.Add(dr)
+        cmbShift.ValueMember = "Code"
+        cmbShift.DisplayMember = "Name"
+        cmbShift.DataSource = dt
     End Sub
     Sub SetMultiCurrencyVisibility()
         Dim strq As String = ""
@@ -2888,21 +2911,23 @@ left outer join  TSPL_ITEM_CATEGORY_LEVEL_VALUES on TSPL_ITEM_CATEGORY_LEVEL_VAL
                     Dim isTaxable As Boolean = clsCommon.myCBool(clsDBFuncationality.getSingleValue("select istaxable from tspl_item_master where item_code ='" + clsCommon.myCstr(gv1.CurrentRow.Cells(colICode).Value) + "'") = 1)
                     GSTStatus = clsERPFuncationality.GetGSTStatus(txtDate.Value)
                     Dim TaxGroup As String = ""
-                    If GSTStatus = False OrElse (isTaxable AndAlso GSTStatus) Then
-                        TaxGroup = clsLocationWiseTax.GetDefaultTaxGroup(txtBillToLocation.Value, txtVendorNo.Value, "S", txtDate.Value)
-                    Else
-                        If isTaxable = False Then
-                            TaxGroup = clsLocationWiseTax.GetExempedDefaultTaxGroup(True, txtBillToLocation.Value, txtVendorNo.Value, "S", txtDate.Value)
-                        End If
-                    End If
+                    ' If GSTStatus = False OrElse (isTaxable AndAlso GSTStatus) Then
+                    TaxGroup = clsTaxGroupMaster.GetTaxGroupFromTaxGroupMaster(txtBillToLocation.Value, txtVendorNo.Value, "S", isTaxable, txtDate.Value)
+                    'Else
+                    '    If isTaxable = False Then
+                    '        TaxGroup = clsLocationWiseTax.GetExempedDefaultTaxGroup(True, txtBillToLocation.Value, txtVendorNo.Value, "S", txtDate.Value)
+                    '    End If
+                    'End If
 
                     Dim qry1 As String = " select Top 1 TSPL_ITEM_WISE_TAX_GROUP.Tax_Group_Code from TSPL_ITEM_WISE_TAX Inner Join TSPL_ITEM_WISE_TAX_AUTHORITY On TSPL_ITEM_WISE_TAX_AUTHORITY.HCODE=TSPL_ITEM_WISE_TAX.HCODE
 Inner Join TSPL_ITEM_WISE_TAX_GROUP On TSPL_ITEM_WISE_TAX_GROUP.HCODE=TSPL_ITEM_WISE_TAX_AUTHORITY.HCODE
-where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_WISE_TAX_GROUP.Item_Code='" + clsCommon.myCstr(gv1.CurrentRow.Cells(colICode).Value) + "' Group By CONVERT(date,TSPL_ITEM_WISE_TAX.DOC_DATE,103),TSPL_ITEM_WISE_TAX_GROUP.Tax_Group_Code "
+where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_WISE_TAX_GROUP.Item_Code='" + clsCommon.myCstr(gv1.CurrentRow.Cells(colICode).Value) + "' "
+
                     If clsCommon.myLen(TaxGroup) > 0 Then
-                        qry += "  and TSPL_ITEM_WISE_TAX_GROUP.Tax_Group_Code ='" & TaxGroup & "'"
+                        qry1 += "  and TSPL_ITEM_WISE_TAX_GROUP.Tax_Group_Code ='" & TaxGroup & "'"
                     End If
-                    qry += " Order By CONVERT(date,TSPL_ITEM_WISE_TAX.DOC_DATE,103) Desc"
+                    qry1 += " Group By CONVERT(date,TSPL_ITEM_WISE_TAX.DOC_DATE,103),TSPL_ITEM_WISE_TAX_GROUP.Tax_Group_Code "
+                    qry1 += " Order By CONVERT(date,TSPL_ITEM_WISE_TAX.DOC_DATE,103) Desc"
 
                     If isTaxable Then
                         gv1.CurrentRow.Cells(colTaxGroup).Value = clsDBFuncationality.getSingleValue(qry1)
@@ -3632,7 +3657,9 @@ where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_
                 obj.Customer_Code = txtVendorNo.Value
                 obj.Customer_Name = lblVendorName.Text
                 obj.DCS_Price_Code = FndPriceCode.Value
-                obj.Sale_Route_Code = txtSaleRoute.Value
+                obj.Route_No = txtSaleRoute.Value
+                obj.Supply_Date = clsCommon.GetPrintDate(txtSupplyDate.Value, "dd/MMM/yyyy")
+                obj.Shift_Type = cmbShift.SelectedValue
                 obj.Ref_No = txtRefNo.Text
                 obj.Challan_Date = clsCommon.GetPrintDate(dtpChallan.Value, "dd/MMM/yyyy")
                 obj.Total_Tax_Amt = clsCommon.myCdbl(lblTaxAmt.Text)
@@ -4035,6 +4062,8 @@ where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_
                 cboItemType.Enabled = False
                 txtBillToLocation.Enabled = False
                 txtSubLocation.Enabled = False
+                txtSupplyDate.Enabled = False
+                cmbShift.Enabled = False
                 If obj.Status = ERPTransactionStatus.Approved Then
                     btnSave.Enabled = False
                     btnPost.Enabled = False
@@ -4063,7 +4092,12 @@ where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_
                 txtRoadPermitNo.Text = obj.Road_Permit_No
                 lblVendorName.Text = obj.Customer_Name
                 FndPriceCode.Value = obj.DCS_Price_Code
-                txtSaleRoute.Value = obj.Sale_Route_Code
+                txtSaleRoute.Value = obj.Route_No
+                cmbShift.SelectedValue = obj.Shift_Type
+                txtDate.Value = obj.Document_Date
+                If obj.Supply_Date IsNot Nothing Then
+                    txtSupplyDate.Value = obj.Supply_Date
+                End If
                 txtRefNo.Text = obj.Ref_No
                 chkApplyTPT.Checked = IIf(obj.Is_Apply_TPT = "1", True, False)
                 txtRecommBy.Text = obj.Recommended_By
@@ -4703,7 +4737,7 @@ left outer join TSPL_VENDOR_MASTER on TSPL_VENDOR_MASTER.Vendor_Code= TSPL_CUSTO
     End Sub
 
     Sub SetTaxDetails(ByVal intRow As Integer)
-        Dim dt As DataTable = clsTaxGroupMaster.GetTaxDetailsByLocation(gv1.Rows(intRow).Cells(colTaxGroup).Value, "S", txtVendorNo.Value, txtBillToLocation.Value)
+        Dim dt As DataTable = clsTaxGroupMaster.GetTaxDetailsOfSale(gv1.Rows(intRow).Cells(colTaxGroup).Value, "S")
         If (dt IsNot Nothing AndAlso dt.Rows.Count > 0) Then
             If (dt.Rows.Count > 10) Then
                 MessageBox.Show("Can't Handle More than 10 Tax Types in a Group")
@@ -4768,7 +4802,7 @@ left outer join TSPL_VENDOR_MASTER on TSPL_VENDOR_MASTER.Vendor_Code= TSPL_CUSTO
         UpdateAllTotals()
     End Sub
     Sub SetitemWiseTaxSetting(ByVal isChangeRate As Boolean, ByVal isForCurrentRow As Boolean, ByVal intRowNo As Integer)
-        Dim dt As DataTable = clsTaxGroupMaster.GetTaxDetailsByLocation(gv1.Rows(intRowNo).Cells(colTaxGroup).Value, "S", txtVendorNo.Value, txtBillToLocation.Value)
+        Dim dt As DataTable = clsTaxGroupMaster.GetTaxDetailsOfSale(gv1.Rows(intRowNo).Cells(colTaxGroup).Value, "S")
         If (dt IsNot Nothing AndAlso dt.Rows.Count > 0) Then
             If isForCurrentRow Then
                 BlankTaxDetails(gv1.CurrentRow.Index, isChangeRate)

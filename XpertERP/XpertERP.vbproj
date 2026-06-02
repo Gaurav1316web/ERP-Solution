@@ -245,14 +245,20 @@
       <HintPath>lib\RCWF\2022.1.222.20.Trial\Telerik.WinControls.Themes.Desert.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Telerik.WinControls.Themes.Fluent, Version=2022.1.222.20, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.Themes.Fluent, Version=2022.1.222.20, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Telerik.WinControls.Themes.Fluent.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.WinControls.Themes.FluentDark, Version=2022.1.222.20, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
     <Reference Include="Telerik.WinControls.Themes.HighContrastBlack, Version=2022.1.222.20, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
       <HintPath>lib\RCWF\2022.1.222.20.Trial\Telerik.WinControls.Themes.HighContrastBlack.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Telerik.WinControls.Themes.Material, Version=2022.1.222.20, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
-    <Reference Include="Telerik.WinControls.Themes.MaterialBlueGrey, Version=2022.1.222.20, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
+    <Reference Include="Telerik.WinControls.Themes.MaterialBlueGrey, Version=2022.1.222.20, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Telerik.WinControls.Themes.MaterialBlueGrey.dll</HintPath>
+    </Reference>
     <Reference Include="Telerik.WinControls.Themes.MaterialPink, Version=2022.1.222.20, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL" />
     <Reference Include="Telerik.WinControls.Themes.Office2007Black, Version=2022.1.222.20, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
       <HintPath>lib\RCWF\2022.1.222.20.Trial\Telerik.WinControls.Themes.Office2007Black.dll</HintPath>

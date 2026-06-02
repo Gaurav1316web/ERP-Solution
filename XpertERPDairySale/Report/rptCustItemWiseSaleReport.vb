@@ -1081,7 +1081,7 @@ LEFT JOIN ( select item_code,uom_code,conversion_factor from TSPL_ITEM_UOM_DETAI
                                     ) as Decimal(18, 2)
                                   ) as Def_UOM_Qty,
                             cast((TSPL_SD_SHIPMENT_DETAIL.Qty * ItemConvinUOM.Conversion_Factor / ItemConvReportUOM.Conversion_Factor) as Decimal(18, 2)) as QtyAccToReportUOM,ItemConvReportUOM.UOM_Code,TSPL_COMPANY_MASTER.Comp_Name,TSPL_COMPANY_MASTER.Add1,TSPL_COMPANY_MASTER.Add2, 
-                            TSPL_COMPANY_MASTER.Add3,TSPL_COMPANY_MASTER.City_Code,TSPL_COMPANY_MASTER.State,TSPL_SD_SHIPMENT_DETAIL.Amount as Amount,TSPL_SD_SHIPMENT_HEAD.Sale_Invoice_No,TSPL_SD_SHIPMENT_HEAD.TAX5_Amt,TSPL_SD_SHIPMENT_HEAD.Distributor_Commission_TotalAmt,TSPL_CUSTOMER_MASTER.Cust_Code,TSPL_CUSTOMER_MASTER.Customer_Name,
+                            TSPL_COMPANY_MASTER.Add3,TSPL_COMPANY_MASTER.City_Code,TSPL_COMPANY_MASTER.State,TSPL_SD_SHIPMENT_DETAIL.Amt_Less_Discount as Amount,TSPL_SD_SHIPMENT_HEAD.Sale_Invoice_No,TSPL_SD_SHIPMENT_HEAD.TAX5_Amt,TSPL_SD_SHIPMENT_HEAD.Distributor_Commission_TotalAmt,TSPL_CUSTOMER_MASTER.Cust_Code,TSPL_CUSTOMER_MASTER.Customer_Name,
 							CASE WHEN TSPL_SD_SHIPMENT_HEAD.TAX1='KKF'  THEN TSPL_SD_SHIPMENT_DETAIL.TAX1_Amt
     				WHEN TSPL_SD_SHIPMENT_HEAD.TAX2='KKF'  THEN TSPL_SD_SHIPMENT_DETAIL.TAX2_Amt
     				WHEN TSPL_SD_SHIPMENT_HEAD.TAX3='KKF'  THEN TSPL_SD_SHIPMENT_DETAIL.TAX3_Amt
