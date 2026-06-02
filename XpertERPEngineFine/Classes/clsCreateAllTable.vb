@@ -34035,6 +34035,7 @@ END"
             coll.Add("ExtendValidityUpdate", "datetime  NULL")
             coll.Add("Is_Add_TPT", "integer null")
             coll.Add("No_Transporter", "integer null")
+            coll.Add("EWayBillCloseDate", "Datetime NULL")
             clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_SD_SALE_INVOICE_HEAD", coll, Nothing, True, True, "", "Document_Code", "Document_Date", True)
 
             coll = New Dictionary(Of String, String)

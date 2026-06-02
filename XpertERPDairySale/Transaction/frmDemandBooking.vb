@@ -14,6 +14,7 @@ Public Class frmDemandBooking
     Dim ApplyItemUOMOnDemand As Boolean = False
     Dim AllowRouteWiseDemandEntryInDecimal As Boolean = False
     'Dim GVTruckSheet As MyRadGridView
+    Dim CheckCustomeroutStandingAmt As Boolean = False
     Dim gvFullMode As Boolean = False
     Dim SeprateMorningEveningSequence As Boolean = False
     Dim SetDefaultShiftTime As String = ""
@@ -141,6 +142,8 @@ Public Class frmDemandBooking
             ApplyItemUOMOnDemand = IIf(clsCommon.myCdbl(clsFixedParameter.GetData(clsFixedParameterType.ApplyItemUOMOnDemand, clsFixedParameterCode.ApplyItemUOMOnDemand, Nothing)) = 1, True, False)
             AllowRouteWiseDemandEntryInDecimal = IIf(clsCommon.myCdbl(clsFixedParameter.GetData(clsFixedParameterType.AllowRouteWiseDemandEntryInDecimal, clsFixedParameterCode.AllowRouteWiseDemandEntryInDecimal, Nothing)) = 1, True, False)
             EnableProductSaleForJPR = IIf(clsCommon.myCdbl(clsFixedParameter.GetData(clsFixedParameterType.EnableProductSaleForJPR, clsFixedParameterCode.EnableProductSaleForJPR, Nothing)) = 1, True, False)
+            CheckCustomeroutStandingAmt = IIf(clsCommon.myCdbl(clsFixedParameter.GetData(clsFixedParameterType.CheckCustomeroutStandingAmt, clsFixedParameterCode.CheckCustomeroutStandingAmt, Nothing)) = 1, True, False)
+
             CrateHisTable()
             AddNew()
             SetUserMgmtNew()
@@ -3611,6 +3614,19 @@ left outer join tspl_transport_master on tspl_transport_master.Transport_Id=TSPL
         PostData()
 
     End Sub
+    Private Function LoadOutstanding(ByVal strCustCode As String, ByVal trans As SqlTransaction) As Double
+        Dim qry As String = "Select  case when (( SUM(convert(decimal(18,2),OpngBal)) + SUM(convert(decimal(18,2),DrAmt)) ) -SUM(convert(decimal(18,2),CrAmt)) )>=0 then -abs(( SUM(convert(decimal(18,2),OpngBal)) + SUM(convert(decimal(18,2),DrAmt)) ) -SUM(convert(decimal(18,2),CrAmt))) else abs(( SUM(convert(decimal(18,2),OpngBal)) + SUM(convert(decimal(18,2),DrAmt)) ) -SUM(convert(decimal(18,2),CrAmt))) end  as BalAmt From ( " &
+                    "Select MAX(TSPL_CUSTOMER_MASTER.Cust_Group_Code) as Cust_Group_Code, ACode, MAX(TSPL_CUSTOMER_MASTER.Customer_Name) as AName, '' as CurrencyCode,  " &
+                    "null as ConvRate, SUM(DrAmt* Final.ConvRate)-SUM(CrAmt) as OpngBal, 0 as DrAmt, 0 as CrAmt, 0 as [Sales], 0 as CollectionRefund, 0 as DrNote,  " &
+                    "0 as CrNote, MAX(tspl_customer_master.Cust_Category_Code) as Cust_Category_Code,MAX(CUST_CATEGORY_DESC) as Cust_Category_Desc,  " &
+                    "MAX(tspl_customer_master.Cust_Type_Code) As Cust_Type_Code,MAX(Cust_Type_Desc) As Cust_Type_Desc from   " &
+                    "(" & clsCustomerMaster.GetCustomerBaseQry(False, False, "", False, "ConvRate", "'" + strCustCode + "'", True, clsCommon.GetPrintDate(txtDate.Value.AddDays(1), "dd/MMM/yyyy"), "", False, False, True, trans, False, txtDocNo.Value) & "   " &
+                    " ) Final left outer join TSPL_CUSTOMER_MASTER on final.ACode=TSPL_CUSTOMER_MASTER.Cust_Code LEFT OUTER JOIN TSPL_CUSTOMER_GROUP_MASTER ON TSPL_CUSTOMER_GROUP_MASTER.Cust_Group_Code=TSPL_CUSTOMER_MASTER.Cust_Group_Code " &
+                    "Left outer join TSPL_RECEIPT_HEADER on TSPL_RECEIPT_HEADER.Receipt_No =Final.DocNo  LEFT OUTER JOIN TSPL_BANK_MASTER ON TSPL_BANK_MASTER.BANK_CODE=Final.Bank_Code " &
+                    "where  CONVERT(DATE,final.DocDate,103) <= '" & clsCommon.GetPrintDate(txtDate.Value, "dd/MMM/yyyy") & "' AND LEN(ACode)>0 and ACode in ('" & strCustCode & "')   AND TSPL_CUSTOMER_MASTER.Status='N' GROUP BY ACode " &
+                    ") XXX GROUP BY ACode ORDER BY ACode"
+        Return clsCommon.myCdbl(clsDBFuncationality.getSingleValue(qry, trans))
+    End Function
     Sub PostData()
         Dim msg As String = Nothing
         Dim qry As String = Nothing
@@ -3620,6 +3636,24 @@ left outer join tspl_transport_master on tspl_transport_master.Transport_Id=TSPL
         Try
             Dim StrQry As String = ""
             If clsCommon.myLen(txtDocNo.Value) > 0 Then
+                StrQry = "select sum(ItemNetAmount) as ItemNetAmount, TSPL_DEMAND_BOOKING_DETAIL.Cust_Code from TSPL_DEMAND_BOOKING_DETAIL
+left join TSPL_CUSTOMER_MASTER on TSPL_CUSTOMER_MASTER.Cust_Code=TSPL_DEMAND_BOOKING_DETAIL.Cust_Code
+where Document_No='" & txtDocNo.Value & "' and TSPL_CUSTOMER_MASTER.Cash_Customer='Y'
+group by TSPL_DEMAND_BOOKING_DETAIL.Cust_Code"
+                Dim dt2 As DataTable = clsDBFuncationality.GetDataTable(StrQry)
+                If dt2 IsNot Nothing AndAlso dt2.Rows.Count > 0 Then
+                    For Each dr As DataRow In dt2.Rows
+                        If CheckCustomeroutStandingAmt Then
+                            Dim custOutStanding As Double = clsCommon.myCdbl(LoadOutstanding(clsCommon.myCstr(dr("Cust_Code")), Nothing))
+                            custOutStanding = Math.Abs(custOutStanding)
+                            Dim TotalDocAmt As Double = clsCommon.myCdbl(dr("ItemNetAmount"))
+                            If TotalDocAmt > custOutStanding Then
+                                Throw New Exception("Insufficient Balance. [ Customer Code : " + clsCommon.myCstr(dr("Cust_Code")) + ", Current Outstanding Bal: " + clsCommon.myCstr(custOutStanding) + " ]")
+                            End If
+                        End If
+                    Next
+                End If
+
                 StrQry = "select IsPosting,IsUpdating,Posted,Curr_User from TSPL_DEMAND_BOOKING_MASTER where Document_No='" & txtDocNo.Value & "'"
                 Dim dt1 As DataTable = clsDBFuncationality.GetDataTable(StrQry)
                 If dt1 IsNot Nothing AndAlso dt1.Rows.Count > 0 AndAlso (clsCommon.myCdbl(dt1.Rows(0)("IsPosting")) = 1 OrElse clsCommon.myCdbl(dt1.Rows(0)("IsUpdating")) = 1 OrElse clsCommon.myCdbl(dt1.Rows(0)("Posted")) = 1) Then
@@ -3629,10 +3663,12 @@ left outer join tspl_transport_master on tspl_transport_master.Transport_Id=TSPL
                 End If
                 StrQry = "Update TSPL_DEMAND_BOOKING_MASTER set IsPosting=1,Curr_User='" & objCommonVar.CurrentUser & "' where Document_No='" & txtDocNo.Value & "' "
                 clsDBFuncationality.ExecuteNonQuery(StrQry)
+            Else
+                Throw New Exception("Please Select Document")
             End If
 
-            'Dim custCode As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Cust_Code from TSPL_CUSTOMER_MASTER where route_no='" + txtRouteNo.Value + "' and IsDistributor='Y'"))
-            StrQry = "select  top 1 x.Cust_Code 
+                'Dim custCode As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Cust_Code from TSPL_CUSTOMER_MASTER where route_no='" + txtRouteNo.Value + "' and IsDistributor='Y'"))
+                StrQry = "select  top 1 x.Cust_Code 
 from(
 select TSPL_DISTRIBUTOR_ROUTE.Code as Code,TSPL_DISTRIBUTOR_ROUTE.Start_Date,TSPL_DISTRIBUTOR_ROUTE.Remarks,max(TSPL_DISTRIBUTOR_ROUTE_CUSTOMER.Cust_Code) as cust_code
 from TSPL_DISTRIBUTOR_ROUTE
