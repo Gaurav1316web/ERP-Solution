@@ -340,6 +340,9 @@ Public Class frmMCCMaterialSale
         LoadBlankGridAC()
         AddNew()
         SetLength()
+        LoadShiftType()
+        cmbShift.Enabled = True
+        txtSupplyDate.Value = txtDate.Value
         If MultiplySubsidyWithQuantity Then
             txtRateAmt.Enabled = True
             txtDiscAmt.Enabled = True
@@ -410,6 +413,27 @@ Public Class frmMCCMaterialSale
         If objCommonVar.CreateAutoReceiptEntryDCSSale Then
             txtReceiptNo.Enabled = False
         End If
+    End Sub
+    Sub LoadShiftType()
+        Dim dt As DataTable = New DataTable()
+        dt.Columns.Add("Code", GetType(String))
+        dt.Columns.Add("Name", GetType(String))
+        Dim dr As DataRow = dt.NewRow()
+        dr("Code") = ""
+        dr("Name") = "Select"
+        dt.Rows.Add(dr)
+        dr = dt.NewRow()
+        dr("Code") = "AM"
+        dr("Name") = "Morning"
+        dt.Rows.Add(dr)
+        dr = dt.NewRow()
+        dr("Code") = "PM"
+        dr("Name") = "Evening"
+        dt.Rows.Add(dr)
+        cmbShift.ValueMember = "Code"
+        cmbShift.DisplayMember = "Name"
+        cmbShift.DataSource = dt
+
     End Sub
     Sub SetMultiCurrencyVisibility()
         Dim strq As String = ""
@@ -3843,7 +3867,9 @@ where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_
                 Dim obj As New clsMCCMaterialSale()
                 obj.Sale_Invoice_No = txtInvoiceNo.Text
                 obj.DCS_Price_Code = FndPriceCode.Value
-                obj.Sale_Route_Code = txtSaleRoute.Value
+                obj.Route_No = txtSaleRoute.Value
+                obj.Supply_Date = clsCommon.GetPrintDate(txtSupplyDate.Value, "dd/MMM/yyyy")
+                obj.Shift_Type = cmbShift.SelectedValue
                 'obj.WayBillNo = txtWayBillno.Text
                 ' obj.WayBillDate = txtWaybillDate.Value
                 obj.Road_Permit_No = txtRoadPermitNo.Text
@@ -4416,6 +4442,8 @@ where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_
                 LoadBlankGrid()
                 LoadBlankGridTax()
                 LoadBlankGridAC()
+                txtSupplyDate.Enabled = False
+                cmbShift.Enabled = False
                 cboItemType.Enabled = False
                 txtBillToLocation.Enabled = False
                 txtSubLocation.Enabled = False
@@ -4458,7 +4486,12 @@ where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_
                 chkRateUserCustomer.ToggleState = ClsUserCustomerSettings.GetUserCustomerRateSetting(txtVendorNo.Value)
                 txtRoadPermitNo.Text = obj.Road_Permit_No
                 FndPriceCode.Value = obj.DCS_Price_Code
-                txtSaleRoute.Value = obj.Sale_Route_Code
+                txtSaleRoute.Value = obj.Route_No
+                cmbShift.SelectedValue = obj.Shift_Type
+                txtDate.Value = obj.Document_Date
+                If obj.Supply_Date IsNot Nothing Then
+                    txtSupplyDate.Value = obj.Supply_Date
+                End If
                 lblVendorName.Text = obj.Customer_Name
                 txtRefNo.Text = obj.Ref_No
                 If clsCommon.myLen(obj.Challan_Date) > 0 Then

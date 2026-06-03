@@ -453,11 +453,60 @@ Public Class BMC_Transporter_Bill
         FatSnfShortageDetail()
         FatSnfRate()
         FatSnfCalculation()
+        PFESIDEDUCTION()
         'IceCharge(Nothing)
         'AddSummaryRowToGrid()
 
     End Sub
 
+    Sub PFESIDEDUCTION()
+        Try
+            Dim Rowcount As Double = 0
+            Dim Labourcharge As Double = 0
+            Dim EmployeePF As Double = 0
+            Dim AdminCharge As Double = 0
+            Dim EDLICHARGE As Double = 0
+            Dim tOTALPF As Double = 0
+            Dim ESIEmployee As Double = 0
+            Dim ESIEmployer As Double = 0
+            Dim TotalESI As Double = 0
+
+            Dim qry As String = " Select Labour_Charge,PFRULE_CODE,ESIRULE_CODE from tspl_tanker_master where tanker_no = '" + clsCommon.myCstr(txtTankerNo.Value) + "' "
+            Dim dt As DataTable = clsDBFuncationality.GetDataTable(qry)
+
+            Dim LabourC As Double = clsCommon.myCdbl(dt.Rows(0)("Labour_Charge"))
+            Dim ESI As String = clsCommon.myCstr(dt.Rows(0)("ESIRULE_CODE"))
+            Dim EPF As String = clsCommon.myCstr(dt.Rows(0)("PFRULE_CODE"))
+
+            Dim esiqry As String = " Select COESI_PER,EMPESI_PER from TSPL_ESI_RULE_MASTER where ESIRULE_CODE = '" + clsCommon.myCstr(ESI) + "'"
+            Dim dtesi As DataTable = clsDBFuncationality.GetDataTable(esiqry)
+            If dtesi.Rows.Count > 0 Then
+                Dim ESIEmployer1 As Double = clsCommon.myCdbl(dtesi.Rows(0)("COESI_PER"))  ''3.25
+                Dim ESIEmployee1 As Double = clsCommon.myCdbl(dtesi.Rows(0)("EMPESI_PER"))  ''0.75
+            Else
+                ESIEmployee = 0
+                ESIEmployer = 0
+            End If
+
+            Dim epfqry As String = " select EMPEPF_PER,ACCOEPF_PER from TSPL_PF_RULE_MASTER where PFRULE_CODE = '" + clsCommon.myCstr(EPF) + "' "
+            Dim dtpf As DataTable = clsDBFuncationality.GetDataTable(epfqry)
+            If dtpf.Rows.Count > 0 Then
+                Dim employeepf1 As Double = clsCommon.myCdbl(dtpf.Rows(0)("EMPEPF_PER"))  ''12
+                Dim adminc As Double = clsCommon.myCdbl(dtpf.Rows(0)("ACCOEPF_PER"))  ''0.5
+            Else
+                EmployeePF = 0
+                AdminCharge = 0
+                EDLICHARGE = 0
+
+            End If
+            Rowcount = gv1.Rows.Count
+
+            Labourcharge = Rowcount * LabourC
+
+        Catch ex As Exception
+            clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
+        End Try
+    End Sub
     Sub FatSnfCalculation()
         Dim FatShortage As Double = clsCommon.myCdbl(txtFatShortage.Text)
         Dim FatShortageNMG As Double = clsCommon.myCdbl(txtFatShortageNMG.Text)

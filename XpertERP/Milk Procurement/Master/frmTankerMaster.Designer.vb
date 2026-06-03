@@ -40,6 +40,13 @@ Partial Class FrmTankerMaster
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
         Me.RadPageViewPage1 = New Telerik.WinControls.UI.RadPageViewPage()
         Me.RadGroupBox1 = New Telerik.WinControls.UI.RadGroupBox()
+        Me.MyLabel23 = New common.Controls.MyLabel()
+        Me.NLabourCharge = New common.MyNumBox()
+        Me.MyLabel14 = New common.Controls.MyLabel()
+        Me.MyLabel22 = New common.Controls.MyLabel()
+        Me.MyLabel18 = New common.Controls.MyLabel()
+        Me.TxtESIRule = New common.UserControls.txtFinder()
+        Me.TxtEPFRule = New common.UserControls.txtFinder()
         Me.ChkPrivate = New common.Controls.MyCheckBox()
         Me.TxtIceCharge = New common.MyNumBox()
         Me.MyLabel17 = New common.Controls.MyLabel()
@@ -82,7 +89,6 @@ Partial Class FrmTankerMaster
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.cmbLtrKG = New common.Controls.MyComboBox()
         Me.rbtnrateltr = New common.Controls.MyCheckBox()
-        Me.MyLabel14 = New common.Controls.MyLabel()
         Me.txt_ltr = New common.MyNumBox()
         Me.txtdesc = New common.Controls.MyTextBox()
         Me.txttank_transcode = New common.UserControls.txtFinder()
@@ -135,6 +141,11 @@ Partial Class FrmTankerMaster
         Me.RadPageViewPage1.SuspendLayout()
         CType(Me.RadGroupBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RadGroupBox1.SuspendLayout()
+        CType(Me.MyLabel23, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NLabourCharge, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel14, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel22, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel18, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ChkPrivate, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TxtIceCharge, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel17, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -179,7 +190,6 @@ Partial Class FrmTankerMaster
         Me.GroupBox1.SuspendLayout()
         CType(Me.cmbLtrKG, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.rbtnrateltr, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.MyLabel14, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txt_ltr, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.txtdesc, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lblvandorno, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -326,6 +336,12 @@ Partial Class FrmTankerMaster
         'RadGroupBox1
         '
         Me.RadGroupBox1.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping
+        Me.RadGroupBox1.Controls.Add(Me.MyLabel23)
+        Me.RadGroupBox1.Controls.Add(Me.NLabourCharge)
+        Me.RadGroupBox1.Controls.Add(Me.MyLabel22)
+        Me.RadGroupBox1.Controls.Add(Me.MyLabel18)
+        Me.RadGroupBox1.Controls.Add(Me.TxtESIRule)
+        Me.RadGroupBox1.Controls.Add(Me.TxtEPFRule)
         Me.RadGroupBox1.Controls.Add(Me.ChkPrivate)
         Me.RadGroupBox1.Controls.Add(Me.TxtIceCharge)
         Me.RadGroupBox1.Controls.Add(Me.MyLabel17)
@@ -354,8 +370,127 @@ Partial Class FrmTankerMaster
         Me.RadGroupBox1.HeaderText = ""
         Me.RadGroupBox1.Location = New System.Drawing.Point(4, -1)
         Me.RadGroupBox1.Name = "RadGroupBox1"
-        Me.RadGroupBox1.Size = New System.Drawing.Size(769, 429)
+        Me.RadGroupBox1.Size = New System.Drawing.Size(769, 426)
         Me.RadGroupBox1.TabIndex = 0
+        '
+        'MyLabel23
+        '
+        Me.MyLabel23.FieldName = Nothing
+        Me.MyLabel23.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel23.Location = New System.Drawing.Point(301, 104)
+        Me.MyLabel23.Name = "MyLabel23"
+        Me.MyLabel23.Size = New System.Drawing.Size(82, 16)
+        Me.MyLabel23.TabIndex = 104
+        Me.MyLabel23.Text = "Labour Charge"
+        '
+        'NLabourCharge
+        '
+        Me.NLabourCharge.BackColor = System.Drawing.Color.White
+        Me.NLabourCharge.CalculationExpression = Nothing
+        Me.NLabourCharge.DecimalPlaces = 2
+        Me.NLabourCharge.FieldCode = Nothing
+        Me.NLabourCharge.FieldDesc = Nothing
+        Me.NLabourCharge.FieldMaxLength = 0
+        Me.NLabourCharge.FieldName = Nothing
+        Me.NLabourCharge.isCalculatedField = False
+        Me.NLabourCharge.IsSourceFromTable = False
+        Me.NLabourCharge.IsSourceFromValueList = False
+        Me.NLabourCharge.IsUnique = False
+        Me.NLabourCharge.Location = New System.Drawing.Point(392, 102)
+        Me.NLabourCharge.MendatroryField = False
+        Me.NLabourCharge.MyLinkLable1 = Me.MyLabel14
+        Me.NLabourCharge.MyLinkLable2 = Nothing
+        Me.NLabourCharge.Name = "NLabourCharge"
+        Me.NLabourCharge.ReferenceFieldDesc = Nothing
+        Me.NLabourCharge.ReferenceFieldName = Nothing
+        Me.NLabourCharge.ReferenceTableName = Nothing
+        Me.NLabourCharge.Size = New System.Drawing.Size(128, 20)
+        Me.NLabourCharge.TabIndex = 103
+        Me.NLabourCharge.Text = "0"
+        Me.NLabourCharge.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.NLabourCharge.Value = New Decimal(New Integer() {0, 0, 0, 0})
+        '
+        'MyLabel14
+        '
+        Me.MyLabel14.FieldName = Nothing
+        Me.MyLabel14.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel14.Location = New System.Drawing.Point(6, 19)
+        Me.MyLabel14.Name = "MyLabel14"
+        Me.MyLabel14.Size = New System.Drawing.Size(45, 16)
+        Me.MyLabel14.TabIndex = 10
+        Me.MyLabel14.Text = "Amount"
+        '
+        'MyLabel22
+        '
+        Me.MyLabel22.FieldName = Nothing
+        Me.MyLabel22.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel22.Location = New System.Drawing.Point(11, 143)
+        Me.MyLabel22.Name = "MyLabel22"
+        Me.MyLabel22.Size = New System.Drawing.Size(51, 16)
+        Me.MyLabel22.TabIndex = 102
+        Me.MyLabel22.Text = "ESI Rule"
+        '
+        'MyLabel18
+        '
+        Me.MyLabel18.FieldName = Nothing
+        Me.MyLabel18.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel18.Location = New System.Drawing.Point(11, 122)
+        Me.MyLabel18.Name = "MyLabel18"
+        Me.MyLabel18.Size = New System.Drawing.Size(47, 16)
+        Me.MyLabel18.TabIndex = 101
+        Me.MyLabel18.Text = "PF Rule"
+        '
+        'TxtESIRule
+        '
+        Me.TxtESIRule.CalculationExpression = Nothing
+        Me.TxtESIRule.FieldCode = Nothing
+        Me.TxtESIRule.FieldDesc = Nothing
+        Me.TxtESIRule.FieldMaxLength = 0
+        Me.TxtESIRule.FieldName = Nothing
+        Me.TxtESIRule.isCalculatedField = False
+        Me.TxtESIRule.IsSourceFromTable = False
+        Me.TxtESIRule.IsSourceFromValueList = False
+        Me.TxtESIRule.IsUnique = False
+        Me.TxtESIRule.Location = New System.Drawing.Point(158, 142)
+        Me.TxtESIRule.MendatroryField = False
+        Me.TxtESIRule.MyFont = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtESIRule.MyLinkLable1 = Nothing
+        Me.TxtESIRule.MyLinkLable2 = Nothing
+        Me.TxtESIRule.MyReadOnly = False
+        Me.TxtESIRule.MyShowMasterFormButton = False
+        Me.TxtESIRule.Name = "TxtESIRule"
+        Me.TxtESIRule.ReferenceFieldDesc = Nothing
+        Me.TxtESIRule.ReferenceFieldName = Nothing
+        Me.TxtESIRule.ReferenceTableName = Nothing
+        Me.TxtESIRule.Size = New System.Drawing.Size(137, 19)
+        Me.TxtESIRule.TabIndex = 100
+        Me.TxtESIRule.Value = ""
+        '
+        'TxtEPFRule
+        '
+        Me.TxtEPFRule.CalculationExpression = Nothing
+        Me.TxtEPFRule.FieldCode = Nothing
+        Me.TxtEPFRule.FieldDesc = Nothing
+        Me.TxtEPFRule.FieldMaxLength = 0
+        Me.TxtEPFRule.FieldName = Nothing
+        Me.TxtEPFRule.isCalculatedField = False
+        Me.TxtEPFRule.IsSourceFromTable = False
+        Me.TxtEPFRule.IsSourceFromValueList = False
+        Me.TxtEPFRule.IsUnique = False
+        Me.TxtEPFRule.Location = New System.Drawing.Point(158, 121)
+        Me.TxtEPFRule.MendatroryField = False
+        Me.TxtEPFRule.MyFont = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TxtEPFRule.MyLinkLable1 = Nothing
+        Me.TxtEPFRule.MyLinkLable2 = Nothing
+        Me.TxtEPFRule.MyReadOnly = False
+        Me.TxtEPFRule.MyShowMasterFormButton = False
+        Me.TxtEPFRule.Name = "TxtEPFRule"
+        Me.TxtEPFRule.ReferenceFieldDesc = Nothing
+        Me.TxtEPFRule.ReferenceFieldName = Nothing
+        Me.TxtEPFRule.ReferenceTableName = Nothing
+        Me.TxtEPFRule.Size = New System.Drawing.Size(137, 19)
+        Me.TxtEPFRule.TabIndex = 99
+        Me.TxtEPFRule.Value = ""
         '
         'ChkPrivate
         '
@@ -557,9 +692,9 @@ Partial Class FrmTankerMaster
         Me.RadGroupBox4.Controls.Add(Me.GroupBox2)
         Me.RadGroupBox4.Controls.Add(Me.GroupBox1)
         Me.RadGroupBox4.HeaderText = "Basic of Freight Payments"
-        Me.RadGroupBox4.Location = New System.Drawing.Point(8, 120)
+        Me.RadGroupBox4.Location = New System.Drawing.Point(8, 174)
         Me.RadGroupBox4.Name = "RadGroupBox4"
-        Me.RadGroupBox4.Size = New System.Drawing.Size(758, 332)
+        Me.RadGroupBox4.Size = New System.Drawing.Size(758, 278)
         Me.RadGroupBox4.TabIndex = 17
         Me.RadGroupBox4.Text = "Basic of Freight Payments"
         '
@@ -1091,16 +1226,6 @@ Partial Class FrmTankerMaster
         Me.rbtnrateltr.TabIndex = 7
         Me.rbtnrateltr.Tag1 = Nothing
         Me.rbtnrateltr.Text = "Rate Ltr/KG"
-        '
-        'MyLabel14
-        '
-        Me.MyLabel14.FieldName = Nothing
-        Me.MyLabel14.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel14.Location = New System.Drawing.Point(6, 19)
-        Me.MyLabel14.Name = "MyLabel14"
-        Me.MyLabel14.Size = New System.Drawing.Size(45, 16)
-        Me.MyLabel14.TabIndex = 10
-        Me.MyLabel14.Text = "Amount"
         '
         'txt_ltr
         '
@@ -1712,6 +1837,11 @@ Partial Class FrmTankerMaster
         CType(Me.RadGroupBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.RadGroupBox1.ResumeLayout(False)
         Me.RadGroupBox1.PerformLayout()
+        CType(Me.MyLabel23, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NLabourCharge, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel14, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel22, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel18, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ChkPrivate, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TxtIceCharge, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel17, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1762,7 +1892,6 @@ Partial Class FrmTankerMaster
         Me.GroupBox1.PerformLayout()
         CType(Me.cmbLtrKG, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.rbtnrateltr, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.MyLabel14, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txt_ltr, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.txtdesc, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.lblvandorno, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1906,5 +2035,11 @@ Partial Class FrmTankerMaster
     Friend WithEvents TxtIceCharge As common.MyNumBox
     Friend WithEvents MyLabel17 As common.Controls.MyLabel
     Friend WithEvents ChkPrivate As common.Controls.MyCheckBox
+    Friend WithEvents MyLabel22 As common.Controls.MyLabel
+    Friend WithEvents MyLabel18 As common.Controls.MyLabel
+    Friend WithEvents TxtESIRule As common.UserControls.txtFinder
+    Friend WithEvents TxtEPFRule As common.UserControls.txtFinder
+    Friend WithEvents MyLabel23 As common.Controls.MyLabel
+    Friend WithEvents NLabourCharge As common.MyNumBox
 End Class
 

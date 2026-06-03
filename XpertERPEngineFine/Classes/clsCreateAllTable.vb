@@ -15926,6 +15926,9 @@ END"
             coll.Add("Inactive", "integer null")
             coll.Add("Ice_Charge", "float")
             coll.Add("Private_Tanker", "integer null")
+            coll.Add("Labour_Charge", "float")
+            coll.Add("PFRULE_CODE", "Varchar(30)  null ")
+            coll.Add("ESIRULE_CODE", "Varchar(30)  null ")
             'clsCommonFunctionality.CreateOrAlterTable(False, "TSPL_TANKER_MASTER", coll, Nothing, True)
             clsCommonFunctionality.CreateOrAlterTable(False, False, "TSPL_TANKER_MASTER", coll, "", True, False, "", "", "", True)
 
@@ -34035,6 +34038,7 @@ END"
             coll.Add("ExtendValidityUpdate", "datetime  NULL")
             coll.Add("Is_Add_TPT", "integer null")
             coll.Add("No_Transporter", "integer null")
+            coll.Add("EWayBillCloseDate", "Datetime NULL")
             clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_SD_SALE_INVOICE_HEAD", coll, Nothing, True, True, "", "Document_Code", "Document_Date", True)
 
             coll = New Dictionary(Of String, String)
@@ -57487,6 +57491,7 @@ where len( ISNULL(Bank_Code_Saving,''))>0 and TSPL_PAYMENT_PROCESS_DETAIL.Bank_A
             coll.Add("Cycle_Month", "integer NULL ")
             coll.Add("Cycle_Year", "integer NULL ")
             coll.Add("Qty", "Decimal(18,2) null")
+            coll.Add("Collection_Qty", "Decimal(18,2) null")
             clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL", coll, "", True, False, "TSPL_MP_INCENTIVE_ENTRY_HEAD", "Document_Code", "")
 
 
@@ -61079,7 +61084,20 @@ alter table TSPL_VENDOR_INVOICE_HEAD_CANCEL_DATA add Invoice_Entry_Date_New DATE
         coll.Add("Cancel_Date", "datetime NULL")
         clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_RCDF_UNION_QC", coll, "", True, False, Nothing, Nothing, Nothing, False)
 
+        ' -------Update Route No in DCS SALE AND SALE INVOICE HEAD ---------
+        Try
+            Dim sqlStr As String = "select TSPL_SD_SALE_INVOICE_HEAD.Route_No,TSPL_SD_SHIPMENT_HEAD.Sale_Route_Code FROM TSPL_SD_SALE_INVOICE_HEAD  INNER JOIN TSPL_SD_SHIPMENT_HEAD ON TSPL_SD_SHIPMENT_HEAD.Document_Code = TSPL_SD_SALE_INVOICE_HEAD.Against_Shipment_No and TSPL_SD_SHIPMENT_HEAD.Trans_Type='MCC' and isnull(TSPL_SD_SALE_INVOICE_HEAD.Route_No,'') ='' and  isnull(TSPL_SD_SHIPMENT_HEAD.Sale_Route_Code,'') <> '' "
+            Dim dt As DataTable = clsDBFuncationality.GetDataTable(sqlStr)
+            If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                sqlStr = "   UPDATE TSPL_SD_SALE_INVOICE_HEAD SET TSPL_SD_SALE_INVOICE_HEAD.Route_No = TSPL_SD_SHIPMENT_HEAD.Sale_Route_Code
+FROM TSPL_SD_SALE_INVOICE_HEAD  INNER JOIN TSPL_SD_SHIPMENT_HEAD ON TSPL_SD_SHIPMENT_HEAD.Document_Code = TSPL_SD_SALE_INVOICE_HEAD.Against_Shipment_No and TSPL_SD_SHIPMENT_HEAD.Trans_Type='MCC' and isnull(TSPL_SD_SALE_INVOICE_HEAD.Route_No,'') ='' and  isnull(TSPL_SD_SHIPMENT_HEAD.Sale_Route_Code,'') <> ''
 
+update TSPL_SD_SHIPMENT_HEAD set Route_No = sale_route_code where TSPL_SD_SHIPMENT_HEAD.Trans_Type='MCC' and isnull(TSPL_SD_SHIPMENT_HEAD.Route_No,'') ='' and  isnull(TSPL_SD_SHIPMENT_HEAD.Sale_Route_Code,'') <> '' "
+                clsDBFuncationality.ExecuteNonQuery(sqlStr)
+            End If
+        Catch ex As Exception
+
+        End Try
         Return True
     End Function
 

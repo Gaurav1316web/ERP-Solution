@@ -213,7 +213,7 @@ and convert(date,TSPL_TRANSFER_ORDER_HEAD.Document_Date,103) <= Convert(Date,'" 
                     left outer join TSPL_LOCATION_MASTER ON TSPL_LOCATION_MASTER.Location_Code=TSPL_TRANSFER_ORDER_HEAD.To_Location
                     LEFT OUTER JOIN TSPL_ITEM_UOM_DETAIL ON TSPL_ITEM_UOM_DETAIL.Item_Code =TSPL_TRANSFER_ORDER_DETAIL.Item_Code AND Report_UOM=1
                     where Convert( Date, TSPL_TRANSFER_ORDER_HEAD.Document_Date,103) >=Convert(Date,'" + clsCommon.GetPrintDate(fromDate.Value, "dd/MMM/yyyy") + "',103) 
-                    and TSPL_TRANSFER_ORDER_HEAD.Document_Date<=Convert(Date,'" + clsCommon.GetPrintDate(ToDate.Value, "dd/MMM/yyyy") + "',103)"
+                    and Convert( Date, TSPL_TRANSFER_ORDER_HEAD.Document_Date,103) <=Convert(Date,'" + clsCommon.GetPrintDate(ToDate.Value, "dd/MMM/yyyy") + "',103)"
                 If txtSubLocation.arrValueMember IsNot Nothing AndAlso txtSubLocation.arrValueMember.Count > 0 Then
                     Qry += " and TSPL_TRANSFER_ORDER_HEAD.To_Location In (" + clsCommon.GetMulcallString(txtSubLocation.arrValueMember) + ") "
                     ' qry += " and TSPL_ITEM_PRICE_PLAN_detail.Item_Code in ('" + clsCommon.GetMulcallString(txtItem.arrValueMember) + "')  "

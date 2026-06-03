@@ -23,7 +23,7 @@ Partial Class BMC_Transporter_Bill
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim TableViewDefinition3 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition1 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
         Me.RadPageViewPage1 = New Telerik.WinControls.UI.RadPageViewPage()
@@ -89,6 +89,8 @@ Partial Class BMC_Transporter_Bill
         Me.txtDocNo = New common.UserControls.txtNavigator()
         Me.btnAddNew = New Telerik.WinControls.UI.RadButton()
         Me.RadPageViewPage4 = New Telerik.WinControls.UI.RadPageViewPage()
+        Me.TxtTotalDeduction = New common.Controls.MyTextBox()
+        Me.TxtTotalAddition = New common.Controls.MyTextBox()
         Me.MyLabel39 = New common.Controls.MyLabel()
         Me.MyLabel38 = New common.Controls.MyLabel()
         Me.MyLabel47 = New common.Controls.MyLabel()
@@ -151,8 +153,31 @@ Partial Class BMC_Transporter_Bill
         Me.btnDelete = New Telerik.WinControls.UI.RadButton()
         Me.btnPost = New Telerik.WinControls.UI.RadButton()
         Me.btnSave = New Telerik.WinControls.UI.RadButton()
-        Me.TxtTotalAddition = New common.Controls.MyTextBox()
-        Me.TxtTotalDeduction = New common.Controls.MyTextBox()
+        Me.RadPageViewPage2 = New Telerik.WinControls.UI.RadPageViewPage()
+        Me.MyLabel36 = New common.Controls.MyLabel()
+        Me.NLabourCharge = New common.MyNumBox()
+        Me.MyLabel37 = New common.Controls.MyLabel()
+        Me.MyNumBox1 = New common.MyNumBox()
+        Me.MyLabel48 = New common.Controls.MyLabel()
+        Me.MyNumBox2 = New common.MyNumBox()
+        Me.MyLabel49 = New common.Controls.MyLabel()
+        Me.MyNumBox3 = New common.MyNumBox()
+        Me.MyLabel50 = New common.Controls.MyLabel()
+        Me.MyNumBox4 = New common.MyNumBox()
+        Me.MyLabel51 = New common.Controls.MyLabel()
+        Me.MyNumBox5 = New common.MyNumBox()
+        Me.MyLabel52 = New common.Controls.MyLabel()
+        Me.MyNumBox6 = New common.MyNumBox()
+        Me.MyLabel53 = New common.Controls.MyLabel()
+        Me.MyNumBox7 = New common.MyNumBox()
+        Me.MyLabel54 = New common.Controls.MyLabel()
+        Me.MyLabel55 = New common.Controls.MyLabel()
+        Me.MyLabel56 = New common.Controls.MyLabel()
+        Me.MyLabel57 = New common.Controls.MyLabel()
+        Me.MyLabel58 = New common.Controls.MyLabel()
+        Me.MyLabel59 = New common.Controls.MyLabel()
+        Me.MyLabel60 = New common.Controls.MyLabel()
+        Me.MyLabel61 = New common.Controls.MyLabel()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -219,6 +244,8 @@ Partial Class BMC_Transporter_Bill
         CType(Me.RadLabel1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnAddNew, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RadPageViewPage4.SuspendLayout()
+        CType(Me.TxtTotalDeduction, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TxtTotalAddition, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel39, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel38, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel47, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -277,8 +304,31 @@ Partial Class BMC_Transporter_Bill
         CType(Me.btnDelete, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnPost, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnSave, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TxtTotalAddition, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TxtTotalDeduction, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.RadPageViewPage2.SuspendLayout()
+        CType(Me.MyLabel36, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NLabourCharge, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel37, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyNumBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel48, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyNumBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel49, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyNumBox3, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel50, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyNumBox4, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel51, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyNumBox5, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel52, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyNumBox6, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel53, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyNumBox7, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel54, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel55, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel56, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel57, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel58, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel59, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel60, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel61, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -310,12 +360,13 @@ Partial Class BMC_Transporter_Bill
         'RadPageView1
         '
         Me.RadPageView1.Controls.Add(Me.RadPageViewPage1)
+        Me.RadPageView1.Controls.Add(Me.RadPageViewPage2)
         Me.RadPageView1.Controls.Add(Me.RadPageViewPage4)
         Me.RadPageView1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.RadPageView1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RadPageView1.Location = New System.Drawing.Point(0, 0)
         Me.RadPageView1.Name = "RadPageView1"
-        Me.RadPageView1.SelectedPage = Me.RadPageViewPage1
+        Me.RadPageView1.SelectedPage = Me.RadPageViewPage2
         Me.RadPageView1.Size = New System.Drawing.Size(800, 405)
         Me.RadPageView1.TabIndex = 1
         CType(Me.RadPageView1.GetChildAt(0), Telerik.WinControls.UI.RadPageViewStripElement).StripButtons = Telerik.WinControls.UI.StripViewButtons.None
@@ -1192,7 +1243,7 @@ Partial Class BMC_Transporter_Bill
         Me.gv1.MasterTemplate.AllowDeleteRow = False
         Me.gv1.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gv1.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gv1.MasterTemplate.ViewDefinition = TableViewDefinition3
+        Me.gv1.MasterTemplate.ViewDefinition = TableViewDefinition1
         Me.gv1.MyExportAPI = False
         Me.gv1.MyExportFilePath = ""
         Me.gv1.MyStopExport = False
@@ -1430,6 +1481,52 @@ Partial Class BMC_Transporter_Bill
         Me.RadPageViewPage4.Name = "RadPageViewPage4"
         Me.RadPageViewPage4.Size = New System.Drawing.Size(779, 359)
         Me.RadPageViewPage4.Text = "Total"
+        '
+        'TxtTotalDeduction
+        '
+        Me.TxtTotalDeduction.CalculationExpression = Nothing
+        Me.TxtTotalDeduction.FieldCode = Nothing
+        Me.TxtTotalDeduction.FieldDesc = Nothing
+        Me.TxtTotalDeduction.FieldMaxLength = 0
+        Me.TxtTotalDeduction.FieldName = Nothing
+        Me.TxtTotalDeduction.isCalculatedField = False
+        Me.TxtTotalDeduction.IsSourceFromTable = False
+        Me.TxtTotalDeduction.IsSourceFromValueList = False
+        Me.TxtTotalDeduction.IsUnique = False
+        Me.TxtTotalDeduction.Location = New System.Drawing.Point(326, 297)
+        Me.TxtTotalDeduction.MendatroryField = False
+        Me.TxtTotalDeduction.MyLinkLable1 = Nothing
+        Me.TxtTotalDeduction.MyLinkLable2 = Nothing
+        Me.TxtTotalDeduction.Name = "TxtTotalDeduction"
+        Me.TxtTotalDeduction.ReferenceFieldDesc = Nothing
+        Me.TxtTotalDeduction.ReferenceFieldName = Nothing
+        Me.TxtTotalDeduction.ReferenceTableName = Nothing
+        Me.TxtTotalDeduction.Size = New System.Drawing.Size(77, 20)
+        Me.TxtTotalDeduction.TabIndex = 1541
+        Me.TxtTotalDeduction.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'TxtTotalAddition
+        '
+        Me.TxtTotalAddition.CalculationExpression = Nothing
+        Me.TxtTotalAddition.FieldCode = Nothing
+        Me.TxtTotalAddition.FieldDesc = Nothing
+        Me.TxtTotalAddition.FieldMaxLength = 0
+        Me.TxtTotalAddition.FieldName = Nothing
+        Me.TxtTotalAddition.isCalculatedField = False
+        Me.TxtTotalAddition.IsSourceFromTable = False
+        Me.TxtTotalAddition.IsSourceFromValueList = False
+        Me.TxtTotalAddition.IsUnique = False
+        Me.TxtTotalAddition.Location = New System.Drawing.Point(326, 273)
+        Me.TxtTotalAddition.MendatroryField = False
+        Me.TxtTotalAddition.MyLinkLable1 = Nothing
+        Me.TxtTotalAddition.MyLinkLable2 = Nothing
+        Me.TxtTotalAddition.Name = "TxtTotalAddition"
+        Me.TxtTotalAddition.ReferenceFieldDesc = Nothing
+        Me.TxtTotalAddition.ReferenceFieldName = Nothing
+        Me.TxtTotalAddition.ReferenceTableName = Nothing
+        Me.TxtTotalAddition.Size = New System.Drawing.Size(77, 20)
+        Me.TxtTotalAddition.TabIndex = 1540
+        Me.TxtTotalAddition.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'MyLabel39
         '
@@ -2120,51 +2217,421 @@ Partial Class BMC_Transporter_Bill
         Me.btnSave.TabIndex = 2
         Me.btnSave.Text = "Save"
         '
-        'TxtTotalAddition
+        'RadPageViewPage2
         '
-        Me.TxtTotalAddition.CalculationExpression = Nothing
-        Me.TxtTotalAddition.FieldCode = Nothing
-        Me.TxtTotalAddition.FieldDesc = Nothing
-        Me.TxtTotalAddition.FieldMaxLength = 0
-        Me.TxtTotalAddition.FieldName = Nothing
-        Me.TxtTotalAddition.isCalculatedField = False
-        Me.TxtTotalAddition.IsSourceFromTable = False
-        Me.TxtTotalAddition.IsSourceFromValueList = False
-        Me.TxtTotalAddition.IsUnique = False
-        Me.TxtTotalAddition.Location = New System.Drawing.Point(326, 273)
-        Me.TxtTotalAddition.MendatroryField = False
-        Me.TxtTotalAddition.MyLinkLable1 = Nothing
-        Me.TxtTotalAddition.MyLinkLable2 = Nothing
-        Me.TxtTotalAddition.Name = "TxtTotalAddition"
-        Me.TxtTotalAddition.ReferenceFieldDesc = Nothing
-        Me.TxtTotalAddition.ReferenceFieldName = Nothing
-        Me.TxtTotalAddition.ReferenceTableName = Nothing
-        Me.TxtTotalAddition.Size = New System.Drawing.Size(77, 20)
-        Me.TxtTotalAddition.TabIndex = 1540
-        Me.TxtTotalAddition.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel61)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel60)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel59)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel58)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel57)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel56)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel55)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel54)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel53)
+        Me.RadPageViewPage2.Controls.Add(Me.MyNumBox7)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel52)
+        Me.RadPageViewPage2.Controls.Add(Me.MyNumBox6)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel51)
+        Me.RadPageViewPage2.Controls.Add(Me.MyNumBox5)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel50)
+        Me.RadPageViewPage2.Controls.Add(Me.MyNumBox4)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel49)
+        Me.RadPageViewPage2.Controls.Add(Me.MyNumBox3)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel48)
+        Me.RadPageViewPage2.Controls.Add(Me.MyNumBox2)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel37)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel36)
+        Me.RadPageViewPage2.Controls.Add(Me.MyNumBox1)
+        Me.RadPageViewPage2.Controls.Add(Me.NLabourCharge)
+        Me.RadPageViewPage2.ItemSize = New System.Drawing.SizeF(106.0!, 26.0!)
+        Me.RadPageViewPage2.Location = New System.Drawing.Point(10, 35)
+        Me.RadPageViewPage2.Name = "RadPageViewPage2"
+        Me.RadPageViewPage2.Size = New System.Drawing.Size(779, 359)
+        Me.RadPageViewPage2.Text = "PF/ESI Deduction"
         '
-        'TxtTotalDeduction
+        'MyLabel36
         '
-        Me.TxtTotalDeduction.CalculationExpression = Nothing
-        Me.TxtTotalDeduction.FieldCode = Nothing
-        Me.TxtTotalDeduction.FieldDesc = Nothing
-        Me.TxtTotalDeduction.FieldMaxLength = 0
-        Me.TxtTotalDeduction.FieldName = Nothing
-        Me.TxtTotalDeduction.isCalculatedField = False
-        Me.TxtTotalDeduction.IsSourceFromTable = False
-        Me.TxtTotalDeduction.IsSourceFromValueList = False
-        Me.TxtTotalDeduction.IsUnique = False
-        Me.TxtTotalDeduction.Location = New System.Drawing.Point(326, 297)
-        Me.TxtTotalDeduction.MendatroryField = False
-        Me.TxtTotalDeduction.MyLinkLable1 = Nothing
-        Me.TxtTotalDeduction.MyLinkLable2 = Nothing
-        Me.TxtTotalDeduction.Name = "TxtTotalDeduction"
-        Me.TxtTotalDeduction.ReferenceFieldDesc = Nothing
-        Me.TxtTotalDeduction.ReferenceFieldName = Nothing
-        Me.TxtTotalDeduction.ReferenceTableName = Nothing
-        Me.TxtTotalDeduction.Size = New System.Drawing.Size(77, 20)
-        Me.TxtTotalDeduction.TabIndex = 1541
-        Me.TxtTotalDeduction.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.MyLabel36.FieldName = Nothing
+        Me.MyLabel36.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel36.Location = New System.Drawing.Point(13, 54)
+        Me.MyLabel36.Name = "MyLabel36"
+        Me.MyLabel36.Size = New System.Drawing.Size(84, 16)
+        Me.MyLabel36.TabIndex = 106
+        Me.MyLabel36.Text = "Labour Amount"
+        '
+        'NLabourCharge
+        '
+        Me.NLabourCharge.BackColor = System.Drawing.Color.White
+        Me.NLabourCharge.CalculationExpression = Nothing
+        Me.NLabourCharge.DecimalPlaces = 2
+        Me.NLabourCharge.FieldCode = Nothing
+        Me.NLabourCharge.FieldDesc = Nothing
+        Me.NLabourCharge.FieldMaxLength = 0
+        Me.NLabourCharge.FieldName = Nothing
+        Me.NLabourCharge.isCalculatedField = False
+        Me.NLabourCharge.IsSourceFromTable = False
+        Me.NLabourCharge.IsSourceFromValueList = False
+        Me.NLabourCharge.IsUnique = False
+        Me.NLabourCharge.Location = New System.Drawing.Point(134, 52)
+        Me.NLabourCharge.MendatroryField = False
+        Me.NLabourCharge.MyLinkLable1 = Me.MyLabel14
+        Me.NLabourCharge.MyLinkLable2 = Nothing
+        Me.NLabourCharge.Name = "NLabourCharge"
+        Me.NLabourCharge.ReferenceFieldDesc = Nothing
+        Me.NLabourCharge.ReferenceFieldName = Nothing
+        Me.NLabourCharge.ReferenceTableName = Nothing
+        Me.NLabourCharge.Size = New System.Drawing.Size(128, 20)
+        Me.NLabourCharge.TabIndex = 105
+        Me.NLabourCharge.Text = "0"
+        Me.NLabourCharge.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.NLabourCharge.Value = New Decimal(New Integer() {0, 0, 0, 0})
+        '
+        'MyLabel37
+        '
+        Me.MyLabel37.FieldName = Nothing
+        Me.MyLabel37.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel37.Location = New System.Drawing.Point(13, 77)
+        Me.MyLabel37.Name = "MyLabel37"
+        Me.MyLabel37.Size = New System.Drawing.Size(104, 16)
+        Me.MyLabel37.TabIndex = 108
+        Me.MyLabel37.Text = "Employee PF(CPF)"
+        '
+        'MyNumBox1
+        '
+        Me.MyNumBox1.BackColor = System.Drawing.Color.White
+        Me.MyNumBox1.CalculationExpression = Nothing
+        Me.MyNumBox1.DecimalPlaces = 2
+        Me.MyNumBox1.FieldCode = Nothing
+        Me.MyNumBox1.FieldDesc = Nothing
+        Me.MyNumBox1.FieldMaxLength = 0
+        Me.MyNumBox1.FieldName = Nothing
+        Me.MyNumBox1.isCalculatedField = False
+        Me.MyNumBox1.IsSourceFromTable = False
+        Me.MyNumBox1.IsSourceFromValueList = False
+        Me.MyNumBox1.IsUnique = False
+        Me.MyNumBox1.Location = New System.Drawing.Point(134, 75)
+        Me.MyNumBox1.MendatroryField = False
+        Me.MyNumBox1.MyLinkLable1 = Me.MyLabel14
+        Me.MyNumBox1.MyLinkLable2 = Nothing
+        Me.MyNumBox1.Name = "MyNumBox1"
+        Me.MyNumBox1.ReferenceFieldDesc = Nothing
+        Me.MyNumBox1.ReferenceFieldName = Nothing
+        Me.MyNumBox1.ReferenceTableName = Nothing
+        Me.MyNumBox1.Size = New System.Drawing.Size(128, 20)
+        Me.MyNumBox1.TabIndex = 107
+        Me.MyNumBox1.Text = "0"
+        Me.MyNumBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.MyNumBox1.Value = New Decimal(New Integer() {0, 0, 0, 0})
+        '
+        'MyLabel48
+        '
+        Me.MyLabel48.FieldName = Nothing
+        Me.MyLabel48.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel48.Location = New System.Drawing.Point(13, 100)
+        Me.MyLabel48.Name = "MyLabel48"
+        Me.MyLabel48.Size = New System.Drawing.Size(84, 16)
+        Me.MyLabel48.TabIndex = 110
+        Me.MyLabel48.Text = "Admin Charges"
+        '
+        'MyNumBox2
+        '
+        Me.MyNumBox2.BackColor = System.Drawing.Color.White
+        Me.MyNumBox2.CalculationExpression = Nothing
+        Me.MyNumBox2.DecimalPlaces = 2
+        Me.MyNumBox2.FieldCode = Nothing
+        Me.MyNumBox2.FieldDesc = Nothing
+        Me.MyNumBox2.FieldMaxLength = 0
+        Me.MyNumBox2.FieldName = Nothing
+        Me.MyNumBox2.isCalculatedField = False
+        Me.MyNumBox2.IsSourceFromTable = False
+        Me.MyNumBox2.IsSourceFromValueList = False
+        Me.MyNumBox2.IsUnique = False
+        Me.MyNumBox2.Location = New System.Drawing.Point(134, 98)
+        Me.MyNumBox2.MendatroryField = False
+        Me.MyNumBox2.MyLinkLable1 = Me.MyLabel14
+        Me.MyNumBox2.MyLinkLable2 = Nothing
+        Me.MyNumBox2.Name = "MyNumBox2"
+        Me.MyNumBox2.ReferenceFieldDesc = Nothing
+        Me.MyNumBox2.ReferenceFieldName = Nothing
+        Me.MyNumBox2.ReferenceTableName = Nothing
+        Me.MyNumBox2.Size = New System.Drawing.Size(128, 20)
+        Me.MyNumBox2.TabIndex = 109
+        Me.MyNumBox2.Text = "0"
+        Me.MyNumBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.MyNumBox2.Value = New Decimal(New Integer() {0, 0, 0, 0})
+        '
+        'MyLabel49
+        '
+        Me.MyLabel49.FieldName = Nothing
+        Me.MyLabel49.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel49.Location = New System.Drawing.Point(13, 123)
+        Me.MyLabel49.Name = "MyLabel49"
+        Me.MyLabel49.Size = New System.Drawing.Size(77, 16)
+        Me.MyLabel49.TabIndex = 112
+        Me.MyLabel49.Text = "EDLI Charges"
+        '
+        'MyNumBox3
+        '
+        Me.MyNumBox3.BackColor = System.Drawing.Color.White
+        Me.MyNumBox3.CalculationExpression = Nothing
+        Me.MyNumBox3.DecimalPlaces = 2
+        Me.MyNumBox3.FieldCode = Nothing
+        Me.MyNumBox3.FieldDesc = Nothing
+        Me.MyNumBox3.FieldMaxLength = 0
+        Me.MyNumBox3.FieldName = Nothing
+        Me.MyNumBox3.isCalculatedField = False
+        Me.MyNumBox3.IsSourceFromTable = False
+        Me.MyNumBox3.IsSourceFromValueList = False
+        Me.MyNumBox3.IsUnique = False
+        Me.MyNumBox3.Location = New System.Drawing.Point(134, 121)
+        Me.MyNumBox3.MendatroryField = False
+        Me.MyNumBox3.MyLinkLable1 = Me.MyLabel14
+        Me.MyNumBox3.MyLinkLable2 = Nothing
+        Me.MyNumBox3.Name = "MyNumBox3"
+        Me.MyNumBox3.ReferenceFieldDesc = Nothing
+        Me.MyNumBox3.ReferenceFieldName = Nothing
+        Me.MyNumBox3.ReferenceTableName = Nothing
+        Me.MyNumBox3.Size = New System.Drawing.Size(128, 20)
+        Me.MyNumBox3.TabIndex = 111
+        Me.MyNumBox3.Text = "0"
+        Me.MyNumBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.MyNumBox3.Value = New Decimal(New Integer() {0, 0, 0, 0})
+        '
+        'MyLabel50
+        '
+        Me.MyLabel50.FieldName = Nothing
+        Me.MyLabel50.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel50.Location = New System.Drawing.Point(13, 146)
+        Me.MyLabel50.Name = "MyLabel50"
+        Me.MyLabel50.Size = New System.Drawing.Size(49, 16)
+        Me.MyLabel50.TabIndex = 114
+        Me.MyLabel50.Text = "Total PF"
+        '
+        'MyNumBox4
+        '
+        Me.MyNumBox4.BackColor = System.Drawing.Color.White
+        Me.MyNumBox4.CalculationExpression = Nothing
+        Me.MyNumBox4.DecimalPlaces = 2
+        Me.MyNumBox4.FieldCode = Nothing
+        Me.MyNumBox4.FieldDesc = Nothing
+        Me.MyNumBox4.FieldMaxLength = 0
+        Me.MyNumBox4.FieldName = Nothing
+        Me.MyNumBox4.isCalculatedField = False
+        Me.MyNumBox4.IsSourceFromTable = False
+        Me.MyNumBox4.IsSourceFromValueList = False
+        Me.MyNumBox4.IsUnique = False
+        Me.MyNumBox4.Location = New System.Drawing.Point(134, 144)
+        Me.MyNumBox4.MendatroryField = False
+        Me.MyNumBox4.MyLinkLable1 = Me.MyLabel14
+        Me.MyNumBox4.MyLinkLable2 = Nothing
+        Me.MyNumBox4.Name = "MyNumBox4"
+        Me.MyNumBox4.ReferenceFieldDesc = Nothing
+        Me.MyNumBox4.ReferenceFieldName = Nothing
+        Me.MyNumBox4.ReferenceTableName = Nothing
+        Me.MyNumBox4.Size = New System.Drawing.Size(128, 20)
+        Me.MyNumBox4.TabIndex = 113
+        Me.MyNumBox4.Text = "0"
+        Me.MyNumBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.MyNumBox4.Value = New Decimal(New Integer() {0, 0, 0, 0})
+        '
+        'MyLabel51
+        '
+        Me.MyLabel51.FieldName = Nothing
+        Me.MyLabel51.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel51.Location = New System.Drawing.Point(13, 169)
+        Me.MyLabel51.Name = "MyLabel51"
+        Me.MyLabel51.Size = New System.Drawing.Size(78, 16)
+        Me.MyLabel51.TabIndex = 116
+        Me.MyLabel51.Text = "ESI Employee"
+        '
+        'MyNumBox5
+        '
+        Me.MyNumBox5.BackColor = System.Drawing.Color.White
+        Me.MyNumBox5.CalculationExpression = Nothing
+        Me.MyNumBox5.DecimalPlaces = 2
+        Me.MyNumBox5.FieldCode = Nothing
+        Me.MyNumBox5.FieldDesc = Nothing
+        Me.MyNumBox5.FieldMaxLength = 0
+        Me.MyNumBox5.FieldName = Nothing
+        Me.MyNumBox5.isCalculatedField = False
+        Me.MyNumBox5.IsSourceFromTable = False
+        Me.MyNumBox5.IsSourceFromValueList = False
+        Me.MyNumBox5.IsUnique = False
+        Me.MyNumBox5.Location = New System.Drawing.Point(134, 167)
+        Me.MyNumBox5.MendatroryField = False
+        Me.MyNumBox5.MyLinkLable1 = Me.MyLabel14
+        Me.MyNumBox5.MyLinkLable2 = Nothing
+        Me.MyNumBox5.Name = "MyNumBox5"
+        Me.MyNumBox5.ReferenceFieldDesc = Nothing
+        Me.MyNumBox5.ReferenceFieldName = Nothing
+        Me.MyNumBox5.ReferenceTableName = Nothing
+        Me.MyNumBox5.Size = New System.Drawing.Size(128, 20)
+        Me.MyNumBox5.TabIndex = 115
+        Me.MyNumBox5.Text = "0"
+        Me.MyNumBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.MyNumBox5.Value = New Decimal(New Integer() {0, 0, 0, 0})
+        '
+        'MyLabel52
+        '
+        Me.MyLabel52.FieldName = Nothing
+        Me.MyLabel52.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel52.Location = New System.Drawing.Point(13, 192)
+        Me.MyLabel52.Name = "MyLabel52"
+        Me.MyLabel52.Size = New System.Drawing.Size(75, 16)
+        Me.MyLabel52.TabIndex = 118
+        Me.MyLabel52.Text = "ESI Employer"
+        '
+        'MyNumBox6
+        '
+        Me.MyNumBox6.BackColor = System.Drawing.Color.White
+        Me.MyNumBox6.CalculationExpression = Nothing
+        Me.MyNumBox6.DecimalPlaces = 2
+        Me.MyNumBox6.FieldCode = Nothing
+        Me.MyNumBox6.FieldDesc = Nothing
+        Me.MyNumBox6.FieldMaxLength = 0
+        Me.MyNumBox6.FieldName = Nothing
+        Me.MyNumBox6.isCalculatedField = False
+        Me.MyNumBox6.IsSourceFromTable = False
+        Me.MyNumBox6.IsSourceFromValueList = False
+        Me.MyNumBox6.IsUnique = False
+        Me.MyNumBox6.Location = New System.Drawing.Point(134, 190)
+        Me.MyNumBox6.MendatroryField = False
+        Me.MyNumBox6.MyLinkLable1 = Me.MyLabel14
+        Me.MyNumBox6.MyLinkLable2 = Nothing
+        Me.MyNumBox6.Name = "MyNumBox6"
+        Me.MyNumBox6.ReferenceFieldDesc = Nothing
+        Me.MyNumBox6.ReferenceFieldName = Nothing
+        Me.MyNumBox6.ReferenceTableName = Nothing
+        Me.MyNumBox6.Size = New System.Drawing.Size(128, 20)
+        Me.MyNumBox6.TabIndex = 117
+        Me.MyNumBox6.Text = "0"
+        Me.MyNumBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.MyNumBox6.Value = New Decimal(New Integer() {0, 0, 0, 0})
+        '
+        'MyLabel53
+        '
+        Me.MyLabel53.FieldName = Nothing
+        Me.MyLabel53.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel53.Location = New System.Drawing.Point(14, 215)
+        Me.MyLabel53.Name = "MyLabel53"
+        Me.MyLabel53.Size = New System.Drawing.Size(53, 16)
+        Me.MyLabel53.TabIndex = 120
+        Me.MyLabel53.Text = "Total ESI"
+        '
+        'MyNumBox7
+        '
+        Me.MyNumBox7.BackColor = System.Drawing.Color.White
+        Me.MyNumBox7.CalculationExpression = Nothing
+        Me.MyNumBox7.DecimalPlaces = 2
+        Me.MyNumBox7.FieldCode = Nothing
+        Me.MyNumBox7.FieldDesc = Nothing
+        Me.MyNumBox7.FieldMaxLength = 0
+        Me.MyNumBox7.FieldName = Nothing
+        Me.MyNumBox7.isCalculatedField = False
+        Me.MyNumBox7.IsSourceFromTable = False
+        Me.MyNumBox7.IsSourceFromValueList = False
+        Me.MyNumBox7.IsUnique = False
+        Me.MyNumBox7.Location = New System.Drawing.Point(134, 213)
+        Me.MyNumBox7.MendatroryField = False
+        Me.MyNumBox7.MyLinkLable1 = Me.MyLabel14
+        Me.MyNumBox7.MyLinkLable2 = Nothing
+        Me.MyNumBox7.Name = "MyNumBox7"
+        Me.MyNumBox7.ReferenceFieldDesc = Nothing
+        Me.MyNumBox7.ReferenceFieldName = Nothing
+        Me.MyNumBox7.ReferenceTableName = Nothing
+        Me.MyNumBox7.Size = New System.Drawing.Size(128, 20)
+        Me.MyNumBox7.TabIndex = 119
+        Me.MyNumBox7.Text = "0"
+        Me.MyNumBox7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.MyNumBox7.Value = New Decimal(New Integer() {0, 0, 0, 0})
+        '
+        'MyLabel54
+        '
+        Me.MyLabel54.FieldName = Nothing
+        Me.MyLabel54.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel54.Location = New System.Drawing.Point(321, 54)
+        Me.MyLabel54.Name = "MyLabel54"
+        Me.MyLabel54.Size = New System.Drawing.Size(136, 16)
+        Me.MyLabel54.TabIndex = 121
+        Me.MyLabel54.Text = "No. of Days × Daily Wage"
+        Me.MyLabel54.Visible = False
+        '
+        'MyLabel55
+        '
+        Me.MyLabel55.FieldName = Nothing
+        Me.MyLabel55.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel55.Location = New System.Drawing.Point(321, 77)
+        Me.MyLabel55.Name = "MyLabel55"
+        Me.MyLabel55.Size = New System.Drawing.Size(165, 16)
+        Me.MyLabel55.TabIndex = 107
+        Me.MyLabel55.Text = "Labour × 12% (or applicable %)"
+        Me.MyLabel55.Visible = False
+        '
+        'MyLabel56
+        '
+        Me.MyLabel56.FieldName = Nothing
+        Me.MyLabel56.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel56.Location = New System.Drawing.Point(321, 100)
+        Me.MyLabel56.Name = "MyLabel56"
+        Me.MyLabel56.Size = New System.Drawing.Size(80, 16)
+        Me.MyLabel56.TabIndex = 122
+        Me.MyLabel56.Text = "Labour × 0.5%"
+        Me.MyLabel56.Visible = False
+        '
+        'MyLabel57
+        '
+        Me.MyLabel57.FieldName = Nothing
+        Me.MyLabel57.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel57.Location = New System.Drawing.Point(321, 123)
+        Me.MyLabel57.Name = "MyLabel57"
+        Me.MyLabel57.Size = New System.Drawing.Size(80, 16)
+        Me.MyLabel57.TabIndex = 123
+        Me.MyLabel57.Text = "Labour × 0.5%"
+        Me.MyLabel57.Visible = False
+        '
+        'MyLabel58
+        '
+        Me.MyLabel58.FieldName = Nothing
+        Me.MyLabel58.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel58.Location = New System.Drawing.Point(321, 146)
+        Me.MyLabel58.Name = "MyLabel58"
+        Me.MyLabel58.Size = New System.Drawing.Size(236, 16)
+        Me.MyLabel58.TabIndex = 124
+        Me.MyLabel58.Text = "Employee PF + Employer PF + Admin + EDLI"
+        Me.MyLabel58.Visible = False
+        '
+        'MyLabel59
+        '
+        Me.MyLabel59.FieldName = Nothing
+        Me.MyLabel59.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel59.Location = New System.Drawing.Point(321, 169)
+        Me.MyLabel59.Name = "MyLabel59"
+        Me.MyLabel59.Size = New System.Drawing.Size(86, 16)
+        Me.MyLabel59.TabIndex = 125
+        Me.MyLabel59.Text = "Labour × 0.75%"
+        Me.MyLabel59.Visible = False
+        '
+        'MyLabel60
+        '
+        Me.MyLabel60.FieldName = Nothing
+        Me.MyLabel60.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel60.Location = New System.Drawing.Point(321, 192)
+        Me.MyLabel60.Name = "MyLabel60"
+        Me.MyLabel60.Size = New System.Drawing.Size(86, 16)
+        Me.MyLabel60.TabIndex = 126
+        Me.MyLabel60.Text = "Labour × 3.25%"
+        Me.MyLabel60.Visible = False
+        '
+        'MyLabel61
+        '
+        Me.MyLabel61.FieldName = Nothing
+        Me.MyLabel61.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel61.Location = New System.Drawing.Point(321, 215)
+        Me.MyLabel61.Name = "MyLabel61"
+        Me.MyLabel61.Size = New System.Drawing.Size(160, 16)
+        Me.MyLabel61.TabIndex = 127
+        Me.MyLabel61.Text = "ESI Employee + ESI Employer"
+        Me.MyLabel61.Visible = False
         '
         'BMC_Transporter_Bill
         '
@@ -2248,6 +2715,8 @@ Partial Class BMC_Transporter_Bill
         CType(Me.btnAddNew, System.ComponentModel.ISupportInitialize).EndInit()
         Me.RadPageViewPage4.ResumeLayout(False)
         Me.RadPageViewPage4.PerformLayout()
+        CType(Me.TxtTotalDeduction, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TxtTotalAddition, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel39, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel38, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel47, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2306,8 +2775,32 @@ Partial Class BMC_Transporter_Bill
         CType(Me.btnDelete, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnPost, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnSave, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TxtTotalAddition, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TxtTotalDeduction, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.RadPageViewPage2.ResumeLayout(False)
+        Me.RadPageViewPage2.PerformLayout()
+        CType(Me.MyLabel36, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NLabourCharge, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel37, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyNumBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel48, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyNumBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel49, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyNumBox3, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel50, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyNumBox4, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel51, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyNumBox5, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel52, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyNumBox6, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel53, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyNumBox7, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel54, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel55, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel56, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel57, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel58, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel59, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel60, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel61, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -2442,4 +2935,29 @@ Partial Class BMC_Transporter_Bill
     Friend WithEvents MyLabel38 As common.Controls.MyLabel
     Friend WithEvents TxtTotalAddition As common.Controls.MyTextBox
     Friend WithEvents TxtTotalDeduction As common.Controls.MyTextBox
+    Friend WithEvents RadPageViewPage2 As RadPageViewPage
+    Friend WithEvents MyLabel61 As common.Controls.MyLabel
+    Friend WithEvents MyLabel60 As common.Controls.MyLabel
+    Friend WithEvents MyLabel59 As common.Controls.MyLabel
+    Friend WithEvents MyLabel58 As common.Controls.MyLabel
+    Friend WithEvents MyLabel57 As common.Controls.MyLabel
+    Friend WithEvents MyLabel56 As common.Controls.MyLabel
+    Friend WithEvents MyLabel55 As common.Controls.MyLabel
+    Friend WithEvents MyLabel54 As common.Controls.MyLabel
+    Friend WithEvents MyLabel53 As common.Controls.MyLabel
+    Friend WithEvents MyNumBox7 As common.MyNumBox
+    Friend WithEvents MyLabel52 As common.Controls.MyLabel
+    Friend WithEvents MyNumBox6 As common.MyNumBox
+    Friend WithEvents MyLabel51 As common.Controls.MyLabel
+    Friend WithEvents MyNumBox5 As common.MyNumBox
+    Friend WithEvents MyLabel50 As common.Controls.MyLabel
+    Friend WithEvents MyNumBox4 As common.MyNumBox
+    Friend WithEvents MyLabel49 As common.Controls.MyLabel
+    Friend WithEvents MyNumBox3 As common.MyNumBox
+    Friend WithEvents MyLabel48 As common.Controls.MyLabel
+    Friend WithEvents MyNumBox2 As common.MyNumBox
+    Friend WithEvents MyLabel37 As common.Controls.MyLabel
+    Friend WithEvents MyLabel36 As common.Controls.MyLabel
+    Friend WithEvents MyNumBox1 As common.MyNumBox
+    Friend WithEvents NLabourCharge As common.MyNumBox
 End Class
