@@ -16120,6 +16120,7 @@ END"
             coll.Add("Reject_Type", "Varchar(30) null references TSPL_MILK_REJECT_TYPE(Code)")
             coll.Add("Incentive_TRCode", "Varchar(30) null references TSPL_MP_INCETIVE_DETAIL(TRCode)")
             coll.Add("Incentive_Amt", "decimal(18,2) null")
+            coll.Add("Milk_Type", "Varchar(1) null")
             clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_VLC_DATA_UPLOADER_DETAIL", coll, "Primary Key (Document_Code,PK_Id)", False, False, "TSPL_VLC_DATA_UPLOADER_MASTER", "Document_Code", "")
             coll.Item("Document_Code") = "varchar(30) not NULL references TSPL_VLC_DATA_UPLOADER_MASTER_SYNC (Document_Code)"
             clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_VLC_DATA_UPLOADER_DETAIL_SYNC", coll, "Primary Key (Document_Code,PK_Id)", False, False)
