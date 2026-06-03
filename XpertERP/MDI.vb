@@ -8831,6 +8831,9 @@ Public Class MDI
                     Case clsUserMgtCode.BMC_Transporter_Bill
                         frm = New BMC_Transporter_Bill
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
+                    Case clsUserMgtCode.frmTransporterPaymentProcess
+                        frm = New frmTransporterPaymentProcess
+                        formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
                     Case clsUserMgtCode.frmCattleFeedSalePurchaseUploader
                         frm = New FrmCattleFeedSalePurchaseUploader
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
