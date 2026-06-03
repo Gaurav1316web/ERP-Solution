@@ -4394,6 +4394,9 @@ Public Class MDI
                     Case clsUserMgtCode.ItemStockConversion
                         frm = New frmItemToItemStockConverion
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
+                    Case clsUserMgtCode.frmGSTDocumentList
+                        frm = New frmGSTDocumentList
+                        formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
                     '------------------ Inventory Reports---------------------------------------
 
                     'Case "ItemLocationReport"

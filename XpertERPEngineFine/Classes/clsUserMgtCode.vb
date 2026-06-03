@@ -1,5 +1,6 @@
 ﻿Imports common
 Public Class clsUserMgtCode
+    Public Const frmGSTDocumentList As String = "GST-DOC-LST"
     Public Const frmNIRQCvsWetQc As String = "NIRQ_VS_W"
     Public Const frmUnionWiseDockEntryReport As String = "UNN-DE-RPT"
     Public Const FrmInActiveDCSReport As String = "UNN-IA-DC"
