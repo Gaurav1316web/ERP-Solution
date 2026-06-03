@@ -1432,7 +1432,14 @@ xxx:
             End If
 
             If doubleheadershowninExcel AndAlso MergedHeaderRowIndex > 0 Then
-                wSheet.Rows(MergedHeaderRowIndex).RowHeight = 50
+                'wSheet.Rows(MergedHeaderRowIndex).RowHeight = 50
+                Dim view As New ColumnGroupsViewDefinition()
+                view = gv.ViewDefinition
+                Dim maxHeaderLength As Integer = 0
+                For i As Integer = 0 To view.ColumnGroups.Count - 1
+                    maxHeaderLength = Math.Max(maxHeaderLength, clsCommon.myCstr(view.ColumnGroups(i).Text).Length)
+                Next
+                wSheet.Rows(MergedHeaderRowIndex).RowHeight = Math.Max(60, (maxHeaderLength \ 5 + 1) * 20)
             End If
 
             'Manadatory Field Coloring
