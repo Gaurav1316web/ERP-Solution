@@ -1614,6 +1614,74 @@ Public Class ClsEInvoiceOFAPIs
         End Try
         Return objResult
     End Function
+    Public Shared Function EWayBill_Close(ByVal strCompCode As String, ByVal obj As clsEwayBillClose, ByVal strLocation As String, ByVal trans As SqlTransaction) As Object
+        Dim httpRequest As HttpWebRequest = Nothing
+        Dim httpResponse As HttpWebResponse = Nothing
+        Dim objResult As Object = Nothing
+        Try
+            Dim qry As String = String.Empty
+            Dim strEInvoiceVendor As String = clsCommon.myCstr(clsFixedParameter.GetData(clsFixedParameterType.EInvoiceVendor, clsFixedParameterCode.EInvoiceVendor, trans))
+            If clsCommon.myLen(clsCommon.myCstr(strEInvoiceVendor)) > 0 Then
+                If clsCommon.CompairString(strEInvoiceVendor.ToUpper(), "MASTERGST") = CompairStringResult.Equal Then
+                    Dim IsAuthenticate As Boolean = IsEWayBillAPIAuthenticate(strCompCode, strLocation, trans)
+                    If IsAuthenticate Then
+                        qry = "Select * from TSPL_EInvoiceHeader_Info where Comp_Code='" & strCompCode & "' and RequiredFor ='clsewb' and Location_Code='" & strLocation & "'"
+                    End If
+                End If
+                Dim dt As DataTable = clsDBFuncationality.GetDataTable(qry, trans)
+                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+                    Const Tls12Value As Integer = &HC00
+                    Dim Tls12Protocol As System.Net.SecurityProtocolType = CType(Tls12Value, System.Net.SecurityProtocolType)
+                    ' Set the security protocol globally for all HTTPS requests
+                    System.Net.ServicePointManager.SecurityProtocol = Tls12Protocol
+                    httpRequest = CType(WebRequest.Create(clsCommon.myCstr(dt.Rows(0)("Url"))), HttpWebRequest)
+                    httpRequest.ContentType = "application/json"
+                    If clsCommon.CompairString(strEInvoiceVendor.ToUpper(), "MASTERGST") = CompairStringResult.Equal Then
+                        httpRequest.Headers.Add("ip_address", clsCommon.myCstr(dt.Rows(0)("ip_address")))
+                        httpRequest.Headers.Add("client_id", clsCommon.myCstr(dt.Rows(0)("client_id")))
+                        httpRequest.Headers.Add("client_secret", clsCommon.myCstr(dt.Rows(0)("client_secret")))
+                        httpRequest.Headers.Add("gstin", clsCommon.myCstr(dt.Rows(0)("gstin")))
+                        httpRequest.Method = "POST"
+                    End If
+                    httpRequest.KeepAlive = True
+                    Dim strCloseEWB As String = String.Empty
+                    Using streamWriter = New StreamWriter(httpRequest.GetRequestStream())
+                        Dim objCloseEWB As Object = New clsEwayBillClose()
+                        objCloseEWB.ewbNo = clsCommon.myCdbl(obj.ewbNo)
+                        objCloseEWB.closureDate = clsCommon.myCstr(obj.closureDate)
+                        objCloseEWB.remarks = clsCommon.myCstr(obj.remarks)
+
+                        strCloseEWB = JsonConvert.SerializeObject(objCloseEWB)
+                        streamWriter.Write(strCloseEWB)
+                    End Using
+                    httpResponse = CType(httpRequest.GetResponse(), HttpWebResponse)
+                    '' required validation httresponse
+                    Dim strResult As String = String.Empty
+                    Using streamReader = New StreamReader(httpResponse.GetResponseStream())
+                        strResult = streamReader.ReadToEnd()
+                    End Using
+                    Dim jObj As JObject = JObject.Parse(strResult)
+                    If TypeOf jObj.SelectToken("") Is JObject Then
+                        objResult = jObj.SelectToken("")
+                        Dim Status_cd As String = objResult.SelectToken("status_cd").ToString
+                        If clsCommon.CompairString(Status_cd, "0") = CompairStringResult.Equal Then
+                            Dim statusDec As String = objResult.SelectToken("error").ToString
+                            objResult = Nothing
+                            Throw New Exception(statusDec)
+                        End If
+                        Return objResult
+                    Else
+                        Dim strStatusDesc As String = (jObj.SelectToken("status_desc")).ToString()
+                        objResult = Nothing
+                        Throw New Exception(strStatusDesc)
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            Throw New Exception(ex.Message)
+        End Try
+        Return objResult
+    End Function
 End Class
 Public Class clsEInvoiceCancelDetails
     Public Property Irn As String = String.Empty
@@ -1767,6 +1835,12 @@ Public Class clsEwayBillCancel
     Public Property ewbNo As Long
     Public Property cancelRsnCode As Integer
     Public Property cancelRmrk As String
+
+End Class
+Public Class clsEwayBillClose
+    Public Property ewbNo As Long
+    Public Property closureDate As DateTime
+    Public Property remarks As String
 
 End Class
 Public Class clsEwayBillUpdateTranspoter

@@ -321,6 +321,9 @@ Public Class frmDCSSaleEntry
         LoadBlankGridAC()
         AddNew()
         SetLength()
+        LoadShiftType()
+        cmbShift.Enabled = True
+        txtSupplyDate.Value = txtDate.Value
         If MultiplySubsidyWithQuantity Then
             txtRateAmt.Enabled = True
             txtDiscAmt.Enabled = True
@@ -385,6 +388,26 @@ Public Class frmDCSSaleEntry
         If objCommonVar.CreateAutoReceiptEntryDCSSale Then
             txtReceiptNo.Enabled = False
         End If
+    End Sub
+    Sub LoadShiftType()
+        Dim dt As DataTable = New DataTable()
+        dt.Columns.Add("Code", GetType(String))
+        dt.Columns.Add("Name", GetType(String))
+        Dim dr As DataRow = dt.NewRow()
+        dr("Code") = ""
+        dr("Name") = "Select"
+        dt.Rows.Add(dr)
+        dr = dt.NewRow()
+        dr("Code") = "AM"
+        dr("Name") = "Morning"
+        dt.Rows.Add(dr)
+        dr = dt.NewRow()
+        dr("Code") = "PM"
+        dr("Name") = "Evening"
+        dt.Rows.Add(dr)
+        cmbShift.ValueMember = "Code"
+        cmbShift.DisplayMember = "Name"
+        cmbShift.DataSource = dt
     End Sub
     Sub SetMultiCurrencyVisibility()
         Dim strq As String = ""
@@ -3634,7 +3657,9 @@ where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_
                 obj.Customer_Code = txtVendorNo.Value
                 obj.Customer_Name = lblVendorName.Text
                 obj.DCS_Price_Code = FndPriceCode.Value
-                obj.Sale_Route_Code = txtSaleRoute.Value
+                obj.Route_No = txtSaleRoute.Value
+                obj.Supply_Date = clsCommon.GetPrintDate(txtSupplyDate.Value, "dd/MMM/yyyy")
+                obj.Shift_Type = cmbShift.SelectedValue
                 obj.Ref_No = txtRefNo.Text
                 obj.Challan_Date = clsCommon.GetPrintDate(dtpChallan.Value, "dd/MMM/yyyy")
                 obj.Total_Tax_Amt = clsCommon.myCdbl(lblTaxAmt.Text)
@@ -4037,6 +4062,8 @@ where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_
                 cboItemType.Enabled = False
                 txtBillToLocation.Enabled = False
                 txtSubLocation.Enabled = False
+                txtSupplyDate.Enabled = False
+                cmbShift.Enabled = False
                 If obj.Status = ERPTransactionStatus.Approved Then
                     btnSave.Enabled = False
                     btnPost.Enabled = False
@@ -4065,7 +4092,12 @@ where TSPL_ITEM_WISE_TAX.Type='S' And TSPL_ITEM_WISE_TAX.Status=1 And TSPL_ITEM_
                 txtRoadPermitNo.Text = obj.Road_Permit_No
                 lblVendorName.Text = obj.Customer_Name
                 FndPriceCode.Value = obj.DCS_Price_Code
-                txtSaleRoute.Value = obj.Sale_Route_Code
+                txtSaleRoute.Value = obj.Route_No
+                cmbShift.SelectedValue = obj.Shift_Type
+                txtDate.Value = obj.Document_Date
+                If obj.Supply_Date IsNot Nothing Then
+                    txtSupplyDate.Value = obj.Supply_Date
+                End If
                 txtRefNo.Text = obj.Ref_No
                 chkApplyTPT.Checked = IIf(obj.Is_Apply_TPT = "1", True, False)
                 txtRecommBy.Text = obj.Recommended_By

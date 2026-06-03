@@ -335,7 +335,20 @@ Public Class clsPSInvoiceHead
                                         obj.Document_Code = clsERPFuncationality.GetNextCode(trans, obj.Document_Date, SaleInvoiceProductSale, clsDocTransactionType.GSTNonTaxable, obj.Bill_To_Location, False, isIncrementCounter)
                                     Else
                                         If IsTaxable = False Then
-                                            obj.Document_Code = clsERPFuncationality.GetNextCode(trans, obj.Document_Date, SaleInvoiceProductSale, clsDocTransactionType.GSTNonTaxable, obj.Bill_To_Location, False, isIncrementCounter)
+                                            If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
+                                                Dim isSplitBilling As Double = clsCommon.myCdbl(clsDBFuncationality.getSingleValue("select IsSplitBilling from TSPL_ITEM_MASTER where Item_Code='" & obj.Arr(0).Item_Code & "'", trans))
+                                                If isSplitBilling = 1 Then
+                                                    obj.Document_Code = clsERPFuncationality.GetNextCode(trans, obj.Document_Date, SaleInvoiceProductSale, clsDocTransactionType.GSTNonTaxablePNR, obj.Bill_To_Location, False, isIncrementCounter)
+                                                Else
+                                                    obj.Document_Code = clsERPFuncationality.GetNextCode(trans, obj.Document_Date, SaleInvoiceProductSale, clsDocTransactionType.GSTNonTaxable, obj.Bill_To_Location, False, isIncrementCounter)
+
+                                                End If
+                                                'obj.Document_Code = clsERPFuncationality.GetNextCode(trans, obj.Document_Date, SaleInvoiceProductSale, clsDocTransactionType.GSTNonTaxable, obj.Bill_To_Location, False, isIncrementCounter)
+
+                                            Else
+                                                obj.Document_Code = clsERPFuncationality.GetNextCode(trans, obj.Document_Date, SaleInvoiceProductSale, clsDocTransactionType.GSTNonTaxable, obj.Bill_To_Location, False, isIncrementCounter)
+
+                                            End If
                                         Else
                                             If clsCommon.CompairString(strItemCategory, "L") = CompairStringResult.Equal Then
                                                 obj.Document_Code = clsERPFuncationality.GetNextCode(trans, obj.Document_Date, SaleInvoiceProductSale, clsDocTransactionType.GSTLocal, obj.Bill_To_Location, False, isIncrementCounter)
