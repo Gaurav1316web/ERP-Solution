@@ -6362,7 +6362,15 @@ Left Outer Join TSPL_CUSTOMER_MASTER on TSPL_CUSTOMER_COMPLAINT_HEAD.Cust_Code =
                         strCustomerCode = trnsLstCustomer.Item(j)
                         Try
                             clsCommon.ProgressBarPercentUpdate((((j + 1) * 100) / (trnsLst.Count)), "Document Posting " + clsCommon.myCstr(j + 1) + "/" + clsCommon.myCstr(trnsLst.Count))
-                            clsDemandBookingSale.PostData(clsUserMgtCode.frmDemandBooking, strDocNo, strCustomerCode)
+                            Dim CashCustCount As Double = clsCommon.myCdbl(clsDBFuncationality.getSingleValue("select count(TSPL_DEMAND_BOOKING_DETAIL.Cust_Code) as noofCust from TSPL_DEMAND_BOOKING_DETAIL
+left join TSPL_CUSTOMER_MASTER on TSPL_CUSTOMER_MASTER.Cust_Code=TSPL_DEMAND_BOOKING_DETAIL.Cust_Code
+where Document_No='" & strDocNo & "' and TSPL_CUSTOMER_MASTER.Cash_Customer='Y'
+group by TSPL_DEMAND_BOOKING_DETAIL.Cust_Code"))
+                            If CashCustCount = 0 Then
+                                clsDemandBookingSale.PostData(clsUserMgtCode.frmDemandBooking, strDocNo, strCustomerCode)
+                            Else
+                                Throw New Exception("Cash Customer Document should be posted through Demand Screen")
+                            End If
                             'If clsCommon.myCDecimal(clsFixedParameter.GetData(clsFixedParameterType.ApplyDemandAll, clsFixedParameterCode.ApplyDemandAll, Nothing)) = 1 Or clsCommon.myCDecimal(clsFixedParameter.GetData(clsFixedParameterType.ApplyDemandCustomerWise, clsFixedParameterCode.ApplyDemandCustomerWise, Nothing)) = 1 Then
                             '    Dim isNewEntry As Boolean = False
                             '    Dim obj As clsDemandBookingSale = clsDemandBookingSale.GetData(strDocNo, NavigatorType.Current)

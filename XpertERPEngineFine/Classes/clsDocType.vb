@@ -1206,10 +1206,12 @@ Public Class clsDocType
 
             'InsertDefaultValue(clsDocType.frmShipmentProductSale, clsDocTransactionType.GSTTaxable, False, True)
             InsertDefaultValue(clsDocType.frmShipmentProductSale, clsDocTransactionType.GSTNonTaxable, False, True)
+            InsertDefaultValue(clsDocType.frmShipmentProductSale, clsDocTransactionType.GSTNonTaxablePNR, False, True)
             InsertDefaultValue(clsDocType.frmShipmentProductSale, clsDocTransactionType.GSTLocal, False, True)
             InsertDefaultValue(clsDocType.frmShipmentProductSale, clsDocTransactionType.GSTInterstate, False, True)
 
             'InsertDefaultValue(clsDocType.frmSaleInvoiceProductSale, clsDocTransactionType.GSTTaxable, False, True)
+            InsertDefaultValue(clsDocType.frmSaleInvoiceProductSale, clsDocTransactionType.GSTNonTaxablePNR, False, True)
             InsertDefaultValue(clsDocType.frmSaleInvoiceProductSale, clsDocTransactionType.GSTNonTaxable, False, True)
             InsertDefaultValue(clsDocType.frmSaleInvoiceProductSale, clsDocTransactionType.GSTLocal, False, True)
             InsertDefaultValue(clsDocType.frmSaleInvoiceProductSale, clsDocTransactionType.GSTInterstate, False, True)
@@ -2184,6 +2186,7 @@ Public Class clsDocTransactionType
     Public Const SaleReturnTax As String = "Tax"
     Public Const GSTTaxable As String = "Taxable"
     Public Const GSTNonTaxable As String = "Non Taxable"
+    Public Const GSTNonTaxablePNR As String = "Non Taxable PNR"
     Public Const GSTBillofSupply As String = "Bill of Supply"
     Public Const GSTIn As String = "GST In"
     Public Const GSTReturn As String = "GST Return"

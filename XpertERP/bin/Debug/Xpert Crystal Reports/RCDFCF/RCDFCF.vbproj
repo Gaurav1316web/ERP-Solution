@@ -1429,6 +1429,7 @@
     <None Include="Crystal Reports\Purchase Order\crptmaterialReceivedAfterJobWork.rpt" />
     <None Include="Crystal Reports\Purchase Order\crptMaterialSendForJobWork.rpt" />
     <None Include="Crystal Reports\Purchase Order\crptNetIssue.rpt" />
+    <None Include="Crystal Reports\Purchase Order\crptNIRQC.rpt" />
     <None Include="Crystal Reports\Purchase Order\crptPriceAdjustment.rpt" />
     <None Include="Crystal Reports\Purchase Order\crptProspectReport.rpt" />
     <None Include="Crystal Reports\Purchase Order\crptProspectReportPrint.rpt" />

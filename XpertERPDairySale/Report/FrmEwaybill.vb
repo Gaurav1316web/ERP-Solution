@@ -191,6 +191,10 @@ Public Class FrmEwaybill
             dr("Name") = "Extend Validity of Eway Bill"
             dt.Rows.Add(dr)
             dr = dt.NewRow()
+            dr("Code") = "Close Eway Bill"
+            dr("Name") = "Close Eway Bill"
+            dt.Rows.Add(dr)
+            dr = dt.NewRow()
             dr("Code") = "Error List"
             dr("Name") = "Error List"
             dt.Rows.Add(dr)
@@ -524,6 +528,42 @@ Public Class FrmEwaybill
                 Else
                     Throw New Exception("Please Enter ewb no/Select Update Vehicle Reason/Select Consignmnet Status/enter Remaining Distance")
                 End If
+            ElseIf clsCommon.CompairString(cmbEwaybillType.SelectedValue, "Close Eway Bill") = CompairStringResult.Equal Then
+                If clsCommon.myLen(txtewbno.Value) > 0 AndAlso clsCommon.CompairString(cmbExtendValidityReason.SelectedValue, "") <> CompairStringResult.Equal Then
+                    Dim isewbno As Integer = clsCommon.myCdbl(clsDBFuncationality.getSingleValue("select count(EWBNO) from TSPL_EWAY_BILL_REPORT_DETAIL where EWBNO='" & txtewbno.Value & "' "))
+                    Dim strDocNo As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Document_Code from tspl_sd_sale_invoice_head where EWayBillNo='" & clsCommon.myCstr(txtewbno.Value) & "'", Nothing))
+                    If isewbno = 0 Then
+                        GetEwayBill(txtewbno.Value, False)
+                    Else
+                        Dim obj As New clsEwayBillReportHead()
+                        obj = clsEwayBillReportHead.GetData(txtewbno.Value)
+                        If obj IsNot Nothing AndAlso clsCommon.myLen(obj.ewbno) > 0 Then
+                            Dim objExtend As New clsEwayBillClose()
+                            Dim EwbExtendTimeValid As Int64 = 0
+                            EwbExtendTimeValid = clsCommon.myCdbl(clsDBFuncationality.getSingleValue(" Select  isnull (DATEDIFF(hour,EWayBillValidDate,GETDATE()),0) as validTill from tspl_sd_sale_invoice_head where  document_code = '" & strDocNo & "'"))
+                            If EwbExtendTimeValid >= 8 OrElse EwbExtendTimeValid < -8 Then
+                                Throw New Exception("The validity of EWB can be extended between 8 hours before expiry time and 8 hours after expiry time.")
+                            End If
+                            objExtend.ewbNo = clsCommon.myCdbl(obj.ewbno)
+                            objExtend.closureDate = clsCommon.myCstr(clsCommon.GetPrintDate(txtclsewb.Value, "dd/MM/yyyy"))
+                            objExtend.remarks = clsCommon.myCstr("Close the order")
+
+                            objResult = ClsEInvoiceOFAPIs.EWayBill_Close(objCommonVar.CurrentCompanyCode, objExtend, txtLocation.Value, Nothing)
+                            If objResult Is Nothing Then
+                                Throw New Exception("Close EWB Failed!")
+                            Else
+                                Dim ewayBillNo As String = objResult.SelectToken("data.ewayBillNo").ToString
+                                Dim CloseDate As String = objResult.SelectToken("data.ewbClosureDate").ToString
+                                Dim strUpdateQry As String = "update tspl_sd_sale_invoice_head set EWayBillCloseDate='" & clsCommon.GetPrintDate(clsCommon.myCDate(CloseDate), "dd/MMM/yyyy hh:mm tt") & "' where EWayBillNo='" & clsCommon.myCstr(ewayBillNo) & "'"
+                                clsDBFuncationality.ExecuteNonQuery(strUpdateQry)
+                                clsCommonFunctionality.SaveHistoryData(objCommonVar.CurrentUserCode, strDocNo, "TSPL_SD_SALE_INVOICE_HEAD", "Document_Code", "TSPL_SD_SALE_INVOICE_DETAIL", "Document_Code", Nothing)
+                                clsCommon.MyMessageBoxShow(Me, "Close EWB Successfully." & Environment.NewLine & objResult.SelectToken("data").ToString, Me.Text)
+                            End If
+                        End If
+                    End If
+                Else
+                    Throw New Exception("Please select ewb no.")
+                End If
             ElseIf clsCommon.CompairString(cmbEwaybillType.SelectedValue, "Error List") = CompairStringResult.Equal Then
                 Throw New Exception("This API endpoint is not currently available.")
             End If
@@ -596,6 +636,7 @@ where TSPL_EWAY_BILL_REPORT_DETAIL.ewbNo='" & strewbno & "' "
                 txtRemaningDistance.Enabled = False
                 cmbConsignmentStatus.Enabled = False
                 txtDate.Enabled = False
+                txtclsewb.Enabled = False
                 gv1.Visible = False
             ElseIf clsCommon.CompairString(cmbEwaybillType.SelectedValue, "Update Transpoter") = CompairStringResult.Equal Then
                 txtewbno.Enabled = True
@@ -606,6 +647,7 @@ where TSPL_EWAY_BILL_REPORT_DETAIL.ewbNo='" & strewbno & "' "
                 txtRemaningDistance.Enabled = False
                 cmbConsignmentStatus.Enabled = False
                 txtDate.Enabled = False
+                txtclsewb.Enabled = False
                 gv1.Visible = False
             ElseIf clsCommon.CompairString(cmbEwaybillType.SelectedValue, "Update PART-B") = CompairStringResult.Equal Then
                 txtewbno.Enabled = True
@@ -616,6 +658,7 @@ where TSPL_EWAY_BILL_REPORT_DETAIL.ewbNo='" & strewbno & "' "
                 txtRemaningDistance.Enabled = False
                 cmbConsignmentStatus.Enabled = False
                 txtDate.Enabled = False
+                txtclsewb.Enabled = False
                 gv1.Visible = False
             ElseIf clsCommon.CompairString(cmbEwaybillType.SelectedValue, "Cancel Eway Bill") = CompairStringResult.Equal Then
                 txtewbno.Enabled = True
@@ -626,6 +669,7 @@ where TSPL_EWAY_BILL_REPORT_DETAIL.ewbNo='" & strewbno & "' "
                 txtRemaningDistance.Enabled = False
                 cmbConsignmentStatus.Enabled = False
                 txtDate.Enabled = False
+                txtclsewb.Enabled = False
                 gv1.Visible = False
             ElseIf clsCommon.CompairString(cmbEwaybillType.SelectedValue, "Eway Bills By Date") = CompairStringResult.Equal Then
                 txtewbno.Enabled = False
@@ -636,6 +680,7 @@ where TSPL_EWAY_BILL_REPORT_DETAIL.ewbNo='" & strewbno & "' "
                 txtRemaningDistance.Enabled = False
                 cmbConsignmentStatus.Enabled = False
                 txtDate.Enabled = True
+                txtclsewb.Enabled = False
                 gv1.Visible = True
             ElseIf clsCommon.CompairString(cmbEwaybillType.SelectedValue, "Extend Validity of Eway Bill") = CompairStringResult.Equal Then
                 txtewbno.Enabled = True
@@ -646,6 +691,18 @@ where TSPL_EWAY_BILL_REPORT_DETAIL.ewbNo='" & strewbno & "' "
                 txtRemaningDistance.Enabled = True
                 cmbConsignmentStatus.Enabled = True
                 txtDate.Enabled = False
+                txtclsewb.Enabled = False
+                gv1.Visible = False
+            ElseIf clsCommon.CompairString(cmbEwaybillType.SelectedValue, "Close Eway Bill") = CompairStringResult.Equal Then
+                txtewbno.Enabled = True
+                txtTransID.Enabled = False
+                cmbReasonForUpdateVehicle.Enabled = False
+                cmbExtendValidityReason.Enabled = False
+                txtVehicleNo.Enabled = False
+                txtRemaningDistance.Enabled = False
+                cmbConsignmentStatus.Enabled = False
+                txtDate.Enabled = False
+                txtclsewb.Enabled = True
                 gv1.Visible = False
             ElseIf clsCommon.CompairString(cmbEwaybillType.SelectedValue, "Error List") = CompairStringResult.Equal Then
             End If

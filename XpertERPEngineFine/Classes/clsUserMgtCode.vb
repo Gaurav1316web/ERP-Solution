@@ -1,5 +1,6 @@
 ﻿Imports common
 Public Class clsUserMgtCode
+    Public Const frmGSTDocumentList As String = "GST-DOC-LST"
     Public Const frmNIRQCvsWetQc As String = "NIRQ_VS_W"
     Public Const frmUnionWiseDockEntryReport As String = "UNN-DE-RPT"
     Public Const FrmInActiveDCSReport As String = "UNN-IA-DC"
@@ -2385,6 +2386,7 @@ Public Class clsUserMgtCode
     'Public Const frmDispatchTransfer As String = "M-DIS-TRAN"
     Public Const frmPaymentProcessFarmer As String = "Pay-Pro-Fa"
     Public Const BMC_Transporter_Bill As String = "BMC-TRN-BLL"
+    Public Const frmTransporterPaymentProcess As String = "TRN-PAY-PRC"
     Public Const frmCattleFeedSalePurchaseUploader As String = "CF_S_PU_UPL"
     '===========================
     '--------------------------Reports-------------------------------------'

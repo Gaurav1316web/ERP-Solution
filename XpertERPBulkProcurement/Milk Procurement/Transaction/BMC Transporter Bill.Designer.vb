@@ -23,7 +23,7 @@ Partial Class BMC_Transporter_Bill
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim TableViewDefinition3 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition1 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
         Me.RadPageViewPage1 = New Telerik.WinControls.UI.RadPageViewPage()
@@ -87,10 +87,52 @@ Partial Class BMC_Transporter_Bill
         Me.txtTankerNo = New common.UserControls.txtFinder()
         Me.RadLabel1 = New common.Controls.MyLabel()
         Me.txtDocNo = New common.UserControls.txtNavigator()
-        Me.btnAddNew = New Telerik.WinControls.UI.RadButton()
+        Me.RadPageViewPage2 = New Telerik.WinControls.UI.RadPageViewPage()
+        Me.NACCOEPF_PER = New common.Controls.MyLabel()
+        Me.NEMPEPF_PER = New common.Controls.MyLabel()
+        Me.NCOESI_PER = New common.Controls.MyLabel()
+        Me.NEMPESI_PER = New common.Controls.MyLabel()
+        Me.NTotalPF = New common.Controls.MyLabel()
+        Me.NTotalESI = New common.Controls.MyLabel()
+        Me.NESIEmployer = New common.Controls.MyLabel()
+        Me.NESIEmployee = New common.Controls.MyLabel()
+        Me.NEDLICharge = New common.Controls.MyLabel()
+        Me.NAdmincharge = New common.Controls.MyLabel()
+        Me.NemployerPF = New common.Controls.MyLabel()
+        Me.NempPF = New common.Controls.MyLabel()
+        Me.NLabourCharge = New common.Controls.MyLabel()
+        Me.NDailyWage = New common.Controls.MyLabel()
+        Me.MyLabel70 = New common.Controls.MyLabel()
+        Me.MyLabel69 = New common.Controls.MyLabel()
+        Me.MyLabel68 = New common.Controls.MyLabel()
+        Me.MyLabel67 = New common.Controls.MyLabel()
+        Me.MyLabel66 = New common.Controls.MyLabel()
+        Me.MyLabel65 = New common.Controls.MyLabel()
+        Me.MyLabel61 = New common.Controls.MyLabel()
+        Me.MyLabel60 = New common.Controls.MyLabel()
+        Me.MyLabel59 = New common.Controls.MyLabel()
+        Me.MyLabel58 = New common.Controls.MyLabel()
+        Me.MyLabel57 = New common.Controls.MyLabel()
+        Me.MyLabel56 = New common.Controls.MyLabel()
+        Me.MyLabel55 = New common.Controls.MyLabel()
+        Me.MyLabel54 = New common.Controls.MyLabel()
+        Me.MyLabel53 = New common.Controls.MyLabel()
+        Me.MyLabel52 = New common.Controls.MyLabel()
+        Me.MyLabel51 = New common.Controls.MyLabel()
+        Me.MyLabel50 = New common.Controls.MyLabel()
+        Me.MyLabel49 = New common.Controls.MyLabel()
+        Me.MyLabel48 = New common.Controls.MyLabel()
+        Me.MyLabel37 = New common.Controls.MyLabel()
+        Me.MyLabel36 = New common.Controls.MyLabel()
         Me.RadPageViewPage4 = New Telerik.WinControls.UI.RadPageViewPage()
-        Me.MyLabel39 = New common.Controls.MyLabel()
+        Me.TotalESIAmt = New common.Controls.MyLabel()
+        Me.TotalEPFAmt = New common.Controls.MyLabel()
+        Me.MyLabel64 = New common.Controls.MyLabel()
         Me.MyLabel38 = New common.Controls.MyLabel()
+        Me.TxtTotalDeduction = New common.Controls.MyTextBox()
+        Me.TxtTotalAddition = New common.Controls.MyTextBox()
+        Me.MyLabel39 = New common.Controls.MyLabel()
+        Me.MyLabel63 = New common.Controls.MyLabel()
         Me.MyLabel47 = New common.Controls.MyLabel()
         Me.MyLabel46 = New common.Controls.MyLabel()
         Me.MyLabel45 = New common.Controls.MyLabel()
@@ -113,6 +155,7 @@ Partial Class BMC_Transporter_Bill
         Me.TxtBMCProrataamt = New common.Controls.MyLabel()
         Me.MyLabel27 = New common.Controls.MyLabel()
         Me.MyLabel26 = New common.Controls.MyLabel()
+        Me.MyLabel62 = New common.Controls.MyLabel()
         Me.MyLabel25 = New common.Controls.MyLabel()
         Me.MyLabel24 = New common.Controls.MyLabel()
         Me.MyLabel23 = New common.Controls.MyLabel()
@@ -151,8 +194,7 @@ Partial Class BMC_Transporter_Bill
         Me.btnDelete = New Telerik.WinControls.UI.RadButton()
         Me.btnPost = New Telerik.WinControls.UI.RadButton()
         Me.btnSave = New Telerik.WinControls.UI.RadButton()
-        Me.TxtTotalAddition = New common.Controls.MyTextBox()
-        Me.TxtTotalDeduction = New common.Controls.MyTextBox()
+        Me.btnAddNew = New Telerik.WinControls.UI.RadButton()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -217,10 +259,52 @@ Partial Class BMC_Transporter_Bill
         CType(Me.lblAbandonmentNo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.lblTankerNo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RadLabel1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.btnAddNew, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.RadPageViewPage2.SuspendLayout()
+        CType(Me.NACCOEPF_PER, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NEMPEPF_PER, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NCOESI_PER, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NEMPESI_PER, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NTotalPF, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NTotalESI, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NESIEmployer, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NESIEmployee, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NEDLICharge, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NAdmincharge, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NemployerPF, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NempPF, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NLabourCharge, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.NDailyWage, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel70, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel69, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel68, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel67, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel66, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel65, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel61, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel60, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel59, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel58, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel57, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel56, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel55, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel54, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel53, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel52, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel51, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel50, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel49, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel48, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel37, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel36, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RadPageViewPage4.SuspendLayout()
-        CType(Me.MyLabel39, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TotalESIAmt, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TotalEPFAmt, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel64, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel38, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TxtTotalDeduction, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.TxtTotalAddition, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel39, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel63, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel47, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel46, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel45, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -243,6 +327,7 @@ Partial Class BMC_Transporter_Bill
         CType(Me.TxtBMCProrataamt, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel27, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel26, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.MyLabel62, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel25, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel24, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.MyLabel23, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -277,8 +362,7 @@ Partial Class BMC_Transporter_Bill
         CType(Me.btnDelete, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnPost, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnSave, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TxtTotalAddition, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.TxtTotalDeduction, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.btnAddNew, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -310,6 +394,7 @@ Partial Class BMC_Transporter_Bill
         'RadPageView1
         '
         Me.RadPageView1.Controls.Add(Me.RadPageViewPage1)
+        Me.RadPageView1.Controls.Add(Me.RadPageViewPage2)
         Me.RadPageView1.Controls.Add(Me.RadPageViewPage4)
         Me.RadPageView1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.RadPageView1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -346,10 +431,10 @@ Partial Class BMC_Transporter_Bill
         Me.RadPageViewPage1.Controls.Add(Me.txtDocNo)
         Me.RadPageViewPage1.Controls.Add(Me.btnAddNew)
         Me.RadPageViewPage1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RadPageViewPage1.ItemSize = New System.Drawing.SizeF(93.0!, 26.0!)
-        Me.RadPageViewPage1.Location = New System.Drawing.Point(10, 35)
+        Me.RadPageViewPage1.ItemSize = New System.Drawing.SizeF(89.0!, 22.0!)
+        Me.RadPageViewPage1.Location = New System.Drawing.Point(10, 31)
         Me.RadPageViewPage1.Name = "RadPageViewPage1"
-        Me.RadPageViewPage1.Size = New System.Drawing.Size(779, 359)
+        Me.RadPageViewPage1.Size = New System.Drawing.Size(779, 363)
         Me.RadPageViewPage1.Text = "Transporter Bill"
         '
         'RadLabel6
@@ -1173,7 +1258,7 @@ Partial Class BMC_Transporter_Bill
         Me.RadGroupBox2.Location = New System.Drawing.Point(2, 220)
         Me.RadGroupBox2.Name = "RadGroupBox2"
         Me.RadGroupBox2.Padding = New System.Windows.Forms.Padding(10, 20, 10, 10)
-        Me.RadGroupBox2.Size = New System.Drawing.Size(764, 136)
+        Me.RadGroupBox2.Size = New System.Drawing.Size(764, 140)
         Me.RadGroupBox2.TabIndex = 28
         Me.RadGroupBox2.Text = "BMC Details"
         '
@@ -1192,7 +1277,7 @@ Partial Class BMC_Transporter_Bill
         Me.gv1.MasterTemplate.AllowDeleteRow = False
         Me.gv1.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gv1.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gv1.MasterTemplate.ViewDefinition = TableViewDefinition3
+        Me.gv1.MasterTemplate.ViewDefinition = TableViewDefinition1
         Me.gv1.MyExportAPI = False
         Me.gv1.MyExportFilePath = ""
         Me.gv1.MyStopExport = False
@@ -1200,7 +1285,7 @@ Partial Class BMC_Transporter_Bill
         Me.gv1.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.gv1.ShowGroupPanel = False
         Me.gv1.ShowHeaderCellButtons = True
-        Me.gv1.Size = New System.Drawing.Size(744, 106)
+        Me.gv1.Size = New System.Drawing.Size(744, 110)
         Me.gv1.TabIndex = 17
         Me.gv1.TabStop = False
         Me.gv1.VarID = ""
@@ -1360,22 +1445,460 @@ Partial Class BMC_Transporter_Bill
         Me.txtDocNo.TabStop = False
         Me.txtDocNo.Value = ""
         '
-        'btnAddNew
+        'RadPageViewPage2
         '
-        Me.btnAddNew.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnAddNew.Image = Global.XpertERPBulkProcurement.My.Resources.Resources._new
-        Me.btnAddNew.ImageAlignment = System.Drawing.ContentAlignment.MiddleCenter
-        Me.btnAddNew.Location = New System.Drawing.Point(376, 1)
-        Me.btnAddNew.Name = "btnAddNew"
-        Me.btnAddNew.Size = New System.Drawing.Size(20, 22)
-        Me.btnAddNew.TabIndex = 1
+        Me.RadPageViewPage2.Controls.Add(Me.NACCOEPF_PER)
+        Me.RadPageViewPage2.Controls.Add(Me.NEMPEPF_PER)
+        Me.RadPageViewPage2.Controls.Add(Me.NCOESI_PER)
+        Me.RadPageViewPage2.Controls.Add(Me.NEMPESI_PER)
+        Me.RadPageViewPage2.Controls.Add(Me.NTotalPF)
+        Me.RadPageViewPage2.Controls.Add(Me.NTotalESI)
+        Me.RadPageViewPage2.Controls.Add(Me.NESIEmployer)
+        Me.RadPageViewPage2.Controls.Add(Me.NESIEmployee)
+        Me.RadPageViewPage2.Controls.Add(Me.NEDLICharge)
+        Me.RadPageViewPage2.Controls.Add(Me.NAdmincharge)
+        Me.RadPageViewPage2.Controls.Add(Me.NemployerPF)
+        Me.RadPageViewPage2.Controls.Add(Me.NempPF)
+        Me.RadPageViewPage2.Controls.Add(Me.NLabourCharge)
+        Me.RadPageViewPage2.Controls.Add(Me.NDailyWage)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel70)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel69)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel68)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel67)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel66)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel65)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel61)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel60)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel59)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel58)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel57)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel56)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel55)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel54)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel53)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel52)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel51)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel50)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel49)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel48)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel37)
+        Me.RadPageViewPage2.Controls.Add(Me.MyLabel36)
+        Me.RadPageViewPage2.ItemSize = New System.Drawing.SizeF(102.0!, 22.0!)
+        Me.RadPageViewPage2.Location = New System.Drawing.Point(10, 31)
+        Me.RadPageViewPage2.Name = "RadPageViewPage2"
+        Me.RadPageViewPage2.Size = New System.Drawing.Size(779, 363)
+        Me.RadPageViewPage2.Text = "PF/ESI Deduction"
+        '
+        'NACCOEPF_PER
+        '
+        Me.NACCOEPF_PER.AutoSize = False
+        Me.NACCOEPF_PER.BorderVisible = True
+        Me.NACCOEPF_PER.FieldName = Nothing
+        Me.NACCOEPF_PER.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NACCOEPF_PER.Location = New System.Drawing.Point(217, 119)
+        Me.NACCOEPF_PER.Name = "NACCOEPF_PER"
+        Me.NACCOEPF_PER.Size = New System.Drawing.Size(77, 18)
+        Me.NACCOEPF_PER.TabIndex = 178
+        Me.NACCOEPF_PER.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NEMPEPF_PER
+        '
+        Me.NEMPEPF_PER.AutoSize = False
+        Me.NEMPEPF_PER.BorderVisible = True
+        Me.NEMPEPF_PER.FieldName = Nothing
+        Me.NEMPEPF_PER.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NEMPEPF_PER.Location = New System.Drawing.Point(217, 75)
+        Me.NEMPEPF_PER.Name = "NEMPEPF_PER"
+        Me.NEMPEPF_PER.Size = New System.Drawing.Size(77, 18)
+        Me.NEMPEPF_PER.TabIndex = 177
+        Me.NEMPEPF_PER.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NCOESI_PER
+        '
+        Me.NCOESI_PER.AutoSize = False
+        Me.NCOESI_PER.BorderVisible = True
+        Me.NCOESI_PER.FieldName = Nothing
+        Me.NCOESI_PER.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NCOESI_PER.Location = New System.Drawing.Point(217, 215)
+        Me.NCOESI_PER.Name = "NCOESI_PER"
+        Me.NCOESI_PER.Size = New System.Drawing.Size(77, 18)
+        Me.NCOESI_PER.TabIndex = 176
+        Me.NCOESI_PER.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NEMPESI_PER
+        '
+        Me.NEMPESI_PER.AutoSize = False
+        Me.NEMPESI_PER.BorderVisible = True
+        Me.NEMPESI_PER.FieldName = Nothing
+        Me.NEMPESI_PER.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NEMPESI_PER.Location = New System.Drawing.Point(217, 189)
+        Me.NEMPESI_PER.Name = "NEMPESI_PER"
+        Me.NEMPESI_PER.Size = New System.Drawing.Size(77, 18)
+        Me.NEMPESI_PER.TabIndex = 175
+        Me.NEMPESI_PER.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NTotalPF
+        '
+        Me.NTotalPF.AutoSize = False
+        Me.NTotalPF.BorderVisible = True
+        Me.NTotalPF.FieldName = Nothing
+        Me.NTotalPF.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NTotalPF.Location = New System.Drawing.Point(134, 166)
+        Me.NTotalPF.Name = "NTotalPF"
+        Me.NTotalPF.Size = New System.Drawing.Size(77, 18)
+        Me.NTotalPF.TabIndex = 174
+        Me.NTotalPF.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NTotalESI
+        '
+        Me.NTotalESI.AutoSize = False
+        Me.NTotalESI.BorderVisible = True
+        Me.NTotalESI.FieldName = Nothing
+        Me.NTotalESI.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NTotalESI.Location = New System.Drawing.Point(134, 239)
+        Me.NTotalESI.Name = "NTotalESI"
+        Me.NTotalESI.Size = New System.Drawing.Size(77, 18)
+        Me.NTotalESI.TabIndex = 173
+        Me.NTotalESI.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NESIEmployer
+        '
+        Me.NESIEmployer.AutoSize = False
+        Me.NESIEmployer.BorderVisible = True
+        Me.NESIEmployer.FieldName = Nothing
+        Me.NESIEmployer.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NESIEmployer.Location = New System.Drawing.Point(134, 215)
+        Me.NESIEmployer.Name = "NESIEmployer"
+        Me.NESIEmployer.Size = New System.Drawing.Size(77, 18)
+        Me.NESIEmployer.TabIndex = 169
+        Me.NESIEmployer.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NESIEmployee
+        '
+        Me.NESIEmployee.AutoSize = False
+        Me.NESIEmployee.BorderVisible = True
+        Me.NESIEmployee.FieldName = Nothing
+        Me.NESIEmployee.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NESIEmployee.Location = New System.Drawing.Point(134, 189)
+        Me.NESIEmployee.Name = "NESIEmployee"
+        Me.NESIEmployee.Size = New System.Drawing.Size(77, 18)
+        Me.NESIEmployee.TabIndex = 172
+        Me.NESIEmployee.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NEDLICharge
+        '
+        Me.NEDLICharge.AutoSize = False
+        Me.NEDLICharge.BorderVisible = True
+        Me.NEDLICharge.FieldName = Nothing
+        Me.NEDLICharge.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NEDLICharge.Location = New System.Drawing.Point(134, 142)
+        Me.NEDLICharge.Name = "NEDLICharge"
+        Me.NEDLICharge.Size = New System.Drawing.Size(77, 18)
+        Me.NEDLICharge.TabIndex = 171
+        Me.NEDLICharge.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NAdmincharge
+        '
+        Me.NAdmincharge.AutoSize = False
+        Me.NAdmincharge.BorderVisible = True
+        Me.NAdmincharge.FieldName = Nothing
+        Me.NAdmincharge.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NAdmincharge.Location = New System.Drawing.Point(134, 119)
+        Me.NAdmincharge.Name = "NAdmincharge"
+        Me.NAdmincharge.Size = New System.Drawing.Size(77, 18)
+        Me.NAdmincharge.TabIndex = 170
+        Me.NAdmincharge.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NemployerPF
+        '
+        Me.NemployerPF.AutoSize = False
+        Me.NemployerPF.BorderVisible = True
+        Me.NemployerPF.FieldName = Nothing
+        Me.NemployerPF.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NemployerPF.Location = New System.Drawing.Point(134, 97)
+        Me.NemployerPF.Name = "NemployerPF"
+        Me.NemployerPF.Size = New System.Drawing.Size(77, 18)
+        Me.NemployerPF.TabIndex = 169
+        Me.NemployerPF.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NempPF
+        '
+        Me.NempPF.AutoSize = False
+        Me.NempPF.BorderVisible = True
+        Me.NempPF.FieldName = Nothing
+        Me.NempPF.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NempPF.Location = New System.Drawing.Point(134, 75)
+        Me.NempPF.Name = "NempPF"
+        Me.NempPF.Size = New System.Drawing.Size(77, 18)
+        Me.NempPF.TabIndex = 168
+        Me.NempPF.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NLabourCharge
+        '
+        Me.NLabourCharge.AutoSize = False
+        Me.NLabourCharge.BorderVisible = True
+        Me.NLabourCharge.FieldName = Nothing
+        Me.NLabourCharge.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NLabourCharge.Location = New System.Drawing.Point(134, 54)
+        Me.NLabourCharge.Name = "NLabourCharge"
+        Me.NLabourCharge.Size = New System.Drawing.Size(77, 18)
+        Me.NLabourCharge.TabIndex = 167
+        Me.NLabourCharge.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'NDailyWage
+        '
+        Me.NDailyWage.AutoSize = False
+        Me.NDailyWage.BorderVisible = True
+        Me.NDailyWage.FieldName = Nothing
+        Me.NDailyWage.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NDailyWage.Location = New System.Drawing.Point(134, 32)
+        Me.NDailyWage.Name = "NDailyWage"
+        Me.NDailyWage.Size = New System.Drawing.Size(77, 18)
+        Me.NDailyWage.TabIndex = 166
+        Me.NDailyWage.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'MyLabel70
+        '
+        Me.MyLabel70.FieldName = Nothing
+        Me.MyLabel70.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel70.Location = New System.Drawing.Point(13, 101)
+        Me.MyLabel70.Name = "MyLabel70"
+        Me.MyLabel70.Size = New System.Drawing.Size(102, 16)
+        Me.MyLabel70.TabIndex = 139
+        Me.MyLabel70.Text = "Employer PF(CPF)"
+        '
+        'MyLabel69
+        '
+        Me.MyLabel69.FieldName = Nothing
+        Me.MyLabel69.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel69.Location = New System.Drawing.Point(441, 152)
+        Me.MyLabel69.Name = "MyLabel69"
+        Me.MyLabel69.Size = New System.Drawing.Size(91, 16)
+        Me.MyLabel69.TabIndex = 136
+        Me.MyLabel69.Text = "ACCOEPF_PER"
+        Me.MyLabel69.Visible = False
+        '
+        'MyLabel68
+        '
+        Me.MyLabel68.FieldName = Nothing
+        Me.MyLabel68.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel68.Location = New System.Drawing.Point(441, 128)
+        Me.MyLabel68.Name = "MyLabel68"
+        Me.MyLabel68.Size = New System.Drawing.Size(82, 16)
+        Me.MyLabel68.TabIndex = 134
+        Me.MyLabel68.Text = "EMPEPF_PER"
+        Me.MyLabel68.Visible = False
+        '
+        'MyLabel67
+        '
+        Me.MyLabel67.FieldName = Nothing
+        Me.MyLabel67.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel67.Location = New System.Drawing.Point(538, 34)
+        Me.MyLabel67.Name = "MyLabel67"
+        Me.MyLabel67.Size = New System.Drawing.Size(79, 16)
+        Me.MyLabel67.TabIndex = 132
+        Me.MyLabel67.Text = "EMPESI_PER"
+        Me.MyLabel67.Visible = False
+        '
+        'MyLabel66
+        '
+        Me.MyLabel66.FieldName = Nothing
+        Me.MyLabel66.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel66.Location = New System.Drawing.Point(538, 18)
+        Me.MyLabel66.Name = "MyLabel66"
+        Me.MyLabel66.Size = New System.Drawing.Size(71, 16)
+        Me.MyLabel66.TabIndex = 130
+        Me.MyLabel66.Text = "COESI_PER"
+        Me.MyLabel66.Visible = False
+        '
+        'MyLabel65
+        '
+        Me.MyLabel65.FieldName = Nothing
+        Me.MyLabel65.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel65.Location = New System.Drawing.Point(14, 32)
+        Me.MyLabel65.Name = "MyLabel65"
+        Me.MyLabel65.Size = New System.Drawing.Size(64, 16)
+        Me.MyLabel65.TabIndex = 128
+        Me.MyLabel65.Text = "Daily Wage"
+        '
+        'MyLabel61
+        '
+        Me.MyLabel61.FieldName = Nothing
+        Me.MyLabel61.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel61.Location = New System.Drawing.Point(321, 215)
+        Me.MyLabel61.Name = "MyLabel61"
+        Me.MyLabel61.Size = New System.Drawing.Size(160, 16)
+        Me.MyLabel61.TabIndex = 127
+        Me.MyLabel61.Text = "ESI Employee + ESI Employer"
+        Me.MyLabel61.Visible = False
+        '
+        'MyLabel60
+        '
+        Me.MyLabel60.FieldName = Nothing
+        Me.MyLabel60.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel60.Location = New System.Drawing.Point(321, 192)
+        Me.MyLabel60.Name = "MyLabel60"
+        Me.MyLabel60.Size = New System.Drawing.Size(86, 16)
+        Me.MyLabel60.TabIndex = 126
+        Me.MyLabel60.Text = "Labour × 3.25%"
+        Me.MyLabel60.Visible = False
+        '
+        'MyLabel59
+        '
+        Me.MyLabel59.FieldName = Nothing
+        Me.MyLabel59.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel59.Location = New System.Drawing.Point(321, 169)
+        Me.MyLabel59.Name = "MyLabel59"
+        Me.MyLabel59.Size = New System.Drawing.Size(86, 16)
+        Me.MyLabel59.TabIndex = 125
+        Me.MyLabel59.Text = "Labour × 0.75%"
+        Me.MyLabel59.Visible = False
+        '
+        'MyLabel58
+        '
+        Me.MyLabel58.FieldName = Nothing
+        Me.MyLabel58.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel58.Location = New System.Drawing.Point(529, 144)
+        Me.MyLabel58.Name = "MyLabel58"
+        Me.MyLabel58.Size = New System.Drawing.Size(236, 16)
+        Me.MyLabel58.TabIndex = 124
+        Me.MyLabel58.Text = "Employee PF + Employer PF + Admin + EDLI"
+        Me.MyLabel58.Visible = False
+        '
+        'MyLabel57
+        '
+        Me.MyLabel57.FieldName = Nothing
+        Me.MyLabel57.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel57.Location = New System.Drawing.Point(529, 121)
+        Me.MyLabel57.Name = "MyLabel57"
+        Me.MyLabel57.Size = New System.Drawing.Size(80, 16)
+        Me.MyLabel57.TabIndex = 123
+        Me.MyLabel57.Text = "Labour × 0.5%"
+        Me.MyLabel57.Visible = False
+        '
+        'MyLabel56
+        '
+        Me.MyLabel56.FieldName = Nothing
+        Me.MyLabel56.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel56.Location = New System.Drawing.Point(529, 98)
+        Me.MyLabel56.Name = "MyLabel56"
+        Me.MyLabel56.Size = New System.Drawing.Size(80, 16)
+        Me.MyLabel56.TabIndex = 122
+        Me.MyLabel56.Text = "Labour × 0.5%"
+        Me.MyLabel56.Visible = False
+        '
+        'MyLabel55
+        '
+        Me.MyLabel55.FieldName = Nothing
+        Me.MyLabel55.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel55.Location = New System.Drawing.Point(529, 75)
+        Me.MyLabel55.Name = "MyLabel55"
+        Me.MyLabel55.Size = New System.Drawing.Size(165, 16)
+        Me.MyLabel55.TabIndex = 107
+        Me.MyLabel55.Text = "Labour × 12% (or applicable %)"
+        Me.MyLabel55.Visible = False
+        '
+        'MyLabel54
+        '
+        Me.MyLabel54.FieldName = Nothing
+        Me.MyLabel54.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel54.Location = New System.Drawing.Point(529, 52)
+        Me.MyLabel54.Name = "MyLabel54"
+        Me.MyLabel54.Size = New System.Drawing.Size(136, 16)
+        Me.MyLabel54.TabIndex = 121
+        Me.MyLabel54.Text = "No. of Days × Daily Wage"
+        Me.MyLabel54.Visible = False
+        '
+        'MyLabel53
+        '
+        Me.MyLabel53.FieldName = Nothing
+        Me.MyLabel53.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel53.Location = New System.Drawing.Point(14, 238)
+        Me.MyLabel53.Name = "MyLabel53"
+        Me.MyLabel53.Size = New System.Drawing.Size(53, 16)
+        Me.MyLabel53.TabIndex = 120
+        Me.MyLabel53.Text = "Total ESI"
+        '
+        'MyLabel52
+        '
+        Me.MyLabel52.FieldName = Nothing
+        Me.MyLabel52.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel52.Location = New System.Drawing.Point(13, 215)
+        Me.MyLabel52.Name = "MyLabel52"
+        Me.MyLabel52.Size = New System.Drawing.Size(75, 16)
+        Me.MyLabel52.TabIndex = 118
+        Me.MyLabel52.Text = "ESI Employer"
+        '
+        'MyLabel51
+        '
+        Me.MyLabel51.FieldName = Nothing
+        Me.MyLabel51.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel51.Location = New System.Drawing.Point(13, 192)
+        Me.MyLabel51.Name = "MyLabel51"
+        Me.MyLabel51.Size = New System.Drawing.Size(78, 16)
+        Me.MyLabel51.TabIndex = 116
+        Me.MyLabel51.Text = "ESI Employee"
+        '
+        'MyLabel50
+        '
+        Me.MyLabel50.FieldName = Nothing
+        Me.MyLabel50.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel50.Location = New System.Drawing.Point(13, 169)
+        Me.MyLabel50.Name = "MyLabel50"
+        Me.MyLabel50.Size = New System.Drawing.Size(49, 16)
+        Me.MyLabel50.TabIndex = 114
+        Me.MyLabel50.Text = "Total PF"
+        '
+        'MyLabel49
+        '
+        Me.MyLabel49.FieldName = Nothing
+        Me.MyLabel49.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel49.Location = New System.Drawing.Point(13, 146)
+        Me.MyLabel49.Name = "MyLabel49"
+        Me.MyLabel49.Size = New System.Drawing.Size(77, 16)
+        Me.MyLabel49.TabIndex = 112
+        Me.MyLabel49.Text = "EDLI Charges"
+        '
+        'MyLabel48
+        '
+        Me.MyLabel48.FieldName = Nothing
+        Me.MyLabel48.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel48.Location = New System.Drawing.Point(13, 123)
+        Me.MyLabel48.Name = "MyLabel48"
+        Me.MyLabel48.Size = New System.Drawing.Size(84, 16)
+        Me.MyLabel48.TabIndex = 110
+        Me.MyLabel48.Text = "Admin Charges"
+        '
+        'MyLabel37
+        '
+        Me.MyLabel37.FieldName = Nothing
+        Me.MyLabel37.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel37.Location = New System.Drawing.Point(13, 77)
+        Me.MyLabel37.Name = "MyLabel37"
+        Me.MyLabel37.Size = New System.Drawing.Size(104, 16)
+        Me.MyLabel37.TabIndex = 108
+        Me.MyLabel37.Text = "Employee PF(CPF)"
+        '
+        'MyLabel36
+        '
+        Me.MyLabel36.FieldName = Nothing
+        Me.MyLabel36.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel36.Location = New System.Drawing.Point(13, 54)
+        Me.MyLabel36.Name = "MyLabel36"
+        Me.MyLabel36.Size = New System.Drawing.Size(84, 16)
+        Me.MyLabel36.TabIndex = 106
+        Me.MyLabel36.Text = "Labour Amount"
         '
         'RadPageViewPage4
         '
+        Me.RadPageViewPage4.Controls.Add(Me.TotalESIAmt)
+        Me.RadPageViewPage4.Controls.Add(Me.TotalEPFAmt)
+        Me.RadPageViewPage4.Controls.Add(Me.MyLabel64)
+        Me.RadPageViewPage4.Controls.Add(Me.MyLabel38)
         Me.RadPageViewPage4.Controls.Add(Me.TxtTotalDeduction)
         Me.RadPageViewPage4.Controls.Add(Me.TxtTotalAddition)
         Me.RadPageViewPage4.Controls.Add(Me.MyLabel39)
-        Me.RadPageViewPage4.Controls.Add(Me.MyLabel38)
+        Me.RadPageViewPage4.Controls.Add(Me.MyLabel63)
         Me.RadPageViewPage4.Controls.Add(Me.MyLabel47)
         Me.RadPageViewPage4.Controls.Add(Me.MyLabel46)
         Me.RadPageViewPage4.Controls.Add(Me.MyLabel45)
@@ -1398,6 +1921,7 @@ Partial Class BMC_Transporter_Bill
         Me.RadPageViewPage4.Controls.Add(Me.TxtBMCProrataamt)
         Me.RadPageViewPage4.Controls.Add(Me.MyLabel27)
         Me.RadPageViewPage4.Controls.Add(Me.MyLabel26)
+        Me.RadPageViewPage4.Controls.Add(Me.MyLabel62)
         Me.RadPageViewPage4.Controls.Add(Me.MyLabel25)
         Me.RadPageViewPage4.Controls.Add(Me.MyLabel24)
         Me.RadPageViewPage4.Controls.Add(Me.MyLabel23)
@@ -1425,31 +1949,121 @@ Partial Class BMC_Transporter_Bill
         Me.RadPageViewPage4.Controls.Add(Me.RadLabel22)
         Me.RadPageViewPage4.Controls.Add(Me.RadLabel19)
         Me.RadPageViewPage4.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RadPageViewPage4.ItemSize = New System.Drawing.SizeF(41.0!, 26.0!)
+        Me.RadPageViewPage4.ItemSize = New System.Drawing.SizeF(37.0!, 22.0!)
         Me.RadPageViewPage4.Location = New System.Drawing.Point(10, 35)
         Me.RadPageViewPage4.Name = "RadPageViewPage4"
         Me.RadPageViewPage4.Size = New System.Drawing.Size(779, 359)
         Me.RadPageViewPage4.Text = "Total"
         '
-        'MyLabel39
+        'TotalESIAmt
         '
-        Me.MyLabel39.FieldName = Nothing
-        Me.MyLabel39.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel39.Location = New System.Drawing.Point(35, 301)
-        Me.MyLabel39.Name = "MyLabel39"
-        Me.MyLabel39.Size = New System.Drawing.Size(113, 16)
-        Me.MyLabel39.TabIndex = 164
-        Me.MyLabel39.Text = "TOTAL DEDUCTION"
+        Me.TotalESIAmt.AutoSize = False
+        Me.TotalESIAmt.BorderVisible = True
+        Me.TotalESIAmt.FieldName = Nothing
+        Me.TotalESIAmt.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TotalESIAmt.Location = New System.Drawing.Point(326, 315)
+        Me.TotalESIAmt.Name = "TotalESIAmt"
+        Me.TotalESIAmt.Size = New System.Drawing.Size(77, 18)
+        Me.TotalESIAmt.TabIndex = 1546
+        Me.TotalESIAmt.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'TotalEPFAmt
+        '
+        Me.TotalEPFAmt.AutoSize = False
+        Me.TotalEPFAmt.BorderVisible = True
+        Me.TotalEPFAmt.FieldName = Nothing
+        Me.TotalEPFAmt.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TotalEPFAmt.Location = New System.Drawing.Point(326, 293)
+        Me.TotalEPFAmt.Name = "TotalEPFAmt"
+        Me.TotalEPFAmt.Size = New System.Drawing.Size(77, 18)
+        Me.TotalEPFAmt.TabIndex = 1545
+        Me.TotalEPFAmt.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'MyLabel64
+        '
+        Me.MyLabel64.FieldName = Nothing
+        Me.MyLabel64.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel64.Location = New System.Drawing.Point(35, 315)
+        Me.MyLabel64.Name = "MyLabel64"
+        Me.MyLabel64.Size = New System.Drawing.Size(64, 16)
+        Me.MyLabel64.TabIndex = 1544
+        Me.MyLabel64.Text = "TOTAL ESI"
         '
         'MyLabel38
         '
         Me.MyLabel38.FieldName = Nothing
         Me.MyLabel38.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel38.Location = New System.Drawing.Point(35, 279)
+        Me.MyLabel38.Location = New System.Drawing.Point(35, 293)
         Me.MyLabel38.Name = "MyLabel38"
-        Me.MyLabel38.Size = New System.Drawing.Size(100, 16)
-        Me.MyLabel38.TabIndex = 183
-        Me.MyLabel38.Text = "TOTAL ADDITION"
+        Me.MyLabel38.Size = New System.Drawing.Size(68, 16)
+        Me.MyLabel38.TabIndex = 1543
+        Me.MyLabel38.Text = "TOTAL EPF"
+        '
+        'TxtTotalDeduction
+        '
+        Me.TxtTotalDeduction.CalculationExpression = Nothing
+        Me.TxtTotalDeduction.FieldCode = Nothing
+        Me.TxtTotalDeduction.FieldDesc = Nothing
+        Me.TxtTotalDeduction.FieldMaxLength = 0
+        Me.TxtTotalDeduction.FieldName = Nothing
+        Me.TxtTotalDeduction.isCalculatedField = False
+        Me.TxtTotalDeduction.IsSourceFromTable = False
+        Me.TxtTotalDeduction.IsSourceFromValueList = False
+        Me.TxtTotalDeduction.IsUnique = False
+        Me.TxtTotalDeduction.Location = New System.Drawing.Point(326, 269)
+        Me.TxtTotalDeduction.MendatroryField = False
+        Me.TxtTotalDeduction.MyLinkLable1 = Nothing
+        Me.TxtTotalDeduction.MyLinkLable2 = Nothing
+        Me.TxtTotalDeduction.Name = "TxtTotalDeduction"
+        Me.TxtTotalDeduction.ReferenceFieldDesc = Nothing
+        Me.TxtTotalDeduction.ReferenceFieldName = Nothing
+        Me.TxtTotalDeduction.ReferenceTableName = Nothing
+        Me.TxtTotalDeduction.Size = New System.Drawing.Size(77, 20)
+        Me.TxtTotalDeduction.TabIndex = 1541
+        Me.TxtTotalDeduction.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'TxtTotalAddition
+        '
+        Me.TxtTotalAddition.CalculationExpression = Nothing
+        Me.TxtTotalAddition.FieldCode = Nothing
+        Me.TxtTotalAddition.FieldDesc = Nothing
+        Me.TxtTotalAddition.FieldMaxLength = 0
+        Me.TxtTotalAddition.FieldName = Nothing
+        Me.TxtTotalAddition.isCalculatedField = False
+        Me.TxtTotalAddition.IsSourceFromTable = False
+        Me.TxtTotalAddition.IsSourceFromValueList = False
+        Me.TxtTotalAddition.IsUnique = False
+        Me.TxtTotalAddition.Location = New System.Drawing.Point(326, 247)
+        Me.TxtTotalAddition.MendatroryField = False
+        Me.TxtTotalAddition.MyLinkLable1 = Nothing
+        Me.TxtTotalAddition.MyLinkLable2 = Nothing
+        Me.TxtTotalAddition.Name = "TxtTotalAddition"
+        Me.TxtTotalAddition.ReferenceFieldDesc = Nothing
+        Me.TxtTotalAddition.ReferenceFieldName = Nothing
+        Me.TxtTotalAddition.ReferenceTableName = Nothing
+        Me.TxtTotalAddition.Size = New System.Drawing.Size(77, 20)
+        Me.TxtTotalAddition.TabIndex = 1540
+        Me.TxtTotalAddition.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        '
+        'MyLabel39
+        '
+        Me.MyLabel39.FieldName = Nothing
+        Me.MyLabel39.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel39.Location = New System.Drawing.Point(35, 271)
+        Me.MyLabel39.Name = "MyLabel39"
+        Me.MyLabel39.Size = New System.Drawing.Size(113, 16)
+        Me.MyLabel39.TabIndex = 164
+        Me.MyLabel39.Text = "TOTAL DEDUCTION"
+        '
+        'MyLabel63
+        '
+        Me.MyLabel63.FieldName = Nothing
+        Me.MyLabel63.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel63.Location = New System.Drawing.Point(35, 249)
+        Me.MyLabel63.Name = "MyLabel63"
+        Me.MyLabel63.Size = New System.Drawing.Size(100, 16)
+        Me.MyLabel63.TabIndex = 183
+        Me.MyLabel63.Text = "TOTAL ADDITION"
         '
         'MyLabel47
         '
@@ -1457,7 +2071,7 @@ Partial Class BMC_Transporter_Bill
         Me.MyLabel47.BorderVisible = True
         Me.MyLabel47.FieldName = Nothing
         Me.MyLabel47.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel47.Location = New System.Drawing.Point(326, 150)
+        Me.MyLabel47.Location = New System.Drawing.Point(581, 50)
         Me.MyLabel47.Name = "MyLabel47"
         Me.MyLabel47.Size = New System.Drawing.Size(77, 18)
         Me.MyLabel47.TabIndex = 181
@@ -1470,7 +2084,7 @@ Partial Class BMC_Transporter_Bill
         Me.MyLabel46.BorderVisible = True
         Me.MyLabel46.FieldName = Nothing
         Me.MyLabel46.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel46.Location = New System.Drawing.Point(243, 150)
+        Me.MyLabel46.Location = New System.Drawing.Point(543, 26)
         Me.MyLabel46.Name = "MyLabel46"
         Me.MyLabel46.Size = New System.Drawing.Size(77, 18)
         Me.MyLabel46.TabIndex = 180
@@ -1561,7 +2175,7 @@ Partial Class BMC_Transporter_Bill
         Me.TxtTotalIceCharge.BorderVisible = True
         Me.TxtTotalIceCharge.FieldName = Nothing
         Me.TxtTotalIceCharge.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtTotalIceCharge.Location = New System.Drawing.Point(326, 204)
+        Me.TxtTotalIceCharge.Location = New System.Drawing.Point(326, 186)
         Me.TxtTotalIceCharge.Name = "TxtTotalIceCharge"
         Me.TxtTotalIceCharge.Size = New System.Drawing.Size(77, 18)
         Me.TxtTotalIceCharge.TabIndex = 173
@@ -1573,7 +2187,7 @@ Partial Class BMC_Transporter_Bill
         Me.TxtTotalAmount.BorderVisible = True
         Me.TxtTotalAmount.FieldName = Nothing
         Me.TxtTotalAmount.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtTotalAmount.Location = New System.Drawing.Point(326, 227)
+        Me.TxtTotalAmount.Location = New System.Drawing.Point(326, 206)
         Me.TxtTotalAmount.Name = "TxtTotalAmount"
         Me.TxtTotalAmount.Size = New System.Drawing.Size(77, 18)
         Me.TxtTotalAmount.TabIndex = 172
@@ -1585,7 +2199,7 @@ Partial Class BMC_Transporter_Bill
         Me.TxtTotalFatSnfShortage.BorderVisible = True
         Me.TxtTotalFatSnfShortage.FieldName = Nothing
         Me.TxtTotalFatSnfShortage.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtTotalFatSnfShortage.Location = New System.Drawing.Point(326, 249)
+        Me.TxtTotalFatSnfShortage.Location = New System.Drawing.Point(326, 226)
         Me.TxtTotalFatSnfShortage.Name = "TxtTotalFatSnfShortage"
         Me.TxtTotalFatSnfShortage.Size = New System.Drawing.Size(77, 18)
         Me.TxtTotalFatSnfShortage.TabIndex = 165
@@ -1597,7 +2211,7 @@ Partial Class BMC_Transporter_Bill
         Me.TxtGrossAmount.BorderVisible = True
         Me.TxtGrossAmount.FieldName = Nothing
         Me.TxtGrossAmount.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtGrossAmount.Location = New System.Drawing.Point(326, 321)
+        Me.TxtGrossAmount.Location = New System.Drawing.Point(326, 336)
         Me.TxtGrossAmount.Name = "TxtGrossAmount"
         Me.TxtGrossAmount.Size = New System.Drawing.Size(77, 18)
         Me.TxtGrossAmount.TabIndex = 165
@@ -1609,7 +2223,7 @@ Partial Class BMC_Transporter_Bill
         Me.TxtTotalTollTax.BorderVisible = True
         Me.TxtTotalTollTax.FieldName = Nothing
         Me.TxtTotalTollTax.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TxtTotalTollTax.Location = New System.Drawing.Point(326, 183)
+        Me.TxtTotalTollTax.Location = New System.Drawing.Point(326, 166)
         Me.TxtTotalTollTax.Name = "TxtTotalTollTax"
         Me.TxtTotalTollTax.Size = New System.Drawing.Size(77, 18)
         Me.TxtTotalTollTax.TabIndex = 171
@@ -1621,7 +2235,7 @@ Partial Class BMC_Transporter_Bill
         Me.MyLabel34.BorderVisible = True
         Me.MyLabel34.FieldName = Nothing
         Me.MyLabel34.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel34.Location = New System.Drawing.Point(149, 148)
+        Me.MyLabel34.Location = New System.Drawing.Point(498, 50)
         Me.MyLabel34.Name = "MyLabel34"
         Me.MyLabel34.Size = New System.Drawing.Size(77, 18)
         Me.MyLabel34.TabIndex = 170
@@ -1707,7 +2321,7 @@ Partial Class BMC_Transporter_Bill
         '
         Me.MyLabel27.FieldName = Nothing
         Me.MyLabel27.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel27.Location = New System.Drawing.Point(34, 323)
+        Me.MyLabel27.Location = New System.Drawing.Point(34, 337)
         Me.MyLabel27.Name = "MyLabel27"
         Me.MyLabel27.Size = New System.Drawing.Size(99, 16)
         Me.MyLabel27.TabIndex = 163
@@ -1717,27 +2331,38 @@ Partial Class BMC_Transporter_Bill
         '
         Me.MyLabel26.FieldName = Nothing
         Me.MyLabel26.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel26.Location = New System.Drawing.Point(35, 251)
+        Me.MyLabel26.Location = New System.Drawing.Point(35, 227)
         Me.MyLabel26.Name = "MyLabel26"
         Me.MyLabel26.Size = New System.Drawing.Size(120, 16)
         Me.MyLabel26.TabIndex = 162
         Me.MyLabel26.Text = "FAT SNF SHORTAGE"
         '
+        'MyLabel62
+        '
+        Me.MyLabel62.FieldName = Nothing
+        Me.MyLabel62.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel62.Location = New System.Drawing.Point(35, 207)
+        Me.MyLabel62.Name = "MyLabel62"
+        Me.MyLabel62.Size = New System.Drawing.Size(95, 16)
+        Me.MyLabel62.TabIndex = 161
+        Me.MyLabel62.Text = "TOTAL AMOUNT"
+        '
         'MyLabel25
         '
         Me.MyLabel25.FieldName = Nothing
         Me.MyLabel25.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel25.Location = New System.Drawing.Point(35, 229)
+        Me.MyLabel25.Location = New System.Drawing.Point(436, 72)
         Me.MyLabel25.Name = "MyLabel25"
         Me.MyLabel25.Size = New System.Drawing.Size(95, 16)
         Me.MyLabel25.TabIndex = 161
         Me.MyLabel25.Text = "TOTAL AMOUNT"
+        Me.MyLabel25.Visible = False
         '
         'MyLabel24
         '
         Me.MyLabel24.FieldName = Nothing
         Me.MyLabel24.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel24.Location = New System.Drawing.Point(35, 205)
+        Me.MyLabel24.Location = New System.Drawing.Point(35, 187)
         Me.MyLabel24.Name = "MyLabel24"
         Me.MyLabel24.Size = New System.Drawing.Size(77, 16)
         Me.MyLabel24.TabIndex = 160
@@ -1747,7 +2372,7 @@ Partial Class BMC_Transporter_Bill
         '
         Me.MyLabel23.FieldName = Nothing
         Me.MyLabel23.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel23.Location = New System.Drawing.Point(35, 183)
+        Me.MyLabel23.Location = New System.Drawing.Point(35, 167)
         Me.MyLabel23.Name = "MyLabel23"
         Me.MyLabel23.Size = New System.Drawing.Size(60, 16)
         Me.MyLabel23.TabIndex = 159
@@ -1757,7 +2382,7 @@ Partial Class BMC_Transporter_Bill
         '
         Me.MyLabel22.FieldName = Nothing
         Me.MyLabel22.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MyLabel22.Location = New System.Drawing.Point(35, 150)
+        Me.MyLabel22.Location = New System.Drawing.Point(462, 28)
         Me.MyLabel22.Name = "MyLabel22"
         Me.MyLabel22.Size = New System.Drawing.Size(56, 16)
         Me.MyLabel22.TabIndex = 158
@@ -2120,51 +2745,15 @@ Partial Class BMC_Transporter_Bill
         Me.btnSave.TabIndex = 2
         Me.btnSave.Text = "Save"
         '
-        'TxtTotalAddition
+        'btnAddNew
         '
-        Me.TxtTotalAddition.CalculationExpression = Nothing
-        Me.TxtTotalAddition.FieldCode = Nothing
-        Me.TxtTotalAddition.FieldDesc = Nothing
-        Me.TxtTotalAddition.FieldMaxLength = 0
-        Me.TxtTotalAddition.FieldName = Nothing
-        Me.TxtTotalAddition.isCalculatedField = False
-        Me.TxtTotalAddition.IsSourceFromTable = False
-        Me.TxtTotalAddition.IsSourceFromValueList = False
-        Me.TxtTotalAddition.IsUnique = False
-        Me.TxtTotalAddition.Location = New System.Drawing.Point(326, 273)
-        Me.TxtTotalAddition.MendatroryField = False
-        Me.TxtTotalAddition.MyLinkLable1 = Nothing
-        Me.TxtTotalAddition.MyLinkLable2 = Nothing
-        Me.TxtTotalAddition.Name = "TxtTotalAddition"
-        Me.TxtTotalAddition.ReferenceFieldDesc = Nothing
-        Me.TxtTotalAddition.ReferenceFieldName = Nothing
-        Me.TxtTotalAddition.ReferenceTableName = Nothing
-        Me.TxtTotalAddition.Size = New System.Drawing.Size(77, 20)
-        Me.TxtTotalAddition.TabIndex = 1540
-        Me.TxtTotalAddition.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'TxtTotalDeduction
-        '
-        Me.TxtTotalDeduction.CalculationExpression = Nothing
-        Me.TxtTotalDeduction.FieldCode = Nothing
-        Me.TxtTotalDeduction.FieldDesc = Nothing
-        Me.TxtTotalDeduction.FieldMaxLength = 0
-        Me.TxtTotalDeduction.FieldName = Nothing
-        Me.TxtTotalDeduction.isCalculatedField = False
-        Me.TxtTotalDeduction.IsSourceFromTable = False
-        Me.TxtTotalDeduction.IsSourceFromValueList = False
-        Me.TxtTotalDeduction.IsUnique = False
-        Me.TxtTotalDeduction.Location = New System.Drawing.Point(326, 297)
-        Me.TxtTotalDeduction.MendatroryField = False
-        Me.TxtTotalDeduction.MyLinkLable1 = Nothing
-        Me.TxtTotalDeduction.MyLinkLable2 = Nothing
-        Me.TxtTotalDeduction.Name = "TxtTotalDeduction"
-        Me.TxtTotalDeduction.ReferenceFieldDesc = Nothing
-        Me.TxtTotalDeduction.ReferenceFieldName = Nothing
-        Me.TxtTotalDeduction.ReferenceTableName = Nothing
-        Me.TxtTotalDeduction.Size = New System.Drawing.Size(77, 20)
-        Me.TxtTotalDeduction.TabIndex = 1541
-        Me.TxtTotalDeduction.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.btnAddNew.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnAddNew.Image = Global.XpertERPBulkProcurement.My.Resources.Resources._new
+        Me.btnAddNew.ImageAlignment = System.Drawing.ContentAlignment.MiddleCenter
+        Me.btnAddNew.Location = New System.Drawing.Point(376, 1)
+        Me.btnAddNew.Name = "btnAddNew"
+        Me.btnAddNew.Size = New System.Drawing.Size(20, 22)
+        Me.btnAddNew.TabIndex = 1
         '
         'BMC_Transporter_Bill
         '
@@ -2245,11 +2834,54 @@ Partial Class BMC_Transporter_Bill
         CType(Me.lblAbandonmentNo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.lblTankerNo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RadLabel1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.btnAddNew, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.RadPageViewPage2.ResumeLayout(False)
+        Me.RadPageViewPage2.PerformLayout()
+        CType(Me.NACCOEPF_PER, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NEMPEPF_PER, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NCOESI_PER, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NEMPESI_PER, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NTotalPF, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NTotalESI, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NESIEmployer, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NESIEmployee, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NEDLICharge, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NAdmincharge, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NemployerPF, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NempPF, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NLabourCharge, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.NDailyWage, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel70, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel69, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel68, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel67, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel66, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel65, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel61, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel60, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel59, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel58, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel57, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel56, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel55, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel54, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel53, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel52, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel51, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel50, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel49, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel48, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel37, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel36, System.ComponentModel.ISupportInitialize).EndInit()
         Me.RadPageViewPage4.ResumeLayout(False)
         Me.RadPageViewPage4.PerformLayout()
-        CType(Me.MyLabel39, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TotalESIAmt, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TotalEPFAmt, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel64, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel38, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TxtTotalDeduction, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.TxtTotalAddition, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel39, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel63, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel47, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel46, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel45, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2272,6 +2904,7 @@ Partial Class BMC_Transporter_Bill
         CType(Me.TxtBMCProrataamt, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel27, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel26, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.MyLabel62, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel25, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel24, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.MyLabel23, System.ComponentModel.ISupportInitialize).EndInit()
@@ -2306,8 +2939,7 @@ Partial Class BMC_Transporter_Bill
         CType(Me.btnDelete, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnPost, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnSave, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TxtTotalAddition, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.TxtTotalDeduction, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.btnAddNew, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -2439,7 +3071,49 @@ Partial Class BMC_Transporter_Bill
     Friend WithEvents TxtRateprorata As common.Controls.MyTextBox
     Friend WithEvents MyLabel9 As common.Controls.MyLabel
     Friend WithEvents MyLabel39 As common.Controls.MyLabel
-    Friend WithEvents MyLabel38 As common.Controls.MyLabel
     Friend WithEvents TxtTotalAddition As common.Controls.MyTextBox
     Friend WithEvents TxtTotalDeduction As common.Controls.MyTextBox
+    Friend WithEvents RadPageViewPage2 As RadPageViewPage
+    Friend WithEvents MyLabel61 As common.Controls.MyLabel
+    Friend WithEvents MyLabel60 As common.Controls.MyLabel
+    Friend WithEvents MyLabel59 As common.Controls.MyLabel
+    Friend WithEvents MyLabel58 As common.Controls.MyLabel
+    Friend WithEvents MyLabel57 As common.Controls.MyLabel
+    Friend WithEvents MyLabel56 As common.Controls.MyLabel
+    Friend WithEvents MyLabel55 As common.Controls.MyLabel
+    Friend WithEvents MyLabel54 As common.Controls.MyLabel
+    Friend WithEvents MyLabel53 As common.Controls.MyLabel
+    Friend WithEvents MyLabel52 As common.Controls.MyLabel
+    Friend WithEvents MyLabel51 As common.Controls.MyLabel
+    Friend WithEvents MyLabel50 As common.Controls.MyLabel
+    Friend WithEvents MyLabel49 As common.Controls.MyLabel
+    Friend WithEvents MyLabel48 As common.Controls.MyLabel
+    Friend WithEvents MyLabel37 As common.Controls.MyLabel
+    Friend WithEvents MyLabel36 As common.Controls.MyLabel
+    Friend WithEvents MyLabel64 As common.Controls.MyLabel
+    Friend WithEvents MyLabel38 As common.Controls.MyLabel
+    Friend WithEvents MyLabel63 As common.Controls.MyLabel
+    Friend WithEvents MyLabel62 As common.Controls.MyLabel
+    Friend WithEvents MyLabel65 As common.Controls.MyLabel
+    Friend WithEvents MyLabel69 As common.Controls.MyLabel
+    Friend WithEvents MyLabel68 As common.Controls.MyLabel
+    Friend WithEvents MyLabel67 As common.Controls.MyLabel
+    Friend WithEvents MyLabel66 As common.Controls.MyLabel
+    Friend WithEvents MyLabel70 As common.Controls.MyLabel
+    Friend WithEvents NDailyWage As common.Controls.MyLabel
+    Friend WithEvents NACCOEPF_PER As common.Controls.MyLabel
+    Friend WithEvents NEMPEPF_PER As common.Controls.MyLabel
+    Friend WithEvents NCOESI_PER As common.Controls.MyLabel
+    Friend WithEvents NEMPESI_PER As common.Controls.MyLabel
+    Friend WithEvents NTotalPF As common.Controls.MyLabel
+    Friend WithEvents NTotalESI As common.Controls.MyLabel
+    Friend WithEvents NESIEmployer As common.Controls.MyLabel
+    Friend WithEvents NESIEmployee As common.Controls.MyLabel
+    Friend WithEvents NEDLICharge As common.Controls.MyLabel
+    Friend WithEvents NAdmincharge As common.Controls.MyLabel
+    Friend WithEvents NemployerPF As common.Controls.MyLabel
+    Friend WithEvents NempPF As common.Controls.MyLabel
+    Friend WithEvents NLabourCharge As common.Controls.MyLabel
+    Friend WithEvents TotalESIAmt As common.Controls.MyLabel
+    Friend WithEvents TotalEPFAmt As common.Controls.MyLabel
 End Class

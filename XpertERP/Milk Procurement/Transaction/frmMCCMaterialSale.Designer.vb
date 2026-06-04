@@ -22,19 +22,19 @@ Partial Class frmMCCMaterialSale
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim RadListDataItem1 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
-        Dim RadListDataItem2 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
-        Dim RadListDataItem3 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
-        Dim RadListDataItem4 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
-        Dim RadListDataItem5 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
         Dim RadListDataItem6 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
         Dim RadListDataItem7 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
         Dim RadListDataItem8 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
         Dim RadListDataItem9 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
         Dim RadListDataItem10 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
-        Dim TableViewDefinition1 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
-        Dim TableViewDefinition2 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
-        Dim TableViewDefinition3 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim RadListDataItem11 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
+        Dim RadListDataItem12 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
+        Dim RadListDataItem13 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
+        Dim RadListDataItem14 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
+        Dim RadListDataItem15 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
+        Dim TableViewDefinition7 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition8 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition9 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Dim WindowsSettings1 As Telerik.WinControls.WindowsSettings = New Telerik.WinControls.WindowsSettings()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
@@ -298,6 +298,10 @@ Partial Class frmMCCMaterialSale
         Me.RadMenuItem2 = New Telerik.WinControls.UI.RadDropDownMenu()
         Me.RadThemeManager1 = New Telerik.WinControls.RadThemeManager()
         Me.RadMenu1 = New Telerik.WinControls.UI.RadMenu()
+        Me.txtSupplyDate = New common.Controls.MyDateTimePicker()
+        Me.lblSupplyDate = New common.Controls.MyLabel()
+        Me.cmbShift = New common.Controls.MyComboBox()
+        Me.lblShiftType = New common.Controls.MyLabel()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -540,6 +544,10 @@ Partial Class frmMCCMaterialSale
         Me.Panel1.SuspendLayout()
         CType(Me.RadMenuItem2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.txtSupplyDate, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.lblSupplyDate, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.cmbShift, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.lblShiftType, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -600,6 +608,10 @@ Partial Class frmMCCMaterialSale
         '
         'RadPageViewPage1
         '
+        Me.RadPageViewPage1.Controls.Add(Me.cmbShift)
+        Me.RadPageViewPage1.Controls.Add(Me.lblShiftType)
+        Me.RadPageViewPage1.Controls.Add(Me.txtSupplyDate)
+        Me.RadPageViewPage1.Controls.Add(Me.lblSupplyDate)
         Me.RadPageViewPage1.Controls.Add(Me.PnlSaleRoute)
         Me.RadPageViewPage1.Controls.Add(Me.RadPanel1)
         Me.RadPageViewPage1.Controls.Add(Me.lblTransporterName)
@@ -1039,7 +1051,7 @@ Partial Class frmMCCMaterialSale
         '
         Me.chkAddTPT.CheckState = System.Windows.Forms.CheckState.Checked
         Me.chkAddTPT.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkAddTPT.Location = New System.Drawing.Point(948, 1)
+        Me.chkAddTPT.Location = New System.Drawing.Point(1267, 2)
         Me.chkAddTPT.Name = "chkAddTPT"
         Me.chkAddTPT.Size = New System.Drawing.Size(65, 16)
         Me.chkAddTPT.TabIndex = 1585
@@ -1214,16 +1226,16 @@ Partial Class frmMCCMaterialSale
         Me.cboDeductionType.IsSourceFromTable = False
         Me.cboDeductionType.IsSourceFromValueList = False
         Me.cboDeductionType.IsUnique = False
-        RadListDataItem1.Text = "CASH"
-        RadListDataItem2.Text = "NEFT"
-        RadListDataItem3.Text = "RTGS"
-        RadListDataItem4.Text = "CHEQUE"
-        RadListDataItem5.Text = "UPI"
-        Me.cboDeductionType.Items.Add(RadListDataItem1)
-        Me.cboDeductionType.Items.Add(RadListDataItem2)
-        Me.cboDeductionType.Items.Add(RadListDataItem3)
-        Me.cboDeductionType.Items.Add(RadListDataItem4)
-        Me.cboDeductionType.Items.Add(RadListDataItem5)
+        RadListDataItem6.Text = "CASH"
+        RadListDataItem7.Text = "NEFT"
+        RadListDataItem8.Text = "RTGS"
+        RadListDataItem9.Text = "CHEQUE"
+        RadListDataItem10.Text = "UPI"
+        Me.cboDeductionType.Items.Add(RadListDataItem6)
+        Me.cboDeductionType.Items.Add(RadListDataItem7)
+        Me.cboDeductionType.Items.Add(RadListDataItem8)
+        Me.cboDeductionType.Items.Add(RadListDataItem9)
+        Me.cboDeductionType.Items.Add(RadListDataItem10)
         Me.cboDeductionType.Location = New System.Drawing.Point(937, 66)
         Me.cboDeductionType.MendatroryField = True
         Me.cboDeductionType.MyLinkLable1 = Me.MyLabel7
@@ -1278,16 +1290,16 @@ Partial Class frmMCCMaterialSale
         Me.cmbPaymentType.IsSourceFromTable = False
         Me.cmbPaymentType.IsSourceFromValueList = False
         Me.cmbPaymentType.IsUnique = False
-        RadListDataItem6.Text = "CASH"
-        RadListDataItem7.Text = "NEFT"
-        RadListDataItem8.Text = "RTGS"
-        RadListDataItem9.Text = "CHEQUE"
-        RadListDataItem10.Text = "UPI"
-        Me.cmbPaymentType.Items.Add(RadListDataItem6)
-        Me.cmbPaymentType.Items.Add(RadListDataItem7)
-        Me.cmbPaymentType.Items.Add(RadListDataItem8)
-        Me.cmbPaymentType.Items.Add(RadListDataItem9)
-        Me.cmbPaymentType.Items.Add(RadListDataItem10)
+        RadListDataItem11.Text = "CASH"
+        RadListDataItem12.Text = "NEFT"
+        RadListDataItem13.Text = "RTGS"
+        RadListDataItem14.Text = "CHEQUE"
+        RadListDataItem15.Text = "UPI"
+        Me.cmbPaymentType.Items.Add(RadListDataItem11)
+        Me.cmbPaymentType.Items.Add(RadListDataItem12)
+        Me.cmbPaymentType.Items.Add(RadListDataItem13)
+        Me.cmbPaymentType.Items.Add(RadListDataItem14)
+        Me.cmbPaymentType.Items.Add(RadListDataItem15)
         Me.cmbPaymentType.Location = New System.Drawing.Point(1080, 24)
         Me.cmbPaymentType.MendatroryField = True
         Me.cmbPaymentType.MyLinkLable1 = Me.MyLabel7
@@ -1741,7 +1753,7 @@ Partial Class frmMCCMaterialSale
         'chkcashsale
         '
         Me.chkcashsale.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkcashsale.Location = New System.Drawing.Point(744, 1)
+        Me.chkcashsale.Location = New System.Drawing.Point(1063, 2)
         Me.chkcashsale.Name = "chkcashsale"
         Me.chkcashsale.Size = New System.Drawing.Size(72, 16)
         Me.chkcashsale.TabIndex = 138
@@ -2135,7 +2147,7 @@ Partial Class frmMCCMaterialSale
         'chkInternal
         '
         Me.chkInternal.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkInternal.Location = New System.Drawing.Point(818, 1)
+        Me.chkInternal.Location = New System.Drawing.Point(1137, 2)
         Me.chkInternal.Name = "chkInternal"
         Me.chkInternal.Size = New System.Drawing.Size(58, 16)
         Me.chkInternal.TabIndex = 20
@@ -2348,7 +2360,7 @@ Partial Class frmMCCMaterialSale
         Me.gv1.MasterTemplate.AllowDeleteRow = False
         Me.gv1.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gv1.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gv1.MasterTemplate.ViewDefinition = TableViewDefinition1
+        Me.gv1.MasterTemplate.ViewDefinition = TableViewDefinition7
         Me.gv1.MyExportAPI = False
         Me.gv1.MyExportFilePath = ""
         Me.gv1.MyStopExport = False
@@ -2364,7 +2376,7 @@ Partial Class frmMCCMaterialSale
         'chkOnHold
         '
         Me.chkOnHold.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkOnHold.Location = New System.Drawing.Point(880, 0)
+        Me.chkOnHold.Location = New System.Drawing.Point(1199, 1)
         Me.chkOnHold.Name = "chkOnHold"
         Me.chkOnHold.Size = New System.Drawing.Size(62, 16)
         Me.chkOnHold.TabIndex = 5
@@ -2434,10 +2446,10 @@ Partial Class frmMCCMaterialSale
         'UsLock1
         '
         Me.UsLock1.BackColor = System.Drawing.Color.LightSteelBlue
-        Me.UsLock1.Location = New System.Drawing.Point(634, 0)
+        Me.UsLock1.Location = New System.Drawing.Point(635, 0)
         Me.UsLock1.MyFont = New System.Drawing.Font("Verdana", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.UsLock1.Name = "UsLock1"
-        Me.UsLock1.Size = New System.Drawing.Size(97, 20)
+        Me.UsLock1.Size = New System.Drawing.Size(77, 20)
         Me.UsLock1.Status = common.ERPTransactionStatus.Pending
         Me.UsLock1.TabIndex = 7
         '
@@ -2773,7 +2785,7 @@ Partial Class frmMCCMaterialSale
         Me.gv2.MasterTemplate.AllowDeleteRow = False
         Me.gv2.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gv2.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gv2.MasterTemplate.ViewDefinition = TableViewDefinition2
+        Me.gv2.MasterTemplate.ViewDefinition = TableViewDefinition8
         Me.gv2.MyExportAPI = False
         Me.gv2.MyExportFilePath = ""
         Me.gv2.MyStopExport = False
@@ -2828,7 +2840,7 @@ Partial Class frmMCCMaterialSale
         Me.gvAC.MasterTemplate.AllowDeleteRow = False
         Me.gvAC.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gvAC.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gvAC.MasterTemplate.ViewDefinition = TableViewDefinition3
+        Me.gvAC.MasterTemplate.ViewDefinition = TableViewDefinition9
         Me.gvAC.MyExportAPI = False
         Me.gvAC.MyExportFilePath = ""
         Me.gvAC.MyStopExport = False
@@ -4514,6 +4526,82 @@ Partial Class frmMCCMaterialSale
         Me.RadMenu1.Size = New System.Drawing.Size(1358, 20)
         Me.RadMenu1.TabIndex = 3
         '
+        'txtSupplyDate
+        '
+        Me.txtSupplyDate.CalculationExpression = Nothing
+        Me.txtSupplyDate.CustomFormat = "dd/MM/yyyy"
+        Me.txtSupplyDate.FieldCode = Nothing
+        Me.txtSupplyDate.FieldDesc = Nothing
+        Me.txtSupplyDate.FieldMaxLength = 0
+        Me.txtSupplyDate.FieldName = Nothing
+        Me.txtSupplyDate.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtSupplyDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.txtSupplyDate.isCalculatedField = False
+        Me.txtSupplyDate.IsSourceFromTable = False
+        Me.txtSupplyDate.IsSourceFromValueList = False
+        Me.txtSupplyDate.IsUnique = False
+        Me.txtSupplyDate.Location = New System.Drawing.Point(790, 2)
+        Me.txtSupplyDate.MendatroryField = False
+        Me.txtSupplyDate.MinDate = New Date(1753, 1, 1, 0, 0, 0, 0)
+        Me.txtSupplyDate.MyLinkLable1 = Me.RadLabel4
+        Me.txtSupplyDate.MyLinkLable2 = Nothing
+        Me.txtSupplyDate.Name = "txtSupplyDate"
+        Me.txtSupplyDate.NullDate = New Date(1753, 1, 1, 0, 0, 0, 0)
+        Me.txtSupplyDate.ReferenceFieldDesc = Nothing
+        Me.txtSupplyDate.ReferenceFieldName = Nothing
+        Me.txtSupplyDate.ReferenceTableName = Nothing
+        Me.txtSupplyDate.Size = New System.Drawing.Size(106, 18)
+        Me.txtSupplyDate.TabIndex = 1639
+        Me.txtSupplyDate.TabStop = False
+        Me.txtSupplyDate.Text = "13/06/2011"
+        Me.txtSupplyDate.Value = New Date(2011, 6, 13, 11, 29, 49, 421)
+        '
+        'lblSupplyDate
+        '
+        Me.lblSupplyDate.FieldName = Nothing
+        Me.lblSupplyDate.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSupplyDate.Location = New System.Drawing.Point(718, 3)
+        Me.lblSupplyDate.Name = "lblSupplyDate"
+        Me.lblSupplyDate.Size = New System.Drawing.Size(68, 16)
+        Me.lblSupplyDate.TabIndex = 1638
+        Me.lblSupplyDate.Text = "Supply Date"
+        '
+        'cmbShift
+        '
+        Me.cmbShift.AutoCompleteDisplayMember = Nothing
+        Me.cmbShift.AutoCompleteValueMember = Nothing
+        Me.cmbShift.CalculationExpression = Nothing
+        Me.cmbShift.DropDownAnimationEnabled = True
+        Me.cmbShift.DropDownStyle = Telerik.WinControls.RadDropDownStyle.DropDownList
+        Me.cmbShift.FieldCode = Nothing
+        Me.cmbShift.FieldDesc = Nothing
+        Me.cmbShift.FieldMaxLength = 0
+        Me.cmbShift.FieldName = Nothing
+        Me.cmbShift.isCalculatedField = False
+        Me.cmbShift.IsSourceFromTable = False
+        Me.cmbShift.IsSourceFromValueList = False
+        Me.cmbShift.IsUnique = False
+        Me.cmbShift.Location = New System.Drawing.Point(962, 0)
+        Me.cmbShift.MendatroryField = True
+        Me.cmbShift.MyLinkLable1 = Me.MyLabel7
+        Me.cmbShift.MyLinkLable2 = Nothing
+        Me.cmbShift.Name = "cmbShift"
+        Me.cmbShift.ReferenceFieldDesc = Nothing
+        Me.cmbShift.ReferenceFieldName = Nothing
+        Me.cmbShift.ReferenceTableName = Nothing
+        Me.cmbShift.Size = New System.Drawing.Size(94, 20)
+        Me.cmbShift.TabIndex = 1641
+        '
+        'lblShiftType
+        '
+        Me.lblShiftType.FieldName = Nothing
+        Me.lblShiftType.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblShiftType.Location = New System.Drawing.Point(900, 3)
+        Me.lblShiftType.Name = "lblShiftType"
+        Me.lblShiftType.Size = New System.Drawing.Size(57, 16)
+        Me.lblShiftType.TabIndex = 1640
+        Me.lblShiftType.Text = "Shift Type"
+        '
         'frmMCCMaterialSale
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -4787,6 +4875,10 @@ Partial Class frmMCCMaterialSale
         Me.Panel1.ResumeLayout(False)
         CType(Me.RadMenuItem2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.txtSupplyDate, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.lblSupplyDate, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.cmbShift, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.lblShiftType, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -5054,5 +5146,9 @@ Partial Class frmMCCMaterialSale
     Friend WithEvents MyLabel20 As common.Controls.MyLabel
     Friend WithEvents MyLabel23 As common.Controls.MyLabel
     Friend WithEvents txtSaleRoute As common.UserControls.txtFinder
+    Friend WithEvents txtSupplyDate As common.Controls.MyDateTimePicker
+    Friend WithEvents lblSupplyDate As common.Controls.MyLabel
+    Friend WithEvents cmbShift As common.Controls.MyComboBox
+    Friend WithEvents lblShiftType As common.Controls.MyLabel
 End Class
 

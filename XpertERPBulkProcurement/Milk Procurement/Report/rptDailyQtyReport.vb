@@ -2067,7 +2067,7 @@ CAST(ROUND( XXGetAllRecords.DiffMCCVsEntered_SNFKG, 2) AS DECIMAL(10, 2))as Diff
             Dim Area As String = Nothing
             Area = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select MCC_NAME from TSPL_MCC_MASTER WHERE Area_Location_Code = '" & fndArea.Value & "' "))
 
-            qry = " Select ROW_NUMBER() OVER (ORDER BY (shift_date)) AS SrNo,Convert(Varchar,(xxx.Shift_Date),103)Shift_Date,Shift,max(Bulk_Route_Code)Bulk_Route_Code,max(SNo)SNo,(Uploader_Code)Uploader_Code,QBD,SUM(No_Of_Cans)Can,sum(Milk_Weight)Milk_Weight,
+            qry = " Select ROW_NUMBER() OVER (ORDER BY (shift_date)) AS SrNo,Convert(Varchar,(xxx.Shift_Date),103)Shift_Date,Shift,max(Bulk_Route_Code)Bulk_Route_Code,(SNo)SNo,(Uploader_Code)Uploader_Code,QBD,SUM(No_Of_Cans)Can,sum(Milk_Weight)Milk_Weight,
                     case when max(Manual_Weight)=1 then 'Manual' else 'Auto' end as Manual_Auto_Weight,SUM(FAT)FAT,SUM(SNF)SNF,case when max(Manual_Sample)=1 then 'Manual' else 'Auto' end as QC_Manual_Auto,max(QAT)QAT
 
                      from (SELECT TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.FAT,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.SNF,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Milk_Weight,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.No_Of_Cans,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Reject_Type,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Shift_Date,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Shift,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Bulk_Route_Code,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Dock_Collection_Milk_Type,case when isnull(TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.FAT,0) =0 then 0 else cast(cast(cast(((TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Milk_Weight*TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.FAT/100)*1000) as int) as decimal(18,0))/1000 as decimal(18,3)) end as FATKG
@@ -2098,7 +2098,7 @@ CAST(ROUND( XXGetAllRecords.DiffMCCVsEntered_SNFKG, 2) AS DECIMAL(10, 2))as Diff
             ElseIf ddlShift.SelectedValue IsNot Nothing AndAlso clsCommon.CompairString(ddlShift.SelectedValue, "Evening") = CompairStringResult.Equal Then
                 qry += " and TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Shift='E'"
             End If
-            qry += " ) xxx Group By xxx.Shift_Date,xxx.Shift, xxx.Uploader_Code,xxx.QBD order by xxx.Shift_Date"
+            qry += " ) xxx Group By xxx.Shift_Date,xxx.Shift, xxx.Uploader_Code,xxx.QBD,xxx.SNo order by xxx.Shift_Date"
 
             dt = clsDBFuncationality.GetDataTable(qry)
             Gv1.MasterTemplate.SummaryRowsBottom.Clear()

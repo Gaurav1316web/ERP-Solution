@@ -378,7 +378,6 @@
     <Compile Include="Milk Procurement\ClsBMCCategory.vb" />
     <Compile Include="Milk Procurement\clsChillingCharges.vb" />
     <Compile Include="Milk Procurement\clsDBTCaping.vb" />
-    <Compile Include="Milk Procurement\clsDBTMonthlyFarmerMilk.vb" />
     <Compile Include="Milk Procurement\clsDBTNEFTReject.vb" />
     <Compile Include="Milk Procurement\clsDCSAdditionDeduction.vb" />
     <Compile Include="Milk Procurement\clsDeductionTypeMaster.vb" />
