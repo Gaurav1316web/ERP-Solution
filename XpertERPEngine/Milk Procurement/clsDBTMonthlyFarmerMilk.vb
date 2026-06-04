@@ -143,8 +143,61 @@ Left Outer Join TSPL_DCS_MP_INCENTIVE_RECO_HEAD on TSPL_DCS_MP_INCENTIVE_RECO_HE
             If (obj.Status = ERPTransactionStatus.Approved) Then
                 Throw New Exception("Already Post on :" + obj.Posted_Date)
             End If
-            Dim qry As String = "Update TSPL_DBT_MONTHLY_FARMER_MILK set Status=1, Posted_Date='" + strPostDate + "',Posted_By='" + objCommonVar.CurrentUserCode + "' where Document_Code='" + strDocNo + "' "
+
+            'Dim Arr As New List(Of String, clsMPIncentiveEntry)
+            Dim SettMCCOneDBTOneDoc As String = clsCommon.myCstr(clsFixedParameter.GetData(clsFixedParameterType.AndroidAPP, clsFixedParameterCode.OneDBTOneDoc, trans))
+            Dim SettMPIncentiveEntryIncentiveRate As Decimal = clsCommon.myCDecimal(clsFixedParameter.GetData(clsFixedParameterType.MPIncentiveEntryIncentiveRate, clsFixedParameterCode.MPIncentiveEntryIncentiveRate, trans))
+            If clsCommon.myLen(SettMCCOneDBTOneDoc) <= 0 Then
+                SettMCCOneDBTOneDoc = obj.arr(0).MCC_Code
+            End If
+            Dim qry As String = "select Uom_Code from TSPL_Mcc_UOM_DETAIL where Stocking_Unit='Y' and  MCC_CODE='" + SettMCCOneDBTOneDoc + "'"
+            Dim UOM As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue(qry, trans))
+
+            Dim objMPE As New clsMPIncentiveEntry()
+            objMPE.Document_Date = obj.Document_Date
+            objMPE.MCC_Code = SettMCCOneDBTOneDoc
+            objMPE.From_Date = obj.From_Date
+            objMPE.To_Date = obj.To_Date
+            objMPE.Incetive_Rate = SettMPIncentiveEntryIncentiveRate
+            objMPE.FATSNFPer = 2
+            Dim objMPETr As New clsMPIncentiveEntryDetail
+            objMPE.arr = New List(Of clsMPIncentiveEntryDetail)
+            For Each objMFMD In obj.arr
+                objMPETr = New clsMPIncentiveEntryDetail()
+                objMPETr.SNo = objMPE.arr.Count + 1
+                objMPETr.VLC_Code = objMFMD.VLC_Code
+                objMPETr.MP_Code = objMFMD.MP_Code
+                'objMPETr.MP_Account_No = clsCommon.myCstr(grow.Cells(clsMPIncetiveEntryColumns.colMPAccountNo).Value)
+                'objMPETr.MP_Bank = clsCommon.myCstr(grow.Cells(clsMPIncetiveEntryColumns.colMPBank).Value)
+                objMPETr.Qty = objMFMD.Qty
+                objMPETr.UOM = UOM
+                objMPETr.Amount = objMFMD.Qty * SettMPIncentiveEntryIncentiveRate
+                objMPETr.Amount_Actual = objMPETr.Amount
+
+                'objMPETr.MP_Phone_No = clsCommon.myCstr(grow.Cells(clsMPIncetiveEntryColumns.colMPPhoneNo).Value)
+                'objMPETr.MP_Aadhar_No = clsCommon.myCstr(grow.Cells(clsMPIncetiveEntryColumns.colMPAadharNo).Value)
+                'objMPETr.MP_IFSC_No = clsCommon.myCstr(grow.Cells(clsMPIncetiveEntryColumns.colMPIFSCCode).Value)
+
+                'objMPETr.FAT = clsCommon.myCdbl(grow.Cells(clsMPIncetiveEntryColumns.colFAT).Value)
+                'objMPETr.SNF = clsCommon.myCdbl(grow.Cells(clsMPIncetiveEntryColumns.colSNF).Value)
+
+                'objMPETr.Pashu_Aahar_Qty = clsCommon.myCdbl(grow.Cells(clsMPIncetiveEntryColumns.colPashuAaharQty).Value)
+                'objMPETr.Pashu_Aahar_Amount = clsCommon.myCdbl(grow.Cells(clsMPIncetiveEntryColumns.colPashuAaharAmt).Value)
+                'objMPETr.Mineral_Mixture_Qty = clsCommon.myCdbl(grow.Cells(clsMPIncetiveEntryColumns.colMineralMixtureQty).Value)
+                'objMPETr.Mineral_Mixture_Amount = clsCommon.myCdbl(grow.Cells(clsMPIncetiveEntryColumns.colMineralMixtureAmt).Value)
+                'objMPETr.Sailej_Qty = clsCommon.myCdbl(grow.Cells(clsMPIncetiveEntryColumns.colSailejQty).Value)
+                'objMPETr.Sailej_Amount = clsCommon.myCdbl(grow.Cells(clsMPIncetiveEntryColumns.colSailejAmt).Value)
+                'objMPETr.Rahat_Kampekat_Feed_Qty = clsCommon.myCdbl(grow.Cells(clsMPIncetiveEntryColumns.colRahatKampekatFeedQty).Value)
+                'objMPETr.Rahat_Kampekat_Feed_Amount = clsCommon.myCdbl(grow.Cells(clsMPIncetiveEntryColumns.colRahatKampekatFeedAmt).Value)
+                objMPETr.Total_Amount = objMPETr.Amount
+                objMPE.arr.Add(objMPETr)
+            Next
+
+            clsMPIncentiveEntry.SaveData(objMPE, True, trans)
+
+            qry = "Update TSPL_DBT_MONTHLY_FARMER_MILK set Status=1, Posted_Date='" + strPostDate + "',Posted_By='" + objCommonVar.CurrentUserCode + "' where Document_Code='" + strDocNo + "' "
             clsDBFuncationality.ExecuteNonQuery(qry, trans)
+
             clsCommonFunctionality.SaveHistoryData(objCommonVar.CurrentUserCode, strDocNo, "TSPL_DBT_MONTHLY_FARMER_MILK", "Document_Code", "TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL", "Document_Code", trans)
             trans.Commit()
         Catch ex As Exception
@@ -159,7 +212,7 @@ Public Class clsDBTMonthlyFarmerMilkDetail
 #Region "Variable"
     Public PK_Id As Integer = Nothing
     Public Document_Code As String = Nothing
-
+    Public MCC_Code As String = Nothing ''Not a Table Column
     Public VLC_Code As String = Nothing
     Public VLC_Uploader_Code As String = Nothing ''Not a Table Column
     Public VLC_Name As String = Nothing ''Not a Table Column
@@ -198,7 +251,7 @@ Public Class clsDBTMonthlyFarmerMilkDetail
         Try
             Dim arrObj As List(Of clsDBTMonthlyFarmerMilkDetail) = Nothing
             Dim obj As clsDBTMonthlyFarmerMilkDetail = Nothing
-            Dim qry As String = "Select TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.*,TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Name,TSPL_MP_MASTER.MP_Code_VLC_Uploader,TSPL_MP_MASTER.MP_Name 
+            Dim qry As String = "Select TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.*,TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Name,TSPL_MP_MASTER.MP_Code_VLC_Uploader,TSPL_MP_MASTER.MP_Name,TSPL_VLC_MASTER_HEAD.MCC 
 from TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL 
 Left Outer Join TSPL_MP_MASTER On TSPL_MP_MASTER.MP_Code=TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.MP_Code   
 left outer join TSPL_VLC_MASTER_HEAD on TSPL_VLC_MASTER_HEAD.VLC_Code=TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.VLC_Code
@@ -210,6 +263,7 @@ where TSPL_DBT_MONTHLY_FARMER_MILK_DETAIL.Document_Code='" & strDocNo & "'"
                     obj = New clsDBTMonthlyFarmerMilkDetail()
                     obj.PK_Id = clsCommon.myCdbl(dt.Rows(i)("PK_Id"))
                     obj.Document_Code = clsCommon.myCstr(dt.Rows(i)("Document_Code"))
+                    obj.MCC_Code = clsCommon.myCstr(dt.Rows(i)("MCC"))
                     obj.VLC_Code = clsCommon.myCstr(dt.Rows(i)("VLC_Code"))
                     obj.VLC_Uploader_Code = clsCommon.myCstr(dt.Rows(i)("VLC_Code_VLC_Uploader"))
                     obj.VLC_Name = clsCommon.myCstr(dt.Rows(i)("VLC_Name"))

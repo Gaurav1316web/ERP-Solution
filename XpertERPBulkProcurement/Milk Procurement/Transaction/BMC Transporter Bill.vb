@@ -438,6 +438,22 @@ Public Class BMC_Transporter_Bill
         TxtBMCTotal.Text = ""
         txtComment.Text = ""
         txtRemarks.Text = ""
+        NLabourCharge.Text = ""
+        NESIEmployee.Text = ""
+        NESIEmployer.Text = ""
+        NTotalESI.Text = ""
+        NTotalPF.Text = ""
+        NAdmincharge.Text = ""
+        NEDLICharge.Text = ""
+        NempPF.Text = ""
+        TotalEPFAmt.Text = ""
+        TotalESIAmt.Text = ""
+        NDailyWage.Text = ""
+        NCOESI_PER.Text = ""
+        NEMPESI_PER.Text = ""
+        NEMPEPF_PER.Text = ""
+        NACCOEPF_PER.Text = ""
+
 
         isNewEntry = True
         btnGo.Enabled = True
@@ -464,12 +480,17 @@ Public Class BMC_Transporter_Bill
             Dim Rowcount As Double = 0
             Dim Labourcharge As Double = 0
             Dim EmployeePF As Double = 0
+            Dim EmployerPF As Double = 0
             Dim AdminCharge As Double = 0
             Dim EDLICHARGE As Double = 0
-            Dim tOTALPF As Double = 0
+            Dim TOTALPF As Double = 0
             Dim ESIEmployee As Double = 0
             Dim ESIEmployer As Double = 0
             Dim TotalESI As Double = 0
+            Dim ESIEmployer1 As Double = 0
+            Dim ESIEmployee1 As Double = 0
+            Dim employeepf1 As Double = 0
+            Dim adminc As Double = 0
 
             Dim qry As String = " Select Labour_Charge,PFRULE_CODE,ESIRULE_CODE from tspl_tanker_master where tanker_no = '" + clsCommon.myCstr(txtTankerNo.Value) + "' "
             Dim dt As DataTable = clsDBFuncationality.GetDataTable(qry)
@@ -478,11 +499,18 @@ Public Class BMC_Transporter_Bill
             Dim ESI As String = clsCommon.myCstr(dt.Rows(0)("ESIRULE_CODE"))
             Dim EPF As String = clsCommon.myCstr(dt.Rows(0)("PFRULE_CODE"))
 
+            Rowcount = gv1.Rows.Count - 1
+
+            Labourcharge = Rowcount * LabourC
+
             Dim esiqry As String = " Select COESI_PER,EMPESI_PER from TSPL_ESI_RULE_MASTER where ESIRULE_CODE = '" + clsCommon.myCstr(ESI) + "'"
             Dim dtesi As DataTable = clsDBFuncationality.GetDataTable(esiqry)
             If dtesi.Rows.Count > 0 Then
-                Dim ESIEmployer1 As Double = clsCommon.myCdbl(dtesi.Rows(0)("COESI_PER"))  ''3.25
-                Dim ESIEmployee1 As Double = clsCommon.myCdbl(dtesi.Rows(0)("EMPESI_PER"))  ''0.75
+                ESIEmployer1 = clsCommon.myCdbl(dtesi.Rows(0)("COESI_PER"))  ''3.25
+                ESIEmployee1 = clsCommon.myCdbl(dtesi.Rows(0)("EMPESI_PER"))  ''0.75
+                ESIEmployee = (Labourcharge * ESIEmployee1) / 100
+                ESIEmployer = (Labourcharge * ESIEmployer1) / 100
+
             Else
                 ESIEmployee = 0
                 ESIEmployer = 0
@@ -491,17 +519,41 @@ Public Class BMC_Transporter_Bill
             Dim epfqry As String = " select EMPEPF_PER,ACCOEPF_PER from TSPL_PF_RULE_MASTER where PFRULE_CODE = '" + clsCommon.myCstr(EPF) + "' "
             Dim dtpf As DataTable = clsDBFuncationality.GetDataTable(epfqry)
             If dtpf.Rows.Count > 0 Then
-                Dim employeepf1 As Double = clsCommon.myCdbl(dtpf.Rows(0)("EMPEPF_PER"))  ''12
-                Dim adminc As Double = clsCommon.myCdbl(dtpf.Rows(0)("ACCOEPF_PER"))  ''0.5
+                employeepf1 = clsCommon.myCdbl(dtpf.Rows(0)("EMPEPF_PER"))  ''12
+                adminc = clsCommon.myCdbl(dtpf.Rows(0)("ACCOEPF_PER"))  ''0.5
+                EmployeePF = (Labourcharge * employeepf1) / 100
+                EmployerPF = (Labourcharge * employeepf1) / 100
+                AdminCharge = (Labourcharge * adminc) / 100
+                EDLICHARGE = (Labourcharge * adminc) / 100
+                MyLabel37.Text = "Employee PF(CPF)" + employeepf1
             Else
                 EmployeePF = 0
                 AdminCharge = 0
                 EDLICHARGE = 0
-
             End If
-            Rowcount = gv1.Rows.Count
 
-            Labourcharge = Rowcount * LabourC
+            TOTALPF = clsCommon.myCdbl(EmployeePF + EmployerPF + AdminCharge + EDLICHARGE)
+            TotalESI = clsCommon.myCdbl(ESIEmployee + ESIEmployer)
+
+            NDailyWage.Text = clsCommon.myCdbl(LabourC)
+            NLabourCharge.Text = clsCommon.myCdbl(Labourcharge)
+            NempPF.Text = clsCommon.myCdbl(EmployeePF)
+            NemployerPF.Text = clsCommon.myCdbl(EmployerPF)
+            NAdmincharge.Text = clsCommon.myCdbl(AdminCharge)
+            NEDLICharge.Text = clsCommon.myCdbl(EDLICHARGE)
+            NTotalPF.Text = clsCommon.myCdbl(TOTALPF)
+
+            NESIEmployee.Text = clsCommon.myCdbl(ESIEmployee)
+            NESIEmployer.Text = clsCommon.myCdbl(ESIEmployer)
+            NTotalESI.Text = clsCommon.myCdbl(TotalESI)
+
+            TotalEPFAmt.Text = clsCommon.myCdbl(TOTALPF)
+            TotalESIAmt.Text = clsCommon.myCdbl(TotalESI)
+
+            NCOESI_PER.Text = clsCommon.myCdbl(ESIEmployer1)
+            NEMPESI_PER.Text = clsCommon.myCdbl(ESIEmployee1)
+            NEMPEPF_PER.Text = clsCommon.myCdbl(employeepf1)
+            NACCOEPF_PER.Text = clsCommon.myCdbl(adminc)
 
         Catch ex As Exception
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
@@ -743,6 +795,8 @@ and TSPL_MILK_COLLECTION_MCC.Tanker_No in ('" + clsCommon.myCstr(txtTankerNo.Val
             Dim iceQty As Integer = 0
             Dim TotalAddition As Double = 0
             Dim TotalDeduction As Double = 0
+            Dim TotalEPF As Double = 0
+            Dim TotalESI As Double = 0
             For ii As Integer = 0 To gv1.Rows.Count - 1
                 BMCProrataAmt = BMCProrataAmt + clsCommon.myCdbl(gv1.Rows(ii).Cells(ColAmount).Value)
                 BMCDiesel = BMCDiesel + clsCommon.myCdbl(gv1.Rows(ii).Cells(ColDiesel).Value)
@@ -766,7 +820,9 @@ and TSPL_MILK_COLLECTION_MCC.Tanker_No in ('" + clsCommon.myCstr(txtTankerNo.Val
             FatSnfShortage = clsCommon.myCdbl(TxtTotalFatSnfShortage.Text)
             TotalAddition = clsCommon.myCdbl(TxtTotalAddition.Text)
             TotalDeduction = clsCommon.myCdbl(TxtTotalDeduction.Text)
-            TxtGrossAmount.Text = clsCommon.myCdbl(AmtBfrGross + TotalAddition - FatSnfShortage - TotalDeduction)
+            TotalEPF = clsCommon.myCdbl(NTotalPF.Text)
+            TotalESI = clsCommon.myCdbl(NTotalESI.Text)
+            TxtGrossAmount.Text = clsCommon.myCdbl(AmtBfrGross + TotalAddition - FatSnfShortage - TotalDeduction - TotalEPF - TotalESI)
 
 
         Catch ex As Exception
@@ -826,7 +882,7 @@ and TSPL_MILK_COLLECTION_MCC.Tanker_No in ('" + clsCommon.myCstr(txtTankerNo.Val
                 IceChargeFun(IntRowNo)
             End If
 
-
+            PFESIDEDUCTION()
 
             isCellValueChangedOpen = False
         Catch ex As Exception
@@ -918,6 +974,20 @@ and TSPL_MILK_COLLECTION_MCC.Tanker_No in ('" + clsCommon.myCstr(txtTankerNo.Val
                 obj.Is_Private = chkPrivate.Checked
                 obj.Comment = txtComment.Text
                 obj.Remarks = txtRemarks.Text
+                obj.Total_PF_Amount = clsCommon.myCdbl(TotalEPFAmt.Text)
+                obj.Total_ESI_Amount = clsCommon.myCdbl(TotalESIAmt.Text)
+                obj.Labour_Charge = clsCommon.myCdbl(NDailyWage.Text)
+                obj.Labour_Amt = clsCommon.myCdbl(NLabourCharge.Text)
+                obj.Employee_PF = clsCommon.myCdbl(NempPF.Text)
+                obj.Employer_PF = clsCommon.myCdbl(NemployerPF.Text)
+                obj.Admin_Charge = clsCommon.myCdbl(NAdmincharge.Text)
+                obj.EDLI_Charge = clsCommon.myCdbl(NEDLICharge.Text)
+                obj.ESI_Employee = clsCommon.myCdbl(NESIEmployee.Text)
+                obj.ESI_Employer = clsCommon.myCdbl(NESIEmployer.Text)
+                obj.COESI_PER = clsCommon.myCdbl(NCOESI_PER.Text)
+                obj.EMPESI_PER = clsCommon.myCdbl(NEMPESI_PER.Text)
+                obj.EMPEPF_PER = clsCommon.myCdbl(NEMPEPF_PER.Text)
+                obj.ACCOEPF_PER = clsCommon.myCdbl(NACCOEPF_PER.Text)
                 Dim totalTrip As Double = 0
                 Dim totalGPSKM As Double = 0
                 Dim totalKM As Double = 0
@@ -1067,6 +1137,23 @@ and TSPL_MILK_COLLECTION_MCC.Tanker_No in ('" + clsCommon.myCstr(txtTankerNo.Val
                 txtComment.Text = obj.Comment
                 txtRemarks.Text = obj.Remarks
 
+                NDailyWage.Text = obj.Labour_Charge
+                NLabourCharge.Text = obj.Labour_Amt
+                NempPF.Text = obj.Employee_PF
+                NemployerPF.Text = obj.Employer_PF
+                NAdmincharge.Text = obj.Admin_Charge
+                NEDLICharge.Text = obj.EDLI_Charge
+                NTotalPF.Text = obj.Total_PF_Amount
+                NESIEmployee.Text = obj.ESI_Employee
+                NESIEmployer.Text = obj.ESI_Employer
+                NTotalESI.Text = obj.Total_ESI_Amount
+                TotalEPFAmt.Text = obj.Total_PF_Amount
+                TotalESIAmt.Text = obj.Total_ESI_Amount
+                NCOESI_PER.Text = obj.COESI_PER
+                NEMPESI_PER.Text = obj.EMPESI_PER
+                NACCOEPF_PER.Text = obj.ACCOEPF_PER
+                NEMPEPF_PER.Text = obj.EMPEPF_PER
+
                 If obj.Arr IsNot Nothing Then
                     '               Dim qry As String = " SELECT TSPL_MILK_COLLECTION_MCC.Document_No,Cast(TSPL_MILK_COLLECTION_MCC.Document_Date as Date)Document_Date,Route_Code,Trip_No,TSPL_TANKER_MASTER.Storage_Capacity,TSPL_BULK_ROUTE_MASTER.Distance
                     '                                       FROM TSPL_MILK_COLLECTION_MCC  
@@ -1110,6 +1197,8 @@ and TSPL_MILK_COLLECTION_MCC.Tanker_No in ('" + clsCommon.myCstr(txtTankerNo.Val
                         TxtIceCharge.Text = clsCommon.myCdbl(Icecharges / rowCount)
                     End If
                 End If
+                'LoadPFESIDeduction()
+                'PFESIDEDUCTION()
             End If
             ReStoreGridLayout()
 
@@ -1117,6 +1206,14 @@ and TSPL_MILK_COLLECTION_MCC.Tanker_No in ('" + clsCommon.myCstr(txtTankerNo.Val
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         Finally
             isInsideLoadData = False
+        End Try
+    End Sub
+
+    Sub LoadPFESIDeduction()
+        Try
+
+        Catch ex As Exception
+            clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try
     End Sub
     Private Sub AddSummaryRowToGrid()

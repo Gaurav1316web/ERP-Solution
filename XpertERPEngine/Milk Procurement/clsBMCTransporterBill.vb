@@ -44,6 +44,21 @@ Public Class clsBMCTransporterBill
     Public Comment As String = Nothing
     Public Remarks As String = Nothing
     Public Is_Private As Boolean = False
+    Public Total_PF_Amount As Double = 0
+    Public Total_ESI_Amount As Double = 0
+    Public Labour_Charge As Double = 0
+    Public Labour_Amt As Double = 0
+    Public Employee_PF As Double = 0
+    Public Employer_PF As Double = 0
+    Public Admin_Charge As Double = 0
+    Public EDLI_Charge As Double = 0
+    Public ESI_Employee As Double = 0
+    Public ESI_Employer As Double = 0
+    Public COESI_PER As Double = 0
+    Public EMPESI_PER As Double = 0
+    Public EMPEPF_PER As Double = 0
+    Public ACCOEPF_PER As Double = 0
+
 
 
 #End Region
@@ -132,7 +147,20 @@ Public Class clsBMCTransporterBill
         clsCommon.AddColumnsForChange(coll, "Comment", obj.Comment)
         clsCommon.AddColumnsForChange(coll, "Remarks", obj.Remarks)
         clsCommon.AddColumnsForChange(coll, "Is_Private", IIf(obj.Is_Private, 1, 0))
-
+        clsCommon.AddColumnsForChange(coll, "Labour_Charge", obj.Labour_Charge)
+        clsCommon.AddColumnsForChange(coll, "Labour_Amt", obj.Labour_Amt)
+        clsCommon.AddColumnsForChange(coll, "Employee_PF", obj.Employee_PF)
+        clsCommon.AddColumnsForChange(coll, "Employer_PF", obj.Employer_PF)
+        clsCommon.AddColumnsForChange(coll, "Admin_Charge", obj.Admin_Charge)
+        clsCommon.AddColumnsForChange(coll, "EDLI_Charge", obj.EDLI_Charge)
+        clsCommon.AddColumnsForChange(coll, "Total_PF_Amount", obj.Total_PF_Amount)
+        clsCommon.AddColumnsForChange(coll, "ESI_Employee", obj.ESI_Employee)
+        clsCommon.AddColumnsForChange(coll, "ESI_Employer", obj.ESI_Employer)
+        clsCommon.AddColumnsForChange(coll, "Total_ESI_Amount", obj.Total_ESI_Amount)
+        clsCommon.AddColumnsForChange(coll, "COESI_PER", obj.COESI_PER)
+        clsCommon.AddColumnsForChange(coll, "EMPESI_PER", obj.EMPESI_PER)
+        clsCommon.AddColumnsForChange(coll, "EMPEPF_PER", obj.EMPEPF_PER)
+        clsCommon.AddColumnsForChange(coll, "ACCOEPF_PER", obj.ACCOEPF_PER)
         clsCommon.AddColumnsForChange(coll, "Modify_By", objCommonVar.CurrentUserCode)
         clsCommon.AddColumnsForChange(coll, "Modify_Date", clsCommon.GetPrintDate(clsCommon.GETSERVERDATE(trans), "dd/MMM/yyyy hh:mm:ss tt"))
         clsCommon.AddColumnsForChange(coll, "Posted_By", objCommonVar.CurrentUserCode)
@@ -210,6 +238,20 @@ Public Class clsBMCTransporterBill
             obj.Comment = clsCommon.myCstr(dt.Rows(0)("Comment"))
             obj.Remarks = clsCommon.myCstr(dt.Rows(0)("Remarks"))
             obj.Is_Private = (clsCommon.myCDecimal(dt.Rows(0)("Is_Private")) = 1)
+            obj.Labour_Charge = clsCommon.myCdbl(dt.Rows(0)("Labour_Charge"))
+            obj.Labour_Amt = clsCommon.myCdbl(dt.Rows(0)("Labour_Amt"))
+            obj.Employee_PF = clsCommon.myCdbl(dt.Rows(0)("Employee_PF"))
+            obj.Employer_PF = clsCommon.myCdbl(dt.Rows(0)("Employer_PF"))
+            obj.Admin_Charge = clsCommon.myCdbl(dt.Rows(0)("Admin_Charge"))
+            obj.EDLI_Charge = clsCommon.myCdbl(dt.Rows(0)("EDLI_Charge"))
+            obj.Total_PF_Amount = clsCommon.myCdbl(dt.Rows(0)("Total_PF_Amount"))
+            obj.ESI_Employee = clsCommon.myCdbl(dt.Rows(0)("ESI_Employee"))
+            obj.ESI_Employer = clsCommon.myCdbl(dt.Rows(0)("ESI_Employer"))
+            obj.Total_ESI_Amount = clsCommon.myCdbl(dt.Rows(0)("Total_ESI_Amount"))
+            obj.COESI_PER = clsCommon.myCdbl(dt.Rows(0)("COESI_PER"))
+            obj.EMPESI_PER = clsCommon.myCdbl(dt.Rows(0)("EMPESI_PER"))
+            obj.EMPEPF_PER = clsCommon.myCdbl(dt.Rows(0)("EMPEPF_PER"))
+            obj.ACCOEPF_PER = clsCommon.myCdbl(dt.Rows(0)("ACCOEPF_PER"))
 
             qry = "Select TSPL_BMC_TRANSPORTER_BILL_DETAIL.* from TSPL_BMC_TRANSPORTER_BILL_DETAIL 
                    where TSPL_BMC_TRANSPORTER_BILL_DETAIL.Document_Code='" + obj.Document_Code + "' ORDER BY TSPL_BMC_TRANSPORTER_BILL_DETAIL.PK_ID"

@@ -182,6 +182,7 @@ Public Class ProgramCodeNew
         InsertDefaultValue(clsUserMgtCode.frmDocumentCancelledReport, "Document Cancelled Report", "1.01.03.22", clsUserMgtCode.SubModuleCommonServicesReport, 37)
         InsertDefaultValue(clsUserMgtCode.DashboardMilkProcurement, "Dashboard Milk Procurement", "1.01.03.23", clsUserMgtCode.SubModuleCommonServicesReport, "", 37, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, False, False, True)
         InsertDefaultValue(clsUserMgtCode.JanaadharStatusReport, "Janaadhar Status Report", "1.01.03.24", clsUserMgtCode.SubModuleCommonServicesReport, "", 37, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, False, False, True)
+        InsertDefaultValue(clsUserMgtCode.frmGSTDocumentList, "GST Document List", "1.01.03.25", clsUserMgtCode.SubModuleCommonServicesReport, 37)
 
 #End Region
 
@@ -342,7 +343,7 @@ Public Class ProgramCodeNew
         InsertDefaultValue(clsUserMgtCode.AMCUMaster, "AMCU Master", "1.03.02.60", clsUserMgtCode.SubModuleMCCMilkProcurementTransaction, "", 8, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, True, False)
         InsertDefaultValue(clsUserMgtCode.frmCancelDCSSale, "Cancel DCS Sale", "1.03.02.61", clsUserMgtCode.SubModuleMCCMilkProcurementTransaction, "", 8, 0, "", "", "", True, True, False, "", Nothing, "", "", "", "", "", False, "", 0, True, False)
         InsertDefaultValue(clsUserMgtCode.WEIGHINGMaster, "WEIGHING Master", "1.03.02.62", clsUserMgtCode.SubModuleMCCMilkProcurementTransaction, "", 8, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, True, False)
-
+        InsertDefaultValue(clsUserMgtCode.frmTransporterPaymentProcess, "Transporter Payment Process", "1.03.02.64", clsUserMgtCode.SubModuleMCCMilkProcurementTransaction, 8)
 
 
         '=========================================================================================

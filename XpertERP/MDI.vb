@@ -4394,6 +4394,9 @@ Public Class MDI
                     Case clsUserMgtCode.ItemStockConversion
                         frm = New frmItemToItemStockConverion
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
+                    Case clsUserMgtCode.frmGSTDocumentList
+                        frm = New frmGSTDocumentList
+                        formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
                     '------------------ Inventory Reports---------------------------------------
 
                     'Case "ItemLocationReport"
@@ -8830,6 +8833,9 @@ Public Class MDI
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
                     Case clsUserMgtCode.BMC_Transporter_Bill
                         frm = New BMC_Transporter_Bill
+                        formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
+                    Case clsUserMgtCode.frmTransporterPaymentProcess
+                        frm = New frmTransporterPaymentProcess
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
                     Case clsUserMgtCode.frmCattleFeedSalePurchaseUploader
                         frm = New FrmCattleFeedSalePurchaseUploader

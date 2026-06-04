@@ -2062,7 +2062,7 @@ Partial Class FrmUtility
         Me.RadPageView1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.RadPageView1.Location = New System.Drawing.Point(0, 0)
         Me.RadPageView1.Name = "RadPageView1"
-        Me.RadPageView1.SelectedPage = Me.RadPageViewPage7
+        Me.RadPageView1.SelectedPage = Me.RadPageViewPage1
         Me.RadPageView1.Size = New System.Drawing.Size(1112, 569)
         Me.RadPageView1.TabIndex = 44
         CType(Me.RadPageView1.GetChildAt(0), Telerik.WinControls.UI.RadPageViewStripElement).StripButtons = Telerik.WinControls.UI.StripViewButtons.None
@@ -2073,7 +2073,7 @@ Partial Class FrmUtility
         Me.RadPageViewPage5.ItemSize = New System.Drawing.SizeF(115.0!, 28.0!)
         Me.RadPageViewPage5.Location = New System.Drawing.Point(10, 37)
         Me.RadPageViewPage5.Name = "RadPageViewPage5"
-        Me.RadPageViewPage5.Size = New System.Drawing.Size(1091, 407)
+        Me.RadPageViewPage5.Size = New System.Drawing.Size(1091, 521)
         Me.RadPageViewPage5.Text = "RadPageViewPage5"
         '
         'Label1
@@ -2082,7 +2082,7 @@ Partial Class FrmUtility
         Me.Label1.Font = New System.Drawing.Font("Segoe UI", 25.0!)
         Me.Label1.Location = New System.Drawing.Point(0, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(1091, 407)
+        Me.Label1.Size = New System.Drawing.Size(1091, 521)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Welcome to Xpert Utility Box"
         Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
