@@ -61,7 +61,8 @@ Public Class rptHSNWiseSaleReport
         RadGroupBox1.Enabled = val
     End Sub
 
-    Function ReturnQry(ByVal isAcc As Boolean, ByVal FromDate As String, ByVal ToDate As String, ByVal strLocation As String, ByVal UOMType As String) As String
+    Function ReturnQry(ByVal isAcc As Boolean, ByVal FromDate As String, ByVal ToDate As String, ByVal strLocation As String, ByVal UOMType As String, ByRef strOutTaxColumnSum As String) As String
+        strOutTaxColumnSum = ""
         Dim qry As String = ""
         Dim whrcls As String = ""
         Dim BaseQuery As String = ""
@@ -198,6 +199,7 @@ Public Class rptHSNWiseSaleReport
                     qry += " ,'" & dtTax.Rows(ii)("Tax_Code_Desc") & "' as  Tax_" + clsCommon.myCstr(ii + 1) + " "
                     qry += " ,sum(Case When xxx.Tax ='" & dtTax.Rows(ii)("Tax") & "' then 1 else 0 end *  (isnull(Tax_Amt ,0))) as TaxAmount_" + clsCommon.myCstr(ii + 1) + " "
                     TaxAmount += ",max(Tax_" + clsCommon.myCstr(ii + 1) + ") as  Tax_" + clsCommon.myCstr(ii + 1) + " , sum(TaxAmount_" + clsCommon.myCstr(ii + 1) + ") as TaxAmount_" + clsCommon.myCstr(ii + 1) + ""
+
                 Else
                     TaxDesc += "[" & dtTax.Rows(ii)("Tax_Code_Desc") & " Amount] ,"
                     qry += " ,sum(case when xxx.Tax ='" & dtTax.Rows(ii)("Tax") & "' then 1 else 0 end *  (isnull(Tax_Amt ,0))) as [" & dtTax.Rows(ii)("Tax_Code_Desc") & " Amount]"
@@ -213,6 +215,15 @@ Public Class rptHSNWiseSaleReport
                     TaxDesc += "[" & dtTax.Rows(ii)("Tax_Code_Desc") & " Amount] ,"
                     qry += " ,sum(case when xxx.Type ='" & dtTax.Rows(ii)("Type") & "' then 1 else 0 end *  (isnull(Tax_Amt ,0))) as [" & dtTax.Rows(ii)("Tax_Code_Desc") & " Amount]"
                     TaxAmount += " sum([" & dtTax.Rows(ii)("Tax_Code_Desc") & " Amount])[" & dtTax.Rows(ii)("Tax_Code_Desc") & " Amount] ,"
+
+                    strOutTaxColumnSum += " ,sum([" & dtTax.Rows(ii)("Tax_Code_Desc") & " Amount]) as "
+                    If clsCommon.CompairString(clsCommon.myCstr(dtTax.Rows(ii)("type")), "SGST") = CompairStringResult.Equal Then
+                        strOutTaxColumnSum += " [IGST]"
+                    ElseIf clsCommon.CompairString(clsCommon.myCstr(dtTax.Rows(ii)("type")), "CGST") = CompairStringResult.Equal Then
+                        strOutTaxColumnSum += " [CGST]"
+                    ElseIf clsCommon.CompairString(clsCommon.myCstr(dtTax.Rows(ii)("type")), "IGST") = CompairStringResult.Equal Then
+                        strOutTaxColumnSum += " [S/UGST]"
+                    End If
                 End If
             End If
 
@@ -261,7 +272,7 @@ Public Class rptHSNWiseSaleReport
     Private Sub LoadData()
         Try
             isHSNWise = True
-            Dim dt As DataTable = clsDBFuncationality.GetDataTable(ReturnQry(False, txtFromDate.Value, txtToDate.Value, Nothing, Nothing))
+            Dim dt As DataTable = clsDBFuncationality.GetDataTable(ReturnQry(False, txtFromDate.Value, txtToDate.Value, Nothing, Nothing, ""))
             isHSNWise = False
             gv1.DataSource = Nothing
             gv1.Rows.Clear()
