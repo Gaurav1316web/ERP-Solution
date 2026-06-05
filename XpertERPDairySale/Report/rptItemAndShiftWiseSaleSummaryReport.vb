@@ -270,69 +270,97 @@ Public Class rptItemAndShiftWiseSaleSummaryReport
             Dim whrcls As String = ""
             Dim whrShift As String = ""
             Dim whrDCSSaleShift As String = ""
-            If ShowTodayDemandAsCurrentandUpcoming Then
-                If rbtnDemand.IsChecked Then
-                    whrcls = " And convert(date,TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= '" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "'   and convert(date,TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= '" & clsCommon.GetPrintDate(txtToDate.Value.AddDays(1), "dd/MMM/yyyy") & "' "
-                ElseIf rbtnDispatch.IsChecked Then
-                    whrcls = " And convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= '" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "'   and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= '" & clsCommon.GetPrintDate(txtToDate.Value.AddDays(1), "dd/MMM/yyyy") & "' "
-                End If
-            Else
+            If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
                 If rbtnDemand.IsChecked Then
                     whrcls = " And convert(date,TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= '" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "'   and convert(date,TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= '" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "' "
                 ElseIf rbtnDispatch.IsChecked Then
                     whrcls = " And convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= '" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "'   and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= '" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "' "
                 End If
+            Else
+
+                If ShowTodayDemandAsCurrentandUpcoming Then
+                    If rbtnDemand.IsChecked Then
+                        whrcls = " And convert(date,TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= '" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "'   and convert(date,TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= '" & clsCommon.GetPrintDate(txtToDate.Value.AddDays(1), "dd/MMM/yyyy") & "' "
+                    ElseIf rbtnDispatch.IsChecked Then
+                        whrcls = " And convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= '" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "'   and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= '" & clsCommon.GetPrintDate(txtToDate.Value.AddDays(1), "dd/MMM/yyyy") & "' "
+                    End If
+                Else
+                    If rbtnDemand.IsChecked Then
+                        whrcls = " And convert(date,TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= '" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "'   and convert(date,TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= '" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "' "
+                    ElseIf rbtnDispatch.IsChecked Then
+                        whrcls = " And convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= '" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "'   and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= '" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "' "
+                    End If
+                End If
             End If
 
-            If rbtnMorning.IsChecked Then
-                If rbtnDemand.IsChecked Then
-                    If clsCommon.GetPrintDate(txtFromDate.Value, "dd-MMM-yyyy") = clsCommon.GetPrintDate(txtToDate.Value, "dd-MMM-yyyy") Then
-                        whrcls += " and 2=( case when Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and TSPL_DEMAND_BOOKING_MASTER.ShiftType='Evening' then 3 else 2 end  )"
-                    Else
+            If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
+                If rbtnMorning.IsChecked Then
+                    If rbtnDemand.IsChecked Then
                         whrcls += " And TSPL_DEMAND_BOOKING_MASTER.ShiftType = 'Morning' "
-                    End If
-                ElseIf rbtnDispatch.IsChecked Then
-                    If clsCommon.GetPrintDate(txtFromDate.Value, "dd-MMM-yyyy") = clsCommon.GetPrintDate(txtToDate.Value, "dd-MMM-yyyy") Then
-                        whrDCSSaleShift = " and 2=( case when Convert(Date, Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='PM' then 3 else 2 end  )"
-                        whrShift = " and 2=( case when Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='PM' then 3 else 2 end  )"
-                    Else
+                    ElseIf rbtnDispatch.IsChecked Then
                         whrShift += " And Shift_Type = 'AM'  "
                         whrDCSSaleShift += " And Shift_Type = 'AM'  "
                     End If
-                End If
-            ElseIf rbtnEvening.IsChecked Then
-                If rbtnDemand.IsChecked Then
-                    If clsCommon.GetPrintDate(txtFromDate.Value, "dd-MMM-yyyy") = clsCommon.GetPrintDate(txtToDate.Value, "dd-MMM-yyyy") Then
-                        whrcls += " and 2=( case when Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and TSPL_DEMAND_BOOKING_MASTER.ShiftType='Morning' then 3 else 2 end  )"
-                    Else
+                ElseIf rbtnEvening.IsChecked Then
+                    If rbtnDemand.IsChecked Then
                         whrcls += " and TSPL_DEMAND_BOOKING_MASTER.ShiftType  = 'Evening' "
-                    End If
-                ElseIf rbtnDispatch.IsChecked Then
-                    If clsCommon.GetPrintDate(txtFromDate.Value, "dd-MMM-yyyy") = clsCommon.GetPrintDate(txtToDate.Value, "dd-MMM-yyyy") Then
-                        whrDCSSaleShift += " and 2=( case when Convert(Date, Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='AM' then 3 else 2 end  )"
-                        whrShift += " and 2=( case when Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='AM' then 3 else 2 end  )"
-                    Else
+                    ElseIf rbtnDispatch.IsChecked Then
                         whrDCSSaleShift += " And Shift_Type = 'PM'  "
                         whrShift += " And Shift_Type = 'PM'  "
                     End If
                 End If
-
-            ElseIf rbtnBothShift.IsChecked Then
-                If rbtnDemand.IsChecked Then
-                    If ShowTodayDemandAsCurrentandUpcoming Then
-                        whrcls += " and 2=( case when Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and TSPL_DEMAND_BOOKING_MASTER.ShiftType='Morning' then 3 else 2 end  )"
-                        whrcls += " and 2=( case when Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and TSPL_DEMAND_BOOKING_MASTER.ShiftType='Evening' then 3 else 2 end  )"
+            Else
+                If rbtnMorning.IsChecked Then
+                    If rbtnDemand.IsChecked Then
+                        If clsCommon.GetPrintDate(txtFromDate.Value, "dd-MMM-yyyy") = clsCommon.GetPrintDate(txtToDate.Value, "dd-MMM-yyyy") Then
+                            whrcls += " and 2=( case when Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and TSPL_DEMAND_BOOKING_MASTER.ShiftType='Evening' then 3 else 2 end  )"
+                        Else
+                            whrcls += " And TSPL_DEMAND_BOOKING_MASTER.ShiftType = 'Morning' "
+                        End If
+                    ElseIf rbtnDispatch.IsChecked Then
+                        If clsCommon.GetPrintDate(txtFromDate.Value, "dd-MMM-yyyy") = clsCommon.GetPrintDate(txtToDate.Value, "dd-MMM-yyyy") Then
+                            whrDCSSaleShift = " and 2=( case when Convert(Date, Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='PM' then 3 else 2 end  )"
+                            whrShift = " and 2=( case when Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='PM' then 3 else 2 end  )"
+                        Else
+                            whrShift += " And Shift_Type = 'AM'  "
+                            whrDCSSaleShift += " And Shift_Type = 'AM'  "
+                        End If
                     End If
-                ElseIf rbtnDispatch.IsChecked Then
-                    If ShowTodayDemandAsCurrentandUpcoming Then
-                        whrShift += " and 2=( case when Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='AM' then 3 else 2 end  )"
-                        whrShift += " and 2=( case when Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='PM' then 3 else 2 end  )"
+                ElseIf rbtnEvening.IsChecked Then
+                    If rbtnDemand.IsChecked Then
+                        If clsCommon.GetPrintDate(txtFromDate.Value, "dd-MMM-yyyy") = clsCommon.GetPrintDate(txtToDate.Value, "dd-MMM-yyyy") Then
+                            whrcls += " and 2=( case when Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and TSPL_DEMAND_BOOKING_MASTER.ShiftType='Morning' then 3 else 2 end  )"
+                        Else
+                            whrcls += " and TSPL_DEMAND_BOOKING_MASTER.ShiftType  = 'Evening' "
+                        End If
+                    ElseIf rbtnDispatch.IsChecked Then
+                        If clsCommon.GetPrintDate(txtFromDate.Value, "dd-MMM-yyyy") = clsCommon.GetPrintDate(txtToDate.Value, "dd-MMM-yyyy") Then
+                            whrDCSSaleShift += " and 2=( case when Convert(Date, Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='AM' then 3 else 2 end  )"
+                            whrShift += " and 2=( case when Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='AM' then 3 else 2 end  )"
+                        Else
+                            whrDCSSaleShift += " And Shift_Type = 'PM'  "
+                            whrShift += " And Shift_Type = 'PM'  "
+                        End If
+                    End If
 
-                        whrDCSSaleShift += " and 2=( case when Convert(Date, Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='AM' then 3 else 2 end  )"
-                        whrDCSSaleShift += " and 2=( case when Convert(Date, Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='PM' then 3 else 2 end  )"
+                ElseIf rbtnBothShift.IsChecked Then
+                    If rbtnDemand.IsChecked Then
+                        If ShowTodayDemandAsCurrentandUpcoming Then
+                            whrcls += " and 2=( case when Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and TSPL_DEMAND_BOOKING_MASTER.ShiftType='Morning' then 3 else 2 end  )"
+                            whrcls += " and 2=( case when Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_DEMAND_BOOKING_MASTER.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and TSPL_DEMAND_BOOKING_MASTER.ShiftType='Evening' then 3 else 2 end  )"
+                        End If
+                    ElseIf rbtnDispatch.IsChecked Then
+                        If ShowTodayDemandAsCurrentandUpcoming Then
+                            whrShift += " and 2=( case when Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='AM' then 3 else 2 end  )"
+                            whrShift += " and 2=( case when Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='PM' then 3 else 2 end  )"
+
+                            whrDCSSaleShift += " and 2=( case when Convert(Date, Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='AM' then 3 else 2 end  )"
+                            whrDCSSaleShift += " and 2=( case when Convert(Date, Document_Date,103) >= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and Convert(Date, Document_Date,103) <= Convert(Date, '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value.AddDays(1)), "dd/MMM/yyyy hh:mm tt") + "',103) and Shift_Type='PM' then 3 else 2 end  )"
+                        End If
                     End If
                 End If
             End If
+
 
             If txtRoute.arrValueMember IsNot Nothing Then
                 If rbtnDemand.IsChecked Then
@@ -367,7 +395,7 @@ Public Class rptItemAndShiftWiseSaleSummaryReport
             where  TSPL_DEMAND_BOOKING_MASTER.Posted = 1 " & whrcls & "	"
             ElseIf rbtnDispatch.IsChecked Then
                 Dim sqlqry As String = " max(TSPL_ITEM_MASTER.Sku_Seq)Sku_Seq,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = 'PM' then TSPL_SD_SALE_INVOICE_DETAIL.Qty * isnull((TSPL_ITEM_UOM_DETAIL.Conversion_Factor),1) /(I.Conversion_Factor) else 0 end),0) as Evening_Qty,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = 'AM' then TSPL_SD_SALE_INVOICE_DETAIL.Qty * isnull((TSPL_ITEM_UOM_DETAIL.Conversion_Factor),1) /(I.Conversion_Factor) else 0 end),0) as Morning_Qty,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = 'PM' then TSPL_SD_SALE_INVOICE_DETAIL.Item_Net_Amt  else 0 end),0) as Evening_Amt,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = 'AM' then TSPL_SD_SALE_INVOICE_DETAIL.Item_Net_Amt  else 0 end),0) as Morning_Amt "
-                BaseQry2 = " 'PM' as Shift_Type, max(TSPL_ITEM_MASTER.Sku_Seq)Sku_Seq,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = '' then TSPL_SD_SALE_INVOICE_DETAIL.Qty * isnull((TSPL_ITEM_UOM_DETAIL.Conversion_Factor),1) /(I.Conversion_Factor) else 0 end),0) as Evening_Qty,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = 'AM' then TSPL_SD_SALE_INVOICE_DETAIL.Qty * isnull((TSPL_ITEM_UOM_DETAIL.Conversion_Factor),1) /(I.Conversion_Factor) else 0 end),0) as Morning_Qty,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = '' then TSPL_SD_SALE_INVOICE_DETAIL.Item_Net_Amt  else 0 end),0) as Evening_Amt,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = 'AM' then TSPL_SD_SALE_INVOICE_DETAIL.Item_Net_Amt  else 0 end),0) as Morning_Amt "
+                BaseQry2 = " 'PM' as Shift_Type, max(TSPL_ITEM_MASTER.Sku_Seq)Sku_Seq,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = 'PM' then TSPL_SD_SALE_INVOICE_DETAIL.Qty * isnull((TSPL_ITEM_UOM_DETAIL.Conversion_Factor),1) /(I.Conversion_Factor) else 0 end),0) as Evening_Qty,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = 'AM' then TSPL_SD_SALE_INVOICE_DETAIL.Qty * isnull((TSPL_ITEM_UOM_DETAIL.Conversion_Factor),1) /(I.Conversion_Factor) else 0 end),0) as Morning_Qty,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = 'PM' then TSPL_SD_SALE_INVOICE_DETAIL.Item_Net_Amt  else 0 end),0) as Evening_Amt,isnull(sum(case when isnull(TSPL_SD_SHIPMENT_HEAD.Shift_Type,'') = 'AM' then TSPL_SD_SALE_INVOICE_DETAIL.Item_Net_Amt  else 0 end),0) as Morning_Amt "
 
                 BaseQry = " ,isnull(sum(TSPL_SD_SALE_INVOICE_DETAIL.Qty * isnull((TSPL_ITEM_UOM_DETAIL.Conversion_Factor),1) /(I.Conversion_Factor)),0) as Total_Qty,isnull(sum(TSPL_SD_SALE_INVOICE_DETAIL.Item_Net_Amt),0) as Total_Amt
             FROM TSPL_SD_SALE_INVOICE_DETAIL left outer join TSPL_ITEM_MASTER on TSPL_ITEM_MASTER.Item_Code=TSPL_SD_SALE_INVOICE_DETAIL.Item_Code  left outer join TSPL_SD_SALE_INVOICE_HEAD on TSPL_SD_SALE_INVOICE_HEAD.Document_Code = TSPL_SD_SALE_INVOICE_DETAIL.DOCUMENT_CODE left outer join TSPL_SD_SHIPMENT_HEAD on TSPL_SD_SHIPMENT_HEAD.Document_Code = TSPL_SD_SALE_INVOICE_HEAD.Against_Shipment_No
