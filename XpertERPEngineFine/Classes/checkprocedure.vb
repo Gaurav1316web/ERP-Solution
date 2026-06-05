@@ -344,6 +344,7 @@ Public Class ProgramCodeNew
         InsertDefaultValue(clsUserMgtCode.frmCancelDCSSale, "Cancel DCS Sale", "1.03.02.61", clsUserMgtCode.SubModuleMCCMilkProcurementTransaction, "", 8, 0, "", "", "", True, True, False, "", Nothing, "", "", "", "", "", False, "", 0, True, False)
         InsertDefaultValue(clsUserMgtCode.WEIGHINGMaster, "WEIGHING Master", "1.03.02.62", clsUserMgtCode.SubModuleMCCMilkProcurementTransaction, "", 8, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, True, False)
         InsertDefaultValue(clsUserMgtCode.frmTransporterPaymentProcess, "Transporter Payment Process", "1.03.02.64", clsUserMgtCode.SubModuleMCCMilkProcurementTransaction, 8)
+        InsertDefaultValue(clsUserMgtCode.MilkProcurementFarmerCorrection, "Farmer Milk Correction", "1.03.02.65", clsUserMgtCode.SubModuleMCCMilkProcurementTransaction, 8)
 
 
         '=========================================================================================
