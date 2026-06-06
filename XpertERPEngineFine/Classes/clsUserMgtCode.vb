@@ -2688,6 +2688,7 @@ Public Class clsUserMgtCode
     '====================
     Public Const MilkProcurementUploader As String = "MLK-UPL-PRO"
     Public Const MilkShiftUploader As String = "MLK-PRO-UPL"
+    Public Const MilkProcurementFarmerCorrection As String = "MLK-FAR-COR"
     Public Const MilkProcurementCorrection As String = "MLK-PRO-COR"
     Public Const MilkRetesting As String = "MLK-RE-TST"
     Public Const PrimaryTransportProvisionCorrection As String = "PTP-PRO-COR"

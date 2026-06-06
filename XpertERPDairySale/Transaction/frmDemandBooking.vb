@@ -1420,7 +1420,9 @@ And TSPL_ITEM_UOM_DETAIL.Default_UOM = 1"
                 End If
                 If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
                     Dim dtTransporter As DataTable = clsDBFuncationality.GetDataTable(ReturnDistributorRouteTaggingQry())
-                    lblTransporterName.Text = dtTransporter.Rows(0)("Customer_Name")
+                    If dtTransporter IsNot Nothing AndAlso dtTransporter.Rows.Count > 0 Then
+                        lblTransporterName.Text = dtTransporter.Rows(0)("Customer_Name")
+                    End If
                     dtTransporter = Nothing
                 Else
                     lblTransporterName.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select transporter_name from tspl_transport_master where Transport_Id =(select Transport_Id from tspl_vehicle_master where vehicle_id= '" & Convert.ToString(txtVehicleNo.Value) & "')"))
@@ -1428,6 +1430,7 @@ And TSPL_ITEM_UOM_DETAIL.Default_UOM = 1"
                 'HideUnhideRowsOFGrid()
                 isLoadData = False
                 UpdateAllTotals(True)
+
                 If Not SettSeprateDemandForMorningEveningShift Then
                     HideUnhideRowsAndColumnsOFGrid()
                 End If
@@ -1961,6 +1964,7 @@ And TSPL_ITEM_UOM_DETAIL.Default_UOM = 1"
         End If
     End Sub
     Private Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
+        'Dim trans As SqlTransaction = clsDBFuncationality.GetTransactin()
         Try
             If clsCommon.myLen(clsCommon.myCstr(txtRouteNo.Value)) <= 0 Then
                 Throw New Exception("Please select Route First")
@@ -1969,7 +1973,72 @@ And TSPL_ITEM_UOM_DETAIL.Default_UOM = 1"
                 Throw New Exception("Please select City First")
             End If
             setCustomerDetail(TxtCity.Value, txtRouteNo.Value, False)
+            '            Dim strQry As String = "select Document_No,Document_Date,Location_Code from tspl_demand_booking_master where convert(date,document_date,103)='05-Jun-2026' and ShiftType='Morning'"
+            '            Dim dt As DataTable = clsDBFuncationality.GetDataTable(strQry, trans)
+            '            If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+            '                For Each dr As DataRow In dt.Rows
+            '                    strQry = "select TR_Code,Cust_Code,Item_Code,Unit_code,Price_code,ShiftType,Item_Rate,ItemNetAmount,* from TSPL_DEMAND_BOOKING_DETAIL where Document_No='" + clsCommon.myCstr(dr("Document_No")) + "'"
+            '                    Dim dtd As DataTable = clsDBFuncationality.GetDataTable(strQry, trans)
+            '                    If dtd IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+            '                        For Each drs As DataRow In dtd.Rows
+            '                            Dim PricePlan As String = "  Select Is_With_Tax, RowNo, Item_Price_ID, XXXE.Item_Code, UOM, Start_Date, Item_Basic_Price,Item_Basic_Net,Price_Code,Item_Selling_Price, XXXE.Tax_group,XXXE.TAX1_Rate, " &
+            '                    " XXXE.TAX2_Rate,XXXE.TAX3_Rate,XXXE.TAX4_Rate,XXXE.TAX5_Rate, " &
+            '                    "  XXXE.TAX6_Rate,XXXE.TAX7_Rate,XXXE.TAX8_Rate,XXXE.TAX9_Rate, " &
+            '                    " XXXE.TAX10_Rate,XXXE.TAX1 ,XXXE.TAX2,XXXE.TAX3, " &
+            '                    " XXXE.TAX4,XXXE.TAX5,XXXE.TAX6,XXXE.TAX7, " &
+            '                    " XXXE.TAX8,XXXE.TAX9,XXXE.TAX10,XXXE.TAX1_Amt, " &
+            '                    " XXXE.TAX2_Amt,XXXE.TAX3_Amt,XXXE.TAX4_Amt, XXXE.TAX5_Amt,XXXE.TAX6_Amt,XXXE.TAX7_Amt,XXXE.TAX8_Amt,XXXE.TAX9_Amt,XXXE.TAX10_Amt,XXXE.Against_Plan_TR_Code  from ( " &
+            '                    "Select ROW_NUMBER() OVER (Partition By TSPL_ITEM_PRICE_MASTER.Item_Code ORDER BY TSPL_ITEM_PRICE_MASTER.Item_Code,  " &
+            '                    "Start_Date Desc) as RowNo,Is_With_Tax, Item_Price_ID, TSPL_ITEM_PRICE_MASTER.Item_Code, UOM, Start_Date,  " &
+            '                    "Item_Basic_Price,Item_Basic_Net,Price_Code,Item_Selling_Price, TSPL_ITEM_PRICE_MASTER.Tax_group,TSPL_ITEM_PRICE_MASTER.TAX1_Rate,  " &
+            '                    "TSPL_ITEM_PRICE_MASTER.TAX2_Rate,TSPL_ITEM_PRICE_MASTER.TAX3_Rate,TSPL_ITEM_PRICE_MASTER.TAX4_Rate,TSPL_ITEM_PRICE_MASTER.TAX5_Rate,  " &
+            '                    " TSPL_ITEM_PRICE_MASTER.TAX6_Rate, TSPL_ITEM_PRICE_MASTER.TAX7_Rate, TSPL_ITEM_PRICE_MASTER.TAX8_Rate, TSPL_ITEM_PRICE_MASTER.TAX9_Rate, " &
+            '                    " TSPL_ITEM_PRICE_MASTER.TAX10_Rate, TSPL_ITEM_PRICE_MASTER.TAX1, TSPL_ITEM_PRICE_MASTER.TAX2, TSPL_ITEM_PRICE_MASTER.TAX3, " &
+            '                    " TSPL_ITEM_PRICE_MASTER.TAX4, TSPL_ITEM_PRICE_MASTER.TAX5, TSPL_ITEM_PRICE_MASTER.TAX6, TSPL_ITEM_PRICE_MASTER.TAX7, " &
+            '                    " TSPL_ITEM_PRICE_MASTER.TAX8,TSPL_ITEM_PRICE_MASTER.TAX9,TSPL_ITEM_PRICE_MASTER.TAX10,TSPL_ITEM_PRICE_MASTER.TAX1_Amt , TSPL_ITEM_PRICE_MASTER.TAX2_Amt ,TSPL_ITEM_PRICE_MASTER.TAX3_Amt ,TSPL_ITEM_PRICE_MASTER.TAX4_Amt,TSPL_ITEM_PRICE_MASTER.TAX5_Amt,TSPL_ITEM_PRICE_MASTER.TAX6_Amt,TSPL_ITEM_PRICE_MASTER.TAX7_Amt,   TSPL_ITEM_PRICE_MASTER.TAX8_Amt,TSPL_ITEM_PRICE_MASTER.TAX9_Amt,TSPL_ITEM_PRICE_MASTER.TAX10_Amt,TSPL_ITEM_PRICE_MASTER.Against_Plan_TR_Code from TSPL_ITEM_PRICE_MASTER  left  outer join  " &
+            '                    "TSPL_ITEM_UOM_DETAIL on TSPL_ITEM_PRICE_MASTER.Item_Code=TSPL_ITEM_UOM_DETAIL.Item_Code and  " &
+            '                    "TSPL_ITEM_PRICE_MASTER.UOM=TSPL_ITEM_UOM_DETAIL.UOM_Code   where  2=( case when CONVERT(date,Start_Date,103)='" + clsCommon.GetPrintDate(dr("Document_Date")) + "' and Shift_Type='Morning' then 2 else ( case when CONVERT(date,Start_Date,103)<='" + clsCommon.GetPrintDate(clsCommon.myCDate(dr("Document_Date")).AddDays(-1)) + "' then 2 else 3 end)  end)  and (End_Date >= '" & clsCommon.GetPrintDate(clsCommon.myCDate(dr("Document_Date")), "dd/MMM/yyyy") & "'  or End_date is null)  and  " &
+            '                    "TSPL_ITEM_PRICE_MASTER.Price_Code='" & clsCommon.myCstr(drs("Price_code")) & "' and UOM='" & clsCommon.myCstr(drs("Unit_code")) & "' and TSPL_ITEM_PRICE_MASTER.item_code='" & clsCommon.myCstr(drs("Item_Code")) & "' AND Location_Code='" & clsCommon.myCstr(dr("Location_Code")) & "'  " &
+            '                    ") XXXE WHERE RowNo=1  "
+            '                            Dim dt1 As DataTable = clsDBFuncationality.GetDataTable(PricePlan, trans)
+            '                            Dim dblRate As Double = 0
+            '                            If dt1.Rows.Count > 0 Then
+
+            '                                dblRate = clsCommon.myCdbl(dt1.Rows(0).Item("Item_Basic_Price"))
+            '                            Else
+            '                                Throw New Exception("price not found!")
+            '                            End If
+            '                            Dim updateItem As String = "update TSPL_DEMAND_BOOKING_DETAIL set Item_Rate='" + clsCommon.myCstr(dblRate) + "',
+            'TAX1_Base_Amt=Qty*Item_Rate,TAX1_Amt=((Qty*Item_Rate)*(TAX1_Rate/100)),
+            'TAX2_Base_Amt=Qty*Item_Rate,TAX2_Amt=((Qty*Item_Rate)*(TAX2_Rate/100)),
+            'TAX3_Base_Amt=Qty*Item_Rate,TAX3_Amt=((Qty*Item_Rate)*(TAX3_Rate/100)),
+            'TAX4_Base_Amt=Qty*Item_Rate,TAX4_Amt=((Qty*Item_Rate)*(TAX4_Rate/100)),
+            'TAX5_Base_Amt=Qty*Item_Rate,TAX5_Amt=((Qty*Item_Rate)*(TAX5_Rate/100)),
+            'TAX6_Base_Amt=Qty*Item_Rate,TAX6_Amt=((Qty*Item_Rate)*(TAX6_Rate/100)),
+            'TAX7_Base_Amt=Qty*Item_Rate,TAX7_Amt=((Qty*Item_Rate)*(TAX7_Rate/100)),
+            'TAX8_Base_Amt=Qty*Item_Rate,TAX8_Amt=((Qty*Item_Rate)*(TAX8_Rate/100)),
+            'TAX9_Base_Amt=Qty*Item_Rate,TAX9_Amt=((Qty*Item_Rate)*(TAX9_Rate/100)),
+            'TAX10_Base_Amt=Qty*Item_Rate,TAX10_Amt=((Qty*Item_Rate)*(TAX10_Rate/100)),
+            'ItemNetAmount=(Qty*Item_Rate)+TAX1_Amt+TAX2_Amt+TAX3_Amt+TAX4_Amt+TAX5_Amt
+            'where TR_Code='" + clsCommon.myCstr(drs("TR_Code")) + "'"
+            '                            clsDBFuncationality.ExecuteNonQuery(updateItem, trans)
+            '                            'Dim strQ1 As String = "select TR_Code,Cust_Code,Item_Code,Unit_code,Price_code,ShiftType,Item_Rate,ItemNetAmount from TSPL_DEMAND_BOOKING_DETAIL where TR_Code='" + clsCommon.myCstr(drs("TR_Code")) + "'"
+            '                            'Dim dtrs As DataTable = clsDBFuncationality.GetDataTable(strQ1, trans)
+            '                            'If dtrs IsNot Nothing AndAlso dtrs.Rows.Count > 0 Then
+
+            '                            'End If
+            '                        Next
+            '                    End If
+            '                    Dim ItemNetAmount As Double = clsCommon.myCdbl(clsDBFuncationality.getSingleValue("select sum(ItemNetAmount) as ItemNetAmount from TSPL_DEMAND_BOOKING_DETAIL where Document_No='" + clsCommon.myCstr(dr("Document_No")) + "'", trans))
+            '                    clsDBFuncationality.ExecuteNonQuery("update TSPL_DEMAND_BOOKING_MASTER set DocumentAmount='" + clsCommon.myCstr(ItemNetAmount) + "' where Document_No='" + clsCommon.myCstr(dr("Document_No")) + "'", trans)
+            '                Next
+            '                trans.Commit()
+            '            Else
+            '                trans.Rollback()
+            '            End If
+
         Catch ex As Exception
+            'trans.Rollback()
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try
     End Sub
@@ -2761,8 +2830,8 @@ and isnull(TSPL_Booth_Route_Mapping_Head.Posted,0)=1 and Item_Type='Milk' and 2=
                         If clsCommon.myLen(strPriceCode) <= 0 Then
                             Throw New InvalidOperationException("price_CodeNon not found for Customer " & clsCommon.myCstr(gv1.Rows(dblrows).Cells(colCustName).Value) & "")
                         End If
-                        'If Not isLoad Then
-                        qry = " Select Is_With_Tax, RowNo, Item_Price_ID, XXXE.Item_Code, UOM, Start_Date, Item_Basic_Price,Item_Basic_Net,Price_Code,Item_Selling_Price, XXXE.Tax_group,XXXE.TAX1_Rate, " &
+                        If Not isLoad Then
+                            qry = " Select Is_With_Tax, RowNo, Item_Price_ID, XXXE.Item_Code, UOM, Start_Date, Item_Basic_Price,Item_Basic_Net,Price_Code,Item_Selling_Price, XXXE.Tax_group,XXXE.TAX1_Rate, " &
                     " XXXE.TAX2_Rate,XXXE.TAX3_Rate,XXXE.TAX4_Rate,XXXE.TAX5_Rate, " &
                     "  XXXE.TAX6_Rate,XXXE.TAX7_Rate,XXXE.TAX8_Rate,XXXE.TAX9_Rate, " &
                     " XXXE.TAX10_Rate,XXXE.TAX1 ,XXXE.TAX2,XXXE.TAX3, " &
@@ -2781,9 +2850,9 @@ and isnull(TSPL_Booth_Route_Mapping_Head.Posted,0)=1 and Item_Type='Milk' and 2=
                     "TSPL_ITEM_PRICE_MASTER.UOM=TSPL_ITEM_UOM_DETAIL.UOM_Code   where  2=( case when CONVERT(date,Start_Date,103)='" + clsCommon.GetPrintDate(txtDate.Value) + "' and Shift_Type='" + IIf(rbtnMorning.IsChecked, "Morning", "Evening") + "' then 2 else ( case when CONVERT(date,Start_Date,103)<='" + IIf(rbtnMorning.IsChecked, clsCommon.GetPrintDate(txtDate.Value.AddDays(-1)), clsCommon.GetPrintDate(txtDate.Value)) + "' then 2 else 3 end)  end)  and (End_Date >= '" & clsCommon.GetPrintDate(txtDate.Value, "dd/MMM/yyyy") & "'  or End_date is null)  and  " &
                     "TSPL_ITEM_PRICE_MASTER.Price_Code='" & strPriceCode & "' and UOM='" & obj1.Unit_code & "' and TSPL_ITEM_PRICE_MASTER.item_code='" & obj1.itemCode & "' AND Location_Code='" & clsCommon.myCstr(txtLocation.Value) & "'  " &
                     ") XXXE WHERE RowNo=1  "
-                        'Else
-                        '    qry = "select item_Rate as Item_Basic_Price,tax_group,TAX1,TAX2,TAX3,TAX4,TAX5,TAX6,TAX7,TAX8,TAX9,TAX10,TAX1_Rate,TAX2_Rate,TAX3_Rate,TAX4_Rate, TAX5_Rate,TAX6_Rate,TAX7_Rate,TAX8_Rate,TAX9_Rate,TAX10_Rate,TAX1_Amt,TAX2_Amt,TAX3_Amt,TAX4_Amt,TAX5_Amt,TAX6_Amt,TAX7_Amt,TAX8_Amt,TAX9_Amt,TAX10_Amt from TSPL_DEMAND_BOOKING_DETAIL where  Document_No='" & txtDocNo.Value & "' and Item_Code='" & obj1.itemCode & "' and Unit_code='" & obj1.Unit_code & "' and Cust_Code='" & clsCommon.myCstr(gv1.Rows(dblrows).Cells(colCustCode).Value) & "'"
-                        'End If
+                        Else
+                            qry = "select item_Rate as Item_Basic_Price,tax_group,TAX1,TAX2,TAX3,TAX4,TAX5,TAX6,TAX7,TAX8,TAX9,TAX10,TAX1_Rate,TAX2_Rate,TAX3_Rate,TAX4_Rate, TAX5_Rate,TAX6_Rate,TAX7_Rate,TAX8_Rate,TAX9_Rate,TAX10_Rate,TAX1_Amt,TAX2_Amt,TAX3_Amt,TAX4_Amt,TAX5_Amt,TAX6_Amt,TAX7_Amt,TAX8_Amt,TAX9_Amt,TAX10_Amt from TSPL_DEMAND_BOOKING_DETAIL where  Document_No='" & txtDocNo.Value & "' and Item_Code='" & obj1.itemCode & "' and Unit_code='" & obj1.Unit_code & "' and Cust_Code='" & clsCommon.myCstr(gv1.Rows(dblrows).Cells(colCustCode).Value) & "'"
+                        End If
                         dt = clsDBFuncationality.GetDataTable(qry)
                         If dt.Rows.Count > 0 Then
                             Dim objCustItem As clsDemandCustItem = New clsDemandCustItem()
