@@ -11,6 +11,34 @@ Public Class frmCorrectionFarmer
 
     Private Sub frmMilkGateEntryIn_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
+            Dim coll As New Dictionary(Of String, String)()
+            coll.Add("Code", "Varchar(10) not null PRIMARY KEY")
+            coll.Add("Description", "nvarchar(1000) null")
+            clsCommonFunctionality.CreateOrAlterTable(False, False, "TSPL_CUSTOM_MSG", coll, "", False, False, "", "", "", False)
+
+            Dim sql As String = "SELECT count(1) FROM INFORMATION_SCHEMA.COLUMNS WHERE  TABLE_NAME = 'TSPL_DCS_MP_INCENTIVE_RECO_DETAIL' AND COLUMN_NAME = 'Status' "
+            Dim CodeExists As Decimal = clsCommon.myCDecimal(clsDBFuncationality.getSingleValue(sql))
+
+            coll = New Dictionary(Of String, String)()
+            coll.Add("Status", "int Null")
+            coll.Add("Posted_By", "varchar(12) NULL")
+            coll.Add("Posting_Date", "Datetime NULL")
+            coll.Add("Loc_Latitude", "varchar(20) NULL")
+            coll.Add("Loc_Longitude", "varchar(20) NULL")
+            coll.Add("Loc_Address", "nvarchar(1000) null")
+            clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL", coll, "unique(Cycle_Year,Cycle_Month,Cycle_No,VLC_Code)", True, True, "TSPL_DCS_MP_INCENTIVE_RECO_HEAD", "Document_Code", "", True)
+            'clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID", coll, "", True, True, "TSPL_DCS_MP_INCENTIVE_RECO_HEAD", "Document_Code", "", True)
+
+            Try
+                If CodeExists = 0 Then
+                    sql = "update TSPL_DCS_MP_INCENTIVE_RECO_DETAIL set TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Status=1 from (
+select Document_Code from TSPL_DCS_MP_INCENTIVE_RECO_HEAD  where Status=1
+)xx inner join TSPL_DCS_MP_INCENTIVE_RECO_DETAIL on TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code=xx.Document_Code"
+                    clsDBFuncationality.ExecuteNonQuery(sql)
+                End If
+            Catch ex As Exception
+            End Try
+
             ButtonToolTip.SetToolTip(btnSave, "Press Alt+S for Save/Update ")
             ButtonToolTip.SetToolTip(btnclose, "Press Alt+C Close the Window")
             txtShiftDate.Value = clsCommon.GETSERVERDATE()
