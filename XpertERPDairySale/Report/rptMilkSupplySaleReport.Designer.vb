@@ -38,6 +38,7 @@ Partial Class rptMilkSupplySaleReport
         Me.RadPageViewPage1 = New Telerik.WinControls.UI.RadPageViewPage()
         Me.RadPanel1 = New Telerik.WinControls.UI.RadPanel()
         Me.RadGroupBox1 = New Telerik.WinControls.UI.RadGroupBox()
+        Me.chkDisplayMargin = New Telerik.WinControls.UI.RadCheckBox()
         Me.RadGroupBox4 = New Telerik.WinControls.UI.RadGroupBox()
         Me.MyLabel3 = New common.Controls.MyLabel()
         Me.MyLabel4 = New common.Controls.MyLabel()
@@ -68,7 +69,8 @@ Partial Class rptMilkSupplySaleReport
         Me.btnClose = New Telerik.WinControls.UI.RadButton()
         Me.btnGo = New Telerik.WinControls.UI.RadButton()
         Me.btnReset = New Telerik.WinControls.UI.RadButton()
-        Me.chkDisplayMargin = New Telerik.WinControls.UI.RadCheckBox()
+        Me.chkRouteShiftCustWise = New Telerik.WinControls.UI.RadCheckBox()
+        Me.chkRouteWise = New Telerik.WinControls.UI.RadCheckBox()
         CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
@@ -80,6 +82,7 @@ Partial Class rptMilkSupplySaleReport
         Me.RadPanel1.SuspendLayout()
         CType(Me.RadGroupBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RadGroupBox1.SuspendLayout()
+        CType(Me.chkDisplayMargin, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RadGroupBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RadGroupBox4.SuspendLayout()
         CType(Me.MyLabel3, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -111,7 +114,8 @@ Partial Class rptMilkSupplySaleReport
         CType(Me.btnClose, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnGo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnReset, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.chkDisplayMargin, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkRouteShiftCustWise, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkRouteWise, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -197,6 +201,8 @@ Partial Class rptMilkSupplySaleReport
         'RadGroupBox1
         '
         Me.RadGroupBox1.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping
+        Me.RadGroupBox1.Controls.Add(Me.chkRouteWise)
+        Me.RadGroupBox1.Controls.Add(Me.chkRouteShiftCustWise)
         Me.RadGroupBox1.Controls.Add(Me.chkDisplayMargin)
         Me.RadGroupBox1.Controls.Add(Me.RadGroupBox4)
         Me.RadGroupBox1.Controls.Add(Me.lblCustomer)
@@ -209,8 +215,16 @@ Partial Class rptMilkSupplySaleReport
         Me.RadGroupBox1.HeaderText = ""
         Me.RadGroupBox1.Location = New System.Drawing.Point(6, 13)
         Me.RadGroupBox1.Name = "RadGroupBox1"
-        Me.RadGroupBox1.Size = New System.Drawing.Size(341, 248)
+        Me.RadGroupBox1.Size = New System.Drawing.Size(601, 248)
         Me.RadGroupBox1.TabIndex = 389
+        '
+        'chkDisplayMargin
+        '
+        Me.chkDisplayMargin.Location = New System.Drawing.Point(227, 115)
+        Me.chkDisplayMargin.Name = "chkDisplayMargin"
+        Me.chkDisplayMargin.Size = New System.Drawing.Size(95, 18)
+        Me.chkDisplayMargin.TabIndex = 445
+        Me.chkDisplayMargin.Text = "Display Margin"
         '
         'RadGroupBox4
         '
@@ -599,13 +613,21 @@ Partial Class rptMilkSupplySaleReport
         Me.btnReset.TabIndex = 152
         Me.btnReset.Text = "Reset"
         '
-        'chkDisplayMargin
+        'chkRouteShiftCustWise
         '
-        Me.chkDisplayMargin.Location = New System.Drawing.Point(227, 115)
-        Me.chkDisplayMargin.Name = "chkDisplayMargin"
-        Me.chkDisplayMargin.Size = New System.Drawing.Size(95, 18)
-        Me.chkDisplayMargin.TabIndex = 445
-        Me.chkDisplayMargin.Text = "Display Margin"
+        Me.chkRouteShiftCustWise.Location = New System.Drawing.Point(349, 11)
+        Me.chkRouteShiftCustWise.Name = "chkRouteShiftCustWise"
+        Me.chkRouteShiftCustWise.Size = New System.Drawing.Size(154, 18)
+        Me.chkRouteShiftCustWise.TabIndex = 446
+        Me.chkRouteShiftCustWise.Text = "Route Shift Customer Wise"
+        '
+        'chkRouteWise
+        '
+        Me.chkRouteWise.Location = New System.Drawing.Point(514, 11)
+        Me.chkRouteWise.Name = "chkRouteWise"
+        Me.chkRouteWise.Size = New System.Drawing.Size(77, 18)
+        Me.chkRouteWise.TabIndex = 447
+        Me.chkRouteWise.Text = "Route Wise"
         '
         'rptMilkSupplySaleReport
         '
@@ -632,6 +654,7 @@ Partial Class rptMilkSupplySaleReport
         CType(Me.RadGroupBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.RadGroupBox1.ResumeLayout(False)
         Me.RadGroupBox1.PerformLayout()
+        CType(Me.chkDisplayMargin, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RadGroupBox4, System.ComponentModel.ISupportInitialize).EndInit()
         Me.RadGroupBox4.ResumeLayout(False)
         Me.RadGroupBox4.PerformLayout()
@@ -667,7 +690,8 @@ Partial Class rptMilkSupplySaleReport
         CType(Me.btnClose, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnGo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnReset, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.chkDisplayMargin, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkRouteShiftCustWise, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkRouteWise, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -713,5 +737,7 @@ Partial Class rptMilkSupplySaleReport
     Friend WithEvents RadPageViewPage3 As RadPageViewPage
     Friend WithEvents gv As RadGridView
     Friend WithEvents chkDisplayMargin As RadCheckBox
+    Friend WithEvents chkRouteWise As RadCheckBox
+    Friend WithEvents chkRouteShiftCustWise As RadCheckBox
 End Class
 
