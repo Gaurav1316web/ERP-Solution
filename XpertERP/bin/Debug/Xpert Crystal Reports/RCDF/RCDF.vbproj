@@ -1191,6 +1191,8 @@
     <None Include="Crystal Reports\Dairy Sales Report\crptDairySaleGatePassEntriesNAG.rpt" />
     <None Include="Crystal Reports\Dairy Sales Report\crptDCSDeductionGSTReport.rpt" />
     <None Include="Crystal Reports\Dairy Sales Report\crptDCSDeductionReport.rpt" />
+    <None Include="Crystal Reports\Dairy Sales Report\crptMilkSupplySaleShiftRouteCustWiseSummary.rpt" />
+    <None Include="Crystal Reports\Dairy Sales Report\crptMilkSupplySaleShiftRouteWiseSummary.rpt" />
     <None Include="Crystal Reports\Dairy Sales Report\crptMultipleInvoicePrintBKN.rpt" />
     <None Include="Crystal Reports\Dairy Sales Report\crptMultipleInvoicePrintJDH.rpt" />
     <None Include="Crystal Reports\Dairy Sales Report\crptRouteWiseReportCHT.rpt" />
