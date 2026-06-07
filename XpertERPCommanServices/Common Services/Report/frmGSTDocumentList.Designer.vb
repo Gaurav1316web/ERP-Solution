@@ -22,6 +22,7 @@ Partial Class frmGSTDocumentList
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'frmGSTDocumentList
@@ -30,7 +31,12 @@ Partial Class frmGSTDocumentList
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
         Me.Name = "frmGSTDocumentList"
+        '
+        '
+        '
+        Me.RootElement.ApplyShapeToControl = True
         Me.Text = "frmGSTDocumentList"
+        CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
