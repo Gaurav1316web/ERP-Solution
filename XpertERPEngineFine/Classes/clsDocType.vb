@@ -32,6 +32,7 @@ Public Class clsDocType
     Public Const TransferToSaving As String = "Transfer To Saving"
     Public Const BMCTransporterBill As String = "BMC Transporter Bill"
     Public Const EmployeeOTEntry As String = "Employee OT Entry"
+    Public Const TransporterPaymentProcess As String = "Transporter Payment Process"
     Public Const EmployeeOTEntryCalculation As String = "Employee OT Entry Calculation"
     Public Const CHACHARGEMASTER As String = "CHA Charge Master"
     Public Const DebitNote As String = "AP Debit Note"

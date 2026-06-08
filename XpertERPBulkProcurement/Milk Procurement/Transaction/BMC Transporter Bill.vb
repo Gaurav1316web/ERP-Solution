@@ -318,9 +318,6 @@ Public Class BMC_Transporter_Bill
         gv1.MasterTemplate.ShowRowHeaderColumn = False
         gv1.TableElement.TableHeaderHeight = 40
 
-
-
-
         gv1.SummaryRowsBottom.Clear()
         gv1.ShowColumnHeaders = True
         Dim summaryRow As New GridViewSummaryRowItem()

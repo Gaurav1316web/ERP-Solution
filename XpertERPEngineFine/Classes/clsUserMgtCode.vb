@@ -6,6 +6,7 @@ Public Class clsUserMgtCode
 
     Public Const frmSubRouteMaster As String = "SUB-RT-MSTR"
     Public Const frmAccountSalesReport As String = "ACC-SLS-RPT"
+    Public Const rptProductCreditSaleReport As String = "PRD-CR-RPT"
     Public Const frmPIPaymentStatusReport As String = "PIP-STS-RPT"
     Public Const frmEmployeeOTEntry As String = "EMP-OT"
     Public Const rptDCSTruckSheetRegister As String = "DCS_REG"
