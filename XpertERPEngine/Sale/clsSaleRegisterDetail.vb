@@ -2887,7 +2887,14 @@ Public Class clsSaleRegisterDetail
                                     ELSE TSPL_SD_SALE_INVOICE_HEAD.Gross_Amount 
                                     END AS Gross_Amount,CASE WHEN TSPL_SD_SALE_INVOICE_HEAD.Document_Code = LEAD(TSPL_SD_SALE_INVOICE_HEAD.Document_Code) OVER (ORDER BY TSPL_SD_SALE_INVOICE_HEAD.Document_Code) THEN 0 
                                     ELSE TSPL_SD_SHIPMENT_HEAD.TotalSubsidyAmt
-                                    END AS TotalSubsidyAmt ,tspl_vlc_master_Head.VLC_Code_VLC_Uploader AS DCSCODE,  (TSPL_SD_SHIPMENT_HEAD.Supply_Date)Supply_Date,case when TSPL_SD_SALE_INVOICE_HEAD.Trans_Type='FS' THEN TSPL_BOOKING_MATSER.Payment_Terms ELSE TSPL_SD_SHIPMENT_HEAD.Payment_Terms END AS Payment_Terms,Case when TSPL_BOOKING_MATSER.Is_BPL = 1 then 'BPL'
+                                    END AS TotalSubsidyAmt ,tspl_vlc_master_Head.VLC_Code_VLC_Uploader AS DCSCODE,  (TSPL_SD_SHIPMENT_HEAD.Supply_Date)Supply_Date,
+                                    CASE 
+                                    WHEN TSPL_SD_SALE_INVOICE_HEAD.Trans_Type = 'FS' 
+                                        THEN TSPL_BOOKING_MATSER.Payment_Terms
+                                    WHEN TSPL_SD_SHIPMENT_HEAD.Is_CashSale = 'Y' 
+                                        THEN 'CASH'
+                                    ELSE 'CREDIT'
+                                END AS Payment_Terms, Case when TSPL_BOOKING_MATSER.Is_BPL = 1 then 'BPL'
 						  WHEN TSPL_BOOKING_MATSER.Is_Distributor = 1 THEN 'Distributor'
 						  WHEN TSPL_BOOKING_MATSER.Is_DCS = 1 THEN 'DCS'
 						  WHEN TSPL_BOOKING_MATSER.Is_CashSale= 'Y' THEN 'CASH SALE' ELSE 'OTHER' end as CustomerType,

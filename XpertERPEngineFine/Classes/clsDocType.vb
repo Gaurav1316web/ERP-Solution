@@ -846,6 +846,11 @@ Public Class clsDocType
             InsertDefaultValue(clsDocType.DebitNote, clsDocTransactionType.DirectAP, False, True)
             InsertDefaultValue(clsDocType.CreditNote, clsDocTransactionType.DirectAP, False, True)
 
+            InsertDefaultValue(clsDocType.APInvoice, clsDocTransactionType.ServiceCharge, False, True)
+            InsertDefaultValue(clsDocType.DebitNote, clsDocTransactionType.ServiceCharge, False, True)
+            InsertDefaultValue(clsDocType.CreditNote, clsDocTransactionType.ServiceCharge, False, True)
+
+
             InsertDefaultValue(clsDocType.APInvoice, clsDocTransactionType.MccProc, False, True)
             InsertDefaultValue(clsDocType.DebitNote, clsDocTransactionType.MccProc, False, True)
             InsertDefaultValue(clsDocType.CreditNote, clsDocTransactionType.MccProc, False, True)
@@ -2337,6 +2342,7 @@ Public Class clsDocTransactionType
     Public Const NA As String = "NA"
     Public Const GeneralPurchase As String = "General Purchase"
     Public Const MccProc As String = "MccProc"
+    Public Const ServiceCharge As String = "Service Charge"
     Public Const Prospect As String = "Prospect"
     Public Const CSA_CPD_DESI_GHEE As String = "CPD Desi Ghee"
     Public Const CSA_BULK_DESI_GHEE As String = "Bulk Desi Ghee"

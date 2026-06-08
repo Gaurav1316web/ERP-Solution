@@ -4394,6 +4394,9 @@ Public Class MDI
                     Case clsUserMgtCode.ItemStockConversion
                         frm = New frmItemToItemStockConverion
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
+                    Case clsUserMgtCode.frmGSTDocumentList
+                        frm = New frmGSTDocumentList
+                        formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
                     '------------------ Inventory Reports---------------------------------------
 
                     'Case "ItemLocationReport"
@@ -8091,6 +8094,9 @@ Public Class MDI
                             frm = New frmMilkShiftUploader
                             formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
                         End If
+                    Case clsUserMgtCode.MilkProcurementFarmerCorrection
+                        frm = New frmCorrectionFarmer
+                        formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
                     Case clsUserMgtCode.MilkProcurementCorrection
                         frm = New frmCorrection
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)

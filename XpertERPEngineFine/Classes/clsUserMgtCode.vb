@@ -1,5 +1,6 @@
 ﻿Imports common
 Public Class clsUserMgtCode
+    Public Const frmGSTDocumentList As String = "GST-DOC-LST"
     Public Const frmNIRQCvsWetQc As String = "NIRQ_VS_W"
     Public Const frmUnionWiseDockEntryReport As String = "UNN-DE-RPT"
     Public Const FrmInActiveDCSReport As String = "UNN-IA-DC"
@@ -2688,6 +2689,7 @@ Public Class clsUserMgtCode
     '====================
     Public Const MilkProcurementUploader As String = "MLK-UPL-PRO"
     Public Const MilkShiftUploader As String = "MLK-PRO-UPL"
+    Public Const MilkProcurementFarmerCorrection As String = "MLK-FAR-COR"
     Public Const MilkProcurementCorrection As String = "MLK-PRO-COR"
     Public Const MilkRetesting As String = "MLK-RE-TST"
     Public Const PrimaryTransportProvisionCorrection As String = "PTP-PRO-COR"

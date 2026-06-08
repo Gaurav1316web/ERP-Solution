@@ -21,8 +21,8 @@ Partial Class frmMPDCSIncentiveReco
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim TableViewDefinition4 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Dim TableViewDefinition3 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition4 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
         Me.RadPageViewPage4 = New Telerik.WinControls.UI.RadPageViewPage()
@@ -53,6 +53,7 @@ Partial Class frmMPDCSIncentiveReco
         Me.Attachments = New Telerik.WinControls.UI.RadPageViewPage()
         Me.UcAttachment1 = New XpertERPEngine.ucAttachment()
         Me.gvTermsCdtion = New common.UserControls.MyRadGridView()
+        Me.btnEditDCSQty = New Telerik.WinControls.UI.RadButton()
         Me.btnReverse = New Telerik.WinControls.UI.RadButton()
         Me.SplitContainer3 = New System.Windows.Forms.SplitContainer()
         Me.btnsave = New Telerik.WinControls.UI.RadButton()
@@ -65,7 +66,9 @@ Partial Class frmMPDCSIncentiveReco
         Me.RadMenuItem1 = New Telerik.WinControls.UI.RadMenuItem()
         Me.rmsaveLayout = New Telerik.WinControls.UI.RadMenuItem()
         Me.rmDeleteLayout = New Telerik.WinControls.UI.RadMenuItem()
-        Me.btnEditDCSQty = New Telerik.WinControls.UI.RadButton()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.rbtnOther = New common.Controls.MyRadioButton()
+        Me.rbtnThirdParty = New common.Controls.MyRadioButton()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -100,6 +103,7 @@ Partial Class frmMPDCSIncentiveReco
         Me.Attachments.SuspendLayout()
         CType(Me.gvTermsCdtion, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.gvTermsCdtion.MasterTemplate, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.btnEditDCSQty, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnReverse, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer3.Panel1.SuspendLayout()
         Me.SplitContainer3.Panel2.SuspendLayout()
@@ -111,7 +115,9 @@ Partial Class frmMPDCSIncentiveReco
         CType(Me.RadButton6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnclose, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.btnEditDCSQty, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox1.SuspendLayout()
+        CType(Me.rbtnOther, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.rbtnThirdParty, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -175,6 +181,7 @@ Partial Class frmMPDCSIncentiveReco
         '
         'SplitContainer2.Panel1
         '
+        Me.SplitContainer2.Panel1.Controls.Add(Me.GroupBox1)
         Me.SplitContainer2.Panel1.Controls.Add(Me.RadGroupBox1)
         Me.SplitContainer2.Panel1.Controls.Add(Me.lblZone)
         Me.SplitContainer2.Panel1.Controls.Add(Me.txtZone)
@@ -209,7 +216,7 @@ Partial Class frmMPDCSIncentiveReco
         Me.RadGroupBox1.Controls.Add(Me.txtFatPer)
         Me.RadGroupBox1.Controls.Add(Me.MyLabel5)
         Me.RadGroupBox1.HeaderText = "Consider FAT SNF Above"
-        Me.RadGroupBox1.Location = New System.Drawing.Point(628, 10)
+        Me.RadGroupBox1.Location = New System.Drawing.Point(726, 1)
         Me.RadGroupBox1.Name = "RadGroupBox1"
         Me.RadGroupBox1.Size = New System.Drawing.Size(148, 59)
         Me.RadGroupBox1.TabIndex = 87
@@ -545,7 +552,8 @@ Partial Class frmMPDCSIncentiveReco
         Me.gvItem.MasterTemplate.AllowAddNewRow = False
         Me.gvItem.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gvItem.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gvItem.MasterTemplate.ViewDefinition = TableViewDefinition4
+        Me.gvItem.MasterTemplate.ViewDefinition = TableViewDefinition3
+        Me.gvItem.MyExportAPI = False
         Me.gvItem.MyExportFilePath = ""
         Me.gvItem.MyStopExport = False
         Me.gvItem.Name = "gvItem"
@@ -588,7 +596,8 @@ Partial Class frmMPDCSIncentiveReco
         Me.gvTermsCdtion.MasterTemplate.AllowDeleteRow = False
         Me.gvTermsCdtion.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gvTermsCdtion.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gvTermsCdtion.MasterTemplate.ViewDefinition = TableViewDefinition3
+        Me.gvTermsCdtion.MasterTemplate.ViewDefinition = TableViewDefinition4
+        Me.gvTermsCdtion.MyExportAPI = False
         Me.gvTermsCdtion.MyExportFilePath = ""
         Me.gvTermsCdtion.MyStopExport = False
         Me.gvTermsCdtion.Name = "gvTermsCdtion"
@@ -599,6 +608,17 @@ Partial Class frmMPDCSIncentiveReco
         Me.gvTermsCdtion.TabIndex = 3
         Me.gvTermsCdtion.TabStop = False
         Me.gvTermsCdtion.VarID = ""
+        '
+        'btnEditDCSQty
+        '
+        Me.btnEditDCSQty.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnEditDCSQty.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnEditDCSQty.Location = New System.Drawing.Point(743, 6)
+        Me.btnEditDCSQty.Name = "btnEditDCSQty"
+        Me.btnEditDCSQty.Size = New System.Drawing.Size(125, 20)
+        Me.btnEditDCSQty.TabIndex = 44
+        Me.btnEditDCSQty.Text = "Edit DCS Qty"
+        Me.btnEditDCSQty.Visible = False
         '
         'btnReverse
         '
@@ -713,16 +733,38 @@ Partial Class frmMPDCSIncentiveReco
         Me.rmDeleteLayout.Text = "Delete Layout"
         Me.rmDeleteLayout.UseCompatibleTextRendering = False
         '
-        'btnEditDCSQty
+        'GroupBox1
         '
-        Me.btnEditDCSQty.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnEditDCSQty.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnEditDCSQty.Location = New System.Drawing.Point(743, 6)
-        Me.btnEditDCSQty.Name = "btnEditDCSQty"
-        Me.btnEditDCSQty.Size = New System.Drawing.Size(125, 20)
-        Me.btnEditDCSQty.TabIndex = 44
-        Me.btnEditDCSQty.Text = "Edit DCS Qty"
-        Me.btnEditDCSQty.Visible = False
+        Me.GroupBox1.Controls.Add(Me.rbtnOther)
+        Me.GroupBox1.Controls.Add(Me.rbtnThirdParty)
+        Me.GroupBox1.Location = New System.Drawing.Point(632, 2)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(90, 69)
+        Me.GroupBox1.TabIndex = 88
+        Me.GroupBox1.TabStop = False
+        '
+        'rbtnOther
+        '
+        Me.rbtnOther.Location = New System.Drawing.Point(5, 34)
+        Me.rbtnOther.MyLinkLable1 = Nothing
+        Me.rbtnOther.MyLinkLable2 = Nothing
+        Me.rbtnOther.Name = "rbtnOther"
+        Me.rbtnOther.Size = New System.Drawing.Size(49, 18)
+        Me.rbtnOther.TabIndex = 1
+        Me.rbtnOther.TabStop = False
+        Me.rbtnOther.Text = "Other"
+        '
+        'rbtnThirdParty
+        '
+        Me.rbtnThirdParty.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.rbtnThirdParty.Location = New System.Drawing.Point(5, 12)
+        Me.rbtnThirdParty.MyLinkLable1 = Nothing
+        Me.rbtnThirdParty.MyLinkLable2 = Nothing
+        Me.rbtnThirdParty.Name = "rbtnThirdParty"
+        Me.rbtnThirdParty.Size = New System.Drawing.Size(74, 18)
+        Me.rbtnThirdParty.TabIndex = 0
+        Me.rbtnThirdParty.Text = "Third Party"
+        Me.rbtnThirdParty.ToggleState = Telerik.WinControls.Enumerations.ToggleState.[On]
         '
         'frmMPDCSIncentiveReco
         '
@@ -773,6 +815,7 @@ Partial Class frmMPDCSIncentiveReco
         Me.Attachments.ResumeLayout(False)
         CType(Me.gvTermsCdtion.MasterTemplate, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.gvTermsCdtion, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.btnEditDCSQty, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnReverse, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer3.Panel1.ResumeLayout(False)
         Me.SplitContainer3.Panel2.ResumeLayout(False)
@@ -784,7 +827,10 @@ Partial Class frmMPDCSIncentiveReco
         CType(Me.RadButton6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnclose, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.btnEditDCSQty, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
+        CType(Me.rbtnOther, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.rbtnThirdParty, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -833,5 +879,8 @@ Partial Class frmMPDCSIncentiveReco
     Friend WithEvents txtFatPer As common.MyNumBox
     Friend WithEvents MyLabel5 As common.Controls.MyLabel
     Friend WithEvents btnEditDCSQty As RadButton
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents rbtnOther As common.Controls.MyRadioButton
+    Friend WithEvents rbtnThirdParty As common.Controls.MyRadioButton
 End Class
 

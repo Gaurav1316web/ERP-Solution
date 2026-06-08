@@ -22,13 +22,15 @@ Partial Class frmAccountSalesReport
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim RadListDataItem1 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
-        Dim RadListDataItem2 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
-        Dim RadListDataItem3 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
-        Dim TableViewDefinition1 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim RadListDataItem4 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
+        Dim RadListDataItem5 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
+        Dim RadListDataItem6 As Telerik.WinControls.UI.RadListDataItem = New Telerik.WinControls.UI.RadListDataItem()
+        Dim TableViewDefinition2 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
         Me.RadPageViewPage1 = New Telerik.WinControls.UI.RadPageViewPage()
+        Me.MyLabel2 = New common.Controls.MyLabel()
+        Me.txtCustomer = New common.UserControls.txtMultiSelectFinder()
         Me.cboUOMType = New common.Controls.MyComboBox()
         Me.RadGroupBox1 = New Telerik.WinControls.UI.RadGroupBox()
         Me.rbtnInvoiceCount = New System.Windows.Forms.RadioButton()
@@ -50,12 +52,17 @@ Partial Class frmAccountSalesReport
         Me.btnClose = New Telerik.WinControls.UI.RadButton()
         Me.btnGo = New Telerik.WinControls.UI.RadButton()
         Me.btnReset = New Telerik.WinControls.UI.RadButton()
+        Me.RadMenu1 = New Telerik.WinControls.UI.RadMenu()
+        Me.RadMenuItem1 = New Telerik.WinControls.UI.RadMenuItem()
+        Me.rmsaveLayout = New Telerik.WinControls.UI.RadMenuItem()
+        Me.rmDeleteLayout = New Telerik.WinControls.UI.RadMenuItem()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
         CType(Me.RadPageView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RadPageView1.SuspendLayout()
         Me.RadPageViewPage1.SuspendLayout()
+        CType(Me.MyLabel2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.cboUOMType, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RadGroupBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RadGroupBox1.SuspendLayout()
@@ -74,13 +81,14 @@ Partial Class frmAccountSalesReport
         CType(Me.btnClose, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnGo, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnReset, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'SplitContainer1
         '
         Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SplitContainer1.Location = New System.Drawing.Point(0, 0)
+        Me.SplitContainer1.Location = New System.Drawing.Point(0, 20)
         Me.SplitContainer1.Name = "SplitContainer1"
         Me.SplitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal
         '
@@ -94,8 +102,8 @@ Partial Class frmAccountSalesReport
         Me.SplitContainer1.Panel2.Controls.Add(Me.btnClose)
         Me.SplitContainer1.Panel2.Controls.Add(Me.btnGo)
         Me.SplitContainer1.Panel2.Controls.Add(Me.btnReset)
-        Me.SplitContainer1.Size = New System.Drawing.Size(800, 450)
-        Me.SplitContainer1.SplitterDistance = 411
+        Me.SplitContainer1.Size = New System.Drawing.Size(800, 430)
+        Me.SplitContainer1.SplitterDistance = 392
         Me.SplitContainer1.TabIndex = 0
         '
         'RadPageView1
@@ -107,12 +115,14 @@ Partial Class frmAccountSalesReport
         Me.RadPageView1.Location = New System.Drawing.Point(0, 0)
         Me.RadPageView1.Name = "RadPageView1"
         Me.RadPageView1.SelectedPage = Me.RadPageViewPage1
-        Me.RadPageView1.Size = New System.Drawing.Size(800, 411)
+        Me.RadPageView1.Size = New System.Drawing.Size(800, 392)
         Me.RadPageView1.TabIndex = 75
         CType(Me.RadPageView1.GetChildAt(0), Telerik.WinControls.UI.RadPageViewStripElement).StripButtons = Telerik.WinControls.UI.StripViewButtons.None
         '
         'RadPageViewPage1
         '
+        Me.RadPageViewPage1.Controls.Add(Me.MyLabel2)
+        Me.RadPageViewPage1.Controls.Add(Me.txtCustomer)
         Me.RadPageViewPage1.Controls.Add(Me.cboUOMType)
         Me.RadPageViewPage1.Controls.Add(Me.RadGroupBox1)
         Me.RadPageViewPage1.Controls.Add(Me.MyLabel4)
@@ -122,8 +132,31 @@ Partial Class frmAccountSalesReport
         Me.RadPageViewPage1.ItemSize = New System.Drawing.SizeF(46.0!, 28.0!)
         Me.RadPageViewPage1.Location = New System.Drawing.Point(10, 37)
         Me.RadPageViewPage1.Name = "RadPageViewPage1"
-        Me.RadPageViewPage1.Size = New System.Drawing.Size(779, 363)
+        Me.RadPageViewPage1.Size = New System.Drawing.Size(779, 344)
         Me.RadPageViewPage1.Text = "Filters"
+        '
+        'MyLabel2
+        '
+        Me.MyLabel2.FieldName = Nothing
+        Me.MyLabel2.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyLabel2.Location = New System.Drawing.Point(13, 77)
+        Me.MyLabel2.Name = "MyLabel2"
+        Me.MyLabel2.Size = New System.Drawing.Size(55, 18)
+        Me.MyLabel2.TabIndex = 426
+        Me.MyLabel2.Text = "Customer"
+        '
+        'txtCustomer
+        '
+        Me.txtCustomer.arrDispalyMember = Nothing
+        Me.txtCustomer.arrValueMember = Nothing
+        Me.txtCustomer.Location = New System.Drawing.Point(75, 77)
+        Me.txtCustomer.MyFont = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCustomer.MyLinkLable1 = Me.MyLabel2
+        Me.txtCustomer.MyLinkLable2 = Nothing
+        Me.txtCustomer.MyNullText = "All"
+        Me.txtCustomer.Name = "txtCustomer"
+        Me.txtCustomer.Size = New System.Drawing.Size(251, 19)
+        Me.txtCustomer.TabIndex = 425
         '
         'cboUOMType
         '
@@ -140,13 +173,13 @@ Partial Class frmAccountSalesReport
         Me.cboUOMType.IsSourceFromTable = False
         Me.cboUOMType.IsSourceFromValueList = False
         Me.cboUOMType.IsUnique = False
-        RadListDataItem1.Text = "Report UOM"
-        RadListDataItem2.Text = "Default UOM"
-        RadListDataItem3.Text = "Billing UOM"
-        Me.cboUOMType.Items.Add(RadListDataItem1)
-        Me.cboUOMType.Items.Add(RadListDataItem2)
-        Me.cboUOMType.Items.Add(RadListDataItem3)
-        Me.cboUOMType.Location = New System.Drawing.Point(75, 79)
+        RadListDataItem4.Text = "Report UOM"
+        RadListDataItem5.Text = "Default UOM"
+        RadListDataItem6.Text = "Billing UOM"
+        Me.cboUOMType.Items.Add(RadListDataItem4)
+        Me.cboUOMType.Items.Add(RadListDataItem5)
+        Me.cboUOMType.Items.Add(RadListDataItem6)
+        Me.cboUOMType.Location = New System.Drawing.Point(75, 99)
         Me.cboUOMType.MendatroryField = True
         Me.cboUOMType.MyLinkLable1 = Nothing
         Me.cboUOMType.MyLinkLable2 = Nothing
@@ -154,7 +187,7 @@ Partial Class frmAccountSalesReport
         Me.cboUOMType.ReferenceFieldDesc = Nothing
         Me.cboUOMType.ReferenceFieldName = Nothing
         Me.cboUOMType.ReferenceTableName = Nothing
-        Me.cboUOMType.Size = New System.Drawing.Size(136, 20)
+        Me.cboUOMType.Size = New System.Drawing.Size(251, 20)
         Me.cboUOMType.TabIndex = 424
         '
         'RadGroupBox1
@@ -207,7 +240,7 @@ Partial Class frmAccountSalesReport
         'MyLabel4
         '
         Me.MyLabel4.FieldName = Nothing
-        Me.MyLabel4.Location = New System.Drawing.Point(13, 79)
+        Me.MyLabel4.Location = New System.Drawing.Point(13, 100)
         Me.MyLabel4.Name = "MyLabel4"
         Me.MyLabel4.Size = New System.Drawing.Size(60, 18)
         Me.MyLabel4.TabIndex = 423
@@ -316,7 +349,7 @@ Partial Class frmAccountSalesReport
         Me.RadPageViewPage2.ItemSize = New System.Drawing.SizeF(50.0!, 28.0!)
         Me.RadPageViewPage2.Location = New System.Drawing.Point(10, 37)
         Me.RadPageViewPage2.Name = "RadPageViewPage2"
-        Me.RadPageViewPage2.Size = New System.Drawing.Size(779, 363)
+        Me.RadPageViewPage2.Size = New System.Drawing.Size(779, 344)
         Me.RadPageViewPage2.Text = "Report"
         '
         'gvData
@@ -328,13 +361,13 @@ Partial Class frmAccountSalesReport
         '
         Me.gvData.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gvData.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gvData.MasterTemplate.ViewDefinition = TableViewDefinition1
+        Me.gvData.MasterTemplate.ViewDefinition = TableViewDefinition2
         Me.gvData.MyExportAPI = False
         Me.gvData.MyExportFilePath = ""
         Me.gvData.MyStopExport = False
         Me.gvData.Name = "gvData"
         Me.gvData.ShowHeaderCellButtons = True
-        Me.gvData.Size = New System.Drawing.Size(779, 363)
+        Me.gvData.Size = New System.Drawing.Size(779, 344)
         Me.gvData.TabIndex = 0
         Me.gvData.VarID = ""
         '
@@ -342,7 +375,7 @@ Partial Class frmAccountSalesReport
         '
         Me.RadSplitButton1.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.RadSplitButton1.Items.AddRange(New Telerik.WinControls.RadItem() {Me.rmenuExport, Me.rmenuPDF})
-        Me.RadSplitButton1.Location = New System.Drawing.Point(152, 9)
+        Me.RadSplitButton1.Location = New System.Drawing.Point(152, 8)
         Me.RadSplitButton1.Name = "RadSplitButton1"
         Me.RadSplitButton1.Size = New System.Drawing.Size(68, 18)
         Me.RadSplitButton1.TabIndex = 431
@@ -363,7 +396,7 @@ Partial Class frmAccountSalesReport
         'btnClose
         '
         Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnClose.Location = New System.Drawing.Point(720, 9)
+        Me.btnClose.Location = New System.Drawing.Point(720, 8)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(68, 18)
         Me.btnClose.TabIndex = 427
@@ -372,7 +405,7 @@ Partial Class frmAccountSalesReport
         'btnGo
         '
         Me.btnGo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnGo.Location = New System.Drawing.Point(12, 9)
+        Me.btnGo.Location = New System.Drawing.Point(12, 8)
         Me.btnGo.Name = "btnGo"
         Me.btnGo.Size = New System.Drawing.Size(68, 18)
         Me.btnGo.TabIndex = 428
@@ -381,11 +414,38 @@ Partial Class frmAccountSalesReport
         'btnReset
         '
         Me.btnReset.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnReset.Location = New System.Drawing.Point(82, 9)
+        Me.btnReset.Location = New System.Drawing.Point(82, 8)
         Me.btnReset.Name = "btnReset"
         Me.btnReset.Size = New System.Drawing.Size(68, 18)
         Me.btnReset.TabIndex = 429
         Me.btnReset.Text = "Reset"
+        '
+        'RadMenu1
+        '
+        Me.RadMenu1.Items.AddRange(New Telerik.WinControls.RadItem() {Me.RadMenuItem1})
+        Me.RadMenu1.Location = New System.Drawing.Point(0, 0)
+        Me.RadMenu1.Name = "RadMenu1"
+        Me.RadMenu1.Size = New System.Drawing.Size(800, 20)
+        Me.RadMenu1.TabIndex = 3
+        '
+        'RadMenuItem1
+        '
+        Me.RadMenuItem1.Items.AddRange(New Telerik.WinControls.RadItem() {Me.rmsaveLayout, Me.rmDeleteLayout})
+        Me.RadMenuItem1.Name = "RadMenuItem1"
+        Me.RadMenuItem1.Text = "Setting"
+        Me.RadMenuItem1.UseCompatibleTextRendering = False
+        '
+        'rmsaveLayout
+        '
+        Me.rmsaveLayout.Name = "rmsaveLayout"
+        Me.rmsaveLayout.Text = "Save Layout"
+        Me.rmsaveLayout.UseCompatibleTextRendering = False
+        '
+        'rmDeleteLayout
+        '
+        Me.rmDeleteLayout.Name = "rmDeleteLayout"
+        Me.rmDeleteLayout.Text = "Delete Layout"
+        Me.rmDeleteLayout.UseCompatibleTextRendering = False
         '
         'frmAccountSalesReport
         '
@@ -393,6 +453,7 @@ Partial Class frmAccountSalesReport
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(800, 450)
         Me.Controls.Add(Me.SplitContainer1)
+        Me.Controls.Add(Me.RadMenu1)
         Me.Name = "frmAccountSalesReport"
         '
         '
@@ -406,6 +467,7 @@ Partial Class frmAccountSalesReport
         Me.RadPageView1.ResumeLayout(False)
         Me.RadPageViewPage1.ResumeLayout(False)
         Me.RadPageViewPage1.PerformLayout()
+        CType(Me.MyLabel2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.cboUOMType, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RadGroupBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.RadGroupBox1.ResumeLayout(False)
@@ -426,8 +488,10 @@ Partial Class frmAccountSalesReport
         CType(Me.btnClose, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnGo, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnReset, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
@@ -455,4 +519,10 @@ Partial Class frmAccountSalesReport
     Friend WithEvents rbtnSaleVoucher As RadioButton
     Friend WithEvents cboUOMType As common.Controls.MyComboBox
     Friend WithEvents MyLabel4 As common.Controls.MyLabel
+    Friend WithEvents MyLabel2 As common.Controls.MyLabel
+    Friend WithEvents txtCustomer As common.UserControls.txtMultiSelectFinder
+    Friend WithEvents RadMenu1 As RadMenu
+    Friend WithEvents RadMenuItem1 As RadMenuItem
+    Friend WithEvents rmsaveLayout As RadMenuItem
+    Friend WithEvents rmDeleteLayout As RadMenuItem
 End Class

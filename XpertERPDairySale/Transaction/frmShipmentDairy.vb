@@ -10406,6 +10406,8 @@ order by   TSPL_Demand_Booking_Detail.TR_Code "
                     If DeductTPTFromDocAmt Then
                         txtTPTComAmt.Text = obj.Transporter_Commission_TotalAmt
                         lblGrossAmount.Text = clsCommon.myFormat(clsCommon.myCdbl(lblTotRAmt.Text) - obj.Transporter_Commission_TotalAmt)
+                    Else
+                        lblGrossAmount.Text = obj.Gross_Amount
                     End If
 
                     'lblDiscountAmt.Text = obj.Distributor_Commission_TotalAmt

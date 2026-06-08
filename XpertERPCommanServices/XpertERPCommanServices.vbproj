@@ -644,6 +644,12 @@
     <Compile Include="Common Services\Report\frmDocumentCancelledReport.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Common Services\Report\frmGSTDocumentList.Designer.vb">
+      <DependentUpon>frmGSTDocumentList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Common Services\Report\frmGSTDocumentList.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Common Services\Report\frmReconcilationReport.Designer.vb">
       <DependentUpon>frmReconcilationReport.vb</DependentUpon>
     </Compile>
@@ -1156,6 +1162,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Common Services\Report\frmDocumentCancelledReport.resx">
       <DependentUpon>frmDocumentCancelledReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common Services\Report\frmGSTDocumentList.resx">
+      <DependentUpon>frmGSTDocumentList.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Common Services\Report\frmReconcilationReport.resx">
       <DependentUpon>frmReconcilationReport.vb</DependentUpon>

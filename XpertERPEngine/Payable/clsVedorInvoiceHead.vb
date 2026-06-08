@@ -522,7 +522,7 @@ Public Class clsVedorInvoiceHead
         If clsCommon.CompairString(obj.Form_ID, clsUserMgtCode.frmProcurementDeduction) = CompairStringResult.Equal Then
             clsMCCPaymentCycleLockForScheduler.CheckForSchedulerLock(obj.MCC_Code, clsCommon.myCDate(obj.Invoice_Entry_Date), trans)
         End If
-        If clsCommon.myCstr(obj.Invoice_Type) = "VS" Then
+        If clsCommon.CompairString(obj.Invoice_Type, "VS") = CompairStringResult.Equal Then
             clsERPFuncationality.ValidateLocationCode(objCommonVar.CurrentCompanyCode, clsUserMgtCode.ModulePayable, clsUserMgtCode.FrmVendorService, obj.loc_code, clsCommon.myCDate(obj.Invoice_Entry_Date), trans)
         ElseIf obj.is_For_TDS = 1 Then
             clsERPFuncationality.ValidateLocationSegment(objCommonVar.CurrentCompanyCode, clsUserMgtCode.ModuleTDS, clsUserMgtCode.mbtnAPInvoiceEntryTDS, obj.loc_code, clsCommon.myCDate(obj.Invoice_Entry_Date), trans)
@@ -570,13 +570,18 @@ Public Class clsVedorInvoiceHead
 
         Dim strDocNo As String = ""
         Dim strPrefixTransType As String = clsDocTransactionType.DirectAP
-        If clsCommon.myLen(obj.Against_MillkPurchaseInvoice_No) > 0 Then
-            strPrefixTransType = clsDocTransactionType.MccProc
-        ElseIf clsCommon.myLen(obj.Against_BulkMillkPurchaseInvoice_No) > 0 Then
-            strPrefixTransType = clsDocTransactionType.BulkProc
-        ElseIf clsCommon.myLen(obj.Against_POInvoice_No) > 0 OrElse clsCommon.myLen(obj.Against_PurchaseReturn_No) > 0 Then
-            strPrefixTransType = clsDocTransactionType.GeneralPurchase
+        If clsCommon.CompairString(obj.Invoice_Type, "VS") = CompairStringResult.Equal Then
+            strPrefixTransType = clsDocTransactionType.ServiceCharge
+        Else
+            If clsCommon.myLen(obj.Against_MillkPurchaseInvoice_No) > 0 Then
+                strPrefixTransType = clsDocTransactionType.MccProc
+            ElseIf clsCommon.myLen(obj.Against_BulkMillkPurchaseInvoice_No) > 0 Then
+                strPrefixTransType = clsDocTransactionType.BulkProc
+            ElseIf clsCommon.myLen(obj.Against_POInvoice_No) > 0 OrElse clsCommon.myLen(obj.Against_PurchaseReturn_No) > 0 Then
+                strPrefixTransType = clsDocTransactionType.GeneralPurchase
+            End If
         End If
+
 
 
         If (isNewEntry) Then

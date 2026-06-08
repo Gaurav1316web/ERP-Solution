@@ -1,4 +1,5 @@
-﻿Imports common
+﻿Imports System.IO
+Imports common
 Public Class frmAccountSalesReport
     Private Sub frmAccountSalesReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Try
@@ -48,6 +49,7 @@ Public Class frmAccountSalesReport
         MyLabel1.Enabled = isVal
         cboUOMType.Enabled = isVal
         RadGroupBox1.Enabled = isVal
+        txtCustomer.Enabled = isVal
     End Sub
 
     Sub BlankGrid()
@@ -65,7 +67,11 @@ Public Class frmAccountSalesReport
     End Sub
 
     Function ReturnBaseQry() As String
-        Dim BaseQry As String = "SELECT CONVERT(VARCHAR(10), H.Document_Date, 103) AS Document_Date,H.Document_Code,C.Customer_Name,H.Gross_Amount,H.Total_Amt,H.Transporter_Commission_TotalAmt,H.Is_Taxable,I.Is_FreshItem,I.Is_Ambient,I.Item_Desc,(D.Item_Net_Amt-D.Total_Tax_Amt) As Item_Net_Amt,I.HSN_Code,C.GST_Registered,C.GSTNO,CONCAT(C.Add1, C.Add2, C.Add3) AS Address,ISNULL(C.PIN_Code, C.PIN_NO) AS [Pin Code],H.Remarks,
+        Dim BaseQry As String = "select max(Document_Date) as Document_Date,Document_Code,max(Customer_Name) as Customer_Name,sum(Gross_Amount) as Gross_Amount	,sum(Total_Amt) as Total_Amt,sum(Transporter_Commission_TotalAmt) as Transporter_Commission_TotalAmt,max(Is_Taxable) as Is_Taxable,max(Is_FreshItem) as Is_FreshItem,max(Is_Ambient) as Is_Ambient,Item_Code,max(Item_Desc) as Item_Desc,
+max(UOM) as UOM ,sum(Qty) as Qty,sum(Item_Net_Amt) as Item_Net_Amt,max(HSN_Code) as HSN_Code,max(GST_Registered) as GST_Registered,max(GSTNO) as GSTNO,max(Address) as Address,max([Pin Code]) as [Pin Code],max(Remarks) as Remarks,max(Tax1) as Tax1,sum(TAX1_Amt) as TAX1_Amt,max(TAX2) as TAX2,sum(TAX2_Amt) as TAX2_Amt,max(TAX3) as TAX3,sum(TAX3_Amt) as TAX3_Amt,max(TAX4) as TAX4,sum(TAX4_Amt) as TAX4_Amt,max(TAX5) as TAX5,sum(TAX5_Amt) as TAX5_Amt,max(TAX6) as TAX6,sum(TAX6_Amt) as TAX6_Amt	,max(TAX7) as TAX7,sum(TAX7_Amt) as TAX7_Amt,max(TAX8) as TAX8	,sum(TAX8_Amt) as TAX8_Amt	,max(TAX9) as TAX9,sum(TAX9_Amt) as TAX9_Amt,max(TAX10) as TAX10,sum(TAX10_Amt) as TAX10_Amt,sum(CGST) as CGST,sum(SGST) as SGST,sum(IGST) as IGST,sum(KKF) as KKF ,sum(MANDI_TAX) as MANDI_TAX  from (
+SELECT CONVERT(VARCHAR(10), H.Document_Date, 103) AS Document_Date,H.Document_Code,C.Customer_Name,H.Gross_Amount,H.Total_Amt,H.Transporter_Commission_TotalAmt,H.Is_Taxable,I.Is_FreshItem,I.Is_Ambient,I.Item_Code,I.Item_Desc,
+CFDiv.UOM_Code as UOM,case when isnull(CFDiv.Conversion_Factor,0)=0 then 0 else ((d.Qty * isnull(CFMult.Conversion_Factor,0))/CFDiv.Conversion_Factor) end as Qty,
+(D.Item_Net_Amt-D.Total_Tax_Amt) As Item_Net_Amt,I.HSN_Code,C.GST_Registered,C.GSTNO,CONCAT(C.Add1, C.Add2, C.Add3) AS Address,ISNULL(C.PIN_Code, C.PIN_NO) AS [Pin Code],H.Remarks,
 D.Tax1,D.TAX1_Amt,D.TAX2,D.TAX2_Amt,D.TAX3,D.TAX3_Amt,D.TAX4,D.TAX4_Amt,D.TAX5,D.TAX5_Amt,D.TAX6,D.TAX6_Amt,D.TAX7,D.TAX7_Amt,D.TAX8,D.TAX8_Amt,D.TAX9,D.TAX9_Amt,D.TAX10,D.TAX10_Amt,
 Case When TAX1.TYPE='CGST' Then D.TAX1_Amt
      When TAX2.TYPE='CGST' Then D.TAX2_Amt
@@ -136,12 +142,24 @@ Left Join TSPL_TAX_MASTER As TAX7 On TAX7.Tax_Code = D.TAX7
 Left Join TSPL_TAX_MASTER As TAX8 On TAX8.Tax_Code = D.TAX8
 Left Join TSPL_TAX_MASTER As TAX9 On TAX9.Tax_Code = D.TAX9
 Left Join TSPL_TAX_MASTER As TAX10 On Tax10.Tax_Code = D.TAX10 
- Where
-CONVERT(date,H.Document_Date,103)>=Convert(Date,'" & txtFromDate.Value & "',103) And CONVERT(date,H.Document_Date,103)<=Convert(Date,'" & txtToDate.Value & "',103)"
+left outer join TSPL_ITEM_UOM_DETAIL as CFMult on CFMult.Item_Code=d.Item_Code and CFMult.UOM_Code=D.Unit_code
+left outer join TSPL_ITEM_UOM_DETAIL as CFDiv on CFDiv.Item_Code=d.Item_Code "
+
+        If clsCommon.CompairString(clsCommon.myCstr(cboUOMType.SelectedValue), "Billing UOM") = CompairStringResult.Equal Then
+            BaseQry &= " and CFDiv.Billing_UOM = 1 "
+        ElseIf clsCommon.CompairString(clsCommon.myCstr(cboUOMType.SelectedValue), "Default UOM") = CompairStringResult.Equal Then
+            BaseQry &= " and CFDiv.Default_UOM = 1 "
+        Else
+            BaseQry &= " and CFDiv.Report_UOM = 1 "
+        End If
+        BaseQry &= " Where CONVERT(date,H.Document_Date,103)>='" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "' And CONVERT(date,H.Document_Date,103) <= '" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "' "
         If clsCommon.myLen(txtLocation.Value) > 0 Then
             BaseQry &= " and (H.Bill_To_Location='" & clsCommon.myCstr(txtLocation.Value) & "' or H.Sub_Location_code='" & clsCommon.myCstr(txtLocation.Value) & "') "
         End If
-        BaseQry &= " and H.Status=1 "
+        If txtCustomer.arrValueMember IsNot Nothing AndAlso txtCustomer.arrValueMember.Count > 0 Then
+            BaseQry &= " and H.Customer_Code in (" & clsCommon.GetMulcallString(txtCustomer.arrValueMember) & ")"
+        End If
+        BaseQry &= " and H.Status=1 ) xx group by Document_Code,item_Code "
         Return BaseQry
     End Function
 
@@ -153,25 +171,25 @@ CONVERT(date,H.Document_Date,103)>=Convert(Date,'" & txtFromDate.Value & "',103)
                 Qry &= ",
 --Header Row (Customer only)
 HeaderRows AS
-(SELECT DISTINCT Document_Date,CASE WHEN Is_Taxable = 1 THEN 'TAX INVOICE' ELSE 'BILL OF SUPPLY' END AS [Sale Vch. Type Name],Document_Code,Customer_Name,Gross_Amount,'Dr' AS [Dr/Cr],NULL AS Item_Desc,NULL AS Item_Net_Amt,NULL AS HSN_Code,GSTNO,Address,[Pin Code],Remarks,CASE  WHEN GST_Registered = 1 THEN 'Regular' ELSE 'Unregisterd'END AS [GST Type],1 AS SortOrder FROM BaseQry),
+(SELECT DISTINCT Document_Date,CASE WHEN Is_Taxable = 1 THEN 'TAX INVOICE' ELSE 'BILL OF SUPPLY' END AS [Sale Vch. Type Name],Document_Code,Customer_Name,Gross_Amount,'Dr' AS [Dr/Cr],NULL AS Item_Code,NULL AS Item_Desc,0 as Qty,NULL AS UOM,NULL AS Item_Net_Amt,NULL AS HSN_Code,GSTNO,Address,[Pin Code],Remarks,CASE  WHEN GST_Registered = 1 THEN 'Regular' ELSE 'Unregisterd'END AS [GST Type],1 AS SortOrder FROM BaseQry),
 --Detail Rows (Item only)
 DetailRows AS
-(SELECT Document_Date,CASE WHEN Is_Taxable = 1 THEN 'TAX INVOICE' ELSE 'BILL OF SUPPLY' END AS [Sale Vch. Type Name],Document_Code,NULL AS Customer_Name,NULL AS Gross_Amount, NULL AS [Dr/Cr],Item_Desc,Item_Net_Amt,HSN_Code,NULL AS GSTNO,NULL AS Address,NULL AS [Pin Code],NULL AS Remarks,NULL AS [GST Type],2 AS SortOrder FROM BaseQry
+(SELECT Document_Date,CASE WHEN Is_Taxable = 1 THEN 'TAX INVOICE' ELSE 'BILL OF SUPPLY' END AS [Sale Vch. Type Name],Document_Code,NULL AS Customer_Name,NULL AS Gross_Amount, NULL AS [Dr/Cr],Item_Code, Item_Desc,Qty,UOM,Item_Net_Amt,HSN_Code,NULL AS GSTNO,NULL AS Address,NULL AS [Pin Code],NULL AS Remarks,NULL AS [GST Type],2 AS SortOrder FROM BaseQry
 ),
---Tax Rows (Tax only)
+----Tax Rows (Tax only)
 TaxDetailRows AS
-(SELECT B.Document_Date, CASE WHEN MAX(B.Is_Taxable) = 1 THEN 'TAX INVOICE' ELSE 'BILL OF SUPPLY' END AS [Sale Vch. Type Name],B.Document_Code,NULL AS Customer_Name, NULL AS Gross_Amount, NULL AS [Dr/Cr],T.TaxName AS Item_Desc,SUM(T.TaxAmount) AS Item_Net_Amt,NULL AS HSN_Code, NULL AS GSTNO, NULL AS Address, NULL AS [Pin Code], NULL AS Remarks,NULL AS [GST Type],3 AS SortOrder FROM BaseQry B CROSS APPLY (VALUES ('CGST', B.CGST),('SGST', B.SGST),('IGST', B.IGST),('KKF', B.KKF),('MANDI TAX', B.MANDI_TAX)) T (TaxName, TaxAmount) WHERE T.TaxAmount <> 0 GROUP BY B.Document_Code,B.Document_Date,T.TaxName
+(SELECT B.Document_Date, CASE WHEN MAX(B.Is_Taxable) = 1 THEN 'TAX INVOICE' ELSE 'BILL OF SUPPLY' END AS [Sale Vch. Type Name],B.Document_Code,NULL AS Customer_Name, NULL AS Gross_Amount, NULL AS [Dr/Cr],NULL AS Item_Code,T.TaxName AS Item_Desc,0 as Qty,NULL AS UOM,SUM(T.TaxAmount) AS Item_Net_Amt,NULL AS HSN_Code, NULL AS GSTNO, NULL AS Address, NULL AS [Pin Code], NULL AS Remarks,NULL AS [GST Type],3 AS SortOrder FROM BaseQry B CROSS APPLY (VALUES ('CGST', B.CGST),('SGST', B.SGST),('IGST', B.IGST),('KKF', B.KKF),('MANDI TAX', B.MANDI_TAX)) T (TaxName, TaxAmount) WHERE T.TaxAmount <> 0 GROUP BY B.Document_Code,B.Document_Date,T.TaxName
 ),
 --Additional Charges
 AdditionalChargesRows AS
 (SELECT B.Document_Date, CASE WHEN MAX(B.Is_Taxable) = 1 THEN 'TAX INVOICE' ELSE 'BILL OF SUPPLY' END  AS [Sale Vch. Type Name],B.Document_Code,
-Concat('Milk Transportation Chgs',' ('+Max(Customer_Name)+')') AS Customer_Name, Max(Transporter_Commission_TotalAmt) AS Total_Amt, 'Dr' AS [Dr/Cr],Null AS Item_Desc,
+Concat('Milk Transportation Chgs',' ('+Max(Customer_Name)+')') AS Customer_Name, Max(Transporter_Commission_TotalAmt) AS Total_Amt, 'Dr' AS [Dr/Cr],NULL AS Item_Code,NULL AS Item_Desc,0 as Qty,NULL AS UOM,
 Null AS Item_Net_Amt,NULL AS HSN_Code, NULL AS GSTNO, NULL AS Address, NULL AS [Pin Code], NULL AS Remarks,NULL AS [GST Type],4 AS SortOrder 
 FROM BaseQry B 
 WHERE Transporter_Commission_TotalAmt <> 0 GROUP BY B.Document_Code,B.Document_Date
 )
 --Final Output
-SELECT Document_Date AS [Sale Vch. Date],[Sale Vch. Type Name],Document_Code AS [Vch. Number],Customer_Name AS [Ledger Name],Gross_Amount AS [Ledger Amt.],[Dr/Cr],Item_Desc AS [Product/Ledger Name],Item_Net_Amt AS [Product Value],HSN_Code AS [HSN/SAC],GSTNO AS [Buyer/Supplier - GSTIN/UIN],Address,[Pin Code],Remarks AS [Vch. Narration],[GST Type] FROM
+SELECT Document_Date AS [Sale Vch. Date],[Sale Vch. Type Name],Document_Code AS [Vch. Number],Customer_Name AS [Ledger Name],Gross_Amount AS [Ledger Amt.],[Dr/Cr],Item_Code as Item, Item_Desc AS [Product/Ledger Name],Qty,UOM,Item_Net_Amt AS [Product Value],HSN_Code AS [HSN/SAC],GSTNO AS [Buyer/Supplier - GSTIN/UIN],Address,[Pin Code],Remarks AS [Vch. Narration],[GST Type] FROM
 (
     SELECT * FROM HeaderRows
     UNION ALL
@@ -182,19 +200,21 @@ SELECT Document_Date AS [Sale Vch. Date],[Sale Vch. Type Name],Document_Code AS 
 	Select * from AdditionalChargesRows
 ) A
 ORDER BY Document_Date,Document_Code,[Sale Vch. Type Name],SortOrder "
+
             ElseIf rbtnHSNWise.Checked Then
                 Dim rpt As New rptHSNWiseSaleReport()
                 Dim BaseQry As String
+                Dim strOutTaxColumnSum As String = ""
                 If cboUOMType.SelectedIndex = 0 Then
-                    BaseQry = rpt.ReturnQry(True, txtFromDate.Value, txtToDate.Value, txtLocation.Value, "Report UOM")
+                    BaseQry = rpt.ReturnQry(True, txtFromDate.Value, txtToDate.Value, txtLocation.Value, "Report UOM", strOutTaxColumnSum)
                 ElseIf cboUOMType.SelectedIndex = 1 Then
-                    BaseQry = rpt.ReturnQry(True, txtFromDate.Value, txtToDate.Value, txtLocation.Value, "Default UOM")
+                    BaseQry = rpt.ReturnQry(True, txtFromDate.Value, txtToDate.Value, txtLocation.Value, "Default UOM", strOutTaxColumnSum)
                 Else
-                    BaseQry = rpt.ReturnQry(True, txtFromDate.Value, txtToDate.Value, txtLocation.Value, "Billing UOM")
+                    BaseQry = rpt.ReturnQry(True, txtFromDate.Value, txtToDate.Value, txtLocation.Value, "Billing UOM", strOutTaxColumnSum)
                 End If
                 rpt = Nothing
                 Qry = " ;WITH FinalData AS ("
-                Qry &= "Select [Supply Type],Max(HSN_Code) As [HSN],Item_Code As [Item Code],Max(Short_Description) As [Description],Max(UOM) As [UQC],Sum(Total_Qty) As [Total Quantity],Sum(Item_Net_Amt) As [Total Value],Max(Tax_Rate) As Rate,Sum(MandiAmt) As [Mandi Amount],Sum(kkfAmt) As [KKF Amount],Sum(MandiAmt)+Sum(kkfAmt)+Sum(Taxable_Amt) As [Taxable Value],Sum([Integrated Goods Service Tax Amount]) As [IGST],Sum([Central Goods Serivce Tax Amount]) As [CGST], Sum([State Goods Service Tax Amount]) As [S/UGST],'' As [Cess Amt] from  (" & BaseQry & ")finalQry Group By [Supply Type],Item_Code "
+                Qry &= "Select [Supply Type],Max(HSN_Code) As [HSN],Item_Code As [Item Code],Max(Short_Description) As [Description],Max(UOM) As [UQC],Sum(Total_Qty) As [Total Quantity],Sum(Item_Net_Amt) As [Total Value],Max(Tax_Rate) As Rate,Sum(MandiAmt) As [Mandi Amount],Sum(kkfAmt) As [KKF Amount],Sum(MandiAmt)+Sum(kkfAmt)+Sum(Taxable_Amt) As [Taxable Value]" + strOutTaxColumnSum + ",'' As [Cess Amt] from  (" & BaseQry & ")finalQry Group By [Supply Type],Item_Code "
                 Qry &= "),
 DataWithRowNo AS
 (SELECT  '' AS [Supply Type],[HSN], [Description],[UQC], 
@@ -241,6 +261,7 @@ FROM
                 gvData.ReadOnly = True
                 RadPageView1.SelectedPage = RadPageViewPage2
                 EnableDisable(False)
+                ReStoreGridLayout()
             Else
                 clsCommon.MyMessageBoxShow(Me, "Data not found !", Me.Text)
             End If
@@ -318,9 +339,77 @@ FROM
         If rbtnHSNWise.Checked Then
             MyLabel4.Visible = True
             cboUOMType.Visible = True
+            MyLabel2.Visible = False
+            txtCustomer.Visible = False
+        ElseIf rbtnSaleVoucher.Checked Then
+            MyLabel4.Visible = True
+            cboUOMType.Visible = True
+            MyLabel2.Visible = True
+            txtCustomer.Visible = True
         Else
             MyLabel4.Visible = False
             cboUOMType.Visible = False
+            MyLabel2.Visible = False
+            txtCustomer.Visible = False
         End If
     End Sub
+
+    Private Sub txtCustomer__My_Click(sender As Object, e As EventArgs) Handles txtCustomer._My_Click
+        Dim strQry As String = " select Cust_Code as [code],Customer_Name as [Name] from TSPL_CUSTOMER_MASTER"
+        txtCustomer.arrValueMember = clsCommon.ShowMultipleSelectForm("TransTypeMu23", strQry, "Code", "Name", txtCustomer.arrValueMember, txtCustomer.arrDispalyMember)
+    End Sub
+
+    Private Sub rmsaveLayout_Click(sender As Object, e As EventArgs) Handles rmsaveLayout.Click
+        If clsCommon.myLen(MyBase.Form_ID) > 0 Then
+            gvData.MasterTemplate.FilterDescriptors.Clear()
+            Dim obj As New clsGridLayout()
+            obj.ReportID = GetReportID()
+            obj.UserID = objCommonVar.CurrentUserCode
+            obj.GridLayout = New MemoryStream()
+            gvData.SaveLayout(obj.GridLayout)
+            obj.GridColumns = gvData.ColumnCount
+            obj.GridLayout.Seek(0, System.IO.SeekOrigin.Begin)
+            If obj.SaveData() Then
+                clsCommon.MyMessageBoxShow(Me, "Layout saved successfully", Me.Text)
+            End If
+            obj.GridLayout.Close()
+            obj.GridLayout.Dispose()
+        End If
+    End Sub
+
+    Private Sub rmDeleteLayout_Click(sender As Object, e As EventArgs) Handles rmDeleteLayout.Click
+        clsGridLayout.DeleteData(GetReportID(), objCommonVar.CurrentUserCode)
+        common.clsCommon.MyMessageBoxShow(Me, "Layout Delete successfully", Me.Text)
+    End Sub
+
+    Private Sub ReStoreGridLayout()
+        Try
+            If clsCommon.myLen(MyBase.Form_ID) > 0 Then
+                Dim obj As clsGridLayout = New clsGridLayout()
+                obj = CType(obj.GetData(GetReportID(), "", objCommonVar.CurrentUserCode), clsGridLayout)
+                If Not obj Is Nothing AndAlso obj.GridColumns >= gvData.ColumnCount Then
+                    Dim ii As Integer = 0
+                    For ii = 0 To gvData.Columns.Count - 1 Step ii + 1
+                        gvData.Columns(ii).IsVisible = False
+                        gvData.Columns(ii).VisibleInColumnChooser = True
+                    Next
+                    gvData.LoadLayout(obj.GridLayout)
+                    obj.GridLayout.Seek(0, System.IO.SeekOrigin.Begin)
+                End If
+                obj = Nothing
+            End If
+        Catch err As Exception
+            MessageBox.Show(err.Message)
+        End Try
+    End Sub
+    Function GetReportID() As String
+
+        If rbtnSaleVoucher.Checked Then
+            Return MyBase.Form_ID + "S"
+        ElseIf rbtnHSNWise.Checked Then
+            Return MyBase.Form_ID + "H"
+        Else
+            Return MyBase.Form_ID + "C"
+        End If
+    End Function
 End Class

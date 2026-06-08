@@ -57428,6 +57428,7 @@ where len( ISNULL(Bank_Code_Saving,''))>0 and TSPL_PAYMENT_PROCESS_DETAIL.Bank_A
             coll.Add("Apply_SNF_Above", "Decimal(18,2) null")
             coll.Add("DBT_Capping_Apply", "integer NULL")
             coll.Add("Edit_Remarks", "varchar(200) NULL")
+            coll.Add("Third_Party_Integrated", "integer NULL")
             clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_DCS_MP_INCENTIVE_RECO_HEAD", coll, Nothing, True, True, "", "Document_Code", "Document_Date", True)
 
             Try
