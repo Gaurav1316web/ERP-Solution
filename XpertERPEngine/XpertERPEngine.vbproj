@@ -476,6 +476,7 @@
     <Compile Include="Milk Procurement\clsQualityCheckSeparation.vb" />
     <Compile Include="Milk Procurement\clsTankerCleaningItem.vb" />
     <Compile Include="Milk Procurement\clsTransferToSaving.vb" />
+    <Compile Include="Milk Procurement\ClsTransporterPaymentProcess.vb" />
     <Compile Include="Milk Procurement\clsVSPCommission.vb" />
     <Compile Include="Milk Procurement\clsVSPDeduction.vb" />
     <Compile Include="Milk Procurement\clsVSPMapping.vb" />

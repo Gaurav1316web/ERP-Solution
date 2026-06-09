@@ -1449,7 +1449,6 @@ Partial Class FrmTankerMaster
         '
         'btnnew
         '
-        Me.btnnew.Image = Global.ERP.My.Resources.Resources._new
         Me.btnnew.ImageAlignment = System.Drawing.ContentAlignment.MiddleCenter
         Me.btnnew.Location = New System.Drawing.Point(459, 10)
         Me.btnnew.Name = "btnnew"

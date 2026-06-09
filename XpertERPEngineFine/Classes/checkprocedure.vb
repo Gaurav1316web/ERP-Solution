@@ -1231,6 +1231,7 @@ Public Class ProgramCodeNew
         InsertDefaultValue(clsUserMgtCode.rptDistributorRouteMarginStatusReport, "Distributor Route Margin Status Report", "1.09.03.74", clsUserMgtCode.SubModuleSaleDairyReport, 37)
         InsertDefaultValue(clsUserMgtCode.rptPartWiseItemReport, "Day Wise Party Sale Report", "1.09.03.76", clsUserMgtCode.SubModuleSaleDairyReport, 37)
         InsertDefaultValue(clsUserMgtCode.frmAccountSalesReport, "Account Sales Report", "1.09.03.77", clsUserMgtCode.SubModuleSaleDairyReport, 37)
+        InsertDefaultValue(clsUserMgtCode.rptProductCreditSaleReport, "Product Credit Sale Report", "1.09.03.77", clsUserMgtCode.SubModuleSaleDairyReport, 37)
 
         InsertDefaultValue(clsUserMgtCode.SubModuleVisualSaleReport, "Visual Report", "1.09.04", clsUserMgtCode.ModuleSaleDairy, "SM", 36)
         InsertDefaultValue(clsUserMgtCode.rptZoneWiseMSVisual, "Zone Wise Milk Sale Report", "1.09.04.01", clsUserMgtCode.SubModuleVisualSaleReport, 37)
