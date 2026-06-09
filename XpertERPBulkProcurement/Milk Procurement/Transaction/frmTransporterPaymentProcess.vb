@@ -299,11 +299,11 @@ Public Class frmTransporterPaymentProcess
     Sub LoadGridData()
         Try
             Dim qry As String = " Select TSPL_BMC_TRANSPORTER_BILL_DETAIL.Document_Code,TSPL_BMC_TRANSPORTER_BILL_DETAIL.Document_Date,TSPL_BMC_TRANSPORTER_BILL_HEAD.Tanker_No,
-                                KM,Case when Is_Private=1 then'Private' else 'BMC' END AS Typess,TSPL_VENDOR_MASTER.Bank_Code,TSPL_VENDOR_MASTER.Bank_Name,TSPL_VENDOR_MASTER.IFSC_Code,
+                                KM,Case when Is_Private=1 then'Private' else 'BMC' END AS Typess,TSPL_VENDOR_MASTER.Vendor_Code,TSPL_VENDOR_MASTER.Vendor_Name,TSPL_VENDOR_MASTER.Bank_Code,TSPL_VENDOR_MASTER.Bank_Name,TSPL_VENDOR_MASTER.IFSC_Code,
                                 TSPL_BMC_TRANSPORTER_BILL_DETAIL.Amount from TSPL_BMC_TRANSPORTER_BILL_DETAIL 
                                 LEFT OUTER JOIN TSPL_BMC_TRANSPORTER_BILL_HEAD ON TSPL_BMC_TRANSPORTER_BILL_HEAD.Document_Code = TSPL_BMC_TRANSPORTER_BILL_DETAIL.Document_Code
                                 left outer join TSPL_TANKER_MASTER ON TSPL_TANKER_MASTER.Tanker_No = TSPL_BMC_TRANSPORTER_BILL_HEAD.Tanker_No
-                                left outer join TSPL_VENDOR_MASTER ON TSPL_VENDOR_MASTER.Vendor_Code=TSPL_TANKER_MASTER.Tanker_No
+                                left outer join TSPL_VENDOR_MASTER ON TSPL_VENDOR_MASTER.Vendor_Code=TSPL_TANKER_MASTER.Tanker_Transporter_Code
                                 where 2 = 2 and convert(date,TSPL_BMC_TRANSPORTER_BILL_DETAIL.Document_Date,103)>=convert(date,'" + clsCommon.GetPrintDate(dtpFromDate.Value) + "',103) 
                                 and convert(date,TSPL_BMC_TRANSPORTER_BILL_DETAIL.Document_Date,103) <=convert(date,'" + clsCommon.GetPrintDate(dtpToDate.Value) + "' ,103) 
                                 and TSPL_BMC_TRANSPORTER_BILL_HEAD.status=1 "
@@ -325,6 +325,8 @@ Public Class frmTransporterPaymentProcess
                     gv.CurrentRow.Cells(ColTankerNo).Value = clsCommon.myCstr(dt.Rows(ii)("Tanker_No"))
                     gv.CurrentRow.Cells(ColType).Value = clsCommon.myCstr(dt.Rows(ii)("Typess"))
                     gv.CurrentRow.Cells(ColKM).Value = clsCommon.myCdbl(dt.Rows(ii)("KM"))
+                    gv.CurrentRow.Cells(colTransporterCode).Value = clsCommon.myCdbl(dt.Rows(ii)("Vendor_Code"))
+                    gv.CurrentRow.Cells(colTransporterName).Value = clsCommon.myCdbl(dt.Rows(ii)("Vendor_Name"))
                     gv.CurrentRow.Cells(ColBankCode).Value = clsCommon.myCstr(dt.Rows(ii)("Bank_Code"))
                     gv.CurrentRow.Cells(ColBankName).Value = clsCommon.myCstr(dt.Rows(ii)("Bank_Name"))
                     gv.CurrentRow.Cells(ColBankIFSC).Value = clsCommon.myCstr(dt.Rows(ii)("IFSC_Code"))
@@ -535,6 +537,35 @@ Public Class frmTransporterPaymentProcess
 
         Catch ex As Exception
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
+        End Try
+    End Sub
+
+    Private Sub txtTanker__My_Click(sender As Object, e As EventArgs) Handles txtTanker._My_Click
+        Dim qry As String = " select Tanker_No as TankerNo,Tanker_Name as TankerName,Price_KM from   TSPL_TANKER_MASTER "
+        txtTanker.arrValueMember = clsCommon.ShowMultipleSelectForm("CustMulSel", qry, "TankerNo", "TankerName", txtTanker.arrValueMember, txtTanker.arrDispalyMember)
+
+    End Sub
+
+    Private Sub fndDocNo__MYValidating(sender As Object, e As EventArgs, isButtonClicked As Boolean) Handles fndDocNo._MYValidating
+        Try
+
+            Dim qry As String = "select TSPL_TRANSPORTER_PAYMENT_PROCESS_HEAD.Document_Code ,convert(varchar,TSPL_TRANSPORTER_PAYMENT_PROCESS_HEAD.Document_date,103) as Document_date,case when TSPL_TRANSPORTER_PAYMENT_PROCESS_HEAD.status =1  then 'Approved' else 'Pending' end as Status   
+                             from TSPL_TRANSPORTER_PAYMENT_PROCESS_HEAD "
+            fndDocNo.Value = clsCommon.ShowSelectForm("fmGroup_Code", qry, "Document_Code", "", fndDocNo.Value, "", isButtonClicked)
+            If clsCommon.myLen(fndDocNo.Value) > 0 Then
+                LoadData(fndDocNo.Value, NavigatorType.Current)
+            End If
+        Catch ex As Exception
+            common.clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
+        End Try
+    End Sub
+
+    Private Sub fndDocNo__MYNavigator(sender As Object, e As EventArgs, NavType As NavigatorType) Handles fndDocNo._MYNavigator
+        Try
+
+            LoadData(fndDocNo.Value, NavType)
+        Catch ex As Exception
+            common.clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try
     End Sub
 End Class

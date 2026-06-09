@@ -3073,6 +3073,7 @@ Public Class ProgramCodeNew
         InsertDefaultValue(clsUserMgtCode.rptDbtStatusRCDF, "Dbt Status RCDF Report", "1.51.03.30", clsUserMgtCode.SubModuleMilkUnion, "", 8, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, False, False, True)
         InsertDefaultValue(clsUserMgtCode.frmUnionWiseDockEntryReport, "Union Wise Dock Entry Report ", "1.51.03.31", clsUserMgtCode.SubModuleMilkUnion, "", 8, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, False, False, True)
         InsertDefaultValue(clsUserMgtCode.FrmInActiveDCSReport, "InActive DCS Report", "1.51.03.33", clsUserMgtCode.SubModuleMilkUnion, "", 8, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, False, False, True)
+        InsertDefaultValue(clsUserMgtCode.rptFarmerMilkCollectionReport, "Farmer Milk Collection Report", "1.51.03.35", clsUserMgtCode.SubModuleMilkUnion, "", 8, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, False, False, True)
 
 #End Region
 

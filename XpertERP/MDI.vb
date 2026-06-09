@@ -9091,6 +9091,9 @@ Public Class MDI
                     Case clsUserMgtCode.rptDBTBankResponse
                         frm = New rptDBTBankResponse
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo)
+                    Case clsUserMgtCode.rptFarmerMilkCollectionReport
+                        frm = New rptFarmerMilkCollectionReport
+                        formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo)
                     Case clsUserMgtCode.rptUnionMilkPurchase
                         frm = New rptUnionMilkRegister
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo)
