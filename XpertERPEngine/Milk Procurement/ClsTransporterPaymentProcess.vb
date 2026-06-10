@@ -179,6 +179,7 @@ Public Class ClsTransporterPaymentProcess
             obj.Comment = clsCommon.myCstr(dt.Rows(0)("Comment"))
             obj.Remarks = clsCommon.myCstr(dt.Rows(0)("Remarks"))
             obj.Type = clsCommon.myCstr(dt.Rows(0)("Type"))
+            obj.Status = IIf(clsCommon.myCdbl(dt.Rows(0)("Status")) = 0, ERPTransactionStatus.Pending, ERPTransactionStatus.Approved)
 
             qry = "Select TSPL_TRANSPORTER_PAYMENT_PROCESS_DETAIL.* from TSPL_TRANSPORTER_PAYMENT_PROCESS_DETAIL 
                    where TSPL_TRANSPORTER_PAYMENT_PROCESS_DETAIL.Document_Code='" + obj.Document_Code + "' ORDER BY TSPL_TRANSPORTER_PAYMENT_PROCESS_DETAIL.PK_ID"
@@ -191,6 +192,9 @@ Public Class ClsTransporterPaymentProcess
                     objTr.Document_Code = clsCommon.myCstr(dr("Document_Code"))
                     objTr.PK_ID = clsCommon.myCstr(dr("PK_ID"))
                     objTr.Transporter_Bill_No = clsCommon.myCstr(dr("Transporter_Bill_No"))
+                    objTr.Transporter_Bill_Date = clsCommon.myCDate(dr("Transporter_Bill_Date"))
+                    objTr.Tanker_No = clsCommon.myCstr(dr("Tanker_No"))
+                    objTr.KM = clsCommon.myCdbl(dr("KM"))
                     objTr.Transporter_Code = clsCommon.myCstr(dr("Transporter_Code"))
                     objTr.Type = clsCommon.myCstr(dr("Type"))
                     objTr.Bank_Code = clsCommon.myCstr(dr("Bank_Code"))
@@ -267,6 +271,8 @@ Public Class ClsTransporterPaymentProcessDetail
     Public BMC_Date As String = Nothing
     Public Ice_Box As String = Nothing
     Public arr As List(Of clsfrmVLCMaster) = Nothing
+    Public Transporter_Bill_Date As DateTime
+    Public Tanker_No As String = Nothing
 
     'Public BalanceAmount As Decimal = 0
 #End Region
@@ -278,6 +284,9 @@ Public Class ClsTransporterPaymentProcessDetail
                 Dim coll As New Hashtable()
                 clsCommon.AddColumnsForChange(coll, "Document_Code", strDocNo)
                 clsCommon.AddColumnsForChange(coll, "Transporter_Bill_No", obj.Transporter_Bill_No)
+                clsCommon.AddColumnsForChange(coll, "Transporter_Bill_Date", clsCommon.GetPrintDate(obj.Transporter_Bill_Date, "dd/MMM/yyyy"))
+                clsCommon.AddColumnsForChange(coll, "Tanker_No", obj.Tanker_No)
+                clsCommon.AddColumnsForChange(coll, "KM", obj.KM)
                 clsCommon.AddColumnsForChange(coll, "Type", obj.Type)
                 clsCommon.AddColumnsForChange(coll, "Transporter_Code", obj.Transporter_Code)
                 clsCommon.AddColumnsForChange(coll, "Bank_Code", obj.Bank_Code, True)

@@ -23,7 +23,7 @@ Partial Class rptFarmerMilkCollectionReport
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim TableViewDefinition5 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition1 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
         Me.RadPageViewPage1 = New Telerik.WinControls.UI.RadPageViewPage()
@@ -332,7 +332,7 @@ Partial Class rptFarmerMilkCollectionReport
         Me.RadPageViewPage2.ItemSize = New System.Drawing.SizeF(50.0!, 28.0!)
         Me.RadPageViewPage2.Location = New System.Drawing.Point(10, 37)
         Me.RadPageViewPage2.Name = "RadPageViewPage2"
-        Me.RadPageViewPage2.Size = New System.Drawing.Size(779, 357)
+        Me.RadPageViewPage2.Size = New System.Drawing.Size(779, 368)
         Me.RadPageViewPage2.Text = "Report"
         '
         'gv1
@@ -345,16 +345,17 @@ Partial Class rptFarmerMilkCollectionReport
         '
         Me.gv1.MasterTemplate.AllowAddNewRow = False
         Me.gv1.MasterTemplate.AllowDeleteRow = False
+        Me.gv1.MasterTemplate.AllowDragToGroup = False
         Me.gv1.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gv1.MasterTemplate.ShowGroupedColumns = True
         Me.gv1.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gv1.MasterTemplate.ViewDefinition = TableViewDefinition5
+        Me.gv1.MasterTemplate.ViewDefinition = TableViewDefinition1
         Me.gv1.MyExportAPI = False
         Me.gv1.MyExportFilePath = ""
         Me.gv1.MyStopExport = False
         Me.gv1.Name = "gv1"
         Me.gv1.ShowHeaderCellButtons = True
-        Me.gv1.Size = New System.Drawing.Size(779, 357)
+        Me.gv1.Size = New System.Drawing.Size(779, 368)
         Me.gv1.TabIndex = 2
         Me.gv1.VarID = ""
         '
