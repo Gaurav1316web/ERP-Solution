@@ -8297,84 +8297,89 @@ where TSPL_DISTRIBUTOR_COMMISSION_HEAD.Applicable_Date<='" + clsCommon.GetPrintD
 
                 End If
                 Dim BoothCode As String = ""
-                If clsCommon.myLen(txtDocNo.Value) > 0 Then
+                If chkIndividualCustomer.Checked Then
                     SaveData(False, trans)
-                    'Dim PDocCode As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select ParentDocNo from TSPL_SD_SHIPMENT_HEAD where Document_Code='" & txtDocNo.Value & "'", trans))
-                    'If clsCommon.CompairString(PDocCode, txtDocNo.Value) = CompairStringResult.Equal Then
-                    '    SaveData(False, trans)
-                    '    Dim strQry As String = "select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & PDocCode & "'  and Document_Code not in('" & PDocCode & "') order by Document_Code"
-                    '    Dim dtP As DataTable = clsDBFuncationality.GetDataTable(strQry, trans)
-                    '    If dtP IsNot Nothing AndAlso dtP.Rows.Count > 0 Then
-                    '        For Each dr As DataRow In dtP.Rows
-                    '            LoadData()
-                    '        Next
-                    '    End If
-                    'End If
+                    Dim strupdate As String = "update TSPL_SD_SHIPMENT_HEAD set ParentDocNo='" & ParentDocNo & "' where Document_Code='" & ParentDocNo & "'"
+                    clsDBFuncationality.ExecuteNonQuery(strupdate, trans)
                 Else
-                    txtTransNo.Text = txtVendorNo.Value
-                    If gvDistributor IsNot Nothing AndAlso gvDistributor.Rows.Count > 0 Then
+                    If clsCommon.myLen(txtDocNo.Value) > 0 Then
                         SaveData(False, trans)
-                    End If
-                    LoadDemandData(trans, 1)
-                    MergeDistributorItems(True, False, trans)
-                    If gvDistributor IsNot Nothing AndAlso gvDistributor.Rows.Count > 0 Then
-                        SaveData(False, trans)
-                        clsDBFuncationality.ExecuteNonQuery("update TSPL_SD_SHIPMENT_HEAD set ParentDocNo='" + ParentDocNo + "' where Document_Code='" + CreditCustDoc + "'", trans)
+                        'Dim PDocCode As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select ParentDocNo from TSPL_SD_SHIPMENT_HEAD where Document_Code='" & txtDocNo.Value & "'", trans))
+                        'If clsCommon.CompairString(PDocCode, txtDocNo.Value) = CompairStringResult.Equal Then
+                        '    SaveData(False, trans)
+                        '    Dim strQry As String = "select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & PDocCode & "'  and Document_Code not in('" & PDocCode & "') order by Document_Code"
+                        '    Dim dtP As DataTable = clsDBFuncationality.GetDataTable(strQry, trans)
+                        '    If dtP IsNot Nothing AndAlso dtP.Rows.Count > 0 Then
+                        '        For Each dr As DataRow In dtP.Rows
+                        '            LoadData()
+                        '        Next
+                        '    End If
+                        'End If
+                    Else
+                        txtTransNo.Text = txtVendorNo.Value
+                        If gvDistributor IsNot Nothing AndAlso gvDistributor.Rows.Count > 0 Then
+                            SaveData(False, trans)
+                        End If
+                        LoadDemandData(trans, 1)
+                        MergeDistributorItems(True, False, trans)
+                        If gvDistributor IsNot Nothing AndAlso gvDistributor.Rows.Count > 0 Then
+                            SaveData(False, trans)
+                            clsDBFuncationality.ExecuteNonQuery("update TSPL_SD_SHIPMENT_HEAD set ParentDocNo='" + ParentDocNo + "' where Document_Code='" + CreditCustDoc + "'", trans)
 
-                    End If
-                    lstobj = New List(Of clsPSShipmentDemand)
-                    lstSkipobj = New List(Of clsPSShipmentDemand)
+                        End If
+                        lstobj = New List(Of clsPSShipmentDemand)
+                        lstSkipobj = New List(Of clsPSShipmentDemand)
 
-                    For Each lst As clsPSShipmentDemand In clsPSShipmentDemand.GetData(ParentDocNo, cmbShift.SelectedValue, txtSupplyDate.Value, txtRouteNo.Value, txtBillToLocation.Value, cmbDisItemType.SelectedValue, 0, trans)
+                        For Each lst As clsPSShipmentDemand In clsPSShipmentDemand.GetData(ParentDocNo, cmbShift.SelectedValue, txtSupplyDate.Value, txtRouteNo.Value, txtBillToLocation.Value, cmbDisItemType.SelectedValue, 0, trans)
 
 
-                        lstobj.Add(lst)
-                    Next
-                    For Each lst As clsPSShipmentDemand In clsPSShipmentDemand.GetData(ParentDocNo, cmbShift.SelectedValue, txtSupplyDate.Value, txtRouteNo.Value, txtBillToLocation.Value, cmbDisItemType.SelectedValue, 1, trans)
+                            lstobj.Add(lst)
+                        Next
+                        For Each lst As clsPSShipmentDemand In clsPSShipmentDemand.GetData(ParentDocNo, cmbShift.SelectedValue, txtSupplyDate.Value, txtRouteNo.Value, txtBillToLocation.Value, cmbDisItemType.SelectedValue, 1, trans)
 
-                        lstSkipobj.Add(lst)
-                    Next
-                    'Else
-                    '    'txtTransNo.Text = txtVendorNo.Value
+                            lstSkipobj.Add(lst)
+                        Next
+                        'Else
+                        '    'txtTransNo.Text = txtVendorNo.Value
 
-                    '    'txtVendorNo.Value = clsCommon.myCstr(gvDistributor.Rows(0).Cells("Cust_Code").Value)
-                    '    'lblVendorName.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Customer_Name from TSPL_CUSTOMER_MASTER where Cust_Code='" + txtVendorNo.Value + "'", trans))
-                    '    'BoothCode = txtVendorNo.Value
-                    '    'MergeDistributorItems(True, True, trans)
-                    '    'SaveData(False, trans)
-                    '    lstobj = New List(Of clsPSShipmentDemand)
-                    '    lstSkipobj = New List(Of clsPSShipmentDemand)
-                    '    For Each lst As clsPSShipmentDemand In clsPSShipmentDemand.GetData(ParentDocNo, cmbShift.SelectedValue, txtSupplyDate.Value, txtRouteNo.Value, txtBillToLocation.Value, cmbDisItemType.SelectedValue, 0, trans)
-                    '        lstobj.Add(lst)
-                    '    Next
-                    '    For Each lst As clsPSShipmentDemand In clsPSShipmentDemand.GetData(ParentDocNo, cmbShift.SelectedValue, txtSupplyDate.Value, txtRouteNo.Value, txtBillToLocation.Value, cmbDisItemType.SelectedValue, 1, trans)
-                    '        lstSkipobj.Add(lst)
-                    '    Next
+                        '    'txtVendorNo.Value = clsCommon.myCstr(gvDistributor.Rows(0).Cells("Cust_Code").Value)
+                        '    'lblVendorName.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Customer_Name from TSPL_CUSTOMER_MASTER where Cust_Code='" + txtVendorNo.Value + "'", trans))
+                        '    'BoothCode = txtVendorNo.Value
+                        '    'MergeDistributorItems(True, True, trans)
+                        '    'SaveData(False, trans)
+                        '    lstobj = New List(Of clsPSShipmentDemand)
+                        '    lstSkipobj = New List(Of clsPSShipmentDemand)
+                        '    For Each lst As clsPSShipmentDemand In clsPSShipmentDemand.GetData(ParentDocNo, cmbShift.SelectedValue, txtSupplyDate.Value, txtRouteNo.Value, txtBillToLocation.Value, cmbDisItemType.SelectedValue, 0, trans)
+                        '        lstobj.Add(lst)
+                        '    Next
+                        '    For Each lst As clsPSShipmentDemand In clsPSShipmentDemand.GetData(ParentDocNo, cmbShift.SelectedValue, txtSupplyDate.Value, txtRouteNo.Value, txtBillToLocation.Value, cmbDisItemType.SelectedValue, 1, trans)
+                        '        lstSkipobj.Add(lst)
+                        '    Next
 
-                    'End If
+                        'End If
 
-                    If lstobj IsNot Nothing AndAlso lstobj.Count > 0 AndAlso clsCommon.myLen(txtDocNo.Value) <= 0 Then
-                        For Each lst As clsPSShipmentDemand In lstobj
-                            If Not clsCommon.CompairString(BoothCode, lst.Booth_Code) = CompairStringResult.Equal Then
-                                '                           
-                                Dim strQry As String = "select TSPL_Demand_Booking_Detail.TR_Code as TR_CODE,TSPL_Demand_Booking_Detail.Cust_Code,TSPL_CUSTOMER_MASTER.Customer_Name,TSPL_Demand_Booking_Detail.Item_Code,TSPL_ITEM_MASTER.Item_Desc, "
-                                If ConvertIntoBillingUOM Then
-                                    strQry += "(TSPL_Demand_Booking_Detail.Qty *TSPL_ITEM_UOM_DETAIL.Conversion_Factor/CFBilling.Conversion_Factor) as DemandQty,(TSPL_Demand_Booking_Detail.Qty *TSPL_ITEM_UOM_DETAIL.Conversion_Factor/CFBilling.Conversion_Factor) as Qty,CFBilling.UOM_Code as Unit_code, "
-                                Else
-                                    strQry += "TSPL_Demand_Booking_Detail.Qty as DemandQty,TSPL_Demand_Booking_Detail.Qty as Qty,TSPL_Demand_Booking_Detail.Unit_code, "
-                                End If
-                                'strQry += " TSPL_Demand_Booking_Detail.Qty as DemandQty, TSPL_Demand_Booking_Detail.Qty As Qty, TSPL_Demand_Booking_Detail.Unit_code, "
+                        If lstobj IsNot Nothing AndAlso lstobj.Count > 0 AndAlso clsCommon.myLen(txtDocNo.Value) <= 0 Then
+                            For Each lst As clsPSShipmentDemand In lstobj
+                                If Not clsCommon.CompairString(BoothCode, lst.Booth_Code) = CompairStringResult.Equal Then
+                                    '                           
+                                    Dim strQry As String = "select TSPL_Demand_Booking_Detail.TR_Code as TR_CODE,TSPL_Demand_Booking_Detail.Cust_Code,TSPL_CUSTOMER_MASTER.Customer_Name,TSPL_Demand_Booking_Detail.Item_Code,TSPL_ITEM_MASTER.Item_Desc, "
+                                    If ConvertIntoBillingUOM Then
+                                        strQry += "(TSPL_Demand_Booking_Detail.Qty *TSPL_ITEM_UOM_DETAIL.Conversion_Factor/CFBilling.Conversion_Factor) as DemandQty,(TSPL_Demand_Booking_Detail.Qty *TSPL_ITEM_UOM_DETAIL.Conversion_Factor/CFBilling.Conversion_Factor) as Qty,CFBilling.UOM_Code as Unit_code, "
+                                    Else
+                                        strQry += "TSPL_Demand_Booking_Detail.Qty as DemandQty,TSPL_Demand_Booking_Detail.Qty as Qty,TSPL_Demand_Booking_Detail.Unit_code, "
+                                    End If
+                                    'strQry += " TSPL_Demand_Booking_Detail.Qty as DemandQty, TSPL_Demand_Booking_Detail.Qty As Qty, TSPL_Demand_Booking_Detail.Unit_code, "
 
-                                strQry += " TSPL_DEMAND_BOOKING_DETAIL.trip_No,0 as Commission_Amt,0 as Security_Amt,TSPL_Demand_Booking_Master.NoCrateIssue 
+                                    strQry += " TSPL_DEMAND_BOOKING_DETAIL.trip_No,0 as Commission_Amt,0 as Security_Amt,TSPL_Demand_Booking_Master.NoCrateIssue 
 from TSPL_Demand_Booking_Master
 left join TSPL_Demand_Booking_Detail on TSPL_Demand_Booking_Master.Document_No=TSPL_Demand_Booking_Detail.Document_No
 left outer join TSPL_ITEM_MASTER on TSPL_ITEM_MASTER.Item_Code = TSPL_Demand_Booking_Detail.Item_Code "
-                                If ConvertIntoBillingUOM Then
-                                    strQry += " left join TSPL_ITEM_UOM_DETAIL on TSPL_ITEM_UOM_DETAIL.Item_Code=TSPL_Demand_Booking_Detail.Item_Code and TSPL_ITEM_UOM_DETAIL.UOM_Code=TSPL_Demand_Booking_Detail.Unit_code
+                                    If ConvertIntoBillingUOM Then
+                                        strQry += " left join TSPL_ITEM_UOM_DETAIL on TSPL_ITEM_UOM_DETAIL.Item_Code=TSPL_Demand_Booking_Detail.Item_Code and TSPL_ITEM_UOM_DETAIL.UOM_Code=TSPL_Demand_Booking_Detail.Unit_code
   left join (select Conversion_Factor,Item_Code,UOM_Code from TSPL_ITEM_UOM_DETAIL where Billing_UOM=1 ) CFBilling on CFBilling.Item_Code=TSPL_Demand_Booking_Detail.Item_Code "
-                                End If
+                                    End If
 
-                                strQry += "OUTER APPLY ( SELECT TOP 1 * FROM TSPL_ITEM_MASTER_TAXABLE  
+                                    strQry += "OUTER APPLY ( SELECT TOP 1 * FROM TSPL_ITEM_MASTER_TAXABLE  
 WHERE TSPL_ITEM_MASTER_TAXABLE.Item_Code = TSPL_Demand_Booking_Detail.Item_Code  AND TSPL_ITEM_MASTER_TAXABLE.EFFECTIVE_DATE <= '" & clsCommon.GetPrintDate(txtSupplyDate.Value) & "'
     ORDER BY TSPL_ITEM_MASTER_TAXABLE.EFFECTIVE_DATE DESC
 ) TSPL_ITEM_MASTER_TAXABLE
@@ -8383,97 +8388,97 @@ where TSPL_Demand_Booking_Master.ShiftType='" + IIf(clsCommon.CompairString(clsC
    and TSPL_Demand_Booking_Master.Posted=1
 and TSPL_Demand_Booking_Master.Route_No='" + txtRouteNo.Value + "' and TSPL_Demand_Booking_Master.Location_Code='" + txtBillToLocation.Value + "' 
  "
-                                If clsCommon.CompairString(clsCommon.myCstr(cmbDisItemType.SelectedValue), "T") = CompairStringResult.Equal Then
-                                    strQry += " and TSPL_ITEM_MASTER_TAXABLE.Is_Taxable=1 and isnull(TSPL_ITEM_MASTER.IsSplitBilling,0)=0 "
-                                Else
-                                    strQry += " and TSPL_ITEM_MASTER_TAXABLE.Is_Taxable=0 and isnull(TSPL_ITEM_MASTER.IsSplitBilling,0)=0 "
-                                End If
+                                    If clsCommon.CompairString(clsCommon.myCstr(cmbDisItemType.SelectedValue), "T") = CompairStringResult.Equal Then
+                                        strQry += " and TSPL_ITEM_MASTER_TAXABLE.Is_Taxable=1 and isnull(TSPL_ITEM_MASTER.IsSplitBilling,0)=0 "
+                                    Else
+                                        strQry += " and TSPL_ITEM_MASTER_TAXABLE.Is_Taxable=0 and isnull(TSPL_ITEM_MASTER.IsSplitBilling,0)=0 "
+                                    End If
 
-                                strQry += " and  (TSPL_CUSTOMER_MASTER.Credit_Customer='Y' or TSPL_CUSTOMER_MASTER.Cash_Customer='Y') and TSPL_CUSTOMER_MASTER.Cust_Code='" + lst.Booth_Code + "' and TSPL_Demand_Booking_Detail.TR_Code is not null and TSPL_Demand_Booking_Detail.Qty>0   and not exists(select 1 from TSPL_SD_SHIPMENT_BOOKING_DETAIL where TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booking_TR_Code=TSPL_Demand_Booking_Detail.TR_Code  and TSPL_SD_SHIPMENT_BOOKING_DETAIL.DOCUMENT_CODE not in ('" & txtDocNo.Value & "'))  
+                                    strQry += " and  (TSPL_CUSTOMER_MASTER.Credit_Customer='Y' or TSPL_CUSTOMER_MASTER.Cash_Customer='Y') and TSPL_CUSTOMER_MASTER.Cust_Code='" + lst.Booth_Code + "' and TSPL_Demand_Booking_Detail.TR_Code is not null and TSPL_Demand_Booking_Detail.Qty>0   and not exists(select 1 from TSPL_SD_SHIPMENT_BOOKING_DETAIL where TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booking_TR_Code=TSPL_Demand_Booking_Detail.TR_Code  and TSPL_SD_SHIPMENT_BOOKING_DETAIL.DOCUMENT_CODE not in ('" & txtDocNo.Value & "'))  
 order by   TSPL_Demand_Booking_Detail.TR_Code "
 
 
-                                LoadDistributorGrid(strQry, trans)
-                                If ApplyBoothWiseScheme Then
-                                    GetBoothWiseScheme(trans)
-                                End If
+                                    LoadDistributorGrid(strQry, trans)
+                                    If ApplyBoothWiseScheme Then
+                                        GetBoothWiseScheme(trans)
+                                    End If
 
-                                If DispatchPriceCodeForCreditCustomer Then
-                                    txtVendorNo.Value = lst.Booth_Code
-                                    lblVendorName.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Customer_Name from TSPL_CUSTOMER_MASTER where Cust_Code='" + lst.Booth_Code + "'", trans))
+                                    If DispatchPriceCodeForCreditCustomer Then
+                                        txtVendorNo.Value = lst.Booth_Code
+                                        lblVendorName.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Customer_Name from TSPL_CUSTOMER_MASTER where Cust_Code='" + lst.Booth_Code + "'", trans))
 
-                                End If
+                                    End If
 
 
-                                MergeDistributorItems(True, True, trans)
-                                If RunBatchFifowise = 1 Then
-                                    OpenBatchItemForCreditCust(trans)
-                                End If
-                                If Not DispatchPriceCodeForCreditCustomer Then
-                                    txtVendorNo.Value = lst.Booth_Code
-                                    lblVendorName.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Customer_Name from TSPL_CUSTOMER_MASTER where Cust_Code='" + lst.Booth_Code + "'", trans))
-                                End If
-                                'Dim dts As DataTable = clsDBFuncationality.GetDataTable("select Document_Code,Sale_Invoice_No from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" + ParentDocNo + "' and Customer_Code='" + lst.Booth_Code + "'", trans)
-                                'If dts IsNot Nothing AndAlso dts.Rows.Count > 0 Then
-                                '    txtDocNo.Value = clsCommon.myCstr(dts.Rows(0)("Document_Code"))
-                                '    txtInvoiceNo.Text = clsCommon.myCstr(dts.Rows(0)("Sale_Invoice_No"))
-                                'End If
-                                If CheckCustomeroutStandingAmt Then
-                                    If Not clsCustomerMaster.IsCreditCustomer(lst.Booth_Code, trans) Then
+                                    MergeDistributorItems(True, True, trans)
+                                    If RunBatchFifowise = 1 Then
+                                        OpenBatchItemForCreditCust(trans)
+                                    End If
+                                    If Not DispatchPriceCodeForCreditCustomer Then
+                                        txtVendorNo.Value = lst.Booth_Code
+                                        lblVendorName.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Customer_Name from TSPL_CUSTOMER_MASTER where Cust_Code='" + lst.Booth_Code + "'", trans))
+                                    End If
+                                    'Dim dts As DataTable = clsDBFuncationality.GetDataTable("select Document_Code,Sale_Invoice_No from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" + ParentDocNo + "' and Customer_Code='" + lst.Booth_Code + "'", trans)
+                                    'If dts IsNot Nothing AndAlso dts.Rows.Count > 0 Then
+                                    '    txtDocNo.Value = clsCommon.myCstr(dts.Rows(0)("Document_Code"))
+                                    '    txtInvoiceNo.Text = clsCommon.myCstr(dts.Rows(0)("Sale_Invoice_No"))
+                                    'End If
+                                    If CheckCustomeroutStandingAmt Then
+                                        If Not clsCustomerMaster.IsCreditCustomer(lst.Booth_Code, trans) Then
 
-                                        LoadOutstanding(lst.Booth_Code, trans)
+                                            LoadOutstanding(lst.Booth_Code, trans)
 
-                                        Dim custOutStanding As Double = clsCommon.myCdbl(lblOutstandingDesc.Text)
-                                        If custOutStanding <= 0 Then
-                                            'If clsCommon.MyMessageBoxShow(Me, "Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "] are you want to continue  ?", Me.Text, MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.No Then
-                                            Throw New Exception("Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "]")
-                                            'Else
-                                            '    Continue For
-                                            'End If
+                                            Dim custOutStanding As Double = clsCommon.myCdbl(lblOutstandingDesc.Text)
+                                            If custOutStanding <= 0 Then
+                                                'If clsCommon.MyMessageBoxShow(Me, "Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "] are you want to continue  ?", Me.Text, MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.No Then
+                                                Throw New Exception("Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "]")
+                                                'Else
+                                                '    Continue For
+                                                'End If
 
-                                        End If
-                                        custOutStanding = Math.Abs(custOutStanding)
-                                        Dim TotalDocAmt As Double = clsCommon.myCdbl(lblTotRAmt.Text)
-                                        If TotalDocAmt > custOutStanding Then
-                                            'If clsCommon.MyMessageBoxShow(Me, "Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "] are you want to continue  ?", Me.Text, MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.No Then
-                                            Throw New Exception("Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "]")
-                                            'Else
-                                            '    Continue For
-                                            'End If
+                                            End If
+                                            custOutStanding = Math.Abs(custOutStanding)
+                                            Dim TotalDocAmt As Double = clsCommon.myCdbl(lblTotRAmt.Text)
+                                            If TotalDocAmt > custOutStanding Then
+                                                'If clsCommon.MyMessageBoxShow(Me, "Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "] are you want to continue  ?", Me.Text, MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.No Then
+                                                Throw New Exception("Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "]")
+                                                'Else
+                                                '    Continue For
+                                                'End If
 
+                                            End If
                                         End If
                                     End If
+                                    SaveData(False, trans)
+                                    If Not DispatchPriceCodeForCreditCustomer Then
+                                        txtVendorNo.Value = txtTransNo.Text
+                                    End If
+
+                                    clsDBFuncationality.ExecuteNonQuery("update TSPL_SD_SHIPMENT_HEAD set ParentDocNo='" + ParentDocNo + "' where Document_Code='" + CreditCustDoc + "'", trans)
+
                                 End If
-                                SaveData(False, trans)
-                                If Not DispatchPriceCodeForCreditCustomer Then
-                                    txtVendorNo.Value = txtTransNo.Text
-                                End If
 
-                                clsDBFuncationality.ExecuteNonQuery("update TSPL_SD_SHIPMENT_HEAD set ParentDocNo='" + ParentDocNo + "' where Document_Code='" + CreditCustDoc + "'", trans)
-
-                            End If
-
-                        Next
-                    End If
-                    If lstSkipobj IsNot Nothing AndAlso lstSkipobj.Count > 0 AndAlso clsCommon.myLen(txtDocNo.Value) <= 0 Then
-                        For Each lst As clsPSShipmentDemand In lstSkipobj
-                            If Not clsCommon.CompairString(BoothCode, lst.Booth_Code) = CompairStringResult.Equal Then
-                                '                            Dim strQry As String = "select TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booking_TR_Code as TR_Code,
-                                'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booth_Code as Cust_Code,
-                                'TSPL_CUSTOMER_MASTER.Customer_Name as Customer_Name,
-                                'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Item_Code as Item_Code,
-                                'TSPL_ITEM_MASTER.Item_Desc as Item_Desc,
-                                'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Qty as DemandQty,
-                                'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Qty as Qty,
-                                'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Unit_code as Unit_code,
-                                'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Trip_No as Trip_No,
-                                'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Commission_Amt,
-                                'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Security_Amt
-                                'from TSPL_SD_SHIPMENT_BOOKING_DETAIL
-                                'left join TSPL_CUSTOMER_MASTER on TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booth_Code=TSPL_CUSTOMER_MASTER.Cust_Code
-                                'left join TSPL_ITEM_MASTER on TSPL_SD_SHIPMENT_BOOKING_DETAIL.Item_Code=TSPL_ITEM_MASTER.Item_Code
-                                'where TSPL_SD_SHIPMENT_BOOKING_DETAIL.DOCUMENT_CODE='" + ParentDocNo + "' and TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booth_code='" + lst.Booth_Code + "'"
-                                Dim strQry As String = "select 
+                            Next
+                        End If
+                        If lstSkipobj IsNot Nothing AndAlso lstSkipobj.Count > 0 AndAlso clsCommon.myLen(txtDocNo.Value) <= 0 Then
+                            For Each lst As clsPSShipmentDemand In lstSkipobj
+                                If Not clsCommon.CompairString(BoothCode, lst.Booth_Code) = CompairStringResult.Equal Then
+                                    '                            Dim strQry As String = "select TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booking_TR_Code as TR_Code,
+                                    'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booth_Code as Cust_Code,
+                                    'TSPL_CUSTOMER_MASTER.Customer_Name as Customer_Name,
+                                    'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Item_Code as Item_Code,
+                                    'TSPL_ITEM_MASTER.Item_Desc as Item_Desc,
+                                    'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Qty as DemandQty,
+                                    'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Qty as Qty,
+                                    'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Unit_code as Unit_code,
+                                    'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Trip_No as Trip_No,
+                                    'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Commission_Amt,
+                                    'TSPL_SD_SHIPMENT_BOOKING_DETAIL.Security_Amt
+                                    'from TSPL_SD_SHIPMENT_BOOKING_DETAIL
+                                    'left join TSPL_CUSTOMER_MASTER on TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booth_Code=TSPL_CUSTOMER_MASTER.Cust_Code
+                                    'left join TSPL_ITEM_MASTER on TSPL_SD_SHIPMENT_BOOKING_DETAIL.Item_Code=TSPL_ITEM_MASTER.Item_Code
+                                    'where TSPL_SD_SHIPMENT_BOOKING_DETAIL.DOCUMENT_CODE='" + ParentDocNo + "' and TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booth_code='" + lst.Booth_Code + "'"
+                                    Dim strQry As String = "select 
 TSPL_Demand_Booking_Detail.TR_Code as TR_CODE,TSPL_Demand_Booking_Detail.Cust_Code,TSPL_CUSTOMER_MASTER.Customer_Name,TSPL_Demand_Booking_Detail.Item_Code,TSPL_ITEM_MASTER.Item_Desc,TSPL_Demand_Booking_Detail.Qty as DemandQty,TSPL_Demand_Booking_Detail.Qty as Qty,TSPL_Demand_Booking_Detail.Unit_code,TSPL_DEMAND_BOOKING_DETAIL.trip_No,0 as Commission_Amt,0 as Security_Amt,TSPL_Demand_Booking_Master.NoCrateIssue 
 from TSPL_Demand_Booking_Master
 left join TSPL_Demand_Booking_Detail on TSPL_Demand_Booking_Master.Document_No=TSPL_Demand_Booking_Detail.Document_No
@@ -8487,119 +8492,121 @@ where TSPL_Demand_Booking_Master.ShiftType='" + IIf(clsCommon.CompairString(clsC
    and TSPL_Demand_Booking_Master.Posted=1
 and TSPL_Demand_Booking_Master.Route_No='" + txtRouteNo.Value + "' and TSPL_Demand_Booking_Master.Location_Code='" + txtBillToLocation.Value + "' 
  "
-                                If clsCommon.CompairString(clsCommon.myCstr(cmbDisItemType.SelectedValue), "T") = CompairStringResult.Equal Then
-                                    strQry += " and TSPL_ITEM_MASTER_TAXABLE.Is_Taxable=1 and isnull(TSPL_ITEM_MASTER.IsSplitBilling,0)=1 "
-                                Else
-                                    strQry += " and TSPL_ITEM_MASTER_TAXABLE.Is_Taxable=0 and isnull(TSPL_ITEM_MASTER.IsSplitBilling,0)=1 "
-                                End If
+                                    If clsCommon.CompairString(clsCommon.myCstr(cmbDisItemType.SelectedValue), "T") = CompairStringResult.Equal Then
+                                        strQry += " and TSPL_ITEM_MASTER_TAXABLE.Is_Taxable=1 and isnull(TSPL_ITEM_MASTER.IsSplitBilling,0)=1 "
+                                    Else
+                                        strQry += " and TSPL_ITEM_MASTER_TAXABLE.Is_Taxable=0 and isnull(TSPL_ITEM_MASTER.IsSplitBilling,0)=1 "
+                                    End If
 
-                                strQry += " and  ( isnull(TSPL_CUSTOMER_MASTER.Credit_Customer,'N')='Y' or  isnull(TSPL_CUSTOMER_MASTER.Cash_Customer,'N')='Y') and TSPL_CUSTOMER_MASTER.Cust_Code='" + lst.Booth_Code + "' and TSPL_Demand_Booking_Detail.TR_Code is not null and TSPL_Demand_Booking_Detail.Qty>0   and not exists(select 1 from TSPL_SD_SHIPMENT_BOOKING_DETAIL where TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booking_TR_Code=TSPL_Demand_Booking_Detail.TR_Code  and TSPL_SD_SHIPMENT_BOOKING_DETAIL.DOCUMENT_CODE not in ('" & txtDocNo.Value & "'))  
+                                    strQry += " and  ( isnull(TSPL_CUSTOMER_MASTER.Credit_Customer,'N')='Y' or  isnull(TSPL_CUSTOMER_MASTER.Cash_Customer,'N')='Y') and TSPL_CUSTOMER_MASTER.Cust_Code='" + lst.Booth_Code + "' and TSPL_Demand_Booking_Detail.TR_Code is not null and TSPL_Demand_Booking_Detail.Qty>0   and not exists(select 1 from TSPL_SD_SHIPMENT_BOOKING_DETAIL where TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booking_TR_Code=TSPL_Demand_Booking_Detail.TR_Code  and TSPL_SD_SHIPMENT_BOOKING_DETAIL.DOCUMENT_CODE not in ('" & txtDocNo.Value & "'))  
 order by   TSPL_Demand_Booking_Detail.TR_Code "
 
 
-                                LoadDistributorGrid(strQry, trans)
-                                If ApplyBoothWiseScheme Then
-                                    GetBoothWiseScheme(trans)
-                                End If
+                                    LoadDistributorGrid(strQry, trans)
+                                    If ApplyBoothWiseScheme Then
+                                        GetBoothWiseScheme(trans)
+                                    End If
 
-                                If DispatchPriceCodeForCreditCustomer Then
-                                    txtVendorNo.Value = lst.Booth_Code
-                                    lblVendorName.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Customer_Name from TSPL_CUSTOMER_MASTER where Cust_Code='" + lst.Booth_Code + "'", trans))
+                                    If DispatchPriceCodeForCreditCustomer Then
+                                        txtVendorNo.Value = lst.Booth_Code
+                                        lblVendorName.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Customer_Name from TSPL_CUSTOMER_MASTER where Cust_Code='" + lst.Booth_Code + "'", trans))
 
-                                End If
+                                    End If
 
 
-                                MergeDistributorItems(True, True, trans)
-                                If RunBatchFifowise = 1 Then
-                                    OpenBatchItemForCreditCust(trans)
-                                End If
-                                If Not DispatchPriceCodeForCreditCustomer Then
-                                    txtVendorNo.Value = lst.Booth_Code
-                                    lblVendorName.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Customer_Name from TSPL_CUSTOMER_MASTER where Cust_Code='" + lst.Booth_Code + "'", trans))
-                                End If
-                                'Dim dts As DataTable = clsDBFuncationality.GetDataTable("select Document_Code,Sale_Invoice_No from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" + ParentDocNo + "' and Customer_Code='" + lst.Booth_Code + "'", trans)
-                                'If dts IsNot Nothing AndAlso dts.Rows.Count > 0 Then
-                                '    txtDocNo.Value = clsCommon.myCstr(dts.Rows(0)("Document_Code"))
-                                '    txtInvoiceNo.Text = clsCommon.myCstr(dts.Rows(0)("Sale_Invoice_No"))
-                                'End If
-                                If CheckCustomeroutStandingAmt Then
-                                    If Not clsCustomerMaster.IsCreditCustomer(lst.Booth_Code, trans) Then
+                                    MergeDistributorItems(True, True, trans)
+                                    If RunBatchFifowise = 1 Then
+                                        OpenBatchItemForCreditCust(trans)
+                                    End If
+                                    If Not DispatchPriceCodeForCreditCustomer Then
+                                        txtVendorNo.Value = lst.Booth_Code
+                                        lblVendorName.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Customer_Name from TSPL_CUSTOMER_MASTER where Cust_Code='" + lst.Booth_Code + "'", trans))
+                                    End If
+                                    'Dim dts As DataTable = clsDBFuncationality.GetDataTable("select Document_Code,Sale_Invoice_No from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" + ParentDocNo + "' and Customer_Code='" + lst.Booth_Code + "'", trans)
+                                    'If dts IsNot Nothing AndAlso dts.Rows.Count > 0 Then
+                                    '    txtDocNo.Value = clsCommon.myCstr(dts.Rows(0)("Document_Code"))
+                                    '    txtInvoiceNo.Text = clsCommon.myCstr(dts.Rows(0)("Sale_Invoice_No"))
+                                    'End If
+                                    If CheckCustomeroutStandingAmt Then
+                                        If Not clsCustomerMaster.IsCreditCustomer(lst.Booth_Code, trans) Then
 
-                                        LoadOutstanding(lst.Booth_Code, trans)
+                                            LoadOutstanding(lst.Booth_Code, trans)
 
-                                        Dim custOutStanding As Double = clsCommon.myCdbl(lblOutstandingDesc.Text)
-                                        If custOutStanding <= 0 Then
-                                            'If clsCommon.MyMessageBoxShow(Me, "Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "] are you want to continue  ?", Me.Text, MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.No Then
-                                            Throw New Exception("Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "]")
-                                            'Else
-                                            '    Continue For
-                                            'End If
+                                            Dim custOutStanding As Double = clsCommon.myCdbl(lblOutstandingDesc.Text)
+                                            If custOutStanding <= 0 Then
+                                                'If clsCommon.MyMessageBoxShow(Me, "Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "] are you want to continue  ?", Me.Text, MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.No Then
+                                                Throw New Exception("Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "]")
+                                                'Else
+                                                '    Continue For
+                                                'End If
 
-                                        End If
-                                        custOutStanding = Math.Abs(custOutStanding)
-                                        Dim TotalDocAmt As Double = clsCommon.myCdbl(lblTotRAmt.Text)
-                                        If TotalDocAmt > custOutStanding Then
-                                            'If clsCommon.MyMessageBoxShow(Me, "Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "] are you want to continue  ?", Me.Text, MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.No Then
-                                            Throw New Exception("Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "]")
-                                            'Else
-                                            '    Continue For
-                                            'End If
+                                            End If
+                                            custOutStanding = Math.Abs(custOutStanding)
+                                            Dim TotalDocAmt As Double = clsCommon.myCdbl(lblTotRAmt.Text)
+                                            If TotalDocAmt > custOutStanding Then
+                                                'If clsCommon.MyMessageBoxShow(Me, "Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "] are you want to continue  ?", Me.Text, MessageBoxButtons.YesNo) = System.Windows.Forms.DialogResult.No Then
+                                                Throw New Exception("Insufficient Balance. [ Customer Code : " + lst.Booth_Code + "]")
+                                                'Else
+                                                '    Continue For
+                                                'End If
 
+                                            End If
                                         End If
                                     End If
+                                    SaveData(False, trans)
+                                    If Not DispatchPriceCodeForCreditCustomer Then
+                                        txtVendorNo.Value = txtTransNo.Text
+                                    End If
+
+                                    clsDBFuncationality.ExecuteNonQuery("update TSPL_SD_SHIPMENT_HEAD set ParentDocNo='" + ParentDocNo + "' where Document_Code='" + CreditCustDoc + "'", trans)
+
                                 End If
-                                SaveData(False, trans)
-                                If Not DispatchPriceCodeForCreditCustomer Then
-                                    txtVendorNo.Value = txtTransNo.Text
-                                End If
 
-                                clsDBFuncationality.ExecuteNonQuery("update TSPL_SD_SHIPMENT_HEAD set ParentDocNo='" + ParentDocNo + "' where Document_Code='" + CreditCustDoc + "'", trans)
+                            Next
+                        End If
 
-                            End If
 
-                        Next
+                        Dim strupdate As String = "update TSPL_SD_SHIPMENT_HEAD set ParentDocNo='" & ParentDocNo & "' where Document_Code='" & ParentDocNo & "'"
+                        clsDBFuncationality.ExecuteNonQuery(strupdate, trans)
                     End If
+                    Dim qry1 As String = ""
+                    If MergeTCAmtofCreditCust Then
+                        'qry1 = "select sum(Transporter_Commission_TotalAmt) as TCAmt from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "'"
+                        qry1 = "select sum(Transporter_Commission_Amt) as TCAmt from TSPL_SD_SHIPMENT_DETAIL where DOCUMENT_CODE in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "')"
+                        Dim tcAmt As Decimal = clsCommon.myCDecimal(clsDBFuncationality.getSingleValue(qry1, trans))
+                        qry1 = "update TSPL_SD_SHIPMENT_HEAD set Transporter_Commission_TotalAmt='" & clsCommon.myCstr(tcAmt) & "' where Document_Code='" & ParentDocNo & "'"
+                        clsDBFuncationality.ExecuteNonQuery(qry1, trans)
+                        qry1 = "update TSPL_SD_SHIPMENT_HEAD set Gross_Amount=(Total_Amt - Transporter_Commission_TotalAmt) where Document_Code='" & ParentDocNo & "'"
+                        clsDBFuncationality.ExecuteNonQuery(qry1, trans)
+                        'If DeductTPTFromDocAmt Then
+                        qry1 = "update TSPL_SD_SHIPMENT_HEAD set Transporter_Commission_TotalAmt=0,Gross_Amount=Total_Amt where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "')"
+                        clsDBFuncationality.ExecuteNonQuery(qry1, trans)
+                        'Else
+                        '    qry1 = "update TSPL_SD_SHIPMENT_HEAD set Transporter_Commission_TotalAmt=0 where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "')"
+                        '    clsDBFuncationality.ExecuteNonQuery(qry1, trans)
+                        'End If
 
+                        '    qry1 = "update tspl_sd_shipment_detail set Transporter_Commission_Amt=0 where DOCUMENT_CODE in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "'))"
+                        'clsDBFuncationality.ExecuteNonQuery(qry1, trans)
+                        qry1 = "update TSPL_SD_SALE_INVOICE_HEAD set Transporter_Commission_TotalAmt='" & clsCommon.myCstr(tcAmt) & "' where Against_Shipment_No='" & ParentDocNo & "'"
+                        clsDBFuncationality.ExecuteNonQuery(qry1, trans)
+                        qry1 = "update TSPL_SD_SALE_INVOICE_HEAD set Gross_Amount=(Total_Amt - Transporter_Commission_TotalAmt) where Against_Shipment_No='" & ParentDocNo & "'"
+                        clsDBFuncationality.ExecuteNonQuery(qry1, trans)
+                        'If DeductTPTFromDocAmt Then
+                        qry1 = "update TSPL_SD_SALE_INVOICE_HEAD set Transporter_Commission_TotalAmt=0,Gross_Amount=Total_Amt where Against_Shipment_No in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "'))"
+                        clsDBFuncationality.ExecuteNonQuery(qry1, trans)
+                        'Else
+                        '    qry1 = "update TSPL_SD_SALE_INVOICE_HEAD set Transporter_Commission_TotalAmt=0 where Against_Shipment_No in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "'))"
+                        '    clsDBFuncationality.ExecuteNonQuery(qry1, trans)
+                        'End If
 
-                    Dim strupdate As String = "update TSPL_SD_SHIPMENT_HEAD set ParentDocNo='" & ParentDocNo & "' where Document_Code='" & ParentDocNo & "'"
-                    clsDBFuncationality.ExecuteNonQuery(strupdate, trans)
+                        qry1 = "update TSPL_SD_SALE_INVOICE_HEAD set Transporter_Commission_TotalAmt=0 where Against_Shipment_No in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "'))"
+                        clsDBFuncationality.ExecuteNonQuery(qry1, trans)
+                        'qry1 = "update TSPL_SD_SALE_INVOICE_DETAIL set Transporter_Commission_Amt=0 where DOCUMENT_CODE in(select DOCUMENT_CODE from TSPL_SD_SALE_INVOICE_HEAD where Against_Shipment_No in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "')))"
+                        'clsDBFuncationality.ExecuteNonQuery(qry1, trans)
+                    End If
                 End If
-                Dim qry1 As String = ""
-                If MergeTCAmtofCreditCust Then
-                    'qry1 = "select sum(Transporter_Commission_TotalAmt) as TCAmt from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "'"
-                    qry1 = "select sum(Transporter_Commission_Amt) as TCAmt from TSPL_SD_SHIPMENT_DETAIL where DOCUMENT_CODE in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "')"
-                    Dim tcAmt As Decimal = clsCommon.myCDecimal(clsDBFuncationality.getSingleValue(qry1, trans))
-                    qry1 = "update TSPL_SD_SHIPMENT_HEAD set Transporter_Commission_TotalAmt='" & clsCommon.myCstr(tcAmt) & "' where Document_Code='" & ParentDocNo & "'"
-                    clsDBFuncationality.ExecuteNonQuery(qry1, trans)
-                    qry1 = "update TSPL_SD_SHIPMENT_HEAD set Gross_Amount=(Total_Amt - Transporter_Commission_TotalAmt) where Document_Code='" & ParentDocNo & "'"
-                    clsDBFuncationality.ExecuteNonQuery(qry1, trans)
-                    'If DeductTPTFromDocAmt Then
-                    qry1 = "update TSPL_SD_SHIPMENT_HEAD set Transporter_Commission_TotalAmt=0,Gross_Amount=Total_Amt where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "')"
-                    clsDBFuncationality.ExecuteNonQuery(qry1, trans)
-                    'Else
-                    '    qry1 = "update TSPL_SD_SHIPMENT_HEAD set Transporter_Commission_TotalAmt=0 where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "')"
-                    '    clsDBFuncationality.ExecuteNonQuery(qry1, trans)
-                    'End If
 
-                    '    qry1 = "update tspl_sd_shipment_detail set Transporter_Commission_Amt=0 where DOCUMENT_CODE in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "'))"
-                    'clsDBFuncationality.ExecuteNonQuery(qry1, trans)
-                    qry1 = "update TSPL_SD_SALE_INVOICE_HEAD set Transporter_Commission_TotalAmt='" & clsCommon.myCstr(tcAmt) & "' where Against_Shipment_No='" & ParentDocNo & "'"
-                    clsDBFuncationality.ExecuteNonQuery(qry1, trans)
-                    qry1 = "update TSPL_SD_SALE_INVOICE_HEAD set Gross_Amount=(Total_Amt - Transporter_Commission_TotalAmt) where Against_Shipment_No='" & ParentDocNo & "'"
-                    clsDBFuncationality.ExecuteNonQuery(qry1, trans)
-                    'If DeductTPTFromDocAmt Then
-                    qry1 = "update TSPL_SD_SALE_INVOICE_HEAD set Transporter_Commission_TotalAmt=0,Gross_Amount=Total_Amt where Against_Shipment_No in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "'))"
-                    clsDBFuncationality.ExecuteNonQuery(qry1, trans)
-                    'Else
-                    '    qry1 = "update TSPL_SD_SALE_INVOICE_HEAD set Transporter_Commission_TotalAmt=0 where Against_Shipment_No in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "'))"
-                    '    clsDBFuncationality.ExecuteNonQuery(qry1, trans)
-                    'End If
-
-                    qry1 = "update TSPL_SD_SALE_INVOICE_HEAD set Transporter_Commission_TotalAmt=0 where Against_Shipment_No in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "'))"
-                    clsDBFuncationality.ExecuteNonQuery(qry1, trans)
-                    'qry1 = "update TSPL_SD_SALE_INVOICE_DETAIL set Transporter_Commission_Amt=0 where DOCUMENT_CODE in(select DOCUMENT_CODE from TSPL_SD_SALE_INVOICE_HEAD where Against_Shipment_No in(select Document_Code from TSPL_SD_SHIPMENT_HEAD where ParentDocNo='" & ParentDocNo & "' and Document_Code not in('" & ParentDocNo & "')))"
-                    'clsDBFuncationality.ExecuteNonQuery(qry1, trans)
-                End If
                 trans.Commit()
                 If Not IsAutoClose Then
                     clsCommon.MyMessageBoxShow(Me, "Data Saved Successfully", Me.Text)
@@ -9477,20 +9484,24 @@ order by   TSPL_Demand_Booking_Detail.TR_Code "
                     If (clsPSShipmentHead.SaveData(obj, isNewEntry, trans, True)) Then
                         'txtDocNo.Value = obj.Document_Code
                         'txtInvoiceNo.Text = obj.Sale_Invoice_No
-
-                        If clsCommon.myLen(ParentDocNo) <= 0 AndAlso Not IsOnlyCreditCust Then
+                        If chkIndividualCustomer.Checked Then
                             ParentDocNo = obj.Document_Code
-                            'For Each lst As clsPSShipmentDemand In clsPSShipmentDemand.GetData(ParentDocNo, obj.Shift_Type, obj.Supply_Date, obj.Route_No, obj.Bill_To_Location, obj.DO_Item_Type, 0, trans)
-                            '    lstobj.Add(lst)
-                            'Next
                         Else
-                            If clsCommon.myLen(ParentDocNo) <= 0 Then
+                            If clsCommon.myLen(ParentDocNo) <= 0 AndAlso Not IsOnlyCreditCust Then
                                 ParentDocNo = obj.Document_Code
+                                'For Each lst As clsPSShipmentDemand In clsPSShipmentDemand.GetData(ParentDocNo, obj.Shift_Type, obj.Supply_Date, obj.Route_No, obj.Bill_To_Location, obj.DO_Item_Type, 0, trans)
+                                '    lstobj.Add(lst)
+                                'Next
                             Else
-                                CreditCustDoc = obj.Document_Code
-                            End If
+                                If clsCommon.myLen(ParentDocNo) <= 0 Then
+                                    ParentDocNo = obj.Document_Code
+                                Else
+                                    CreditCustDoc = obj.Document_Code
+                                End If
 
+                            End If
                         End If
+
                     End If
                 End If
             End If
@@ -17240,8 +17251,11 @@ where  TSPL_SCHEME_BENEFICIARY.Cust_Code='" + txtVendorNo.Value + "' and Convert
 
 
                         If Not IsLoadCreditCust Then
-                            isCreditCust = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Credit_Customer from TSPL_CUSTOMER_MASTER where Cust_Code='" + gvDistributor.Rows(ii).Cells("Cust_Code").Value + "'", trans))
-                            isCashCust = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Cash_Customer from TSPL_CUSTOMER_MASTER where Cust_Code='" + gvDistributor.Rows(ii).Cells("Cust_Code").Value + "'", trans))
+                            If Not chkIndividualCustomer.Checked Then
+                                isCreditCust = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Credit_Customer from TSPL_CUSTOMER_MASTER where Cust_Code='" + gvDistributor.Rows(ii).Cells("Cust_Code").Value + "'", trans))
+                                isCashCust = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select Cash_Customer from TSPL_CUSTOMER_MASTER where Cust_Code='" + gvDistributor.Rows(ii).Cells("Cust_Code").Value + "'", trans))
+
+                            End If
 
                             If clsCommon.CompairString(isCreditCust, "Y") = CompairStringResult.Equal OrElse clsCommon.CompairString(isCashCust, "Y") = CompairStringResult.Equal Then
                                 IsCreditCustomer = True
