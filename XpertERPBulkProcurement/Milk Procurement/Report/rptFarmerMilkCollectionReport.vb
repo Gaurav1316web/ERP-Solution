@@ -1,6 +1,7 @@
 ﻿
 Imports common
 Imports System.IO
+Imports System.Globalization
 Public Class rptFarmerMilkCollectionReport
     Inherits FrmMainTranScreen
 
@@ -21,7 +22,7 @@ Public Class rptFarmerMilkCollectionReport
     Private Sub rptFarmerMilkCollectionReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         funreset()
         txtFromMonth.Value = clsCommon.GETSERVERDATE()
-        TxtToMonth.Value = clsCommon.GETSERVERDATE().AddMonths(-1)
+        TxtToMonth.Value = clsCommon.GETSERVERDATE().AddMonths(+1)
 
         If clsCommon.myLen(objCommonVar.CurrentUnionDataBase) > 0 Then
             Dim Union As ArrayList = Nothing
@@ -254,23 +255,24 @@ Where 1=1 and convert(date,[" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name
 )
 
 Select 
-     ROW_NUMBER() OVER(ORDER BY UnionName) As SNo,UnionName "
+     ROW_NUMBER() OVER(ORDER BY UnionName) As [S.No.],UnionName as [Union Name] "
 
                 For i As Integer = 0 To MonthCount
                 Dim MonthCode As String = CurrentDate.ToString("MMM-yy")
+                Dim MonthCode1 As String = CurrentDate.ToString("MMM")
 
-                qryies += "  ,MAX(Case When DateMonth='" + MonthCode + "' THEN DCS END)     AS [" + MonthCode + "_DCS],
-    MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN Farmer END)  AS [" + MonthCode + "_Farmer],
-    MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (CAST(Qty AS DECIMAL(18,2))) END)     AS [" + MonthCode + "_Qty],
-    MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (CAST(RecoQty AS DECIMAL(18,2))) END)     AS [" + MonthCode + "_RecoQty],
-    MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (Cast (Amount AS DECIMAL(18,2))) END)  AS [" + MonthCode + "_Amount],
-    MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (Cast (RecoAmt AS DECIMAL(18,2))) END)  AS [" + MonthCode + "_RecoAmount]"
+                qryies += "  ,MAX(Case When DateMonth='" + MonthCode + "' THEN DCS END)     AS [" + MonthCode1 + "_DCS],
+                              MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (CAST(RecoQty AS DECIMAL(18,2))) END)     AS [" + MonthCode1 + "_RecoQty],
+                              MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (Cast (RecoAmt AS DECIMAL(18,2))) END)  AS [" + MonthCode1 + "_RecoAmount],
+                              MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN Farmer END)  AS [" + MonthCode1 + "_Farmer],
+                              MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (CAST(Qty AS DECIMAL(18,2))) END)     AS [" + MonthCode1 + "_Qty],
+                              MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (Cast (Amount AS DECIMAL(18,2))) END)  AS [" + MonthCode1 + "_Amount]    "
 
                 CurrentDate = CurrentDate.AddMonths(1)
             Next
             qryies += " ,SUM(CAST(Qty AS DECIMAL(18,2))) AS Total_Qty,sum(cast(RecoQty as decimal(18,2))) as Total_RecoQty
                         ,sum(cast(RecoAmt as decimal(18,2))) as Total_RecoAmount,SUM(CAST(Amount AS DECIMAL(18,2))) AS Total_Amount
-                        ,Sum(Cast(RecoAmt-Amount as decimal(18,2))) as Difference,Sum(Cast((Qty *100)/NULLIF(RecoQty, 0) as decimal(18,2)) ) as Percentage"
+                        ,Sum(Cast(RecoAmt-Amount as decimal(18,2))) as Difference,(Cast((Sum(Qty) *100)/NULLIF(Sum(RecoQty), 0) as decimal(18,2)) ) as Percentage"
             '        For i As Integer = 0 To MonthCount
             '            Dim MonthCode As String = CurrentDate.ToString("MMM-yy")
 
@@ -366,6 +368,7 @@ ORDER BY UnionName;
                 gv1.BestFitColumns()
                 EnableDisableCtrl(False)
                 View()
+                SetGridFormat()
             Else
                 clsCommon.MyMessageBoxShow(Me, "No Data Found to Display", Me.Text)
                 Exit Sub
@@ -389,28 +392,36 @@ ORDER BY UnionName;
 
             view.ColumnGroups.Add(New GridViewColumnGroup("Union"))
             view.ColumnGroups(0).Rows.Add(New GridViewColumnGroupRow())
-            view.ColumnGroups(0).Rows(0).ColumnNames.Add(gv1.Columns("SNo").Name)
-            view.ColumnGroups(0).Rows(0).ColumnNames.Add(gv1.Columns("UnionName").Name)
+            view.ColumnGroups(0).Rows(0).ColumnNames.Add(gv1.Columns("S.No.").Name)
+            view.ColumnGroups(0).Rows(0).ColumnNames.Add(gv1.Columns("Union Name").Name)
 
             For i As Integer = 0 To MonthCount
 
                 Dim MonthCode As String = CurrentDate.ToString("MMM-yy")
+                Dim MonthCode1 As String = CurrentDate.ToString("MMM")
 
                 'view.ColumnGroups.Add(New GridViewColumnGroup(MonthCode))
                 Dim groupIndex As Integer = view.ColumnGroups.Count
-                Dim ColDCS As String = MonthCode & "_DCS"
-                Dim ColFarmer As String = MonthCode & "_Farmer"
-                Dim ColQty As String = MonthCode & "_Qty"
-                Dim ColRecoQty As String = MonthCode & "_RecoQty"
-                Dim ColDBTAmt As String = MonthCode & "_Amount"
-                Dim ColRecoAmt As String = MonthCode & "_RecoAmount"
+                'Dim ColDCS As String = MonthCode & "_DCS"
+                'Dim ColFarmer As String = MonthCode & "_Farmer"
+                'Dim ColQty As String = MonthCode & "_Qty"
+                'Dim ColRecoQty As String = MonthCode & "_RecoQty"
+                'Dim ColDBTAmt As String = MonthCode & "_Amount"
+                'Dim ColRecoAmt As String = MonthCode & "_RecoAmount"
+
+                Dim ColDCS As String = MonthCode1 & "_DCS"
+                Dim ColFarmer As String = MonthCode1 & "_Farmer"
+                Dim ColQty As String = MonthCode1 & "_Qty"
+                Dim ColRecoQty As String = MonthCode1 & "_RecoQty"
+                Dim ColDBTAmt As String = MonthCode1 & "_Amount"
+                Dim ColRecoAmt As String = MonthCode1 & "_RecoAmount"
 
                 gv1.Columns(ColDCS).HeaderText = "DCS"
                 gv1.Columns(ColFarmer).HeaderText = "Farmer Count"
                 gv1.Columns(ColQty).HeaderText = "Farmer Qty"
-                gv1.Columns(ColQty).HeaderText = "Reco Qty"
-                gv1.Columns(ColDBTAmt).HeaderText = "DBT Amount"
-                gv1.Columns(ColRecoAmt).HeaderText = "Reco Amount"
+                gv1.Columns(ColRecoQty).HeaderText = "DCS Reco Qty"
+                gv1.Columns(ColDBTAmt).HeaderText = "Farmer Subsidy Amount"
+                gv1.Columns(ColRecoAmt).HeaderText = "DCS Reco Amount"
 
                 'view.ColumnGroups.Add(New GridViewColumnGroup(clsCommon.GetPrintDate(MonthCode & " ", "MMM-yy")))
                 view.ColumnGroups.Add(New GridViewColumnGroup("[" & clsCommon.GetPrintDate(MonthCode & " ", "MMM-yy") & "]"))
@@ -421,11 +432,12 @@ ORDER BY UnionName;
                 'view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(gv1.Columns(MonthCode & "_Qty").Name)
                 'view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(gv1.Columns(MonthCode & "_Amount").Name)
                 view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColDCS)
+                view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColRecoQty)
+                view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColRecoAmt)
                 view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColFarmer)
                 view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColQty)
-                view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColRecoQty)
                 view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColDBTAmt)
-                view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColRecoAmt)
+
 
                 CurrentDate = CurrentDate.AddMonths(1)
 
@@ -439,9 +451,9 @@ ORDER BY UnionName;
             Dim ColPercentage As String = "Percentage"
 
             gv1.Columns(ColTotalQty).HeaderText = "Total Qty"
-            gv1.Columns(ColTotalRecoQty).HeaderText = "Total RecoQty"
+            gv1.Columns(ColTotalRecoQty).HeaderText = "Total Reco Qty"
             gv1.Columns(ColTotalDBTAmt).HeaderText = "Total Amount"
-            gv1.Columns(ColTotalRecoAmt).HeaderText = "Total RecoAmount"
+            gv1.Columns(ColTotalRecoAmt).HeaderText = "Total Reco Amount"
             gv1.Columns(ColDifference).HeaderText = "Difference"
             gv1.Columns(ColPercentage).HeaderText = "Percentage"
 
@@ -512,6 +524,20 @@ ORDER BY UnionName;
             gv1.Columns(ii).ReadOnly = True
             gv1.Columns(ii).BestFit()
         Next
+
+        'Dim summaryRowItem As New GridViewSummaryRowItem()
+        'Dim i As Integer = 0
+        ''If clsCommon.CompairString(ddlReportType.SelectedValue, "UWSR") = CompairStringResult.Equal Then
+        ''    i = 2
+        ''Else
+        'i = 7
+        ''End If
+        'For ii As Integer = 2 To gv1.Columns.Count - i
+        '    summaryRowItem.Add(New GridViewSummaryItem(gv1.Columns(ii).Name, "{0:n2}", GridAggregateFunction.Sum))
+        'Next
+
+        'gv1.MasterTemplate.SummaryRowsBottom.Add(summaryRowItem)
+        'gv1.MasterView.SummaryRows(0).PinPosition = PinnedRowPosition.Bottom
     End Sub
     Private Sub txtFromMonth_ValueChanged(sender As Object, e As EventArgs) Handles txtFromMonth.ValueChanged
         Try
@@ -533,8 +559,8 @@ ORDER BY UnionName;
 
             Dim CD As New DateTime(SY, SM, 1)
             'If rbtnYearly.IsChecked Then
-            Slot2 = clsCommon.GetPrintDate(CD.AddMonths(12).AddDays(-1), "dd/MMM/yyyy")
-            TxtToMonth.Value = txtFromMonth.Value.AddMonths(11)
+            Slot2 = clsCommon.GetPrintDate(CD.AddMonths(1).AddDays(-1), "dd/MMM/yyyy")
+            TxtToMonth.Value = txtFromMonth.Value.AddMonths(2)
             Month4 = clsCommon.GetPrintDate(txtFromMonth.Value.AddMonths(3), "MMM-yy")
             Month5 = clsCommon.GetPrintDate(txtFromMonth.Value.AddMonths(4), "MMM-yy")
             Month6 = clsCommon.GetPrintDate(txtFromMonth.Value.AddMonths(5), "MMM-yy")
@@ -591,5 +617,17 @@ ORDER BY UnionName;
 
     Private Sub btnPDF_Click(sender As Object, e As EventArgs) Handles btnPDF.Click
         ExportGrid(EnumExportTo.PDF)
+    End Sub
+
+    Private Sub gv1_CellFormatting(sender As Object, e As CellFormattingEventArgs) Handles gv1.CellFormatting
+        Dim SkipColumns As String() = {"S.No.", "Union Name", "Jan_DCS", "Jan_Farmer", "Feb_DCS", "Feb_Farmer", "Mar_DCS", "Mar_Farmer", "Apr_DCS", "Apr_Farmer", "May_DCS", "May_Farmer", "Jun_DCS", "Jun_Farmer", "Jul_DCS", "Jul_Farmer", "Aug_DCS", "Aug_Farmer", "Sep_DCS", "Sep_Farmer", "Oct_DCS", "Oct_Farmer", "Nov_DCS", "Nov_Farmer", "Dec_DCS", "Dec_Farmer"}
+
+        If e.Column IsNot Nothing AndAlso SkipColumns.Contains(e.Column.Name) Then
+            Exit Sub
+        End If
+
+        If e.CellElement.Value IsNot Nothing AndAlso IsNumeric(e.CellElement.Value) Then
+            e.CellElement.Text = Convert.ToDecimal(e.CellElement.Value).ToString("N2", New CultureInfo("en-IN"))
+        End If
     End Sub
 End Class
