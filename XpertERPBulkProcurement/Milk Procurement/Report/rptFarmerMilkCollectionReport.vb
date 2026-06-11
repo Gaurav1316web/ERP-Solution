@@ -163,7 +163,7 @@ Public Class rptFarmerMilkCollectionReport
 
                     qryies += " 
     SELECT  '" + clsCommon.myCstr(dt.Rows(ii).Item("Location_Name")) + "' AS UnionName,
-        V.VLC_Code,M.MP_CODE,Doc_Date,Qty
+        V.VLC_Code,M.MP_CODE,Doc_Date,Qty,0 as RecoQty
     FROM [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_VLC_DATA_UPLOADER U
     LEFT JOIN [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_VLC_MASTER_HEAD V
         ON V.Vlc_Code_VLC_Uploader = U.VLC_CODE
@@ -176,41 +176,101 @@ Public Class rptFarmerMilkCollectionReport
     UNION ALL
 
     SELECT  '" + clsCommon.myCstr(dt.Rows(ii).Item("Location_Name")) + "' AS UnionName,
-        UM.VLC_CODE,M.MP_CODE,UM.Document_Date,D.Qty
+        UM.VLC_CODE,M.MP_CODE,UM.Document_Date,D.Qty,0 as RecoQty
     FROM [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_VLC_DATA_UPLOADER_DETAIL D
     INNER JOIN [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_VLC_DATA_UPLOADER_MASTER UM
         ON UM.Document_Code = D.Document_Code
     LEFT JOIN [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPl_MP_MAster M
         ON M.MP_Code = D.Farmer_Code
     WHERE CONVERT(DATE,UM.Document_Date)
-          BETWEEN '" + clsCommon.GetPrintDate(Slot1) + "' AND '" + clsCommon.GetPrintDate(Slot2) + "' "
+          BETWEEN '" + clsCommon.GetPrintDate(Slot1) + "' AND '" + clsCommon.GetPrintDate(Slot2) + "'
 
+union all
+
+select  '" + clsCommon.myCstr(dt.Rows(ii).Item("Location_Name")) + "' AS UnionName,TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.VLC_Code, NULL AS MP_CODE, TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Reco_Date as Document_Date,
+0 AS qty  ,TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Qty as RecoQty
+from [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_DETAIL
+Left Outer Join [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_HEAD On [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Document_Code=[" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code
+Left Join [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_VLC_MASTER_HEAD On [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_VLC_MASTER_HEAD.VLC_Code=[" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.VLC_Code
+Where 1=1 and convert(date,[" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Reco_Date,103) >='" + clsCommon.GetPrintDate(Slot1) + "' And convert(date,[" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Reco_Date,103)<= '" + clsCommon.GetPrintDate(Slot2) + "'
+
+union all
+
+select  '" + clsCommon.myCstr(dt.Rows(ii).Item("Location_Name")) + "' AS UnionName,TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID.VLC_Code,NULL AS MP_CODE,  TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Reco_Date as Document_Date,
+0 AS qty  ,TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID.Qty as RecoQty
+from [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID
+Left Outer Join [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_HEAD On [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Document_Code=[" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID.Document_Code
+Left Join [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_VLC_MASTER_HEAD On [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_VLC_MASTER_HEAD.VLC_Code=[" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID.VLC_Code
+Where 1=1 and convert(date,[" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Reco_Date,103) >='" + clsCommon.GetPrintDate(Slot1) + "' And convert(date,[" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Reco_Date,103)<= '" + clsCommon.GetPrintDate(Slot2) + "'
+
+"
                 Next
 
             End If
 
-            qryies += " ),
-MonthlySummary AS  
+            qryies += " ), "
+
+            '           For ii As Integer = 0 To dt.Rows.Count - 1
+            '               If ii > 0 Then
+            '                   qryies += " UNION ALL "
+            '               Else
+            '                   qryies += " RecoData AS ( "
+            '               End If
+
+            '               qryies += "  SELECT UnionName,
+            '       FORMAT(Reco_Date,'MMM-yy') AS DateMonth,
+            '       SUM(Qty) AS RecoQty
+            '   FROM
+            '   (
+            '       SELECT '" + clsCommon.myCstr(dt.Rows(ii).Item("Location_Name")) + "' AS UnionName,
+            '           H.Reco_Date,
+            '           D.Qty
+            '       FROM [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_DETAIL D
+            '       INNER JOIN [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_HEAD H
+            '           ON H.Document_Code = D.Document_Code
+            '       WHERE H.Reco_Date >= '" + clsCommon.GetPrintDate(Slot1) + "'
+            '         AND H.Reco_Date <= '" + clsCommon.GetPrintDate(Slot2) + "'
+
+            '       UNION ALL
+
+            '       SELECT '" + clsCommon.myCstr(dt.Rows(ii).Item("Location_Name")) + "' AS UnionName,
+            '           H.Reco_Date,
+            '           D.Qty
+            '       FROM [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID D
+            '       INNER JOIN [" + clsCommon.myCstr(dt.Rows(ii).Item("DataBase_Name")) + "].[dbo].TSPL_DCS_MP_INCENTIVE_RECO_HEAD H
+            '           ON H.Document_Code = D.Document_Code
+            '       WHERE H.Reco_Date >= '" + clsCommon.GetPrintDate(Slot1) + "'
+            '         AND H.Reco_Date <= '" + clsCommon.GetPrintDate(Slot2) + "'
+            '   ) X
+            '   GROUP BY FORMAT(Reco_Date,'MMM-yy'),UnionName
+            '"
+            '           Next
+            '           qryies += " ), "
+            qryies += " MonthlySummary AS  
 (
-    SELECT UnionName,FORMAT(Doc_Date,'MMM-yy') AS DateMonth,COUNT(DISTINCT VLC_Code) AS DCS,
-        COUNT(DISTINCT MP_CODE) AS Farmer,SUM(Qty) AS Qty,SUM(Qty)*5 AS Amount FROM Data
-    GROUP BY   UnionName,YEAR(Doc_Date),MONTH(Doc_Date),FORMAT(Doc_Date,'MMM-yy')
+    Select  Data.UnionName,FORMAT(Doc_Date,'MMM-yy') AS DateMonth,COUNT(DISTINCT VLC_Code) AS DCS,
+        count(DISTINCT MP_CODE) As Farmer,SUM(Qty) As Qty,SUM(Qty)*5 As Amount,SUM(RecoQty) AS RecoQty,SUM(RecoQty)*5 AS RecoAmt FROM Data
+    Group BY   Data.UnionName, Year(Doc_Date), Month(Doc_Date), Format(Doc_Date,'MMM-yy')
 )
 
-SELECT
-     ROW_NUMBER() OVER(ORDER BY UnionName) AS SNo,UnionName "
+Select 
+     ROW_NUMBER() OVER(ORDER BY UnionName) As SNo,UnionName "
 
-            For i As Integer = 0 To MonthCount
+                For i As Integer = 0 To MonthCount
                 Dim MonthCode As String = CurrentDate.ToString("MMM-yy")
 
-                qryies += "  ,MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN DCS END)     AS [" + MonthCode + "_DCS],
+                qryies += "  ,MAX(Case When DateMonth='" + MonthCode + "' THEN DCS END)     AS [" + MonthCode + "_DCS],
     MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN Farmer END)  AS [" + MonthCode + "_Farmer],
     MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (CAST(Qty AS DECIMAL(18,2))) END)     AS [" + MonthCode + "_Qty],
-    MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (Cast (Amount AS DECIMAL(18,2))) END)  AS [" + MonthCode + "_Amount]"
+    MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (CAST(RecoQty AS DECIMAL(18,2))) END)     AS [" + MonthCode + "_RecoQty],
+    MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (Cast (Amount AS DECIMAL(18,2))) END)  AS [" + MonthCode + "_Amount],
+    MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (Cast (RecoAmt AS DECIMAL(18,2))) END)  AS [" + MonthCode + "_RecoAmount]"
 
                 CurrentDate = CurrentDate.AddMonths(1)
             Next
-            qryies += " ,SUM(CAST(Qty AS DECIMAL(18,2))) AS Total_Qty,SUM(CAST(Amount AS DECIMAL(18,2))) AS Total_Amount"
+            qryies += " ,SUM(CAST(Qty AS DECIMAL(18,2))) AS Total_Qty,sum(cast(RecoQty as decimal(18,2))) as Total_RecoQty
+                        ,sum(cast(RecoAmt as decimal(18,2))) as Total_RecoAmount,SUM(CAST(Amount AS DECIMAL(18,2))) AS Total_Amount
+                        ,Sum(Cast(RecoAmt-Amount as decimal(18,2))) as Difference,Sum(Cast((Qty *100)/NULLIF(RecoQty, 0) as decimal(18,2)) ) as Percentage"
             '        For i As Integer = 0 To MonthCount
             '            Dim MonthCode As String = CurrentDate.ToString("MMM-yy")
 
@@ -341,12 +401,16 @@ ORDER BY UnionName;
                 Dim ColDCS As String = MonthCode & "_DCS"
                 Dim ColFarmer As String = MonthCode & "_Farmer"
                 Dim ColQty As String = MonthCode & "_Qty"
+                Dim ColRecoQty As String = MonthCode & "_RecoQty"
                 Dim ColDBTAmt As String = MonthCode & "_Amount"
+                Dim ColRecoAmt As String = MonthCode & "_RecoAmount"
 
                 gv1.Columns(ColDCS).HeaderText = "DCS"
-                gv1.Columns(ColFarmer).HeaderText = "FarmerCount"
-                gv1.Columns(ColQty).HeaderText = "Qty"
-                gv1.Columns(ColDBTAmt).HeaderText = "DBTAmount"
+                gv1.Columns(ColFarmer).HeaderText = "Farmer Count"
+                gv1.Columns(ColQty).HeaderText = "Farmer Qty"
+                gv1.Columns(ColQty).HeaderText = "Reco Qty"
+                gv1.Columns(ColDBTAmt).HeaderText = "DBT Amount"
+                gv1.Columns(ColRecoAmt).HeaderText = "Reco Amount"
 
                 'view.ColumnGroups.Add(New GridViewColumnGroup(clsCommon.GetPrintDate(MonthCode & " ", "MMM-yy")))
                 view.ColumnGroups.Add(New GridViewColumnGroup("[" & clsCommon.GetPrintDate(MonthCode & " ", "MMM-yy") & "]"))
@@ -359,22 +423,36 @@ ORDER BY UnionName;
                 view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColDCS)
                 view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColFarmer)
                 view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColQty)
+                view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColRecoQty)
                 view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColDBTAmt)
+                view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(ColRecoAmt)
 
                 CurrentDate = CurrentDate.AddMonths(1)
 
             Next
             Dim groupIndex1 As Integer = view.ColumnGroups.Count
             Dim ColTotalQty As String = "Total_Qty"
+            Dim ColTotalRecoQty As String = "Total_RecoQty"
             Dim ColTotalDBTAmt As String = "Total_Amount"
+            Dim ColTotalRecoAmt As String = "Total_RecoAmount"
+            Dim ColDifference As String = "Difference"
+            Dim ColPercentage As String = "Percentage"
 
             gv1.Columns(ColTotalQty).HeaderText = "Total Qty"
+            gv1.Columns(ColTotalRecoQty).HeaderText = "Total RecoQty"
             gv1.Columns(ColTotalDBTAmt).HeaderText = "Total Amount"
+            gv1.Columns(ColTotalRecoAmt).HeaderText = "Total RecoAmount"
+            gv1.Columns(ColDifference).HeaderText = "Difference"
+            gv1.Columns(ColPercentage).HeaderText = "Percentage"
 
             view.ColumnGroups.Add(New GridViewColumnGroup("Total"))
             view.ColumnGroups(groupIndex1).Rows.Add(New GridViewColumnGroupRow())
             view.ColumnGroups(groupIndex1).Rows(0).ColumnNames.Add(ColTotalQty)
+            view.ColumnGroups(groupIndex1).Rows(0).ColumnNames.Add(ColTotalRecoQty)
             view.ColumnGroups(groupIndex1).Rows(0).ColumnNames.Add(ColTotalDBTAmt)
+            view.ColumnGroups(groupIndex1).Rows(0).ColumnNames.Add(ColTotalRecoAmt)
+            view.ColumnGroups(groupIndex1).Rows(0).ColumnNames.Add(ColDifference)
+            view.ColumnGroups(groupIndex1).Rows(0).ColumnNames.Add(ColPercentage)
 
             '           Dim view As New ColumnGroupsViewDefinition()
             '           view.ColumnGroups.Add(New GridViewColumnGroup(" "))
