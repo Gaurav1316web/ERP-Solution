@@ -47,6 +47,7 @@ Public Class frmDBTNEFTUploader
     Const DBTTRNO As String = "DBTTRNO"
     Const FarmerID2 As String = "FarmerID2"
     Const ZoneName As String = "ZoneName"
+    Dim ArrAgainstRecoPKID As ArrayList = Nothing
 #End Region
     Public Sub New()
         InitializeComponent()
@@ -459,7 +460,7 @@ where TSPL_BANK_MASTER.NEFT_DBT_Default=1 order by TRCode"
 
             gv.BestFitColumns()
             gv.AllowAddNewRow = False
-            gv.AllowDeleteRow = True
+            gv.AllowDeleteRow = False
             gv.AllowRowReorder = False
             gv.ShowGroupPanel = False
             gv.EnableFiltering = True
@@ -801,7 +802,7 @@ where " + TableName + ".Document_Code='" & txtDocumentNo.Value & "'"
     Private Function GetMpQry(ByVal IsPickValid As Boolean, ByVal GrpByFarmer As Boolean, ByVal isCheckOnly As Boolean) As String
 
         Dim BaseQry As String = "select TSPL_MP_INCENTIVE_ENTRY_DETAIL.PK_Id,TSPL_MP_INCENTIVE_ENTRY_HEAD.Document_Code as Doc_No,convert(varchar, TSPL_MP_INCENTIVE_ENTRY_HEAD.From_Date,103) +' To '+ convert(varchar,TSPL_MP_INCENTIVE_ENTRY_HEAD.To_Date,103) as Date_Range,TSPL_MP_INCENTIVE_ENTRY_HEAD.MCC_Code,tspl_MCC_Master.MCC_Name,TSPL_MP_INCENTIVE_ENTRY_DETAIL.VLC_Code,TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Name,TSPL_MP_MASTER.MP_Code,TSPL_MP_MASTER.MP_Code_VLC_Uploader as VLC_CODE_Uploader,TSPL_MP_MASTER.PayeeName as Payee_Joint_Name,TSPL_MP_MASTER.BankName as Bank_Code,TSPL_MP_MASTER.BankName as Bank_Code_Desc,case when len(isnull(TSPL_MP_MASTER.Telphone,''))=10 then TSPL_MP_MASTER.Telphone else '' end as Telphone,TSPL_MP_MASTER.AccountNO as Payee_Joint_Account_No,TSPL_MP_MASTER.IFCICode as Payee_Joint_IFSC_Code,TSPL_MP_INCENTIVE_ENTRY_DETAIL.Qty,TSPL_MP_INCENTIVE_ENTRY_DETAIL.Amount_Actual as Payable_Amount 
-,TSPL_ZONE_MASTER.Description  as ZoneName,TSPL_MP_INCENTIVE_ENTRY_DETAIL.Mark_Invalid   
+,TSPL_ZONE_MASTER.Description  as ZoneName,TSPL_MP_INCENTIVE_ENTRY_DETAIL.Mark_Invalid  
 from TSPL_MP_INCENTIVE_ENTRY_DETAIL "
         If SettDCSMPIncetiveReco Then
             BaseQry += " left outer join TSPL_DCS_MP_INCENTIVE_RECO_DETAIL on TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_Year=TSPL_MP_INCENTIVE_ENTRY_DETAIL.Cycle_Year and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_Month=TSPL_MP_INCENTIVE_ENTRY_DETAIL.Cycle_Month and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_No=TSPL_MP_INCENTIVE_ENTRY_DETAIL.Cycle_No and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.VLC_Code=TSPL_MP_INCENTIVE_ENTRY_DETAIL.VLC_Code 
@@ -818,7 +819,7 @@ left outer join TSPL_DBT_CAPING_DETAIL on TSPL_DBT_CAPING_DETAIL.Document_Code=T
     left outer join tspl_MCC_Master on tspl_MCC_Master.MCC_Code=TSPL_MP_INCENTIVE_ENTRY_HEAD.MCC_Code
     where 2=2 "
         If SettDCSMPIncetiveReco Then
-            BaseQry += " and isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Status,0)=1 and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.PK_Id is not null 
+            BaseQry += "  and ((isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Farmer_Collection,0)=0 and isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Status,0)=1) or (isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Farmer_Collection,0)=1 and isnull(TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Status,0)=1 )) and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.PK_Id is not null 
 and 2=(case when ISNULL(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.DBT_Capping_Apply,0)=1 then ((case when ISNULL(TSPL_DBT_CAPING_DETAIL.Capping_Status,0)=1 then 2 else 3 end)) else 2 end)"
         End If
         If Not isCheckOnly Then
