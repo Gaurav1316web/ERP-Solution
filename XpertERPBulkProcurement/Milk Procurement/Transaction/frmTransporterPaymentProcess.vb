@@ -86,6 +86,9 @@ Public Class frmTransporterPaymentProcess
         coll.Add("PK_ID", "integer NOT NULL identity NOT FOR REPLICATION PRIMARY KEY")
         coll.Add("Document_Code", "varchar(30) NOT NULL References TSPL_TRANSPORTER_PAYMENT_PROCESS_HEAD(Document_Code)")
         coll.Add("Transporter_Bill_No", "varchar(30)  NULL References TSPL_BMC_TRANSPORTER_BILL_HEAD(Document_Code)")
+        coll.Add("Transporter_Bill_Date", "datetime NULL")
+        coll.Add("Tanker_No", "varchar(20) NULL ")
+        coll.Add("KM", "decimal (18,2) NULL")
         coll.Add("Type", "varchar(20) NULL")
         coll.Add("Transporter_Code", "varchar(30) NULL")
         coll.Add("Bank_Code", "varchar(50) NULL")
@@ -241,6 +244,7 @@ Public Class frmTransporterPaymentProcess
         ReStoreGridLayout()
         RadGroupBox2.Enabled = True
         btnSave.Text = "Save"
+        rbtnBoth.IsChecked = True
     End Sub
 
     Sub BlankAllControls()
@@ -285,11 +289,41 @@ Public Class frmTransporterPaymentProcess
 
     Private Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
         Try
-            If txtTanker.arrValueMember IsNot Nothing AndAlso txtTanker.arrValueMember.Count > 0 Then
-                LoadGridData()
-            Else
-                clsCommon.MyMessageBoxShow(Me, "Please Select TankerNo", Me.Text)
+            'If txtTanker.arrValueMember IsNot Nothing AndAlso txtTanker.arrValueMember.Count > 0 Then
+            LoadGridData()
+            Dim TankerDetail As String = "Select Tanker_No 
+                              From TSPL_BMC_TRANSPORTER_BILL_HEAD
+                              Where Convert(Date,From_Date,103) >= Convert(Date,'" & clsCommon.GetPrintDate(dtpFromDate.Value) & "',103)
+                              And Convert(Date,To_Date,103) <= Convert(Date,'" & clsCommon.GetPrintDate(dtpToDate.Value) & "',103)
+                              And Status = 1"
+
+            Dim dt As DataTable = clsDBFuncationality.GetDataTable(TankerDetail)
+            Dim arrUserType As New ArrayList
+            'Dim TankerNos As String = ""
+
+            If dt.Rows.Count > 0 Then
+
+                For Each dr As DataRow In dt.Rows
+                    'arrUserType &= dr("Tanker_No").ToString().Trim() & ","
+                    arrUserType.Add(dr("Tanker_No").ToString().Trim())
+                Next
+
+                'TankerNos = TankerNos.TrimEnd(","c)
+
             End If
+            txtTanker.arrValueMember = arrUserType
+
+            btnGo.Enabled = False
+
+            'Dim arrUserType As New ArrayList
+
+            'For i As Integer = 0 To obj.Arr.Count - 1
+            '    arrUserType.Add(obj.Arr(i).Login_Type)
+            'Next
+            'txtUserType.arrValueMember = arrUserType
+            'Else
+            '    clsCommon.MyMessageBoxShow(Me, "Please Select TankerNo", Me.Text)
+            'End If
 
         Catch ex As Exception
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
@@ -325,8 +359,8 @@ Public Class frmTransporterPaymentProcess
                     gv.CurrentRow.Cells(ColTankerNo).Value = clsCommon.myCstr(dt.Rows(ii)("Tanker_No"))
                     gv.CurrentRow.Cells(ColType).Value = clsCommon.myCstr(dt.Rows(ii)("Typess"))
                     gv.CurrentRow.Cells(ColKM).Value = clsCommon.myCdbl(dt.Rows(ii)("KM"))
-                    gv.CurrentRow.Cells(colTransporterCode).Value = clsCommon.myCdbl(dt.Rows(ii)("Vendor_Code"))
-                    gv.CurrentRow.Cells(colTransporterName).Value = clsCommon.myCdbl(dt.Rows(ii)("Vendor_Name"))
+                    gv.CurrentRow.Cells(colTransporterCode).Value = clsCommon.myCstr(dt.Rows(ii)("Vendor_Code"))
+                    gv.CurrentRow.Cells(colTransporterName).Value = clsCommon.myCstr(dt.Rows(ii)("Vendor_Name"))
                     gv.CurrentRow.Cells(ColBankCode).Value = clsCommon.myCstr(dt.Rows(ii)("Bank_Code"))
                     gv.CurrentRow.Cells(ColBankName).Value = clsCommon.myCstr(dt.Rows(ii)("Bank_Name"))
                     gv.CurrentRow.Cells(ColBankIFSC).Value = clsCommon.myCstr(dt.Rows(ii)("IFSC_Code"))
@@ -369,6 +403,9 @@ Public Class frmTransporterPaymentProcess
                     Dim objTr As New ClsTransporterPaymentProcessDetail()
 
                     objTr.Transporter_Bill_No = clsCommon.myCstr(grow.Cells(colTransporterBillNo).Value)
+                    objTr.Transporter_Bill_Date = clsCommon.myCDate(grow.Cells(colDate).Value)
+                    objTr.Tanker_No = clsCommon.myCstr(grow.Cells(ColTankerNo).Value)
+                    objTr.KM = clsCommon.myCdbl(grow.Cells(ColKM).Value)
                     objTr.Transporter_Code = clsCommon.myCstr(grow.Cells(colTransporterCode).Value)
                     objTr.Type = clsCommon.myCstr(grow.Cells(ColType).Value)
                     objTr.Bank_Code = clsCommon.myCstr(grow.Cells(ColBankCode).Value)
@@ -387,6 +424,7 @@ Public Class frmTransporterPaymentProcess
                         common.clsCommon.MyMessageBoxShow(Me, "Data Saved Successfully", Me.Text)
                     End If
                     LoadData(obj.Document_Code, NavigatorType.Current)
+                    btnGo.Enabled = False
                 End If
             End If
         Catch ex As Exception
@@ -465,6 +503,7 @@ Public Class frmTransporterPaymentProcess
                 End If
                 common.clsCommon.MyMessageBoxShow(Me, msg, Me.Text)
                 LoadData(fndDocNo.Value, NavigatorType.Current)
+                btnGo.Enabled = False
             End If
         Catch ex As Exception
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
@@ -519,14 +558,38 @@ Public Class frmTransporterPaymentProcess
                 rbtnBoth.IsChecked = True
             End If
 
+            Dim TankerDetail As String = "Select Tanker_No From TSPL_BMC_TRANSPORTER_BILL_HEAD
+                              Where Convert(Date,From_Date,103) >= Convert(Date,'" & obj.From_Date & "',103)
+                              And Convert(Date,To_Date,103) <= Convert(Date,'" & obj.To_Date & "',103) And Status = 1"
+
+            Dim dt As DataTable = clsDBFuncationality.GetDataTable(TankerDetail)
+            Dim arrUserType As New ArrayList
+            'Dim TankerNos As String = ""
+
+            If dt.Rows.Count > 0 Then
+
+                For Each dr As DataRow In dt.Rows
+                    'arrUserType &= dr("Tanker_No").ToString().Trim() & ","
+                    arrUserType.Add(dr("Tanker_No").ToString().Trim())
+                Next
+
+                'TankerNos = TankerNos.TrimEnd(","c)
+
+            End If
+            txtTanker.arrValueMember = arrUserType
             If obj.Arr IsNot Nothing Then
                 Dim rowCount As Integer = 0
                 Dim i As Integer = 0
                 For Each objrow As ClsTransporterPaymentProcessDetail In obj.Arr
                     gv.Rows.AddNew()
                     gv.Rows(gv.Rows.Count - 1).Cells(colTransporterBillNo).Value = objrow.Transporter_Bill_No
+                    gv.Rows(gv.Rows.Count - 1).Cells(colDate).Value = objrow.Transporter_Bill_Date
+                    gv.Rows(gv.Rows.Count - 1).Cells(ColTankerNo).Value = objrow.Tanker_No
+                    gv.Rows(gv.Rows.Count - 1).Cells(ColKM).Value = objrow.KM
                     gv.Rows(gv.Rows.Count - 1).Cells(ColType).Value = objrow.Type
                     gv.Rows(gv.Rows.Count - 1).Cells(colTransporterCode).Value = objrow.Transporter_Code
+                    Dim qry1 As String = clsDBFuncationality.getSingleValue(" select Vendor_Name from TSPL_VENDOR_MASTER where Vendor_Code='" + objrow.Transporter_Code + "'")
+                    gv.Rows(gv.Rows.Count - 1).Cells(colTransporterCode).Value = clsCommon.myCstr(qry1)
                     gv.Rows(gv.Rows.Count - 1).Cells(ColBankCode).Value = objrow.Bank_Code
                     gv.Rows(gv.Rows.Count - 1).Cells(ColBankName).Value = objrow.Bank_Name
                     gv.Rows(gv.Rows.Count - 1).Cells(ColBankIFSC).Value = objrow.IFSC_Code
@@ -554,6 +617,7 @@ Public Class frmTransporterPaymentProcess
             fndDocNo.Value = clsCommon.ShowSelectForm("fmGroup_Code", qry, "Document_Code", "", fndDocNo.Value, "", isButtonClicked)
             If clsCommon.myLen(fndDocNo.Value) > 0 Then
                 LoadData(fndDocNo.Value, NavigatorType.Current)
+                btnGo.Enabled = False
             End If
         Catch ex As Exception
             common.clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
@@ -567,5 +631,9 @@ Public Class frmTransporterPaymentProcess
         Catch ex As Exception
             common.clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try
+    End Sub
+
+    Private Sub btnReset_Click(sender As Object, e As EventArgs) Handles btnReset.Click
+        AddNew()
     End Sub
 End Class

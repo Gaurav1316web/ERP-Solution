@@ -127,16 +127,31 @@ Public Class rptFarmerMilkCollectionReport
             End If
             Dim ss As String = clsCommon.GetMulcallString(txtUnion.arrValueMember)
 
-            If txtUnion.arrValueMember Is Nothing Then
-                qry = " select  [TSPL_APP_LOCATION].PD_Account_Prefix as PortNo,[TSPL_APP_LOCATION].Location_Name,[TSPL_APP_LOCATION].DataBase_Name
-                            from TSPL_MASTER.dbo.TSPL_APP_LOCATION WHERE 2=2 order by [TSPL_APP_LOCATION].Location_Name "
+            Dim arrUnion As New ArrayList()
+            arrUnion.Add(objCommonVar.CurrComp_Code1)
+            If clsCommon.myLen(objCommonVar.CurrentUnionDataBase) > 0 Then
+                qry = " Select TSPL_USER_MASTER.DataBase_Name,[TSPL_APP_LOCATION].Location_Name from TSPL_USER_MASTER 
+                    left outer join TSPL_MASTER.dbo.[TSPL_APP_LOCATION] on [TSPL_APP_LOCATION].DataBase_Name=TSPL_USER_MASTER.DataBase_Name where User_Code = '" + objCommonVar.CurrentUserCode + "' "
+                dt = clsDBFuncationality.GetDataTable(qry)
+                'txtUnion.arrValueMember = clsCommon.ShowMultipleSelectForm("SaleUnionDs", Qry, "DataBase Name", "", txtUnion.arrValueMember, Nothing)
             Else
-                qry = " select  [TSPL_APP_LOCATION].PD_Account_Prefix as PortNo,[TSPL_APP_LOCATION].Location_Name,[TSPL_APP_LOCATION].DataBase_Name
-                        from TSPL_MASTER.dbo.TSPL_APP_LOCATION WHERE 2=2 and [TSPL_APP_LOCATION].DataBase_Name  in (" + ss + ") 
-                        order by [TSPL_APP_LOCATION].Location_Name "
+                If objCommonVar.RCDFCFP Then
+                    dt = clsMilkUnion.UnionDBName()
+                Else
+                    dt = clsMilkUnion.UnionDBName1(arrUnion)
+                End If
             End If
-            'dt = clsMilkUnion.UnionDBName()
-            dt = clsDBFuncationality.GetDataTable(qry)
+
+            'If txtUnion.arrValueMember Is Nothing Then
+            '    qry = " select  [TSPL_APP_LOCATION].PD_Account_Prefix as PortNo,[TSPL_APP_LOCATION].Location_Name,[TSPL_APP_LOCATION].DataBase_Name
+            '                from TSPL_MASTER.dbo.TSPL_APP_LOCATION WHERE 2=2 order by [TSPL_APP_LOCATION].Location_Name "
+            'Else
+            '    qry = " select  [TSPL_APP_LOCATION].PD_Account_Prefix as PortNo,[TSPL_APP_LOCATION].Location_Name,[TSPL_APP_LOCATION].DataBase_Name
+            '            from TSPL_MASTER.dbo.TSPL_APP_LOCATION WHERE 2=2 and [TSPL_APP_LOCATION].DataBase_Name  in (" + ss + ") 
+            '            order by [TSPL_APP_LOCATION].Location_Name "
+            'End If
+            ''dt = clsMilkUnion.UnionDBName()
+            'dt = clsDBFuncationality.GetDataTable(qry)
             If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
 
                 For ii As Integer = 0 To dt.Rows.Count - 1
@@ -195,6 +210,17 @@ SELECT
 
                 CurrentDate = CurrentDate.AddMonths(1)
             Next
+            qryies += " ,SUM(CAST(Qty AS DECIMAL(18,2))) AS Total_Qty,SUM(CAST(Amount AS DECIMAL(18,2))) AS Total_Amount"
+            '        For i As Integer = 0 To MonthCount
+            '            Dim MonthCode As String = CurrentDate.ToString("MMM-yy")
+
+            '            qryies += "  ,ISNULL(MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN CAST(Qty AS DECIMAL(18,2)) END),0)     AS [" + MonthCode + "_DCS],
+            'MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN Farmer END)  AS [" + MonthCode + "_Farmer],
+            'MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (CAST(Qty AS DECIMAL(18,2))) END)     AS [" + MonthCode + "_Qty],
+            'MAX(CASE WHEN DateMonth='" + MonthCode + "' THEN (Cast (Amount AS DECIMAL(18,2))) END)  AS [" + MonthCode + "_Amount]"
+
+            '            CurrentDate = CurrentDate.AddMonths(1)
+            '        Next
 
             '        qryies += " MAX(CASE WHEN DateMonth='" + Month1 + "' THEN DCS END)     AS [" + Month1 + "_DCS],
             'MAX(CASE WHEN DateMonth='" + Month1 + "' THEN Farmer END)  AS [" + Month1 + "_Farmer],
@@ -305,12 +331,13 @@ ORDER BY UnionName;
             view.ColumnGroups(0).Rows.Add(New GridViewColumnGroupRow())
             view.ColumnGroups(0).Rows(0).ColumnNames.Add(gv1.Columns("SNo").Name)
             view.ColumnGroups(0).Rows(0).ColumnNames.Add(gv1.Columns("UnionName").Name)
+
             For i As Integer = 0 To MonthCount
 
                 Dim MonthCode As String = CurrentDate.ToString("MMM-yy")
 
-                view.ColumnGroups.Add(New GridViewColumnGroup(MonthCode))
-                Dim groupIndex As Integer = view.ColumnGroups.Count - 1
+                'view.ColumnGroups.Add(New GridViewColumnGroup(MonthCode))
+                Dim groupIndex As Integer = view.ColumnGroups.Count
                 Dim ColDCS As String = MonthCode & "_DCS"
                 Dim ColFarmer As String = MonthCode & "_Farmer"
                 Dim ColQty As String = MonthCode & "_Qty"
@@ -321,8 +348,10 @@ ORDER BY UnionName;
                 gv1.Columns(ColQty).HeaderText = "Qty"
                 gv1.Columns(ColDBTAmt).HeaderText = "DBTAmount"
 
+                'view.ColumnGroups.Add(New GridViewColumnGroup(clsCommon.GetPrintDate(MonthCode & " ", "MMM-yy")))
+                view.ColumnGroups.Add(New GridViewColumnGroup("[" & clsCommon.GetPrintDate(MonthCode & " ", "MMM-yy") & "]"))
                 view.ColumnGroups(groupIndex).Rows.Add(New GridViewColumnGroupRow())
-                view.ColumnGroups.Add(New GridViewColumnGroup(clsCommon.GetPrintDate(MonthCode, "MMM-yy")))
+
                 'view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(gv1.Columns(MonthCode & "_DCS").Name)
                 'view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(gv1.Columns(MonthCode & "_Farmer").Name)
                 'view.ColumnGroups(groupIndex).Rows(0).ColumnNames.Add(gv1.Columns(MonthCode & "_Qty").Name)
@@ -335,6 +364,18 @@ ORDER BY UnionName;
                 CurrentDate = CurrentDate.AddMonths(1)
 
             Next
+            Dim groupIndex1 As Integer = view.ColumnGroups.Count
+            Dim ColTotalQty As String = "Total_Qty"
+            Dim ColTotalDBTAmt As String = "Total_Amount"
+
+            gv1.Columns(ColTotalQty).HeaderText = "Total Qty"
+            gv1.Columns(ColTotalDBTAmt).HeaderText = "Total Amount"
+
+            view.ColumnGroups.Add(New GridViewColumnGroup("Total"))
+            view.ColumnGroups(groupIndex1).Rows.Add(New GridViewColumnGroupRow())
+            view.ColumnGroups(groupIndex1).Rows(0).ColumnNames.Add(ColTotalQty)
+            view.ColumnGroups(groupIndex1).Rows(0).ColumnNames.Add(ColTotalDBTAmt)
+
             '           Dim view As New ColumnGroupsViewDefinition()
             '           view.ColumnGroups.Add(New GridViewColumnGroup(" "))
             '           view.ColumnGroups.Add(New GridViewColumnGroup(" "))
@@ -380,13 +421,14 @@ ORDER BY UnionName;
     End Sub
     Sub SetGridFormat()
         gv1.AutoExpandGroups = True
-        gv1.ShowGroupPanel = True
+        'gv1.ShowGroupPanel = True
+        gv1.ShowGroupPanel = False
         gv1.ShowRowHeaderColumn = False
         gv1.AllowAddNewRow = False
         gv1.AllowDeleteRow = False
         gv1.EnableFiltering = True
         gv1.ShowFilteringRow = True
-        gv1.ShowGroupPanel = False
+        'gv1.ShowGroupPanel = False
 
         For ii As Integer = 0 To gv1.Columns.Count - 1
             gv1.Columns(ii).ReadOnly = True
@@ -450,13 +492,13 @@ ORDER BY UnionName;
                 clsCommon.MyMessageBoxShow(Me, "No Data Found to Export", Me.Text)
                 Exit Sub
             End If
-            Dim strHeading As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select program_name from tspl_program_Master where program_cODE='" & clsUserMgtCode.frmDBTNEFTUnionReport & "'"))
+            Dim strHeading As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select program_name from tspl_program_Master where program_cODE='" & clsUserMgtCode.rptFarmerMilkCollectionReport & "'"))
 
             Dim arrHeader As List(Of String) = New List(Of String)()
             arrHeader.Add("Company : " & objCommonVar.CurrentCompanyName)
             arrHeader.Add("Report Name : " + strHeading)
             If exporter = EnumExportTo.Excel Then
-                clsCommon.MyExportToExcel(Me.Text, gv1, arrHeader, Me.Text)
+                transportSql.exportdata(gv1, "", "", False, arrHeader, False, True, True)
             Else
                 clsCommon.MyExportToPDF(strHeading, gv1, arrHeader, Me.Text, PageSetupReport_ID, objCommonVar.CurrentUserCode)
             End If
