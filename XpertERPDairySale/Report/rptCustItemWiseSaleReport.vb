@@ -170,7 +170,13 @@ Public Class rptCustItemWiseSaleReport
             If clsCommon.CompairString(ddlType.SelectedValue, "Dispatch") = CompairStringResult.Equal Then
                 BillWisesaleSummaryDispatch(False)
             ElseIf clsCommon.CompairString(ddlType.SelectedValue, "Invoice") = CompairStringResult.Equal Then
-                BillWisesaleSummaryInvoice(False)
+                If rbtnSupplyDate.IsChecked Then
+                    clsCommon.MyMessageBoxShow(Me, "Bill Wise Sale Summary Invoice report not working with Supply Date Option! ", Me.Text)
+                    Exit Sub
+                Else
+                    BillWisesaleSummaryInvoice(False)
+                End If
+
             End If
         ElseIf BtnPartySaleMilkProduct.IsChecked Then
             If ddlType.SelectedIndex = 0 Then
@@ -180,16 +186,33 @@ Public Class rptCustItemWiseSaleReport
             If clsCommon.CompairString(ddlType.SelectedValue, "Dispatch") = CompairStringResult.Equal Then
                 PartySaleMilkProductDispatch(False)
             ElseIf clsCommon.CompairString(ddlType.SelectedValue, "Invoice") = CompairStringResult.Equal Then
-                PartySaleMilkProductInvoice(False)
+                If rbtnSupplyDate.IsChecked Then
+                    clsCommon.MyMessageBoxShow(Me, "Party Sale Milk Product Invoice report not working with Supply Date Option! ", Me.Text)
+                    Exit Sub
+                Else
+                    PartySaleMilkProductInvoice(False)
+                End If
+
             End If
         ElseIf BtnBillWiseSaleOfMilk.IsChecked Then
             BillwiseSaleOfMilk(False)
         ElseIf BtnProductSalesSummary.IsChecked Then
             Productsalesummarytaxablenontaxable(False)
         ElseIf BtnMilkStcSummary.IsChecked Then
-            MilkStcSummary(False)
+            If rbtnSupplyDate.IsChecked Then
+                clsCommon.MyMessageBoxShow(Me, "Milk Stc Summary report not working with Supply Date Option! ", Me.Text)
+                Exit Sub
+            Else
+                MilkStcSummary(False)
+            End If
         ElseIf BtnStcRegisterItemWiseSummary.IsChecked Then
-            STCRegisterItemwiseSummarytotal(False)
+            If rbtnSupplyDate.IsChecked Then
+                clsCommon.MyMessageBoxShow(Me, "STC Register Item wise Summary report not working with Supply Date Option! ", Me.Text)
+                Exit Sub
+            Else
+                STCRegisterItemwiseSummarytotal(False)
+            End If
+            'STCRegisterItemwiseSummarytotal(False)
         ElseIf BtnStcRegisterPartyandItemWiseSummary.IsChecked Then
             STCRegisterItemwiseSummaryPartyWise(False)
         ElseIf BtnTransportationCharges.IsChecked Then
@@ -207,11 +230,22 @@ Public Class rptCustItemWiseSaleReport
         ElseIf rbtnMilkSale.IsChecked Then
             LoadMilkSaleData(False)
         ElseIf rbtnStockStatement.IsChecked Then
-            LoadStockStatementData(False)
+            If rbtnSupplyDate.IsChecked Then
+                clsCommon.MyMessageBoxShow(Me, "Stock Statement report not working with Supply Date Option! ", Me.Text)
+                Exit Sub
+            Else
+                LoadStockStatementData(False)
+            End If
         ElseIf rbtnBoothSaleItemWise.IsChecked Then
             LoadBoothSaleItemWiseData(False)
         ElseIf rbtnSalesRegister.IsChecked Then
-            LoadSalesRegisterData(False)
+            If rbtnSupplyDate.IsChecked Then
+                clsCommon.MyMessageBoxShow(Me, "Sales Register report not working with Supply Date Option! ", Me.Text)
+                Exit Sub
+            Else
+                LoadSalesRegisterData(False)
+            End If
+
         Else
             LoadData()
         End If
@@ -606,6 +640,8 @@ left outer join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code=TSPL_SD_SHI
                     frmCRV.funreport(Report_ID, CrystalReportFolder.SalesReport, dt, "rptBoothSaleItemWise", "Booth Sale Item Wise")
                     frmCRV = Nothing
                 End If
+            Else
+                Throw New Exception("No Data Found!")
             End If
         Catch ex As Exception
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
@@ -695,8 +731,13 @@ left outer join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code=TSPL_SD_SHI
                   where xxx.Price_Code = TSPL_ITEM_PRICE_PLAN_DETAIL.Price_Code and xxx.Item_Code = TSPL_ITEM_PRICE_PLAN_DETAIL.Item_Code 
 				  and TSPL_ITEM_PRICE_PLAN_HEADER.Start_Date <= xxx.Document_Date 
                   ORDER BY TSPL_ITEM_PRICE_PLAN_HEADER.Start_Date DESC 
-                  ) as price  where
-                  convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' "
+                  ) as price  where "
+            'If rbtnSupplyDate.IsChecked Then
+            '    Qry += " convert(date,Supply_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' "
+            'ElseIf rbtnDocumentDate.IsChecked Then
+            Qry += " convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' "
+            'End If
+
             If txtItem.arrValueMember IsNot Nothing Then
                 Qry += " and Item_Code in (" & clsCommon.GetMulcallString(txtItem.arrValueMember) & ") "
             End If
@@ -1173,7 +1214,12 @@ where  ITEM_CODE = TSPL_SD_SHIPMENT_DETAIL.Item_Code and EFFECTIVE_DATE <= '" & 
             If txtItem.arrValueMember IsNot Nothing Then
                 Qry += " and TSPL_SD_SHIPMENT_DETAIL.Item_Code in (" & clsCommon.GetMulcallString(txtItem.arrValueMember) & ") "
             End If
-            Qry += " and convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "') xx "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += " and convert(date,Supply_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "') xx "
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += " and convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "') xx "
+            End If
+
 
             If clsCommon.CompairString(ddlReportType.SelectedValue, "Party Wise") = CompairStringResult.Equal Then
                 Qry += "  GROUP BY  Cust_Code,Item_Code order by Customer_Name,Item_Desc"
@@ -1244,8 +1290,10 @@ where  ITEM_CODE = TSPL_SD_SHIPMENT_DETAIL.Item_Code and EFFECTIVE_DATE <= '" & 
             Dim TableName As String = ""
             If clsCommon.CompairString(ddlType.SelectedValue, "Dispatch") = CompairStringResult.Equal Then
                 TableName = "TSPL_SD_SHIPMENT"
-            ElseIf clsCommon.CompairString(ddlType.SelectedValue, "Invoice") = CompairStringResult.Equal Then
+            ElseIf clsCommon.CompairString(ddlType.SelectedValue, "Invoice") = CompairStringResult.Equal AndAlso Not rbtnSupplyDate.IsChecked Then
                 TableName = "TSPL_SD_SALE_INVOICE"
+            Else
+                Throw New Exception("Bill Wise Sale of Milk report not working with Supply Date Option!")
             End If
 
             Qry = " SELECT '" + clsCommon.GetPrintDate(txtFromDate.Value) + "' as Fromdate,'" + clsCommon.GetPrintDate(txtToDate.Value) + "' as ToDate,
@@ -1318,7 +1366,14 @@ LEFT JOIN TSPL_ITEM_UOM_DETAIL AS ItemConvReportUOM  ON TSPL_ITEM_MASTER.Item_Co
 LEFT JOIN TSPL_ITEM_UOM_DETAIL AS ItemConvinUOM 
     ON " & TableName & "_DETAIL.Item_Code = ItemConvinUOM.Item_Code AND " & TableName & "_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
 LEFT JOIN TSPL_COMPANY_MASTER 
-    ON 2 = 2 where convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.IsTaxable=0 "
+    ON 2 = 2 "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += " where convert(date,Supply_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += " where convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+            End If
+
+            Qry += "  and  TSPL_ITEM_MASTER.IsTaxable=0 "
             If txtCustomer.arrValueMember IsNot Nothing Then
                 Qry += " And " & TableName & "_HEAD.Customer_Code in (" & clsCommon.GetMulcallString(txtCustomer.arrValueMember) & ") "
             End If
@@ -1464,9 +1519,14 @@ LEFT JOIN TSPL_COMPANY_MASTER
                                             from TSPL_SD_SHIPMENT_HEAD
                                             
                                             left join TSPL_CUSTOMER_MASTER on TSPL_CUSTOMER_MASTER.Cust_Code=TSPL_SD_SHIPMENT_HEAD.Customer_Code
-                                            left join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code1='BKN'
-                WHERE convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'and TSPL_SD_SHIPMENT_HEAD.Status=1  " + whrcls + "
-            ) xx
+                                            left join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code1='"& objCommonVar.CurrComp_Code1 &"' "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += " WHERE Convert(Date, Supply_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'and TSPL_SD_SHIPMENT_HEAD.Status=1  " + whrcls + ""
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += " WHERE Convert(Date, Document_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'and TSPL_SD_SHIPMENT_HEAD.Status=1  " + whrcls + ""
+            End If
+
+            Qry +=" ) xx
             ) XXFinal 
             group by XXFinal.Customer_Code)xxx order by Customer_Name"
 
@@ -1689,9 +1749,15 @@ LEFT JOIN TSPL_COMPANY_MASTER
                     (isnull(TSPL_SD_SHIPMENT_HEAD.Distributor_Commission_TotalAmt,0) + isnull(TSPL_SD_SHIPMENT_HEAD.Transporter_Commission_TotalAmt,0) +isnull(TSPL_SD_SHIPMENT_HEAD.Security_TotalAmt,0) +isnull(TSPL_SD_SHIPMENT_HEAD.BoothSecurity_TotalAmt,0) ) as Trp_othcharg
                     from TSPL_SD_SHIPMENT_HEAD
                     left join TSPL_CUSTOMER_MASTER on TSPL_CUSTOMER_MASTER.Cust_Code=TSPL_SD_SHIPMENT_HEAD.Customer_Code
-                    left join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code1='BKN'
-                        WHERE convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and TSPL_SD_SHIPMENT_HEAD.Status=1 " & whrcls & "
-                        ) xx
+                    left join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code1='" & objCommonVar.CurrComp_Code1 & "' "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += " WHERE Convert(Date, Supply_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and TSPL_SD_SHIPMENT_HEAD.Status=1 " & whrcls & ""
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += " WHERE Convert(Date, Document_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and TSPL_SD_SHIPMENT_HEAD.Status=1 " & whrcls & ""
+            End If
+
+
+            Qry +=" ) xx
                         ) XXFinal 
                         where XXFinal.Trp_othcharg>0
                         group by XXFinal.Customer_Name order by XXFinal.Customer_Name"
@@ -1766,8 +1832,13 @@ LEFT JOIN TSPL_COMPANY_MASTER
                         (isnull(TSPL_SD_SHIPMENT_HEAD.Distributor_Commission_TotalAmt,0) + isnull(TSPL_SD_SHIPMENT_HEAD.Transporter_Commission_TotalAmt,0) +isnull(TSPL_SD_SHIPMENT_HEAD.Security_TotalAmt,0) +isnull(TSPL_SD_SHIPMENT_HEAD.BoothSecurity_TotalAmt,0) ) as Trp_othcharg,TSPL_CUSTOMER_MASTER.PAN
                         from TSPL_SD_SHIPMENT_HEAD
                         left join TSPL_CUSTOMER_MASTER on TSPL_CUSTOMER_MASTER.Cust_Code=TSPL_SD_SHIPMENT_HEAD.Customer_Code
-                        left join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code1='BKN'
-                        WHERE convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and TSPL_SD_SHIPMENT_HEAD.Status=1  " & whrcls & "
+                        left join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code1='"& objCommonVar.CurrComp_Code1 &"' "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += " WHERE convert(date,Supply_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += " WHERE convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+            End If
+            Qry += "  and TSPL_SD_SHIPMENT_HEAD.Status=1  " & whrcls & "
                         ) xx
                         ) XXFinal 
                         where XXFinal.TCS_AMT>0 group by XXFinal.Customer_Name order by XXFinal.Customer_Name"
@@ -1843,8 +1914,13 @@ LEFT JOIN TSPL_COMPANY_MASTER
                         and ItemConvReportUOM.Report_UOM = 1
                         left join TSPL_ITEM_UOM_DETAIL as ItemConvinUOM on TSPL_SD_SHIPMENT_DETAIL.Item_Code = ItemConvinUOM.Item_Code 
                         and TSPL_SD_SHIPMENT_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
-						LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2
-                        WHERE convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.Is_Ambient=1  AND TSPL_ITEM_MASTER.Item_Desc LIKE '%Ghee%'  " & whrcls & " ) xx
+						LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += " WHERE convert(date,Supply_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += " WHERE convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+            End If
+            Qry += " and  TSPL_ITEM_MASTER.Is_Ambient=1  AND TSPL_ITEM_MASTER.Item_Desc LIKE '%Ghee%'  " & whrcls & " ) xx
 						group By Customer_Name,Item_Code order by Customer_Name,Item_Desc"
             dt = clsDBFuncationality.GetDataTable(Qry)
 
@@ -1924,8 +2000,13 @@ LEFT JOIN TSPL_COMPANY_MASTER
                         LEFT JOIN TSPL_ITEM_UOM_DETAIL AS ItemConvinUOM 
                             ON TSPL_SD_SHIPMENT_DETAIL.Item_Code = ItemConvinUOM.Item_Code AND TSPL_SD_SHIPMENT_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
                         LEFT JOIN TSPL_COMPANY_MASTER 
-                            ON 2 = 2
-                        WHERE convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' AND TSPL_ITEM_MASTER.IsTaxable = 0 AND TSPL_ITEM_MASTER.Is_FreshItem=1 
+                            ON 2 = 2 "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += " WHERE convert(date,Supply_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += " WHERE convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+            End If
+            Qry += "  AND TSPL_ITEM_MASTER.IsTaxable = 0 AND TSPL_ITEM_MASTER.Is_FreshItem=1 
                         AND TSPL_SD_SHIPMENT_HEAD.Route_No <> 'DIRECT' 
 	                    AND TSPL_SD_SHIPMENT_HEAD.Route_No <> 'DIRECT1' 
                     GROUP BY TSPL_SD_SHIPMENT_HEAD.Route_No,TSPL_ROUTE_MASTER.Route_Seq_No order by TSPL_ROUTE_MASTER.Route_Seq_No"
@@ -1998,9 +2079,13 @@ LEFT JOIN TSPL_COMPANY_MASTER
                             ON TSPL_ITEM_MASTER.item_code = TSPL_SD_SHIPMENT_DETAIL.item_code
 	                        LEFT JOIN TSPL_ITEM_UOM_DETAIL AS ItemConvinUOM 
                             ON TSPL_SD_SHIPMENT_DETAIL.Item_Code = ItemConvinUOM.Item_Code AND TSPL_SD_SHIPMENT_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
-                        LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2
-                        WHERE convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' " & whrcls & "
-                        AND TSPL_CUSTOMER_MASTER.Credit_Customer = 'Y'
+                        LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += "  WHERE convert(date,Supply_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' " & whrcls & ""
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += "  WHERE convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' " & whrcls & ""
+            End If
+            Qry += "  AND TSPL_CUSTOMER_MASTER.Credit_Customer = 'Y'
                         GROUP BY 
                             TSPL_CUSTOMER_MASTER.Customer_Name order by TSPL_CUSTOMER_MASTER.Customer_Name"
             dt = clsDBFuncationality.GetDataTable(Qry)
@@ -2082,8 +2167,15 @@ LEFT JOIN TSPL_COMPANY_MASTER
 LEFT JOIN ( select item_code,uom_code,conversion_factor from TSPL_ITEM_UOM_DETAIL WHERE DEFAULT_UOM = 1 ) DefUOM ON TSPL_SD_SHIPMENT_DETAIL.Item_Code = DefUOM.item_code
                                          left join TSPL_ITEM_UOM_DETAIL as ItemConvinUOM on TSPL_SD_SHIPMENT_DETAIL.Item_Code = ItemConvinUOM.Item_Code 
                                        and TSPL_SD_SHIPMENT_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
-                        LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 where convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx 
-                GROUP BY Item_Code order by Item_Desc"
+                        LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += "  where Convert(Date, Supply_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx "
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += "  where Convert(Date, Document_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx "
+            End If
+
+
+            Qry +=" GROUP BY Item_Code order by Item_Desc"
             dt = clsDBFuncationality.GetDataTable(Qry)
 
             If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
@@ -2246,10 +2338,16 @@ LEFT JOIN ( select item_code,uom_code,conversion_factor from TSPL_ITEM_UOM_DETAI
                                      left join TSPL_ITEM_UOM_DETAIL as ItemConvinUOM on TSPL_SD_SHIPMENT_DETAIL.Item_Code = ItemConvinUOM.Item_Code 
                                    and TSPL_SD_SHIPMENT_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
 left join TSPL_ITEM_UOM_DETAIL as ItemBulkUOM on TSPL_SD_SHIPMENT_DETAIL.Item_Code = ItemBulkUOM.Item_Code 
-                                  and ItemBulkUOM.Bulk_UOM = 1 
-where convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' " + whrcls + "
------Add Transfer Out Type Data
-					union all
+                                  and ItemBulkUOM.Bulk_UOM = 1 "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += " where convert(date,Supply_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' " + whrcls + ""
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += " where convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' " + whrcls + ""
+            End If
+            'Qry += " where convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' " + whrcls + ""
+            '-----Add Transfer Out Type Data
+            If rbtnDocumentDate.IsChecked Then
+                Qry += " union all
 					select tspl_transfer_order_head.Document_No,TSPL_TRANSFER_ORDER_DETAIL.Item_Desc,TSPL_TRANSFER_ORDER_DETAIL.Item_Code,ItemBulkUOM.UOM_Code as Unit_code,cast((TSPL_TRANSFER_ORDER_DETAIL.Out_Qty * ItemConvinUOM.Conversion_Factor / ItemBulkUOM.Conversion_Factor) as Decimal(18, 2)) as Qty,
 					cast(
                                 (
@@ -2262,9 +2360,14 @@ where convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.V
                  left join TSPL_ITEM_UOM_DETAIL as ItemConvReportUOM on TSPL_ITEM_master.Item_Code = ItemConvReportUOM.Item_Code  and ItemConvReportUOM.Report_UOM = 1
                                      left join TSPL_ITEM_UOM_DETAIL as ItemConvinUOM on TSPL_TRANSFER_ORDER_DETAIL.Item_Code = ItemConvinUOM.Item_Code 
                                    and TSPL_TRANSFER_ORDER_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
- left join TSPL_ITEM_UOM_DETAIL as ItemBulkUOM on TSPL_TRANSFER_ORDER_DETAIL.Item_Code = ItemBulkUOM.Item_Code  and ItemBulkUOM.Bulk_UOM = 1 
-								   where convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' " + whrcls2 + " and tspl_transfer_order_head.Transfer_Type = 'O' ) xx  LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 
-                GROUP BY Item_Code "
+ left join TSPL_ITEM_UOM_DETAIL as ItemBulkUOM on TSPL_TRANSFER_ORDER_DETAIL.Item_Code = ItemBulkUOM.Item_Code  and ItemBulkUOM.Bulk_UOM = 1 "
+
+                Qry += " where convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' " + whrcls2 + " and tspl_transfer_order_head.Transfer_Type = 'O' "
+
+
+            End If
+
+            Qry += " ) xx  LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 GROUP BY Item_Code "
             dt = clsDBFuncationality.GetDataTable(" with cte as ( " & Qry & " ) select * from cte order by Item_Desc ")
 
             If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
