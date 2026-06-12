@@ -11,7 +11,7 @@ Public Class clsMPDCSInsentiveReco
     Public Zone_Code As String = Nothing
     Public Apply_FAT_Above As Decimal = 0
     Public Apply_SNF_Above As Decimal = 0
-    Public Third_Party_Integrated As Integer = Nothing
+    Public Farmer_Collection As Boolean
     Public arr As List(Of clsMPDCSInsentiveRecoDetail) = Nothing
 
 #End Region
@@ -19,6 +19,11 @@ Public Class clsMPDCSInsentiveReco
     Public Shared Function SaveData(ByVal obj As clsMPDCSInsentiveReco, ByVal isNewEntry As Boolean, ByVal trans As SqlTransaction) As Boolean
         Dim qry As String = ""
         Try
+            If Not isNewEntry Then
+                If obj.Farmer_Collection Then
+                    Throw New Exception("Update is not allowed for the Day-wise Farmer Collection document.")
+                End If
+            End If
 
             clsERPFuncationality.ValidateLocationCode(objCommonVar.CurrentCompanyCode, clsUserMgtCode.ModuleMCCMilkProcurement, clsUserMgtCode.DCSMPIncentiveReco, obj.arr(0).MCC_Code, obj.Document_Date, trans)
             qry = "delete from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL where Document_Code='" & obj.Document_Code & "' "
@@ -36,7 +41,7 @@ Public Class clsMPDCSInsentiveReco
             clsCommon.AddColumnsForChange(coll, "Modified_By", objCommonVar.CurrentUserCode)
             clsCommon.AddColumnsForChange(coll, "Modified_Date", clsCommon.GetPrintDate(clsCommon.GETSERVERDATE(trans), "dd/MMM/yyyy hh:mm:ss tt"))
             clsCommon.AddColumnsForChange(coll, "Zone_Code", obj.Zone_Code, True)
-            clsCommon.AddColumnsForChange(coll, "Third_Party_Integrated", obj.Third_Party_Integrated)
+            clsCommon.AddColumnsForChange(coll, "Farmer_Collection", IIf(obj.Farmer_Collection, 1, 0))
             clsCommon.AddColumnsForChange(coll, "Apply_FAT_Above", obj.Apply_FAT_Above, True)
             clsCommon.AddColumnsForChange(coll, "Apply_SNF_Above", obj.Apply_SNF_Above, True)
 
@@ -57,7 +62,7 @@ Public Class clsMPDCSInsentiveReco
             Else
                 clsCommonFunctionality.UpdateDataTable(coll, "TSPL_DCS_MP_INCENTIVE_RECO_HEAD", OMInsertOrUpdate.Update, "TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Document_Code='" + obj.Document_Code + "'", trans)
             End If
-            clsMPDCSInsentiveRecoDetail.saveData(obj.Document_Code, obj.arr, trans)
+            clsMPDCSInsentiveRecoDetail.saveData(obj.Document_Code, obj.arr, trans, obj.Farmer_Collection)
 
             clsCommonFunctionality.SaveHistoryData(objCommonVar.CurrentUserCode, obj.Document_Code, "TSPL_DCS_MP_INCENTIVE_RECO_HEAD", "Document_Code", "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL", "Document_Code", "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID", "Document_Code", trans)
         Catch err As Exception
@@ -94,7 +99,7 @@ Public Class clsMPDCSInsentiveReco
             obj.Reco_Date = clsCommon.myCDate(dt.Rows(0)("Reco_Date"))
             obj.Reco_Date_To = clsCommon.myCDate(dt.Rows(0)("Reco_Date_To"))
             obj.Status = IIf(clsCommon.myCDecimal(dt.Rows(0)("Status")) = 1, ERPTransactionStatus.Approved, ERPTransactionStatus.Pending)
-            obj.Third_Party_Integrated = clsCommon.myCDecimal(dt.Rows(0)("Third_Party_Integrated"))
+            obj.Farmer_Collection = (clsCommon.myCDecimal(dt.Rows(0)("Farmer_Collection")) = 1)
             obj.Apply_FAT_Above = clsCommon.myCDecimal(dt.Rows(0)("Apply_SNF_Above"))
             obj.Apply_SNF_Above = clsCommon.myCDecimal(dt.Rows(0)("Apply_SNF_Above"))
             If dt.Rows(0)("Posting_Date") IsNot DBNull.Value Then
@@ -171,6 +176,13 @@ Public Class clsMPDCSInsentiveReco
             Dim strPostDate As String = clsCommon.GetPrintDate(clsCommon.GETSERVERDATE(trans), "dd/MMM/yyyy hh:mm tt")
 
             Dim obj As clsMPDCSInsentiveReco = clsMPDCSInsentiveReco.GetData(strDocNo, NavigatorType.Current, "", trans)
+
+
+            If obj.Farmer_Collection Then
+                Throw New Exception("Posting is not required for the Day-wise Farmer Collection document.")
+            End If
+
+
             clsERPFuncationality.ValidateLocationCode(objCommonVar.CurrentCompanyCode, clsUserMgtCode.ModuleMCCMilkProcurement, clsUserMgtCode.DCSMPIncentiveReco, Location_code, obj.Document_Date, trans)
 
 
@@ -297,7 +309,7 @@ Public Class clsMPDCSInsentiveRecoDetail
 
 
 #End Region
-    Public Shared Function saveDataZone(ByVal strDocNo As String, ByVal strZone As String, ByVal arrObj As List(Of clsMPDCSInsentiveRecoDetail)) As Boolean
+    Public Shared Function saveDataZone(ByVal strDocNo As String, ByVal strZone As String, ByVal arrObj As List(Of clsMPDCSInsentiveRecoDetail), ByVal FarmerCollection As Boolean) As Boolean
         Dim trans As SqlTransaction = clsDBFuncationality.GetTransactin()
         Try
             Dim qry As String = "delete from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL where PK_Id in (
@@ -315,7 +327,7 @@ where Document_Code='" + strDocNo + "' and tspl_vendor_master.zone_Code in (" + 
             clsDBFuncationality.ExecuteNonQuery(qry, trans)
 
 
-            saveData(strDocNo, arrObj, trans)
+            saveData(strDocNo, arrObj, trans, FarmerCollection)
             trans.Commit()
         Catch ex As Exception
             trans.Rollback()
@@ -323,12 +335,11 @@ where Document_Code='" + strDocNo + "' and tspl_vendor_master.zone_Code in (" + 
         Return True
     End Function
 
-    Public Shared Function saveData(ByVal strDocNo As String, ByVal arrObj As List(Of clsMPDCSInsentiveRecoDetail), ByVal trans As SqlTransaction) As Boolean
+    Public Shared Function saveData(ByVal strDocNo As String, ByVal arrObj As List(Of clsMPDCSInsentiveRecoDetail), ByVal trans As SqlTransaction, ByVal FarmerCollection As Boolean) As Boolean
         Try
             If arrObj IsNot Nothing AndAlso arrObj.Count > 0 Then
                 For Each obj As clsMPDCSInsentiveRecoDetail In arrObj
-                    saveDataOne(strDocNo, obj, trans)
-
+                    saveDataOne(strDocNo, obj, trans, FarmerCollection)
                 Next
             End If
         Catch ex As Exception
@@ -337,7 +348,8 @@ where Document_Code='" + strDocNo + "' and tspl_vendor_master.zone_Code in (" + 
         Return True
     End Function
 
-    Private Shared Sub saveDataOne(strDocNo As String, obj As clsMPDCSInsentiveRecoDetail, trans As SqlTransaction)
+    Private Shared Sub saveDataOne(strDocNo As String, obj As clsMPDCSInsentiveRecoDetail, trans As SqlTransaction, ByVal FarmerCollection As Boolean)
+
         Dim coll As New Hashtable()
         clsCommon.AddColumnsForChange(coll, "Document_Code", strDocNo)
         clsCommon.AddColumnsForChange(coll, "SNo", obj.SNo)
@@ -363,8 +375,17 @@ where Document_Code='" + strDocNo + "' and tspl_vendor_master.zone_Code in (" + 
         clsCommon.AddColumnsForChange(coll, "Diff_FAT", obj.Diff_FAT)
         clsCommon.AddColumnsForChange(coll, "Diff_SNF", obj.Diff_SNF)
         clsCommon.AddColumnsForChange(coll, "Diff_Amount", obj.Diff_Amount)
-        clsCommonFunctionality.UpdateDataTable(coll, IIf(obj.Reco_Staus, "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL", "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID"), OMInsertOrUpdate.Insert, "", trans)
 
+        Dim strTableName As String = ""
+
+        If FarmerCollection Then
+            strTableName = "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL"
+        ElseIf obj.Reco_Staus Then
+            strTableName = "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL"
+        Else
+            strTableName = "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID"
+        End If
+        clsCommonFunctionality.UpdateDataTable(coll, strTableName, OMInsertOrUpdate.Insert, "", trans)
     End Sub
 
     Public Shared Function getData(ByVal strDocNo As String, ByVal SelectedZone As String, ByVal trans As SqlTransaction) As List(Of clsMPDCSInsentiveRecoDetail)
@@ -481,7 +502,7 @@ where 2=2 "
                         qry = "delete from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID where Document_Code='" & obj.Document_Code & "'  and PK_Id='" + clsCommon.myCstr(objTR.PK_Id) + "' "
                         clsDBFuncationality.ExecuteNonQuery(qry, trans)
                     End If
-                    saveDataOne(obj.Document_Code, objTR, trans)
+                    saveDataOne(obj.Document_Code, objTR, trans, obj.Farmer_Collection)
                 Next
                 clsCommonFunctionality.SaveHistoryData(objCommonVar.CurrentUserCode, obj.Document_Code, "TSPL_DCS_MP_INCENTIVE_RECO_HEAD", "Document_Code", "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL", "Document_Code", "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID", "Document_Code", trans)
                 trans.Commit()

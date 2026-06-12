@@ -99,7 +99,7 @@ Public Class frmNIRQCvsWetQc
 
             Dim fromdate As String = clsCommon.myCDate(txtFromDate.Value, "dd/MM/yyyy")
             Dim Todate As String = clsCommon.myCDate(txtToDate.Value, "dd/MM/yyyy")
-            Dim QRY As String = "SELECT  '" + objCommonVar.CurrentUserCode + "' as UserName ,  ROW_NUMBER() OVER (ORDER BY xxx.Document_No) AS SrNo,  max(Item_Desc)Item_Desc,FORMAT(CONVERT(date, MAX(Document_Date), 103), 'dd/MM/yy') AS Document_Date ,max(XXX.document_code)document_code,(xxx.Document_No)Document_No,max(xxx.RefTendorNo)RefTendorNo,max(xxx.SRN_NO)SRN_NO,FORMAT(CONVERT(date, MAX(xxx.SRN_DATE), 103), 'dd/MM/yy') AS SRN_DATE,
+            Dim QRY As String = "SELECT  '" + objCommonVar.CurrentUserCode + "' as UserName ,  ROW_NUMBER() OVER (ORDER BY xxx.Document_No) AS SrNo,  max(Item_Desc)Item_Desc,'" + Convert.ToDateTime(txtFromDate.Value).ToString("dd/MM/yyyy") + "' as FromDate,'" + Convert.ToDateTime(txtToDate.Value).ToString("dd/MM/yyyy") + "' as ToDate,FORMAT(CONVERT(date, MAX(Document_Date), 103), 'dd/MM/yy') AS Document_Date ,max(XXX.document_code)document_code,(xxx.Document_No)Document_No,max(xxx.RefTendorNo)RefTendorNo,max(xxx.SRN_NO)SRN_NO,FORMAT(CONVERT(date, MAX(xxx.SRN_DATE), 103), 'dd/MM/yy') AS SRN_DATE,
 max(xxx.MRN_NO)MRN_NO,FORMAT(CONVERT(date, MAX(xxx.mrn_date), 103), 'dd/MM/yy') AS mrn_date,
 max(xxx.Against_GRN)Against_GRN,FORMAT(CONVERT(date, MAX(xxx.GRN_DATE), 103), 'dd/MM/yy') AS GRN_DATE,
 max(xxx.Vendor_Code)Vendor_Code,max(xxx.Vendor_Name)Vendor_Name,max(xxx.Bill_To_Location)Bill_To_Location,max(VehicleNo)VehicleNo,max(xxx.ITEM_CODE)ITEM_CODE ,

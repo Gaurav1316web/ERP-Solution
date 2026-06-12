@@ -26,9 +26,6 @@ Public Class frmMPDCSIncentiveReco
     Public Const colFAT As String = "colFAT"
     Public Const colSNF As String = "colSNF"
     Public Const colAmount As String = "colAmount"
-
-    Public Const colMPCollQty As String = "colMPCollQty"
-
     Public Const colMPCount As String = "colMPCount"
     Public Const colMPQty As String = "colMPQty"
     Public Const colMPFAT As String = "colMPFAT"
@@ -61,13 +58,14 @@ Public Class frmMPDCSIncentiveReco
     Dim SettApplyZoneOnDBT As Boolean = False
     Dim SettPickMilkPurchaseInvoiceQtyOrRecoQty As Boolean = False
     Dim ApplyMonthlySetting As Boolean = False
-
+    Dim SettDBTByDailyFarmerMilkCollection As Boolean = False
     Dim SettDCSQtyDecimalPlaces As Integer = 2
 #End Region
     Public Sub New()
         InitializeComponent()
     End Sub
     Private Sub FrmVLCDataUploaderManual_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        SettDBTByDailyFarmerMilkCollection = (clsCommon.myCdbl(clsFixedParameter.GetData(clsFixedParameterType.DBTByDailyFarmerMilkCollection, clsFixedParameterCode.DBTByDailyFarmerMilkCollection, Nothing)) > 0)
         SettMPIncentiveEntryApplyMonthly = (clsCommon.myCdbl(clsFixedParameter.GetData(clsFixedParameterType.MPIncentiveEntryApplyMonthly, clsFixedParameterCode.MPIncentiveEntryApplyMonthly, Nothing)) > 0)
         SettDCSQtyDecimalPlaces = clsCommon.myCDecimal(clsFixedParameter.GetData(clsFixedParameterType.DCSQtyDecimalPlaces, clsFixedParameterCode.DCSQtyDecimalPlaces, Nothing))
         UcAttachment1.Form_ID = MyBase.Form_ID
@@ -241,21 +239,12 @@ left outer join TSPL_MCC_MASTER on TSPL_MCC_MASTER.MCC_Code=TSPL_VLC_MASTER_HEAD
                                     If clsCommon.myCDecimal(gvExcel.Rows(ii).Cells(frm.collReturn.Item("Cycle No")).Value) <> CycleNo Then
                                         Throw New Exception("Cycle No is Mismatched")
                                     End If
-                                    Qry = "select TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.PK_Id from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL  
-left outer join TSPL_DCS_MP_INCENTIVE_RECO_HEAD on TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Document_Code=TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code
-where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code not in ('" + txtDocumentNo.Value + "') and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_Year='" + clsCommon.myCstr(gvExcel.Rows(ii).Cells(frm.collReturn.Item("Year")).Value) + "' 
-and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_Month='" + clsCommon.myCstr(gvExcel.Rows(ii).Cells(frm.collReturn.Item("Month")).Value) + "' 
-and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_No='" + clsCommon.myCstr(gvExcel.Rows(ii).Cells(frm.collReturn.Item("Cycle No")).Value) + "' 
-and  TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.VLC_Code='" + clsCommon.myCstr(dt1.Rows(0)("VLC_Code")) + "'"
-                                    If rbtnThirdParty.IsChecked Then
-                                        Qry += " and isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Third_Party_Integrated,0)=1 "
-                                    Else
-                                        Qry += " and isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Third_Party_Integrated,0)=0 "
-                                    End If
+                                    Qry = "select PK_Id from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL  where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code not in ('" + txtDocumentNo.Value + "') and Cycle_Year='" + clsCommon.myCstr(gvExcel.Rows(ii).Cells(frm.collReturn.Item("Year")).Value) + "' and Cycle_Month='" + clsCommon.myCstr(gvExcel.Rows(ii).Cells(frm.collReturn.Item("Month")).Value) + "' and Cycle_No='" + clsCommon.myCstr(gvExcel.Rows(ii).Cells(frm.collReturn.Item("Cycle No")).Value) + "' and  VLC_Code='" + clsCommon.myCstr(dt1.Rows(0)("VLC_Code")) + "'"
                                     Dim dtTemp As DataTable = clsDBFuncationality.GetDataTable(Qry)
                                     If dtTemp IsNot Nothing AndAlso dtTemp.Rows.Count > 0 Then
                                         Continue For
                                     End If
+
 
                                     gvItem.Rows.AddNew()
                                     gvItem.Rows(gvItem.Rows.Count - 1).Cells(colSlNo).Value = gvItem.Rows.Count
@@ -370,15 +359,7 @@ and  TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.VLC_Code='" + clsCommon.myCstr(dt1.Rows(0
                             If clsCommon.myCDecimal(dgv.Rows(ii).Cells("Cycle No").Value) <> CycleNo Then
                                 Throw New Exception("Cycle No is Mismatched")
                             End If
-                            Qry = "select TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.PK_Id 
-from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL  
-left outer join TSPL_DCS_MP_INCENTIVE_RECO_HEAD on TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Document_Code=TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code
-where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code not in ('" + txtDocumentNo.Value + "') and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_Year='" + clsCommon.myCstr(dgv.Rows(ii).Cells("Year").Value) + "' and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_Month='" + clsCommon.myCstr(dgv.Rows(ii).Cells("Month").Value) + "' and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_No='" + clsCommon.myCstr(dgv.Rows(ii).Cells("Cycle No").Value) + "' and  TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.VLC_Code='" + clsCommon.myCstr(dt.Rows(0)("VLC_Code")) + "'"
-                            If rbtnThirdParty.IsChecked Then
-                                Qry += " and isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Third_Party_Integrated,0)=1 "
-                            Else
-                                Qry += " and isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Third_Party_Integrated,0)=0 "
-                            End If
+                            Qry = "select PK_Id from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL  where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code not in ('" + txtDocumentNo.Value + "') and Cycle_Year='" + clsCommon.myCstr(dgv.Rows(ii).Cells("Year").Value) + "' and Cycle_Month='" + clsCommon.myCstr(dgv.Rows(ii).Cells("Month").Value) + "' and Cycle_No='" + clsCommon.myCstr(dgv.Rows(ii).Cells("Cycle No").Value) + "' and  VLC_Code='" + clsCommon.myCstr(dt.Rows(0)("VLC_Code")) + "'"
                             Dim dtTemp As DataTable = clsDBFuncationality.GetDataTable(Qry)
                             If dtTemp IsNot Nothing AndAlso dtTemp.Rows.Count > 0 Then
                                 Continue For
@@ -795,15 +776,6 @@ select  '" + strICode + "' as Item,TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,Qty,ca
         AmountActual.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
         gvItem.Columns.Add(AmountActual)
 
-        Qty = New GridViewDecimalColumn
-        Qty.FormatString = ""
-        Qty.HeaderText = "Farmer Collection Qty"
-        Qty.Name = colMPCollQty
-        Qty.Width = 100
-        Qty.ReadOnly = True
-        Qty.FormatString = "{0:n3}"
-        Qty.TextAlignment = System.Drawing.ContentAlignment.MiddleRight
-        gvItem.Columns.Add(Qty)
 
         gvItem.AllowAddNewRow = False
         gvItem.AllowDeleteRow = False
@@ -821,9 +793,6 @@ select  '" + strICode + "' as Item,TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,Qty,ca
         gvItem.MasterTemplate.SummaryRowsBottom.Clear()
         Dim summaryRowItem As New GridViewSummaryRowItem()
         Dim Smitem As New GridViewSummaryItem(colQty, "{0:n3}", GridAggregateFunction.Sum)
-        summaryRowItem.Add(Smitem)
-
-        Smitem = New GridViewSummaryItem(colMPCollQty, "{0:n3}", GridAggregateFunction.Sum)
         summaryRowItem.Add(Smitem)
 
         Smitem = New GridViewSummaryItem(colEditQty, "{0:n3}", GridAggregateFunction.Sum)
@@ -914,7 +883,7 @@ select  '" + strICode + "' as Item,TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,Qty,ca
         isNewEntry = True
         IsinsideLoadData = False
         lblPending.Status = ERPTransactionStatus.Pending
-        GroupBox1.Enabled = True
+        chkFarmerCollection.Checked = SettDBTByDailyFarmerMilkCollection
         txtFatPer.Tag = 0
         txtFatPer.Value = 0
         txtSnfPer.Tag = 0
@@ -955,11 +924,7 @@ select  '" + strICode + "' as Item,TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,Qty,ca
                 obj.Reco_Date_To = txtToDate.Value
                 obj.Apply_FAT_Above = clsCommon.myCDecimal(txtFatPer.Tag)
                 obj.Apply_SNF_Above = clsCommon.myCDecimal(txtSnfPer.Tag)
-                If rbtnThirdParty.IsChecked Then
-                    obj.Third_Party_Integrated = 1
-                Else
-                    obj.Third_Party_Integrated = 0
-                End If
+                obj.Farmer_Collection = chkFarmerCollection.Checked
                 Dim objTr As New clsMPDCSInsentiveRecoDetail
                 obj.arr = New List(Of clsMPDCSInsentiveRecoDetail)
                 For Each grow As GridViewRowInfo In gvItem.Rows
@@ -1050,14 +1015,10 @@ select  '" + strICode + "' as Item,TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,Qty,ca
             lblZone.Text = ClsZoneMaster.GetName(obj.Zone_Code)
             txtFatPer.Tag = obj.Apply_FAT_Above
             txtFatPer.Value = obj.Apply_FAT_Above
-            If obj.Third_Party_Integrated = 1 Then
-                rbtnThirdParty.IsChecked = True
-            Else
-                rbtnOther.IsChecked = True
-            End If
-            GroupBox1.Enabled = False
+
             txtSnfPer.Tag = obj.Apply_SNF_Above
             txtSnfPer.Value = obj.Apply_SNF_Above
+            chkFarmerCollection.Checked = obj.Farmer_Collection
             If obj.arr IsNot Nothing AndAlso obj.arr.Count > 0 Then
                 CycleNo = obj.arr(0).Cycle_No
                 For Each objTr As clsMPDCSInsentiveRecoDetail In obj.arr
@@ -1101,8 +1062,6 @@ select  '" + strICode + "' as Item,TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,Qty,ca
                     gvItem.Rows(gvItem.Rows.Count - 1).Cells(colDiffFAT).Value = objTr.Diff_FAT
                     gvItem.Rows(gvItem.Rows.Count - 1).Cells(colDiffSNF).Value = objTr.Diff_SNF
                     gvItem.Rows(gvItem.Rows.Count - 1).Cells(colDiffAmt).Value = objTr.Diff_Amount
-
-                    gvItem.Rows(gvItem.Rows.Count - 1).Cells(colMPCollQty).Value = objTr.MPCollectionQty
 
                     'FillFarmerInfo(gvItem.Rows.Count - 1)
                 Next
@@ -1209,12 +1168,7 @@ select  '" + strICode + "' as Item,TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,Qty,ca
     End Sub
 
     Sub GetDocNoAndLoad()
-        Dim qry As String = "select max(Document_Code) as Document_Code from TSPL_DCS_MP_INCENTIVE_RECO_HEAD where Reco_Date='" + clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") + "'  "
-        If rbtnThirdParty.IsChecked Then
-            qry += "  and isnull(Third_Party_Integrated,0)=1 "
-        Else
-            qry += "  and isnull(Third_Party_Integrated,0)=0 "
-        End If
+        Dim qry As String = "select max(Document_Code) as Document_Code from TSPL_DCS_MP_INCENTIVE_RECO_HEAD where Reco_Date='" + clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") + "'"
         If SettApplyZoneOnDBT Then
             qry += " and TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Zone_Code='" + txtZone.Value + "'"
         End If
@@ -1301,17 +1255,11 @@ select  '" + strICode + "' as Item,TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,Qty,ca
             If Not SettDCSMPIncetiveReco Then
                 Throw New Exception("This facility is not for you")
             End If
-            Dim whrQry As String = " where 2=2 "
-            If rbtnThirdParty.IsChecked Then
-                whrQry += " and isnull(TSPL_VLC_MASTER_HEAD.REIL_Integrated,0) = 1  "
-            Else
-                whrQry += " and isnull(TSPL_VLC_MASTER_HEAD.REIL_Integrated,0) = 0  "
-            End If
-            If clsCommon.myLen(txtZone.Value) > 0 Then
-                whrQry = " and TSPL_ZONE_MASTER.Zone_Code='" + clsCommon.myCstr(txtZone.Value) + "'"
-            End If
-
+            Dim whrQry As String = Nothing
             Dim whrMonthCycleQry As String = Nothing
+            If clsCommon.myLen(txtZone.Value) > 0 Then
+                whrQry = " where TSPL_ZONE_MASTER.Zone_Code='" + clsCommon.myCstr(txtZone.Value) + "'"
+            End If
             If ApplyMonthlySetting Then
                 whrMonthCycleQry = " where convert(Date, TSPL_MILK_PURCHASE_INVOICE_HEAD.DOC_DATE,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") + "' And convert(Date, TSPL_MILK_PURCHASE_INVOICE_HEAD.DOC_DATE,103) <='" + clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") + "' "
             Else
@@ -1355,16 +1303,7 @@ left outer join TSPL_ZONE_MASTER on TSPL_ZONE_MASTER.Zone_Code=TSPL_VENDOR_MASTE
                     'If clsCommon.myCDecimal(dt.Rows(ii)("Cycle No")) <> CycleNo Then
                     '    Throw New Exception("Cycle No is Mismatched")
                     'End If
-
-                    qry = "select TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.PK_Id 
-from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL  
-left outer join TSPL_DCS_MP_INCENTIVE_RECO_HEAD on TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Document_Code=TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code
-where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code not in ('" + txtDocumentNo.Value + "') and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_Year='" + clsCommon.myCstr(dt.Rows(ii)("CycleYear")) + "' and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_Month='" + clsCommon.myCstr(dt.Rows(ii)("CycleMonth")) + "' and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Cycle_No='" + clsCommon.myCstr(CycleNo) + "' and  TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.VLC_Code='" + clsCommon.myCstr(dt.Rows(ii)("VLC_Code")) + "'"
-                    If rbtnThirdParty.IsChecked Then
-                        qry += " and isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Third_Party_Integrated,0)=1 "
-                    Else
-                        qry += " and isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Third_Party_Integrated,0)=0 "
-                    End If
+                    qry = "select PK_Id from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL  where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code not in ('" + txtDocumentNo.Value + "') and Cycle_Year='" + clsCommon.myCstr(dt.Rows(ii)("CycleYear")) + "' and Cycle_Month='" + clsCommon.myCstr(dt.Rows(ii)("CycleMonth")) + "' and Cycle_No='" + clsCommon.myCstr(CycleNo) + "' and  VLC_Code='" + clsCommon.myCstr(dt.Rows(ii)("VLC_Code")) + "'"
                     Dim dtTemp As DataTable = clsDBFuncationality.GetDataTable(qry)
                     If dtTemp IsNot Nothing AndAlso dtTemp.Rows.Count > 0 Then
                         Continue For
@@ -1400,7 +1339,6 @@ where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code not in ('" + txtDocumentNo
                     FillFarmerInfo(gvItem.Rows.Count - 1)
 
                 Next
-                GroupBox1.Enabled = False
             Else
                 clsCommon.MyMessageBoxShow(Me, "Data Not Found", Me.Text)
             End If
@@ -1412,6 +1350,10 @@ where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code not in ('" + txtDocumentNo
 
     Private Sub RadButton6_Click(sender As Object, e As EventArgs) Handles RadButton6.Click
         Try
+            If chkFarmerCollection.Checked Then
+                Throw New Exception("Update is not allowed for the Day-wise Farmer Collection document.")
+            End If
+
             If Not lblPending.Status = ERPTransactionStatus.Pending Then
                 Throw New Exception("Trasanction should be pending for update")
             End If
@@ -1457,7 +1399,7 @@ where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code not in ('" + txtDocumentNo
             If Arr.Count <= 0 Then
                 Throw New Exception("No data found to save")
             End If
-            clsMPDCSInsentiveRecoDetail.saveDataZone(txtDocumentNo.Value, objCommonVar.strCurrUserZones, Arr)
+            clsMPDCSInsentiveRecoDetail.saveDataZone(txtDocumentNo.Value, objCommonVar.strCurrUserZones, Arr, chkFarmerCollection.Checked)
             clsCommon.MyMessageBoxShow(Me, "Data updated successfully", Me.Text)
         Catch ex As Exception
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
@@ -1599,7 +1541,5 @@ where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code not in ('" + txtDocumentNo
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try
     End Sub
-
-
 End Class
 

@@ -21,12 +21,13 @@ Partial Class frmMPDCSIncentiveReco
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim TableViewDefinition3 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
-        Dim TableViewDefinition4 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition1 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition2 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
         Me.RadPageViewPage4 = New Telerik.WinControls.UI.RadPageViewPage()
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer()
+        Me.chkFarmerCollection = New common.Controls.MyCheckBox()
         Me.RadGroupBox1 = New Telerik.WinControls.UI.RadGroupBox()
         Me.txtSnfPer = New common.MyNumBox()
         Me.MyLabel4 = New common.Controls.MyLabel()
@@ -66,9 +67,6 @@ Partial Class frmMPDCSIncentiveReco
         Me.RadMenuItem1 = New Telerik.WinControls.UI.RadMenuItem()
         Me.rmsaveLayout = New Telerik.WinControls.UI.RadMenuItem()
         Me.rmDeleteLayout = New Telerik.WinControls.UI.RadMenuItem()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.rbtnOther = New common.Controls.MyRadioButton()
-        Me.rbtnThirdParty = New common.Controls.MyRadioButton()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -78,6 +76,7 @@ Partial Class frmMPDCSIncentiveReco
         Me.SplitContainer2.Panel1.SuspendLayout()
         Me.SplitContainer2.Panel2.SuspendLayout()
         Me.SplitContainer2.SuspendLayout()
+        CType(Me.chkFarmerCollection, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RadGroupBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RadGroupBox1.SuspendLayout()
         CType(Me.txtSnfPer, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -115,9 +114,6 @@ Partial Class frmMPDCSIncentiveReco
         CType(Me.RadButton6, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnclose, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox1.SuspendLayout()
-        CType(Me.rbtnOther, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.rbtnThirdParty, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -181,7 +177,7 @@ Partial Class frmMPDCSIncentiveReco
         '
         'SplitContainer2.Panel1
         '
-        Me.SplitContainer2.Panel1.Controls.Add(Me.GroupBox1)
+        Me.SplitContainer2.Panel1.Controls.Add(Me.chkFarmerCollection)
         Me.SplitContainer2.Panel1.Controls.Add(Me.RadGroupBox1)
         Me.SplitContainer2.Panel1.Controls.Add(Me.lblZone)
         Me.SplitContainer2.Panel1.Controls.Add(Me.txtZone)
@@ -208,6 +204,19 @@ Partial Class frmMPDCSIncentiveReco
         Me.SplitContainer2.SplitterDistance = 75
         Me.SplitContainer2.TabIndex = 0
         '
+        'chkFarmerCollection
+        '
+        Me.chkFarmerCollection.Enabled = False
+        Me.chkFarmerCollection.Location = New System.Drawing.Point(632, 3)
+        Me.chkFarmerCollection.MyLinkLable1 = Nothing
+        Me.chkFarmerCollection.MyLinkLable2 = Nothing
+        Me.chkFarmerCollection.Name = "chkFarmerCollection"
+        Me.chkFarmerCollection.ReadOnly = True
+        Me.chkFarmerCollection.Size = New System.Drawing.Size(157, 18)
+        Me.chkFarmerCollection.TabIndex = 372
+        Me.chkFarmerCollection.Tag1 = Nothing
+        Me.chkFarmerCollection.Text = "Day-wise Farmer Collection"
+        '
         'RadGroupBox1
         '
         Me.RadGroupBox1.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping
@@ -216,9 +225,9 @@ Partial Class frmMPDCSIncentiveReco
         Me.RadGroupBox1.Controls.Add(Me.txtFatPer)
         Me.RadGroupBox1.Controls.Add(Me.MyLabel5)
         Me.RadGroupBox1.HeaderText = "Consider FAT SNF Above"
-        Me.RadGroupBox1.Location = New System.Drawing.Point(726, 1)
+        Me.RadGroupBox1.Location = New System.Drawing.Point(631, 18)
         Me.RadGroupBox1.Name = "RadGroupBox1"
-        Me.RadGroupBox1.Size = New System.Drawing.Size(148, 59)
+        Me.RadGroupBox1.Size = New System.Drawing.Size(148, 58)
         Me.RadGroupBox1.TabIndex = 87
         Me.RadGroupBox1.Text = "Consider FAT SNF Above"
         Me.RadGroupBox1.Visible = False
@@ -552,7 +561,7 @@ Partial Class frmMPDCSIncentiveReco
         Me.gvItem.MasterTemplate.AllowAddNewRow = False
         Me.gvItem.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gvItem.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gvItem.MasterTemplate.ViewDefinition = TableViewDefinition3
+        Me.gvItem.MasterTemplate.ViewDefinition = TableViewDefinition1
         Me.gvItem.MyExportAPI = False
         Me.gvItem.MyExportFilePath = ""
         Me.gvItem.MyStopExport = False
@@ -596,7 +605,7 @@ Partial Class frmMPDCSIncentiveReco
         Me.gvTermsCdtion.MasterTemplate.AllowDeleteRow = False
         Me.gvTermsCdtion.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gvTermsCdtion.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gvTermsCdtion.MasterTemplate.ViewDefinition = TableViewDefinition4
+        Me.gvTermsCdtion.MasterTemplate.ViewDefinition = TableViewDefinition2
         Me.gvTermsCdtion.MyExportAPI = False
         Me.gvTermsCdtion.MyExportFilePath = ""
         Me.gvTermsCdtion.MyStopExport = False
@@ -733,39 +742,6 @@ Partial Class frmMPDCSIncentiveReco
         Me.rmDeleteLayout.Text = "Delete Layout"
         Me.rmDeleteLayout.UseCompatibleTextRendering = False
         '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.rbtnOther)
-        Me.GroupBox1.Controls.Add(Me.rbtnThirdParty)
-        Me.GroupBox1.Location = New System.Drawing.Point(632, 2)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(90, 69)
-        Me.GroupBox1.TabIndex = 88
-        Me.GroupBox1.TabStop = False
-        '
-        'rbtnOther
-        '
-        Me.rbtnOther.Location = New System.Drawing.Point(5, 34)
-        Me.rbtnOther.MyLinkLable1 = Nothing
-        Me.rbtnOther.MyLinkLable2 = Nothing
-        Me.rbtnOther.Name = "rbtnOther"
-        Me.rbtnOther.Size = New System.Drawing.Size(49, 18)
-        Me.rbtnOther.TabIndex = 1
-        Me.rbtnOther.TabStop = False
-        Me.rbtnOther.Text = "Other"
-        '
-        'rbtnThirdParty
-        '
-        Me.rbtnThirdParty.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.rbtnThirdParty.Location = New System.Drawing.Point(5, 12)
-        Me.rbtnThirdParty.MyLinkLable1 = Nothing
-        Me.rbtnThirdParty.MyLinkLable2 = Nothing
-        Me.rbtnThirdParty.Name = "rbtnThirdParty"
-        Me.rbtnThirdParty.Size = New System.Drawing.Size(74, 18)
-        Me.rbtnThirdParty.TabIndex = 0
-        Me.rbtnThirdParty.Text = "Third Party"
-        Me.rbtnThirdParty.ToggleState = Telerik.WinControls.Enumerations.ToggleState.[On]
-        '
         'frmMPDCSIncentiveReco
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -789,6 +765,7 @@ Partial Class frmMPDCSIncentiveReco
         Me.SplitContainer2.Panel1.PerformLayout()
         Me.SplitContainer2.Panel2.ResumeLayout(False)
         Me.SplitContainer2.ResumeLayout(False)
+        CType(Me.chkFarmerCollection, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RadGroupBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.RadGroupBox1.ResumeLayout(False)
         Me.RadGroupBox1.PerformLayout()
@@ -827,10 +804,6 @@ Partial Class frmMPDCSIncentiveReco
         CType(Me.RadButton6, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnclose, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RadMenu1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox1.ResumeLayout(False)
-        Me.GroupBox1.PerformLayout()
-        CType(Me.rbtnOther, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.rbtnThirdParty, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -879,8 +852,6 @@ Partial Class frmMPDCSIncentiveReco
     Friend WithEvents txtFatPer As common.MyNumBox
     Friend WithEvents MyLabel5 As common.Controls.MyLabel
     Friend WithEvents btnEditDCSQty As RadButton
-    Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents rbtnOther As common.Controls.MyRadioButton
-    Friend WithEvents rbtnThirdParty As common.Controls.MyRadioButton
+    Friend WithEvents chkFarmerCollection As common.Controls.MyCheckBox
 End Class
 

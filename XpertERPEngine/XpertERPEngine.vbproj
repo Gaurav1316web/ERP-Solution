@@ -178,7 +178,7 @@
       <HintPath>..\XpertERPEngineFine\bin\Debug\XpertERPEngineFine.dll</HintPath>
     </Reference>
     <Reference Include="zxing">
-      <HintPath>..\XpertERP\bin\Debug\zxing.dll</HintPath>
+      <HintPath>..\..\dll2\dll\zxing.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
