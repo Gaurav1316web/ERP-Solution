@@ -2508,7 +2508,7 @@ and isnull(TSPL_Booth_Route_Mapping_Head.Posted,0)=1 and Item_Type='Milk' and 2=
                                 gv1.Columns(colPAmt).IsVisible = True
                                 gv1.Columns(colPCount).IsVisible = True
                                 gv1.Columns(colMAmt).IsVisible = True
-                                gv1.Columns(colCrate).IsVisible = False
+                                gv1.Columns(colCrate).IsVisible = True
                                 gv1.Columns(colLitre).IsVisible = True
                             End If
 
