@@ -601,12 +601,12 @@ LEFT  JOIN TSPL_ZONE_MASTER ON TSPL_ZONE_MASTER.Zone_Code =TSPL_VENDOR_MASTER.Zo
                           WHERE 2=2 and     "
             Qry += "   convert(date,TSPL_DCS_MP_INCENTIVE_RECO_head.Reco_Date,103)>=CONVERT(DATE,'" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "',103) and
 convert(date,TSPL_DCS_MP_INCENTIVE_RECO_head.Reco_Date,103) <=CONVERT(DATE,'" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "',103) "
-            If clsCommon.CompairString(txtFromShift.Text, "e") = CompairStringResult.Equal Then
-                Qry += " and 2=( case when tspl_dcs_mp_incentive_reco_head.Reco_Date >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/mmm/yyyy hh:mm tt") + "' and tspl_dcs_mp_incentive_reco_head.Reco_Date <= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/mmm/yyyy hh:mm tt") + "' and shift='m' then 3 else 2 end  )"
-            End If
-            If clsCommon.CompairString(txtToShift.Text, "m") = CompairStringResult.Equal Then
-                Qry += " and 2=( case when tspl_dcs_mp_incentive_reco_head.Reco_Date >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value), "dd/mmm/yyyy hh:mm tt") + "' and tspl_dcs_mp_incentive_reco_head.Reco_Date <= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/mmm/yyyy hh:mm tt") + "' and shift='e' then 3 else 2 end  )"
-            End If
+            'If clsCommon.CompairString(txtFromShift.Text, "e") = CompairStringResult.Equal Then
+            '    Qry += " and 2=( case when tspl_dcs_mp_incentive_reco_head.Reco_Date >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/mmm/yyyy hh:mm tt") + "' and tspl_dcs_mp_incentive_reco_head.Reco_Date <= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/mmm/yyyy hh:mm tt") + "' and shift='m' then 3 else 2 end  )"
+            'End If
+            'If clsCommon.CompairString(txtToShift.Text, "m") = CompairStringResult.Equal Then
+            '    Qry += " and 2=( case when tspl_dcs_mp_incentive_reco_head.Reco_Date >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value), "dd/mmm/yyyy hh:mm tt") + "' and tspl_dcs_mp_incentive_reco_head.Reco_Date <= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/mmm/yyyy hh:mm tt") + "' and shift='e' then 3 else 2 end  )"
+            'End If
             If txtVLC.arrValueMember IsNot Nothing AndAlso txtVLC.arrValueMember.Count > 0 Then
                 Qry += " and TSPL_VLC_MASTER_HEAD.VLC_CODE  IN (" + clsCommon.GetMulcallString(txtVLC.arrValueMember) + ") "
             End If
@@ -616,7 +616,7 @@ convert(date,TSPL_DCS_MP_INCENTIVE_RECO_head.Reco_Date,103) <=CONVERT(DATE,'" & 
             If clsCommon.myLen(cboUnit.Text) > 0 Then
                 Qry += " and UOM  = '" + cboUnit.Text + " '"
             End If
-            Qry += "UNION ALL
+            Qry += " UNION ALL
 SELECT UOM as UOMRECO,'' AS UOMFARMER, '' as MP_CODE,TSPL_ZONE_MASTER.Zone_Code,TSPL_ZONE_MASTER.Description, fORMAT(CONVERT(date, TSPL_DCS_MP_INCENTIVE_RECO_head.Document_Date, 103), 'MMMM yyyy') AS Month , TSPL_VLC_MASTER_HEAD.VLC_CODE, (TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID.MCC_CODE)MCC_CODE, 
 (TSPL_DCS_MP_INCENTIVE_RECO_head.document_code)DOC_CODE,CONVERT(varchar, TSPL_DCS_MP_INCENTIVE_RECO_head.Document_Date,103)DOC_DATE,'' AS SHIFT,(TSPL_VLC_MASTER_HEAD.VSP_CODE) AS[DCS_Code],
 (TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader) as [DCS_Uploader_code],(TSPL_VLC_MASTER_HEAD.VLC_Name) as [DCS_NAME],(TSPL_BULK_ROUTE_MASTER.ROUTE_NO) as [ROUTE_CODE],
@@ -846,10 +846,10 @@ LEFT  JOIN TSPL_ZONE_MASTER ON TSPL_ZONE_MASTER.Zone_Code =TSPL_VENDOR_MASTER.Zo
 where 2=2 and  "
             Qry += "   convert(date,TSPL_VLC_DATA_UPLOADER.DOC_DATE,103)>='" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & "' and convert(date,TSPL_VLC_DATA_UPLOADER.DOC_DATE,103) <='" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "' "
             If clsCommon.CompairString(txtFromShift.Text, "E") = CompairStringResult.Equal Then
-                Qry += " and 2=( case when TSPL_VLC_DATA_UPLOADER.DOC_DATE >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "' and TSPL_MILK_SRN_head.DOC_DATE <= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "' and shift='M' then 3 else 2 end  )"
+                Qry += " and 2=( case when TSPL_VLC_DATA_UPLOADER.DOC_DATE >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "' and TSPL_VLC_DATA_UPLOADER.DOC_DATE <= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm tt") + "' and shift='M' then 3 else 2 end  )"
             End If
             If clsCommon.CompairString(txtToShift.Text, "M") = CompairStringResult.Equal Then
-                Qry += " and 2=( case when TSPL_VLC_DATA_UPLOADER.DOC_DATE >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "' and TSPL_MILK_SRN_head.DOC_DATE <= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "' and shift='E' then 3 else 2 end  )"
+                Qry += " and 2=( case when TSPL_VLC_DATA_UPLOADER.DOC_DATE >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "' and TSPL_VLC_DATA_UPLOADER.DOC_DATE <= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm tt") + "' and shift='E' then 3 else 2 end  )"
             End If
             If txtVLC.arrValueMember IsNot Nothing AndAlso txtVLC.arrValueMember.Count > 0 Then
                 Qry += " and TSPL_VLC_MASTER_HEAD.VLC_CODE  IN (" + clsCommon.GetMulcallString(txtVLC.arrValueMember) + ") "
@@ -1619,7 +1619,7 @@ TSPL_VLC_MASTER_HEAD.Vlc_Code_VLC_Uploader,
 TSPL_VLC_MASTER_HEAD.VLC_Name,
 TSPl_MP_MAster.MP_CODE,TSPl_MP_MAster.MP_Name,
 TSPl_MP_MAster.MP_Code_VLC_Uploader As MP_Uploader_Code,qty,fat,snf,Rate,Amount,fat_KG,snf_KG,Entry_Source As tttype ,TSPL_ZONE_MASTER.ZONE_CODE,TSPL_ZONE_MASTER.Description from " & strUnion("Database_Name") & ".dbo.TSPL_VLC_DATA_UPLOADER
-Left Join " & strUnion("Database_Name") & ".dbo.TSPL_VLC_MASTER_HEAD On TSPL_VLC_MASTER_HEAD.Vlc_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.VLC_CODE
+Left Join " & strUnion("Database_Name") & ".dbo.TSPL_VLC_MASTER_HEAD On TSPL_VLC_MASTER_HEAD.VLC_CODE=TSPL_VLC_DATA_UPLOADER.VLC_CODE
 Left Join " & strUnion("Database_Name") & ".dbo.TSPL_VENDOR_MASTER On TSPL_VENDOR_MASTER.Vendor_Code=TSPL_VLC_MASTER_HEAD.vsp_code
 Left Join " & strUnion("Database_Name") & ".dbo.TSPL_ZONE_MASTER On TSPL_ZONE_MASTER.Zone_Code=TSPL_VENDOR_MASTER.Zone_Code
 
@@ -1650,7 +1650,7 @@ TSPL_VLC_DATA_UPLOADER_DETAIL.Amount,
 TSPL_VLC_DATA_UPLOADER_MASTER.Dock_Collection_Milk_Type As  tttype,TSPL_ZONE_MASTER.ZONE_CODE,TSPL_ZONE_MASTER.Description
 from " & strUnion("Database_Name") & ".dbo.TSPL_VLC_DATA_UPLOADER_DETAIL
 Left Outer Join " & strUnion("Database_Name") & ".dbo.TSPL_VLC_DATA_UPLOADER_MASTER On TSPL_VLC_DATA_UPLOADER_MASTER.Document_Code=TSPL_VLC_DATA_UPLOADER_DETAIL.Document_Code
-Left Join " & strUnion("Database_Name") & ".dbo.TSPL_VLC_MASTER_HEAD On TSPL_VLC_MASTER_HEAD.Vlc_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER_MASTER.VLC_CODE
+Left Join " & strUnion("Database_Name") & ".dbo.TSPL_VLC_MASTER_HEAD On TSPL_VLC_MASTER_HEAD.VLC_CODE=TSPL_VLC_DATA_UPLOADER_MASTER.VLC_CODE
 Left Join " & strUnion("Database_Name") & ".dbo.TSPL_VENDOR_MASTER On TSPL_VENDOR_MASTER.Vendor_Code=TSPL_VLC_MASTER_HEAD.vsp_code
 Left Join " & strUnion("Database_Name") & ".dbo.TSPL_ZONE_MASTER On TSPL_ZONE_MASTER.Zone_Code=TSPL_VENDOR_MASTER.Zone_Code
 Left Join " & strUnion("Database_Name") & ".dbo.TSPl_MP_MAster On TSPl_MP_MAster.MP_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER_DETAIL.Farmer_Code and TSPl_MP_MAster.VLC_Code=TSPL_VLC_MASTER_HEAD.VLC_Code
