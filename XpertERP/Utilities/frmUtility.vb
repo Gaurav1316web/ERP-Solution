@@ -27922,8 +27922,30 @@ where Doc_Date='" + strCurrDate + "' "
                             For jj As Integer = 0 To dtColl.Rows.Count - 1
                                 If Not arrPKID.Contains(clsCommon.myCstr(dtColl.Rows(jj)("PK_Id"))) Then
                                     If clsCommon.myLen(dtColl.Rows(jj)("MP_Code")) <= 0 Then
-                                        Continue For ''--To be comment
-                                        Throw New Exception("Date [" + strCurrDate + "] Farmer Details Not found Uploader no [" + clsCommon.myCstr(dtColl.Rows(jj)("MPUploaderCode")) + "] and DCS [" + clsCommon.myCstr(dtColl.Rows(jj)("VLCUploaderCode")) + "]")
+                                        Dim MPCode As String = clsCommon.myCstr(dtColl.Rows(jj)("MPUploaderCode"))
+                                        If clsCommon.myLen(dtColl.Rows(jj)("MPUploaderCode")) > 13 Then
+                                            If clsCommon.CompairString(MPCode, "ALW") = CompairStringResult.Equal Then
+                                                MPCode = MPCode.Substring(0, 13)
+                                            End If
+                                        End If
+                                        qry = "select  MP_Code  from TSPL_MP_MASTER where MP_Code='" + MPCode + "' "
+                                        qry = clsCommon.myCstr(clsDBFuncationality.getSingleValue(qry, tran))
+                                        If clsCommon.myLen(qry) <= 0 Then
+                                            qry = "select top 1 TSPL_MP_MASTER_hist_Data.MP_Code  from TSPL_MP_MASTER_hist_Data where MP_Code_VLC_Uploader='" + clsCommon.myCstr(dtColl.Rows(jj)("MPUploaderCode")) + "' and VLC_Code='" + clsCommon.myCstr(dtColl.Rows(jj)("VLC_Code")) + "' order by Hist_Version desc"
+                                            qry = clsCommon.myCstr(clsDBFuncationality.getSingleValue(qry, tran))
+                                            If clsCommon.myLen(qry) <= 0 Then
+                                                If RadCheckBox2.Checked Then
+                                                    Continue For ''--To be comment
+                                                End If
+                                                Throw New Exception("Date [" + strCurrDate + "] Farmer Details Not found Uploader no [" + clsCommon.myCstr(dtColl.Rows(jj)("MPUploaderCode")) + "] and DCS [" + clsCommon.myCstr(dtColl.Rows(jj)("VLCUploaderCode")) + "]")
+                                            Else
+                                                dtColl.Rows(jj)("MP_Code") = qry
+                                                dtColl.AcceptChanges()
+                                            End If
+                                        Else
+                                            dtColl.Rows(jj)("MP_Code") = qry
+                                            dtColl.AcceptChanges()
+                                        End If
                                     End If
 
                                     Dim strID As String = (clsCommon.myCstr(dtColl.Rows(jj)("shift")) + "#" + clsCommon.myCstr(dtColl.Rows(jj)("VLC_Code"))).ToUpper()
@@ -27981,6 +28003,27 @@ where Doc_Date='" + strCurrDate + "' "
             End If
         Catch ex As Exception
             clsCommon.ProgressBarPercentHide()
+            clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
+        End Try
+    End Sub
+
+    Private Sub RadButton359_Click(sender As Object, e As EventArgs) Handles RadButton359.Click
+        Try
+            Dim qry As String = "select * from (
+select VLC_Code,VLCUploaderCode,MPUploaderCode from (
+select VLC_Code ,VLCUploaderCode,MPUploaderCode from (
+select TSPL_VLC_DATA_UPLOADER.PK_Id, TSPL_VLC_DATA_UPLOADER.Doc_Date,TSPL_VLC_DATA_UPLOADER.shift,TSPL_VLC_DATA_UPLOADER.MCC_Code,TSPL_VLC_MASTER_HEAD.VLC_Code, TSPL_VLC_DATA_UPLOADER.VLC_CODE as VLCUploaderCode,TSPL_MP_MASTER.MP_Code,TSPL_VLC_DATA_UPLOADER.MP_CODE as MPUploaderCode,TSPL_VLC_DATA_UPLOADER.Milk_Type,TSPL_VLC_DATA_UPLOADER.qty,TSPL_VLC_DATA_UPLOADER.Uom_Code,TSPL_VLC_DATA_UPLOADER.fat,TSPL_VLC_DATA_UPLOADER.snf,TSPL_VLC_DATA_UPLOADER.water,TSPL_VLC_DATA_UPLOADER.fat_KG,TSPL_VLC_DATA_UPLOADER.snf_KG,TSPL_VLC_DATA_UPLOADER.Rate,TSPL_VLC_DATA_UPLOADER.Amount
+from TSPL_VLC_DATA_UPLOADER 
+left outer join TSPL_VLC_MASTER_HEAD on TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.VLC_CODE
+left outer join TSPL_MP_MASTER on TSPL_MP_MASTER.MP_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.MP_CODE and TSPL_MP_MASTER.VLC_Code=TSPL_VLC_MASTER_HEAD.VLC_CODE
+)xx where  isnull(MP_Code,'')=''
+) xxx group by VLC_Code,VLCUploaderCode,MPUploaderCode
+)xx  
+where ( not exists (select   1 from TSPL_MP_MASTER where  TSPL_MP_MASTER.MP_Code = CASE WHEN LEN(xx.MPUploaderCode) > 13 THEN LEFT(xx.MPUploaderCode, 13)  ELSE xx.MPUploaderCode END)
+and not exists (select  top 1  1 from TSPL_MP_MASTER_hist_Data where TSPL_MP_MASTER_hist_Data.MP_Code_VLC_Uploader=xx.MPUploaderCode and TSPL_MP_MASTER_hist_Data.VLC_Code=xx.VLC_Code order by Hist_Version desc) )
+order by VLCUploaderCode,MPUploaderCode"
+            transportSql.ExporttoExcelWithoutFilter(qry, "", "", Me)
+        Catch ex As Exception
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try
     End Sub
