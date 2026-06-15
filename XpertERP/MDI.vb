@@ -8754,6 +8754,10 @@ Public Class MDI
                         frm = New rptSaleInvoiceStatusReport()
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
 
+                    Case clsUserMgtCode.rptProductCreditSaleReport
+                        frm = New rptProductCreditSaleReport()
+                        formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
+
                     Case clsUserMgtCode.rptVSPIncentiveRegister
                         frm = New rptVSPIncentiveRegister
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo, IFTrueShowFormElseShowDialog)
@@ -9086,6 +9090,9 @@ Public Class MDI
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo)
                     Case clsUserMgtCode.rptDBTBankResponse
                         frm = New rptDBTBankResponse
+                        formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo)
+                    Case clsUserMgtCode.rptFarmerMilkCollectionReport
+                        frm = New rptFarmerMilkCollectionReport
                         formShow(frm, strProgramCode, strProgramName, isOpenInMDI, strDocNo)
                     Case clsUserMgtCode.rptUnionMilkPurchase
                         frm = New rptUnionMilkRegister

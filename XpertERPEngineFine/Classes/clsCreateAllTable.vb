@@ -57428,7 +57428,7 @@ where len( ISNULL(Bank_Code_Saving,''))>0 and TSPL_PAYMENT_PROCESS_DETAIL.Bank_A
             coll.Add("Apply_SNF_Above", "Decimal(18,2) null")
             coll.Add("DBT_Capping_Apply", "integer NULL")
             coll.Add("Edit_Remarks", "varchar(200) NULL")
-            coll.Add("Third_Party_Integrated", "integer NULL")
+            coll.Add("Farmer_Collection", "integer NULL")
             clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_DCS_MP_INCENTIVE_RECO_HEAD", coll, Nothing, True, True, "", "Document_Code", "Document_Date", True)
 
             Try
@@ -57468,6 +57468,12 @@ where len( ISNULL(Bank_Code_Saving,''))>0 and TSPL_PAYMENT_PROCESS_DETAIL.Bank_A
             coll.Add("Diff_FAT", "Decimal(18,2) null")
             coll.Add("Diff_SNF", "Decimal(18,2) null")
             coll.Add("Diff_Amount", "Decimal(18,2) null")
+            coll.Add("Status", "int Null")
+            coll.Add("Posted_By", "varchar(12) NULL")
+            coll.Add("Posting_Date", "Datetime NULL")
+            coll.Add("Loc_Latitude", "varchar(20) NULL")
+            coll.Add("Loc_Longitude", "varchar(20) NULL")
+            coll.Add("Loc_Address", "nvarchar(1000) null")
             clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL", coll, "unique(Cycle_Year,Cycle_Month,Cycle_No,VLC_Code)", True, True, "TSPL_DCS_MP_INCENTIVE_RECO_HEAD", "Document_Code", "", True)
             clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID", coll, "", True, True, "TSPL_DCS_MP_INCENTIVE_RECO_HEAD", "Document_Code", "", True)
 
@@ -60216,6 +60222,32 @@ select Against_TenderNo,Against_Tender_Schedule_PK_Id,SRN_No,Item_Code,Qty,Again
             coll.Add("Modified_Date", "Datetime NOT NULL")
             clsCommonFunctionality.CreateOrAlterTable(True, False, "TSPL_BMC_Category_Master", coll, "", True, False, "", "Document_Code", "Document_Date", True)
 
+
+            coll = New Dictionary(Of String, String)()
+            coll.Add("Code", "Varchar(10) not null PRIMARY KEY")
+            coll.Add("Description", "nvarchar(1000) null")
+            clsCommonFunctionality.CreateOrAlterTable(False, False, "TSPL_CUSTOM_MSG", coll, "", False, False, "", "", "", False)
+
+
+            qry = "select 1 from TSPL_CUSTOM_MSG"
+            dt = clsDBFuncationality.GetDataTable(qry)
+            If dt IsNot Nothing AndAlso dt.Rows.Count <= 0 Then
+                Dim collT = New Hashtable()
+                clsCommon.AddColumnsForChange(collT, "Code", "DBTAPPMSG1")
+                clsCommon.AddColumnsForChange(collT, "Description", "Please review your entry carefully. Once approved, the data will be locked And cannot be modified.
+Are you sure you want to Approve ? 
+कृपया अपनी प्रविष्टि की सावधानीपूर्वक समीक्षा करें। एक बार स्वीकृत होने के बाद, डेटा लॉक हो जाएगा और इसमें कोई संशोधन नहीं किया जा सकेगा। 
+क्या आप वाकई इसे स्वीकृत करना चाहते हैं?", True, True)
+                clsCommonFunctionality.UpdateDataTable(collT, "TSPL_CUSTOM_MSG", OMInsertOrUpdate.Insert, "")
+
+                collT = New Hashtable()
+                clsCommon.AddColumnsForChange(collT, "Code", "DBTAPPMSG2")
+                clsCommon.AddColumnsForChange(collT, "Description", "Please review your entry carefully. Once approved, the data will be locked And cannot be modified.
+Are you sure you want to Approve ? 
+कृपया अपनी प्रविष्टि की सावधानीपूर्वक समीक्षा करें। एक बार स्वीकृत होने के बाद, डेटा लॉक हो जाएगा और इसमें कोई संशोधन नहीं किया जा सकेगा। 
+क्या आप वाकई इसे स्वीकृत करना चाहते हैं?", True, True)
+                clsCommonFunctionality.UpdateDataTable(collT, "TSPL_CUSTOM_MSG", OMInsertOrUpdate.Insert, "")
+            End If
             clsCommon.ProgressBarPercentHide()
         Catch ex As Exception
             clsCommon.ProgressBarPercentHide()

@@ -23,7 +23,7 @@ Partial Class frmTransporterPaymentProcess
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim TableViewDefinition3 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition1 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
         Me.RadPageViewPage1 = New Telerik.WinControls.UI.RadPageViewPage()
@@ -278,7 +278,6 @@ Partial Class frmTransporterPaymentProcess
         '
         Me.txtRemarks.BackColor = System.Drawing.Color.FromArgb(CType(CType(208, Byte), Integer), CType(CType(187, Byte), Integer), CType(CType(187, Byte), Integer))
         Me.txtRemarks.CalculationExpression = Nothing
-        Me.txtRemarks.Enabled = False
         Me.txtRemarks.FieldCode = Nothing
         Me.txtRemarks.FieldDesc = Nothing
         Me.txtRemarks.FieldMaxLength = 0
@@ -510,7 +509,7 @@ Partial Class frmTransporterPaymentProcess
         Me.gv.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gv.MasterTemplate.ShowFilteringRow = False
         Me.gv.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gv.MasterTemplate.ViewDefinition = TableViewDefinition3
+        Me.gv.MasterTemplate.ViewDefinition = TableViewDefinition1
         Me.gv.MyExportAPI = False
         Me.gv.MyExportFilePath = ""
         Me.gv.MyStopExport = False

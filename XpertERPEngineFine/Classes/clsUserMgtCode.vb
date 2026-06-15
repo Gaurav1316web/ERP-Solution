@@ -7,6 +7,7 @@ Public Class clsUserMgtCode
 
     Public Const frmSubRouteMaster As String = "SUB-RT-MSTR"
     Public Const frmAccountSalesReport As String = "ACC-SLS-RPT"
+    Public Const rptProductCreditSaleReport As String = "PRD-CR-RPT"
     Public Const frmPIPaymentStatusReport As String = "PIP-STS-RPT"
     Public Const frmEmployeeOTEntry As String = "EMP-OT"
     Public Const rptDCSTruckSheetRegister As String = "DCS_REG"
@@ -22,6 +23,7 @@ Public Class clsUserMgtCode
     Public Const frmUnionWiseAppUserReport As String = "UNN-APP-RPT"
     Public Const FrmCmSambalYojanaSubsidy As String = "CM-SAM-YO"
     Public Const rptDBTBankResponse As String = "DBT-BAN-RE"
+    Public Const rptFarmerMilkCollectionReport As String = "FRM-MLK-COL"
     Public Const ZoneWiseReport As String = "ZONE_Q_R"
     Public Const frmRouteWiseSaleTargetReport As String = "RSL-TGT-RPT"
     Public Const frmRouteWiseSaleTarget As String = "RTWS-SL-TGT"

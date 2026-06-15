@@ -1418,7 +1418,7 @@ And TSPL_ITEM_UOM_DETAIL.Default_UOM = 1"
                         End If
                     Next
                 End If
-                If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
+                If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal AndAlso Not chkIndividualCustomer.Checked Then
                     Dim dtTransporter As DataTable = clsDBFuncationality.GetDataTable(ReturnDistributorRouteTaggingQry())
                     If dtTransporter IsNot Nothing AndAlso dtTransporter.Rows.Count > 0 Then
                         lblTransporterName.Text = dtTransporter.Rows(0)("Customer_Name")
@@ -2508,7 +2508,7 @@ and isnull(TSPL_Booth_Route_Mapping_Head.Posted,0)=1 and Item_Type='Milk' and 2=
                                 gv1.Columns(colPAmt).IsVisible = True
                                 gv1.Columns(colPCount).IsVisible = True
                                 gv1.Columns(colMAmt).IsVisible = True
-                                gv1.Columns(colCrate).IsVisible = False
+                                gv1.Columns(colCrate).IsVisible = True
                                 gv1.Columns(colLitre).IsVisible = True
                             End If
 
@@ -3572,7 +3572,7 @@ where TSPL_ITEM_CAPACITY_LIMIT_head.From_Date<='" & clsCommon.GetPrintDate(txtDa
     Sub setRouteVehicleCityDetail()
         Try
             Dim qry As String = ""
-            If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
+            If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal AndAlso Not chkIndividualCustomer.Checked Then
                 qry = ReturnDistributorRouteTaggingQry()
             Else
                 If objCommonVar.ApplyBoothRouteMapping Then
@@ -3607,7 +3607,7 @@ left outer join tspl_transport_master on tspl_transport_master.Transport_Id=TSPL
                 lblVehicleNo.Text = clsCommon.myCstr(dt1.Rows(0)("Number"))
                 txtRouteNo.Value = clsCommon.myCstr(dt1.Rows(0)("Route_No"))
                 lblRouteDesc.Text = clsCommon.myCstr(dt1.Rows(0)("Route_Desc"))
-                If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
+                If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal AndAlso Not chkIndividualCustomer.Checked Then
                     lblTransporterName.Text = clsCommon.myCstr(dt1.Rows(0)("Customer_Name"))
                 Else
                     lblTransporterName.Text = clsCommon.myCstr(dt1.Rows(0)("Transporter_Name"))

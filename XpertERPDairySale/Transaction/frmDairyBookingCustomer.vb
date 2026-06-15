@@ -8735,7 +8735,16 @@ where TSPL_ITEM_CAPACITY_LIMIT_head.From_Date<='" & clsCommon.GetPrintDate(txtDa
                                 End If
                                 objTr.Qty = clsCommon.myCDecimal(grow.Cells(colQty).Value)
                                 objTr.Billing_Qty = clsCommon.myCDecimal(grow.Cells(ColBillingQty).Value)
-                                objTr.Crate = clsCommon.myCDecimal(grow.Cells(colQty).Value)
+                                objTr.Unit_code = clsCommon.myCstr(grow.Cells(colUnit).Value)
+                                Dim strt As Double = clsCommon.myCdbl(clsDBFuncationality.getSingleValue("select Conversion_Factor from TSPL_ITEM_UOM_DETAIL where Item_Code='" & objTr.Item_Code & "' and UOM_Code='" & objTr.Unit_code & "'", trans))
+                                Dim strCrate As Double = clsCommon.myCdbl(clsDBFuncationality.getSingleValue("select Conversion_Factor from TSPL_ITEM_UOM_DETAIL where Item_Code='" & objTr.Item_Code & "' and UOM_Code='Crate'", trans))
+                                If strCrate = 0 Then
+                                    objTr.Crate = 0
+                                Else
+                                    Dim crateCount As Integer = (objTr.Qty * strt) / strCrate
+                                    objTr.Crate = crateCount
+                                End If
+                                'objTr.Crate = clsCommon.myCDecimal(grow.Cells(colQty).Value)
                                 If chkSampling.Checked = True Then
                                     objTr.Item_Cost = clsCommon.myCDecimal(0)
                                 Else
@@ -8743,7 +8752,6 @@ where TSPL_ITEM_CAPACITY_LIMIT_head.From_Date<='" & clsCommon.GetPrintDate(txtDa
                                 End If
                                 'objTr.Item_Cost = clsCommon.myCDecimal(grow.Cells(colOrgRate).Value)
                                 objTr.Amount = clsCommon.myCDecimal(grow.Cells(colAmt).Value)
-                                objTr.Unit_code = clsCommon.myCstr(grow.Cells(colUnit).Value)
                                 objTr.Billing_Unit_code = clsCommon.myCstr(grow.Cells(colBillingUOM).Value)
                                 objTr.Sampling = IIf(chkSampling.Checked, 1, 0)
                                 objTr.Line_No = clsCommon.myCdbl(grow.Cells(colLineNo).Value)

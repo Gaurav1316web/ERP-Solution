@@ -1231,6 +1231,7 @@ Public Class ProgramCodeNew
         InsertDefaultValue(clsUserMgtCode.rptDistributorRouteMarginStatusReport, "Distributor Route Margin Status Report", "1.09.03.74", clsUserMgtCode.SubModuleSaleDairyReport, 37)
         InsertDefaultValue(clsUserMgtCode.rptPartWiseItemReport, "Day Wise Party Sale Report", "1.09.03.76", clsUserMgtCode.SubModuleSaleDairyReport, 37)
         InsertDefaultValue(clsUserMgtCode.frmAccountSalesReport, "Account Sales Report", "1.09.03.77", clsUserMgtCode.SubModuleSaleDairyReport, 37)
+        InsertDefaultValue(clsUserMgtCode.rptProductCreditSaleReport, "Product Credit Sale Report", "1.09.03.77", clsUserMgtCode.SubModuleSaleDairyReport, 37)
 
         InsertDefaultValue(clsUserMgtCode.SubModuleVisualSaleReport, "Visual Report", "1.09.04", clsUserMgtCode.ModuleSaleDairy, "SM", 36)
         InsertDefaultValue(clsUserMgtCode.rptZoneWiseMSVisual, "Zone Wise Milk Sale Report", "1.09.04.01", clsUserMgtCode.SubModuleVisualSaleReport, 37)
@@ -3072,6 +3073,7 @@ Public Class ProgramCodeNew
         InsertDefaultValue(clsUserMgtCode.rptDbtStatusRCDF, "Dbt Status RCDF Report", "1.51.03.30", clsUserMgtCode.SubModuleMilkUnion, "", 8, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, False, False, True)
         InsertDefaultValue(clsUserMgtCode.frmUnionWiseDockEntryReport, "Union Wise Dock Entry Report ", "1.51.03.31", clsUserMgtCode.SubModuleMilkUnion, "", 8, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, False, False, True)
         InsertDefaultValue(clsUserMgtCode.FrmInActiveDCSReport, "InActive DCS Report", "1.51.03.33", clsUserMgtCode.SubModuleMilkUnion, "", 8, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, False, False, True)
+        InsertDefaultValue(clsUserMgtCode.rptFarmerMilkCollectionReport, "Farmer Milk Collection Report", "1.51.03.35", clsUserMgtCode.SubModuleMilkUnion, "", 8, 0, "", "", "", False, False, False, "", Nothing, "", "", "", "", "", False, "", 0, False, False, True)
 
 #End Region
 

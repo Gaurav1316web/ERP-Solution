@@ -45,6 +45,7 @@ Public Class clsFixedParameterType
     Public Const EmployeePFRetirementAge As String = "Employee PF Retirement Age"
     Public Const EmployeeRetirementAge As String = "Employee Retirement Age"
     Public Const DBTMilkQtyCapping As String = "DBT Milk Qty Capping"
+    Public Const DBTByDailyFarmerMilkCollection As String = "DBT By Daily Farmer Milk Collection"
     Public Const PDAccountPaymanager As String = "PD Account Paymanager"
     Public Const BankAdviseRequired As String = "Bank Advice Start Date"
     Public Const SeprateBankForDCSBankAdvice As String = "Seprate Bank For DCS Bank Advice"
@@ -1479,6 +1480,7 @@ Public Class clsFixedParameterCode
     Public Const SeprateBankForDCSBankAdvice As String = "Seprate Bank For DCS Bank Advice"
     Public Const ApplyPartialBankAdvise As String = "Apply Partial Bank Advise"
     Public Const DBTMilkQtyCapping As String = "DBT Milk Qty Capping"
+    Public Const DBTByDailyFarmerMilkCollection As String = "DBT By Daily Farmer Milk Collection"
     Public Const ApplyMergeForDCSMultipleDays As String = "Apply Merge For DCS Multiple Days"
     Public Const CalculateFATSNFLossCycleWise As String = "Calculate FAT SNF Loss Cycle Wise"
     Public Const ApplyRange As String = "Apply Range"
@@ -3146,6 +3148,7 @@ Public Class clsFixedParameter
         InsertDefaultValueFixedParameter(clsFixedParameterType.PurchaseSlab, clsFixedParameterCode.RangeRAL, "100000.01-999999999999", "RAL Mandatory")
         InsertDefaultValueFixedParameter(clsFixedParameterType.RefreshDBTReco, clsFixedParameterCode.RefreshDBTReco, "0", "0:OFF;1:ON")
         InsertDefaultValueFixedParameter(clsFixedParameterType.DBTMilkQtyCapping, clsFixedParameterCode.DBTMilkQtyCapping, "0", "0:OFF;1:ON")
+        InsertDefaultValueFixedParameter(clsFixedParameterType.DBTByDailyFarmerMilkCollection, clsFixedParameterCode.DBTByDailyFarmerMilkCollection, "1", "0:OFF;1:ON")
 
         InsertDefaultValueFixedParameter(clsFixedParameterType.DistributorWiseBilling, clsFixedParameterCode.DistributorWiseBilling, "0", "0:OFF;1:ON")
         InsertDefaultValueFixedParameter(clsFixedParameterType.AndroidSaleOrder, clsFixedParameterCode.BackDays, "3", "Back Days of From Date")
@@ -4829,6 +4832,7 @@ Public Class clsFixedParameterProgramMapping
         InsertDefaultValue(clsUserMgtCode.MilkCollectionDCSMultipleDays, clsFixedParameterType.ApplyMergeForDCSMultipleDays, clsFixedParameterCode.ApplyMergeForDCSMultipleDays, EnumControlType.CheckBox)
         InsertDefaultValue(clsUserMgtCode.MilkVSPPayment, clsFixedParameterType.CalculateFATSNFLossCycleWise, clsFixedParameterCode.CalculateFATSNFLossCycleWise, EnumControlType.CheckBox)
         InsertDefaultValue(clsUserMgtCode.FATSNFDiffReport, clsFixedParameterType.CalculateFATSNFLossCycleWise, clsFixedParameterCode.CalculateFATSNFLossCycleWise, EnumControlType.CheckBox)
+        InsertDefaultValue(clsUserMgtCode.DCSMPIncentiveReco, clsFixedParameterType.DBTByDailyFarmerMilkCollection, clsFixedParameterCode.DBTByDailyFarmerMilkCollection, EnumControlType.CheckBox)
         InsertDefaultValue(clsUserMgtCode.DCSMPIncentiveReco, clsFixedParameterType.DBTMilkQtyCapping, clsFixedParameterCode.DBTMilkQtyCapping, EnumControlType.CheckBox)
         InsertDefaultValue(clsUserMgtCode.DCSMPIncentiveReco, clsFixedParameterType.RefreshDBTReco, clsFixedParameterCode.RefreshDBTReco, EnumControlType.CheckBox)
         InsertDefaultValue(clsUserMgtCode.frmSaleDispatchDairy, clsFixedParameterType.DistributorWiseBilling, clsFixedParameterCode.DistributorWiseBilling, EnumControlType.CheckBox)
