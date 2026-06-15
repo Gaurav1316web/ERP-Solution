@@ -175,6 +175,10 @@ Public Class FrmUtility
         txtDairyFromdate.Value = txtDate.Value
         txtDairyTodate.Value = txtDate.Value
         txtBlankTransDataDate.Value = txtDate.Value
+
+        MyDateTimePicker9.Value = txtDate.Value
+        MyDateTimePicker10.Value = txtDate.Value
+
         'Dim qry As String = "select Description from TSPL_FIXED_PARAMETER where Type='IsConsiderOutTypeDocForBalance' and Code='IsConsiderOutTypeDocForBalance'"
         'chkIsConsiderOutTypeDocForBalance.Checked = clsCommon.myCdbl(clsDBFuncationality.getSingleValue(qry)) = 1
 
@@ -27860,6 +27864,123 @@ where Against_Shipment_No in (select Document_Code from TSPL_SD_SHIPMENT_HEAD wh
             ListImpExpColumnsMandatory = New List(Of String)({"Invoice No", "Document Date"})
             transportSql.ExporttoExcel(str, whrCls, Me)
         Catch ex As Exception
+            clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
+        End Try
+    End Sub
+
+    Private Sub RadButton358_Click(sender As Object, e As EventArgs) Handles RadButton358.Click
+        Try
+            clsCommon.ProgressBarPercentShow()
+
+            If clsCommon.GetDateWithEndTime(MyDateTimePicker10.Value) > clsCommon.GetDateWithEndTime(MyDateTimePicker9.Value) Then
+                Throw New Exception("From Date cannot be more than to date")
+            End If
+            Dim dtDate As DataTable = clsDBFuncationality.GetDataTable("select * from ExplodeDates('" + clsCommon.GetPrintDate(MyDateTimePicker10.Value, "dd/MMM/yyyy") + "','" + clsCommon.GetPrintDate(MyDateTimePicker9.Value, "dd/MMM/yyyy") + "')")
+            If dtDate IsNot Nothing AndAlso dtDate.Rows.Count > 0 Then
+                Dim strDefaultRoute As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select ROUTE_NO from TSPL_BULK_ROUTE_MASTER where IsDefault=1"))
+                If clsCommon.myLen(strDefaultRoute) <= 0 Then
+                    Throw New Exception("Please make default bulk route")
+                End If
+
+                For ii As Integer = 0 To dtDate.Rows.Count - 1
+                    Dim tran As SqlTransaction = clsDBFuncationality.GetTransactin()
+                    Try
+
+                        Dim strCurrDate As String = clsCommon.GetPrintDate(clsCommon.myCDate(dtDate.Rows(ii)("theDate")), "dd/MMM/yyyy")
+                        Dim qry As String = ""
+                        If RadCheckBox1.Checked Then
+                            clsCommon.ProgressBarPercentUpdate(ii, dtDate.Rows.Count, "Date [" + strCurrDate + "] Deleting Duplicate Data")
+                            qry = "delete from TSPL_VLC_DATA_UPLOADER from (
+select Doc_Date,Shift,VLC_Code,MP_Code ,max(  case when RI=1 then Milk_Type else null end) as Milk_Type,sum(qty * case when RI=1 then 1 else null end) as Qty,max( case when RI=1 then fat else null end) as FAT,max( case when RI=1 then snf  else null end) as SNF,max(case when RI=1 then PK_Id else null end) as PK_Id  ,max( case when RI=-1 then Milk_Type else null end) as HDMilk_Type,sum(qty * case when RI=-1 then 1 else null end) as HDQty,max( case when RI=-1 then FAT  else null end) as HDFAT,max( case when RI=-1 then SNF else null end) as HDSNF,max(case when RI=-1 then PK_Id else null end) as HDPK_Id  from (
+select TSPL_VLC_DATA_UPLOADER.PK_Id,TSPL_VLC_DATA_UPLOADER.Doc_Date,TSPL_VLC_DATA_UPLOADER.shift,TSPL_VLC_MASTER_HEAD.VLC_Code,TSPL_MP_MASTER.MP_Code,TSPL_VLC_DATA_UPLOADER.Milk_Type,TSPL_VLC_DATA_UPLOADER.qty,TSPL_VLC_DATA_UPLOADER.fat,TSPL_VLC_DATA_UPLOADER.snf,1 as RI,1 as chk
+from TSPL_VLC_DATA_UPLOADER 
+left outer join TSPL_VLC_MASTER_HEAD on TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.VLC_CODE
+left outer join TSPL_MP_MASTER on TSPL_MP_MASTER.MP_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.MP_CODE and TSPL_MP_MASTER.VLC_Code=TSPL_VLC_MASTER_HEAD.VLC_Code 
+where  convert(date,  TSPL_VLC_DATA_UPLOADER.Doc_Date,103) = '" + strCurrDate + "'
+union all
+select TSPL_VLC_DATA_UPLOADER_DETAIL.PK_Id as PK_Id,convert(date, TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103) as Doc_Date,TSPL_VLC_DATA_UPLOADER_MASTER.Shift, TSPL_VLC_DATA_UPLOADER_MASTER.VLC_Code,TSPL_VLC_DATA_UPLOADER_DETAIL.Farmer_Code as MP_Code,TSPL_VLC_DATA_UPLOADER_DETAIL.Milk_Type,TSPL_VLC_DATA_UPLOADER_DETAIL.Qty,TSPL_VLC_DATA_UPLOADER_DETAIL.FatPer as fat,TSPL_VLC_DATA_UPLOADER_DETAIL.SNFPer as snf,-1 as RI,0 as chk
+from TSPL_VLC_DATA_UPLOADER_DETAIL
+left outer join TSPL_VLC_DATA_UPLOADER_MASTER on  TSPL_VLC_DATA_UPLOADER_MASTER.Document_Code =TSPL_VLC_DATA_UPLOADER_DETAIL.Document_Code
+where convert(date,  TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103) = '" + strCurrDate + "'
+) xx group by Doc_Date,Shift,VLC_Code,MP_Code having sum(chk)>0 and sum(qty*RI)=0
+) xxx inner join TSPL_VLC_DATA_UPLOADER on TSPL_VLC_DATA_UPLOADER.PK_Id=xxx.PK_Id"
+                            clsDBFuncationality.ExecuteNonQuery(qry, tran)
+                        End If
+
+                        Dim BaseQry As String = "select TSPL_VLC_DATA_UPLOADER.PK_Id, TSPL_VLC_DATA_UPLOADER.Doc_Date,TSPL_VLC_DATA_UPLOADER.shift,TSPL_VLC_DATA_UPLOADER.MCC_Code,TSPL_VLC_MASTER_HEAD.VLC_Code, TSPL_VLC_DATA_UPLOADER.VLC_CODE as VLCUploaderCode,TSPL_MP_MASTER.MP_Code,TSPL_VLC_DATA_UPLOADER.MP_CODE as MPUploaderCode,TSPL_VLC_DATA_UPLOADER.Milk_Type,TSPL_VLC_DATA_UPLOADER.qty,TSPL_VLC_DATA_UPLOADER.Uom_Code,TSPL_VLC_DATA_UPLOADER.fat,TSPL_VLC_DATA_UPLOADER.snf,TSPL_VLC_DATA_UPLOADER.water,TSPL_VLC_DATA_UPLOADER.fat_KG,TSPL_VLC_DATA_UPLOADER.snf_KG,TSPL_VLC_DATA_UPLOADER.Rate,TSPL_VLC_DATA_UPLOADER.Amount
+from TSPL_VLC_DATA_UPLOADER 
+left outer join TSPL_VLC_MASTER_HEAD on TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.VLC_CODE
+left outer join TSPL_MP_MASTER on TSPL_MP_MASTER.MP_Code_VLC_Uploader=TSPL_VLC_DATA_UPLOADER.MP_CODE and TSPL_MP_MASTER.VLC_Code=TSPL_VLC_MASTER_HEAD.VLC_CODE 
+where Doc_Date='" + strCurrDate + "' "
+                        qry = BaseQry + " order by Doc_Date,VLC_CODE,shift desc,MP_CODE,TSPL_MP_MASTER.Active"
+                        Dim dtColl As DataTable = clsDBFuncationality.GetDataTable(qry, tran)
+                        Dim arrPKID As New ArrayList()
+                        Dim Arr As New Dictionary(Of String, List(Of ClsVLCDataUploaderManualdetail))
+
+                        clsCommon.ProgressBarPercentUpdate(ii, dtDate.Rows.Count, "Date [" + strCurrDate + "] Verifying data")
+                        If dtColl IsNot Nothing AndAlso dtColl.Rows.Count > 0 Then
+                            For jj As Integer = 0 To dtColl.Rows.Count - 1
+                                If Not arrPKID.Contains(clsCommon.myCstr(dtColl.Rows(jj)("PK_Id"))) Then
+                                    If clsCommon.myLen(dtColl.Rows(jj)("MP_Code")) <= 0 Then
+                                        Continue For ''--To be comment
+                                        Throw New Exception("Date [" + strCurrDate + "] Farmer Details Not found Uploader no [" + clsCommon.myCstr(dtColl.Rows(jj)("MPUploaderCode")) + "] and DCS [" + clsCommon.myCstr(dtColl.Rows(jj)("VLCUploaderCode")) + "]")
+                                    End If
+
+                                    Dim strID As String = (clsCommon.myCstr(dtColl.Rows(jj)("shift")) + "#" + clsCommon.myCstr(dtColl.Rows(jj)("VLC_Code"))).ToUpper()
+                                    If Not Arr.ContainsKey(strID) Then
+                                        Arr.Add(strID, New List(Of ClsVLCDataUploaderManualdetail))
+                                    End If
+                                    Dim objtr As New ClsVLCDataUploaderManualdetail
+                                    objtr.Farmer_Code = clsCommon.myCstr(dtColl.Rows(jj)("MP_Code"))
+                                    objtr.Unit_Code = clsCommon.myCstr(dtColl.Rows(jj)("Uom_Code"))
+                                    objtr.Qty = clsCommon.myCDecimal(dtColl.Rows(jj)("qty"))
+                                    objtr.FatPer = clsCommon.myCDecimal(dtColl.Rows(jj)("fat"))
+                                    objtr.SNFPer = clsCommon.myCDecimal(dtColl.Rows(jj)("snf"))
+                                    objtr.Rate = clsCommon.myCDecimal(dtColl.Rows(jj)("Rate"))
+                                    objtr.Amount = clsCommon.myCDecimal(dtColl.Rows(jj)("Amount"))
+                                    'objtr.Reject_Type = clsCommon.myCstr(dtColl.Rows(jj)("MP_Code"))
+                                    objtr.Milk_Type = clsCommon.myCstr(dtColl.Rows(jj)("Milk_Type"))
+                                    Arr(strID).Add(objtr)
+                                    arrPKID.Add(clsCommon.myCstr(dtColl.Rows(jj)("PK_Id")))
+                                End If
+                                clsCommon.ProgressBarPercentUpdate(ii, dtDate.Rows.Count, "Date [" + strCurrDate + "] Verifying data " & jj & "/" & dtColl.Rows.Count & "")
+                            Next
+                        End If
+
+                        For jj As Integer = 0 To Arr.Count - 1
+                            Dim item As KeyValuePair(Of String, List(Of ClsVLCDataUploaderManualdetail)) = Arr.ElementAt(jj)
+                            Dim parts() As String = item.Key.Split("#"c)
+
+                            Dim obj As New ClsVLCDataUploaderManual
+                            obj.Document_Date = clsCommon.myCDate(strCurrDate)
+                            obj.VLC_Code = parts(1)
+                            obj.Route_Code = strDefaultRoute
+                            obj.Shift = parts(0)
+                            obj.Dock_Collection_Milk_Type = ""
+                            obj.arrVLCDetail = item.Value
+                            ClsVLCDataUploaderManual.SaveData(obj, True, tran)
+                            clsCommon.ProgressBarPercentUpdate(ii, dtDate.Rows.Count, "Date [" + strCurrDate + "] Saving data " & jj & "/" & Arr.Count & "")
+                        Next
+
+                        clsCommon.ProgressBarPercentUpdate(ii, dtDate.Rows.Count, "Date [" + strCurrDate + "] Deleting data")
+
+                        qry = "delete from TSPL_VLC_DATA_UPLOADER from ( " + BaseQry + " ) xx inner join TSPL_VLC_DATA_UPLOADER on TSPL_VLC_DATA_UPLOADER.PK_Id=xx.PK_Id "
+                        clsDBFuncationality.ExecuteNonQuery(qry, tran)
+
+                        tran.Commit()
+                    Catch ex As Exception
+                        tran.Rollback()
+                        Throw New Exception(ex.Message)
+                    End Try
+                Next
+                clsCommon.ProgressBarPercentHide()
+                clsCommon.MyMessageBoxShow(Me, "Task Completed", Me.Text)
+            Else
+                clsCommon.ProgressBarPercentHide()
+                clsCommon.MyMessageBoxShow("No Document Found Completed", Me.Text)
+            End If
+        Catch ex As Exception
+            clsCommon.ProgressBarPercentHide()
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try
     End Sub

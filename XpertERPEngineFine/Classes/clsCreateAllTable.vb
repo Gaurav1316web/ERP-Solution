@@ -60238,7 +60238,7 @@ select Against_TenderNo,Against_Tender_Schedule_PK_Id,SRN_No,Item_Code,Qty,Again
 Are you sure you want to Approve ? 
 कृपया अपनी प्रविष्टि की सावधानीपूर्वक समीक्षा करें। एक बार स्वीकृत होने के बाद, डेटा लॉक हो जाएगा और इसमें कोई संशोधन नहीं किया जा सकेगा। 
 क्या आप वाकई इसे स्वीकृत करना चाहते हैं?", True, True)
-                clsCommonFunctionality.UpdateDataTable(collT, "TSPL_DBT_NEFT_DETAIL_INVALID", OMInsertOrUpdate.Insert, "")
+                clsCommonFunctionality.UpdateDataTable(collT, "TSPL_CUSTOM_MSG", OMInsertOrUpdate.Insert, "")
 
                 collT = New Hashtable()
                 clsCommon.AddColumnsForChange(collT, "Code", "DBTAPPMSG2")
@@ -60246,7 +60246,7 @@ Are you sure you want to Approve ?
 Are you sure you want to Approve ? 
 कृपया अपनी प्रविष्टि की सावधानीपूर्वक समीक्षा करें। एक बार स्वीकृत होने के बाद, डेटा लॉक हो जाएगा और इसमें कोई संशोधन नहीं किया जा सकेगा। 
 क्या आप वाकई इसे स्वीकृत करना चाहते हैं?", True, True)
-                clsCommonFunctionality.UpdateDataTable(collT, "TSPL_DBT_NEFT_DETAIL_INVALID", OMInsertOrUpdate.Insert, "")
+                clsCommonFunctionality.UpdateDataTable(collT, "TSPL_CUSTOM_MSG", OMInsertOrUpdate.Insert, "")
             End If
             clsCommon.ProgressBarPercentHide()
         Catch ex As Exception
