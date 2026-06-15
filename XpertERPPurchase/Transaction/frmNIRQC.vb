@@ -245,11 +245,25 @@ Public Class frmNIRQC
         If clsCommon.myCDate(txtDate.Value, "dd/MM/yyyy") < clsCommon.myCDate(lblWeightmentDate.Text, "dd/MM/yyyy") Then
             Throw New Exception(" NIR QC date can't be less then Weighment date !")
         End If
-        If chkManual.Checked = False Then
-            If clsCommon.myLen(txtSampleNo.Value) <= 0 Then
-                Throw New Exception("Please select " & txtSampleNo.MyLinkLable1.Text)
-            End If
+
+        'If clsCommon.myLen(lblBillToLocationCode.Text) > 0 Then
+        '    Throw New Exception(" Please select Sample number")
+        'End If
+        Dim ChkNewEntry As String = (clsDBFuncationality.getSingleValue("SELECT COUNT(*) FROM TSPL_LOCATION_MASTER 
+     WHERE location_code = '" & lblBillToLocationCode.Text & "' AND ISNULL(NIR_QC_Instrumental_ID,'') <> ''"))
+        ' Dim i As Integer = clsCommon.myCdbl(clsDBFuncationality.getSingleValue(sql1))
+
+        If (ChkNewEntry > 0) Then
+            Throw New Exception(" Please select Sample number")
+
         End If
+
+        'If chkManual.Checked = False Then
+        '    If clsCommon.myLen(txtSampleNo.Value) <= 0 Then
+        '        Throw New Exception("Please select " & txtSampleNo.MyLinkLable1.Text)
+        '    End If
+        'End If
+
 
         Return True
     End Function
@@ -434,10 +448,7 @@ and not exists(select 1 from TSPL_NIR_QC where TSPL_NIR_QC.MRN_No=TSPL_MRN_DETAI
 TSPL_MRN_HEAD.Against_GRN,TSPL_MRN_HEAD.Bill_To_Location,
 TSPL_MRN_DETAIL.Item_Code,TSPL_ITEM_MASTER.Item_Desc,TSPL_MRN_HEAD.VehicleNo,TSPL_NIR_QC.Document_No,TSPL_NIR_QC.QC_Remarks,TSPL_NIR_QC.MRN_No,convert(varchar,TSPL_NIR_QC.Document_Date,103)Document_Date,
 TSPL_NIR_QC_FOSS.Moisture,Silica_DM,Fat_DM,Protein_DM,Fiber_DM,TSPL_NIR_QC_FOSS.Sample_Number,TSPL_PO_WEIGHTMENT_HEAD.Weighment_Code,TSPL_PO_WEIGHTMENT_HEAD.Weighment_Date,TSPL_MRN_HEAD.Vendor_Code,TSPL_MRN_HEAD.Vendor_Name,TSPL_PURCHASE_ORDER_HEAD.RefTendorNo, 
-CASE 
-        WHEN TSPL_NIR_QC.FOSS_Status = 1 THEN 'Approve'
-        ELSE 'Pending'
-    END AS FOSStatus
+TSPL_NIR_QC.FOSS_Status
 from TSPL_NIR_QC
 Left join TSPL_MRN_HEAD on TSPL_NIR_QC.MRN_No=TSPL_MRN_HEAD.MRN_No
 Left outer join TSPL_MRN_DETAIL  on TSPL_MRN_HEAD.MRN_No=TSPL_MRN_DETAIL.MRN_No

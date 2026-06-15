@@ -210,7 +210,7 @@ Public Class FrmMCCMilkRegister
         gv.TableElement.TableHeaderHeight = 25
         gv.MasterTemplate.ShowRowHeaderColumn = True
 
-        If PartialSRNAmount > 0 Then
+        If PartialSRNAmount > 0 AndAlso Not rbtnPlantWise.Checked AndAlso Not rbtnCollectionSummary.Checked AndAlso Not rdbPlantWisePaymentSummary.Checked AndAlso Not chkRoutewise.Checked AndAlso Not ChkMCCWise.Checked AndAlso Not chkVLCWisePayable.Checked AndAlso Not rbtnZoneWise.Checked AndAlso Not rdoVLCWisePaymentSummary.Checked AndAlso Not chkDateShift.Checked AndAlso Not OwnBMCchk.Checked AndAlso Not chkAliasNameWise.Checked Then
             gv.Columns("Partial Amount").IsVisible = False
             gv.Columns("Partial Amount").HeaderText = "Partial Amount"
             gv.Columns("Partial Amount").VisibleInColumnChooser = True

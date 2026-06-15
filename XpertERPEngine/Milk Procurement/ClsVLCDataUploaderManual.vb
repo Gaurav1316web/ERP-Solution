@@ -391,6 +391,7 @@ Public Class ClsVLCDataUploaderManualdetail
     Public Rate As Double = 0
     Public Amount As Double = 0
     Public Reject_Type As String
+    Public Milk_Type As String
 #End Region
     Public Shared Function saveData(ByVal TransDate As Date, ByVal MCC As String, ByVal VLC As String, ByVal arrObj As List(Of ClsVLCDataUploaderManualdetail), ByVal strDocNo As String, ByVal trans As SqlTransaction) As Boolean
         Try
@@ -410,6 +411,7 @@ Public Class ClsVLCDataUploaderManualdetail
                     clsCommon.AddColumnsForChange(coll, "Rate", obj.Rate)
                     clsCommon.AddColumnsForChange(coll, "Amount", obj.Amount)
                     clsCommon.AddColumnsForChange(coll, "Reject_Type", obj.Reject_Type, True)
+                    clsCommon.AddColumnsForChange(coll, "Milk_Type", obj.Milk_Type, True)
                     If clsCommon.myLen(obj.Reject_Type) <= 0 Then
                         Dim objIncetive As clsMPIncetiveDetail = clsMPIncetive.GetIncentive(obj.SNFPer, MCC, VLC, TransDate, trans)
                         If objIncetive IsNot Nothing AndAlso clsCommon.myLen(objIncetive.TRCode) > 0 Then
@@ -429,7 +431,10 @@ Public Class ClsVLCDataUploaderManualdetail
         Try
             Dim arrObj As List(Of ClsVLCDataUploaderManualdetail) = Nothing
             Dim obj As ClsVLCDataUploaderManualdetail = Nothing
-            Dim qry As String = "Select TSPL_VLC_DATA_UPLOADER_DETAIL.Document_Code,Mp_Code_vlc_Uploader,TSPL_VLC_DATA_UPLOADER_DETAIL.Farmer_Code,TSPL_VLC_DATA_UPLOADER_DETAIL.Unit_Code,TSPL_VLC_DATA_UPLOADER_DETAIL.Qty,TSPL_VLC_DATA_UPLOADER_DETAIL.FatPer,TSPL_VLC_DATA_UPLOADER_DETAIL.SNFPer,TSPL_MP_MASTER.MP_Name as [Farmer_Name],TSPL_VLC_DATA_UPLOADER_DETAIL.Rate,TSPL_VLC_DATA_UPLOADER_DETAIL.Amount,TSPL_VLC_DATA_UPLOADER_DETAIL.Reject_Type from TSPL_VLC_DATA_UPLOADER_DETAIL Left Outer Join TSPL_MP_MASTER On TSPL_VLC_DATA_UPLOADER_DETAIL.Farmer_Code=TSPL_MP_MASTER .MP_Code  where Document_Code='" & strDocNo & "'"
+            Dim qry As String = "Select TSPL_VLC_DATA_UPLOADER_DETAIL.Document_Code,Mp_Code_vlc_Uploader,TSPL_VLC_DATA_UPLOADER_DETAIL.Farmer_Code,TSPL_VLC_DATA_UPLOADER_DETAIL.Unit_Code,TSPL_VLC_DATA_UPLOADER_DETAIL.Qty,TSPL_VLC_DATA_UPLOADER_DETAIL.FatPer,TSPL_VLC_DATA_UPLOADER_DETAIL.SNFPer,TSPL_MP_MASTER.MP_Name as [Farmer_Name],TSPL_VLC_DATA_UPLOADER_DETAIL.Rate,TSPL_VLC_DATA_UPLOADER_DETAIL.Amount,TSPL_VLC_DATA_UPLOADER_DETAIL.Reject_Type,TSPL_VLC_DATA_UPLOADER_DETAIL.Milk_Type 
+from TSPL_VLC_DATA_UPLOADER_DETAIL 
+Left Outer Join TSPL_MP_MASTER On TSPL_VLC_DATA_UPLOADER_DETAIL.Farmer_Code=TSPL_MP_MASTER .MP_Code  
+where Document_Code='" & strDocNo & "'"
             Dim dt As DataTable = clsDBFuncationality.GetDataTable(qry, trans)
             If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
                 arrObj = New List(Of ClsVLCDataUploaderManualdetail)
@@ -446,6 +451,7 @@ Public Class ClsVLCDataUploaderManualdetail
                     obj.Amount = clsCommon.myCdbl(dt.Rows(i)("Amount"))
                     obj.Qty = clsCommon.myCdbl(dt.Rows(i)("Qty"))
                     obj.Reject_Type = clsCommon.myCstr(dt.Rows(i)("Reject_Type"))
+                    obj.Milk_Type = clsCommon.myCstr(dt.Rows(i)("Milk_Type"))
                     arrObj.Add(obj)
                 Next
             End If
@@ -455,3 +461,4 @@ Public Class ClsVLCDataUploaderManualdetail
         End Try
     End Function
 End Class
+
