@@ -820,7 +820,7 @@ SELECT ca.RI,t.[Bank Advise No],t.[Bank Advise Date],t.VLC_CODE_Uploader,ca.Bank
 
 ,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Bill_Amt] else (case when AccountType='Saving' then t.[Saving_Amount] else  t.[CurrentAmt] end) end )As [Bill_Amt]
 ,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Bank_Account_No_Saving] else (case when AccountType='Saving' then t.[Bank_Account_No_Saving] else '' end) end ) as [SavingAccountNo]
-,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Saving_Amount]  else (case when AccountType='Saving' then t.[Saving_Amount]  else 0 end) end ) as [SavingAmt]
+,ROUND(CASE WHEN t.Bank_Code = t.Bank_Code_Saving THEN t.Saving_Amount ELSE CASE WHEN AccountType = 'Saving' THEN t.Saving_Amount ELSE 0 END END , 0) AS [SavingAmt]
 
 
 ,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Payee_Joint_Account_No]  else (case when AccountType='Current' then t.[Payee_Joint_Account_No]  else '' end) end ) as [CurrentAccountNo]
@@ -892,7 +892,7 @@ SELECT ca.RI,t.[Bank Advise No],t.[Bank Advise Date],t.VLC_CODE_Uploader,'ONE DA
 
 ,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Bill_Amt] else (case when AccountType='Saving' then t.[Saving_Amount] else  t.[CurrentAmt] end) end )As [Bill_Amt]
 ,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Bank_Account_No_Saving] else (case when AccountType='Saving' then t.[Bank_Account_No_Saving] else '' end) end ) as [SavingAccountNo]
-,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Saving_Amount]  else (case when AccountType='Saving' then t.[Saving_Amount]  else 0 end) end ) as [SavingAmt]
+,ROUND(CASE WHEN t.Bank_Code = t.Bank_Code_Saving THEN t.Saving_Amount ELSE CASE WHEN AccountType = 'Saving' THEN t.Saving_Amount ELSE 0 END END , 0) AS [SavingAmt]
 
 
 ,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Payee_Joint_Account_No]  else (case when AccountType='Current' then t.[Payee_Joint_Account_No]  else '' end) end ) as [CurrentAccountNo]
@@ -1259,7 +1259,7 @@ SELECT ca.RI,t.[Bank Advise No],t.[Bank Advise Date],t.VLC_CODE_Uploader,ca.Bank
 ,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Bill_Amt] else (case when AccountType='Saving' then t.[Saving_Amount] else  t.[CurrentAmt] end) end )As [Bill_Amt]
 ,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Bank_Account_No_Saving] else (case when AccountType='Saving' then t.[Bank_Account_No_Saving] else '' end) end ) as [SavingAccountNo]
 ,(case when t.Bank_Code=t.Bank_Code_Saving then  t.IFSCCode2 else (case when AccountType='Saving' then t.IFSCCode2 else '' end) end ) as [SavingIFSCCode]
-,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Saving_Amount]  else (case when AccountType='Saving' then t.[Saving_Amount]  else 0 end) end ) as [SavingAmt]
+,ROUND(CASE WHEN t.Bank_Code = t.Bank_Code_Saving THEN t.Saving_Amount ELSE CASE WHEN AccountType = 'Saving' THEN t.Saving_Amount ELSE 0 END END , 0) AS [SavingAmt]
 
 
 ,(case when t.Bank_Code=t.Bank_Code_Saving then  t.[Payee_Joint_Account_No]  else (case when AccountType='Current' then t.[Payee_Joint_Account_No]  else '' end) end ) as [CurrentAccountNo]
