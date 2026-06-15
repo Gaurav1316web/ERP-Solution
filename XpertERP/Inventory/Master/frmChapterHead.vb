@@ -203,7 +203,7 @@ Public Class frmChapterHead
     End Sub
     Public Sub funfill()
         'changes by abhishek as on 15/10/2012 for sqldatareader
-        Dim query As String = "select description,Seq_No from tspl_chapter_head where chapter_head_code='" + fndchapterhead.Value() + "'"
+        Dim query As String = "select description,Seq_No from tspl_chapter_head where chapter_head_code='" + fndchapterhead.Value + "'"
         dt = clsDBFuncationality.GetDataTable(query)
         If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
             For Each dr As DataRow In dt.Rows
@@ -363,18 +363,16 @@ Public Class frmChapterHead
         var = clsDBFuncationality.getSingleValue("select chapter_head_code from tspl_chapter_head where chapter_head_code='" + fndchapterhead.Value + "'")
         If var <> fndchapterhead.Value Then
             rdtxtchapterdesc.Text = ""
-            rdbtnSave.Text = "Save"
+            rdbtnSave.Text = "Update"
             rdbtnDelete.Enabled = False
-        ElseIf var <> "" Then
-
-            funfill()
+            If var <> "" Then
+                funfill()
+            End If
         Else
             rdtxtchapterdesc.Text = ""
             rdbtnSave.Text = "Save"
             rdbtnDelete.Enabled = False
-
         End If
-
     End Sub
 
     Private Sub btnHistory_Click(sender As Object, e As EventArgs) Handles btnHistory.Click
