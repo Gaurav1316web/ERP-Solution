@@ -281,6 +281,17 @@ Public Class ClsTransporterPaymentProcessDetail
 
         If (Arr IsNot Nothing AndAlso Arr.Count > 0) Then
             For Each obj As ClsTransporterPaymentProcessDetail In Arr
+
+                Dim qry1 As String = " SELECT TOP 1 Tanker_No,*  FROM TSPL_TRANSPORTER_PAYMENT_PROCESS_DETAIL WHERE Tanker_No = '" & obj.Tanker_No & "'
+                                       AND Document_Code <> '" & strDocNo & "' AND '" & Format(obj.Transporter_Bill_Date, "dd-MM-yyyy") & "' <= '" & obj.Transporter_Bill_Date & "'
+                                       AND '" & Format(obj.Transporter_Bill_Date, "dd-MM-yyyy") & "' >= '" & obj.Transporter_Bill_Date & "' "
+
+                Dim dt1 As DataTable = clsDBFuncationality.GetDataTable(qry1, trans)
+
+                If dt1.Rows.Count > 0 Then
+                    Throw New Exception("Repeated Entry found on [" & clsCommon.GetPrintDate(clsCommon.myCDate(dt1.Rows(0)("Transporter_Bill_Date")), "dd/MM/yyyy") & "] for Tanker [" + clsCommon.myCstr(dt1.Rows(0)("Tanker_No")) + "]")
+                End If
+
                 Dim coll As New Hashtable()
                 clsCommon.AddColumnsForChange(coll, "Document_Code", strDocNo)
                 clsCommon.AddColumnsForChange(coll, "Transporter_Bill_No", obj.Transporter_Bill_No)
@@ -296,8 +307,17 @@ Public Class ClsTransporterPaymentProcessDetail
                 clsCommonFunctionality.UpdateDataTable(coll, "TSPL_TRANSPORTER_PAYMENT_PROCESS_DETAIL", OMInsertOrUpdate.Insert, "", trans)
             Next
         End If
-
+        '        Dim qry As String = "select Tanker_No,Document_Date,sum(1) as Rep from (
+        'Select TSPL_TRANSPORTER_PAYMENT_PROCESS_DETAIL.Tanker_No,CONVERT(Date, TSPL_TRANSPORTER_PAYMENT_PROCESS_DETAIL.Transporter_Bill_Date,103) as Document_Date
+        'from TSPL_TRANSPORTER_PAYMENT_PROCESS_DETAIL 
+        'left outer join TSPL_TRANSPORTER_PAYMENT_PROCESS_HEAD on TSPL_TRANSPORTER_PAYMENT_PROCESS_HEAD.Document_Code=TSPL_TRANSPORTER_PAYMENT_PROCESS_DETAIL.Document_Code
+        ') xx group by Tanker_No,Document_Date having sum(1)>1"
+        '        Dim dt As DataTable = clsDBFuncationality.GetDataTable(qry, trans)
+        '        If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+        '            Throw New Exception("Repeated Entry found on [" & clsCommon.GetPrintDate(clsCommon.myCDate(dt.Rows(0)("Document_Date")), "dd/MM/yyyy") & "] for Tanker [" + clsCommon.myCstr(dt.Rows(0)("Tanker_No")) + "]")
+        '        End If
         Return True
+        'Return True
     End Function
 
 

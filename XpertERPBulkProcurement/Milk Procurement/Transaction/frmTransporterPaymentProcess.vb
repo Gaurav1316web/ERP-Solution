@@ -245,6 +245,9 @@ Public Class frmTransporterPaymentProcess
         RadGroupBox2.Enabled = True
         btnSave.Text = "Save"
         rbtnBoth.IsChecked = True
+        btnSave.Enabled = True
+        btnDelete.Enabled = True
+        btnPost.Enabled = True
     End Sub
 
     Sub BlankAllControls()
@@ -438,6 +441,32 @@ Public Class frmTransporterPaymentProcess
             If txtTanker.arrValueMember IsNot Nothing AndAlso txtTanker.arrValueMember.Count < 0 Then
                 Throw New Exception("Please Select TankerNo")
             End If
+
+            'Dim obj As New List(Of ClsTransporterPaymentProcessDetail)
+            'If gv.Rows.Count <= 0 Then
+            '    clsCommon.MyMessageBoxShow(Me, "Atleast Fill One Row", Me.Text)
+            '    Return False
+            'End If
+            'Dim ItemList As New List(Of String)
+
+            'For Each grow As GridViewRowInfo In gv.Rows
+
+            '    Dim ItemCode As String = clsCommon.myCstr(grow.Cells(ColTankerNo).Value)
+
+            '    If ItemCode <> "" Then
+
+            '        If ItemList.Contains(ItemCode) Then
+            '            grow.IsCurrent = True
+            '            clsCommon.MyMessageBoxShow(Me, "Item '" & ItemCode & "' is already selected.", Me.Text)
+            '            Exit Function
+            '        End If
+
+            '        ItemList.Add(ItemCode)
+            '    End If
+
+            'Next
+
+
             Return True
         Catch ex As Exception
             clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
