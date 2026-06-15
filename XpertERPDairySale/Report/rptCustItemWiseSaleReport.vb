@@ -170,13 +170,7 @@ Public Class rptCustItemWiseSaleReport
             If clsCommon.CompairString(ddlType.SelectedValue, "Dispatch") = CompairStringResult.Equal Then
                 BillWisesaleSummaryDispatch(False)
             ElseIf clsCommon.CompairString(ddlType.SelectedValue, "Invoice") = CompairStringResult.Equal Then
-                If rbtnSupplyDate.IsChecked Then
-                    clsCommon.MyMessageBoxShow(Me, "Bill Wise Sale Summary Invoice report not working with Supply Date Option! ", Me.Text)
-                    Exit Sub
-                Else
-                    BillWisesaleSummaryInvoice(False)
-                End If
-
+                BillWisesaleSummaryInvoice(False)
             End If
         ElseIf BtnPartySaleMilkProduct.IsChecked Then
             If ddlType.SelectedIndex = 0 Then
@@ -186,32 +180,16 @@ Public Class rptCustItemWiseSaleReport
             If clsCommon.CompairString(ddlType.SelectedValue, "Dispatch") = CompairStringResult.Equal Then
                 PartySaleMilkProductDispatch(False)
             ElseIf clsCommon.CompairString(ddlType.SelectedValue, "Invoice") = CompairStringResult.Equal Then
-                If rbtnSupplyDate.IsChecked Then
-                    clsCommon.MyMessageBoxShow(Me, "Party Sale Milk Product Invoice report not working with Supply Date Option! ", Me.Text)
-                    Exit Sub
-                Else
-                    PartySaleMilkProductInvoice(False)
-                End If
-
+                PartySaleMilkProductInvoice(False)
             End If
         ElseIf BtnBillWiseSaleOfMilk.IsChecked Then
             BillwiseSaleOfMilk(False)
         ElseIf BtnProductSalesSummary.IsChecked Then
             Productsalesummarytaxablenontaxable(False)
         ElseIf BtnMilkStcSummary.IsChecked Then
-            If rbtnSupplyDate.IsChecked Then
-                clsCommon.MyMessageBoxShow(Me, "Milk Stc Summary report not working with Supply Date Option! ", Me.Text)
-                Exit Sub
-            Else
-                MilkStcSummary(False)
-            End If
+            MilkStcSummary(False)
         ElseIf BtnStcRegisterItemWiseSummary.IsChecked Then
-            If rbtnSupplyDate.IsChecked Then
-                clsCommon.MyMessageBoxShow(Me, "STC Register Item wise Summary report not working with Supply Date Option! ", Me.Text)
-                Exit Sub
-            Else
-                STCRegisterItemwiseSummarytotal(False)
-            End If
+            STCRegisterItemwiseSummarytotal(False)
             'STCRegisterItemwiseSummarytotal(False)
         ElseIf BtnStcRegisterPartyandItemWiseSummary.IsChecked Then
             STCRegisterItemwiseSummaryPartyWise(False)
@@ -239,13 +217,7 @@ Public Class rptCustItemWiseSaleReport
         ElseIf rbtnBoothSaleItemWise.IsChecked Then
             LoadBoothSaleItemWiseData(False)
         ElseIf rbtnSalesRegister.IsChecked Then
-            If rbtnSupplyDate.IsChecked Then
-                clsCommon.MyMessageBoxShow(Me, "Sales Register report not working with Supply Date Option! ", Me.Text)
-                Exit Sub
-            Else
-                LoadSalesRegisterData(False)
-            End If
-
+            LoadSalesRegisterData(False)
         Else
             LoadData()
         End If
@@ -1290,10 +1262,8 @@ where  ITEM_CODE = TSPL_SD_SHIPMENT_DETAIL.Item_Code and EFFECTIVE_DATE <= '" & 
             Dim TableName As String = ""
             If clsCommon.CompairString(ddlType.SelectedValue, "Dispatch") = CompairStringResult.Equal Then
                 TableName = "TSPL_SD_SHIPMENT"
-            ElseIf clsCommon.CompairString(ddlType.SelectedValue, "Invoice") = CompairStringResult.Equal AndAlso Not rbtnSupplyDate.IsChecked Then
+            ElseIf clsCommon.CompairString(ddlType.SelectedValue, "Invoice") = CompairStringResult.Equal Then
                 TableName = "TSPL_SD_SALE_INVOICE"
-            Else
-                Throw New Exception("Bill Wise Sale of Milk report not working with Supply Date Option!")
             End If
 
             Qry = " SELECT '" + clsCommon.GetPrintDate(txtFromDate.Value) + "' as Fromdate,'" + clsCommon.GetPrintDate(txtToDate.Value) + "' as ToDate,
@@ -1353,24 +1323,28 @@ where  ITEM_CODE = TSPL_SD_SHIPMENT_DETAIL.Item_Code and EFFECTIVE_DATE <= '" & 
             ELSE 0 
         END
     ) AS [TCS Amt],
-    MAX(Document_Date) AS Document_Date
+    MAX(" & TableName & "_HEAD.Document_Date) AS Document_Date
 FROM " & TableName & "_DETAIL
 LEFT OUTER JOIN " & TableName & "_HEAD 
     ON " & TableName & "_HEAD.Document_Code = " & TableName & "_DETAIL.DOCUMENT_CODE
 LEFT OUTER JOIN TSPL_CUSTOMER_MASTER 
-    ON TSPL_CUSTOMER_MASTER.Cust_Code = " & TableName & "_HEAD.Customer_Code
-LEFT OUTER JOIN TSPL_ITEM_MASTER 
-    ON TSPL_ITEM_MASTER.item_code = " & TableName & "_DETAIL.item_code
-LEFT JOIN TSPL_ITEM_UOM_DETAIL AS ItemConvReportUOM  ON TSPL_ITEM_MASTER.Item_Code = ItemConvReportUOM.Item_Code AND ItemConvReportUOM.Report_UOM = 1
-    LEFT JOIN TSPL_ITEM_UOM_DETAIL AS ItemConvDefaultUOM ON " & TableName & "_DETAIL.Item_Code = ItemConvDefaultUOM.Item_Code AND ItemConvDefaultUOM.Default_UOM = 1
-LEFT JOIN TSPL_ITEM_UOM_DETAIL AS ItemConvinUOM 
-    ON " & TableName & "_DETAIL.Item_Code = ItemConvinUOM.Item_Code AND " & TableName & "_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
-LEFT JOIN TSPL_COMPANY_MASTER 
-    ON 2 = 2 "
+    ON TSPL_CUSTOMER_MASTER.Cust_Code = " & TableName & "_HEAD.Customer_Code "
+
+            If clsCommon.CompairString(ddlType.SelectedValue, "Invoice") = CompairStringResult.Equal Then
+                Qry += " left outer join TSPL_SD_SHIPMENT_HEAD on TSPL_SD_SHIPMENT_HEAD.Document_Code = TSPL_SD_SALE_INVOICE_HEAD.Against_Shipment_No  "
+            End If
+            Qry += "     Left OUTER JOIN TSPL_ITEM_MASTER 
+    On TSPL_ITEM_MASTER.item_code = " & TableName & "_DETAIL.item_code
+Left Join TSPL_ITEM_UOM_DETAIL AS ItemConvReportUOM  ON TSPL_ITEM_MASTER.Item_Code = ItemConvReportUOM.Item_Code And ItemConvReportUOM.Report_UOM = 1
+    Left Join TSPL_ITEM_UOM_DETAIL AS ItemConvDefaultUOM ON " & TableName & "_DETAIL.Item_Code = ItemConvDefaultUOM.Item_Code And ItemConvDefaultUOM.Default_UOM = 1
+Left Join TSPL_ITEM_UOM_DETAIL AS ItemConvinUOM 
+    On " & TableName & "_DETAIL.Item_Code = ItemConvinUOM.Item_Code And " & TableName & "_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
+Left Join TSPL_COMPANY_MASTER 
+    On 2 = 2 "
             If rbtnSupplyDate.IsChecked Then
-                Qry += " where convert(date,Supply_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+                Qry += " where convert(date,TSPL_SD_SHIPMENT_HEAD.Supply_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,TSPL_SD_SHIPMENT_HEAD.Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
             ElseIf rbtnDocumentDate.IsChecked Then
-                Qry += " where convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+                Qry += " where convert(date," & TableName & "_HEAD.Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date," & TableName & "_HEAD.Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
             End If
 
             Qry += "  and  TSPL_ITEM_MASTER.IsTaxable=0 "
@@ -1668,10 +1642,16 @@ LEFT JOIN TSPL_COMPANY_MASTER
                                             TSPL_SD_SALE_INVOICE_HEAD.TAX5='TCS' Then TSPL_SD_SALE_INVOICE_HEAD.TAX5_Amt else 0 end) end) else (case when TSPL_SD_SALE_INVOICE_HEAD.tax2='TCS' Then TSPL_SD_SALE_INVOICE_HEAD.TAX2_Amt else ((case when TSPL_SD_SALE_INVOICE_HEAD.tax3='TCS' Then TSPL_SD_SALE_INVOICE_HEAD.TAX3_Amt else 0 end)) end) end) end as TCS_AMT,
                                        isnull(TSPL_SD_SALE_INVOICE_HEAD.Transporter_Commission_TotalAmt,0) as Trp_othcharg 
                                             from TSPL_SD_SALE_INVOICE_HEAD
-                                            
+                                            left outer join TSPL_SD_SHIPMENT_HEAD on TSPL_SD_SHIPMENT_HEAD.Document_Code = TSPL_SD_SALE_INVOICE_HEAD.Against_Shipment_No
                                             left join TSPL_CUSTOMER_MASTER on TSPL_CUSTOMER_MASTER.Cust_Code=TSPL_SD_SALE_INVOICE_HEAD.Customer_Code
-                                            left join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code1='BKN'
-                WHERE convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'and TSPL_SD_SALE_INVOICE_HEAD.Status=1  " + whrcls + "
+                                            left join TSPL_COMPANY_MASTER on TSPL_COMPANY_MASTER.Comp_Code1='BKN' "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += "  where Convert(Date, TSPL_SD_SHIPMENT_HEAD.Supply_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,TSPL_SD_SHIPMENT_HEAD.Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' "
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += "  where Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'  "
+            End If
+            Qry += "  and TSPL_SD_SALE_INVOICE_HEAD.Status=1  " + whrcls + "
+               
             ) xx
             ) XXFinal 
             group by XXFinal.Customer_Code)xxx order by Customer_Name"
@@ -2244,17 +2224,23 @@ LEFT JOIN ( select item_code,uom_code,conversion_factor from TSPL_ITEM_UOM_DETAI
                             TSPL_COMPANY_MASTER.City_Code, 
                             TSPL_COMPANY_MASTER.State,
 		                    TSPL_SD_SALE_INVOICE_DETAIL.Amount,
-                            Document_Date 
+                            TSPL_SD_SALE_INVOICE_HEAD.Document_Date 
                         FROM TSPL_SD_SALE_INVOICE_DETAIL
                         LEFT OUTER JOIN TSPL_SD_SALE_INVOICE_HEAD ON TSPL_SD_SALE_INVOICE_HEAD.Document_Code = TSPL_SD_SALE_INVOICE_DETAIL.DOCUMENT_CODE
                         LEFT OUTER JOIN TSPL_ITEM_MASTER ON TSPL_ITEM_MASTER.item_code = TSPL_SD_SALE_INVOICE_DETAIL.item_code
+left outer join TSPL_SD_SHIPMENT_HEAD on TSPL_SD_SHIPMENT_HEAD.Document_Code = TSPL_SD_SALE_INVOICE_HEAD.Against_Shipment_No
                      left join TSPL_ITEM_UOM_DETAIL as ItemConvReportUOM on TSPL_ITEM_master.Item_Code = ItemConvReportUOM.Item_Code 
                                         and ItemConvReportUOM.Report_UOM = 1
 LEFT JOIN ( select item_code,uom_code,conversion_factor from TSPL_ITEM_UOM_DETAIL WHERE DEFAULT_UOM = 1 ) DefUOM ON TSPL_SD_SALE_INVOICE_DETAIL.Item_Code = DefUOM.item_code
                                          left join TSPL_ITEM_UOM_DETAIL as ItemConvinUOM on TSPL_SD_SALE_INVOICE_DETAIL.Item_Code = ItemConvinUOM.Item_Code 
                                        and TSPL_SD_SALE_INVOICE_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
-                        LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 where convert(date,Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx 
-                GROUP BY Item_Code order by Item_Desc"
+                        LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 "
+            If rbtnSupplyDate.IsChecked Then
+                Qry += "  where Convert(Date, TSPL_SD_SHIPMENT_HEAD.Supply_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,TSPL_SD_SHIPMENT_HEAD.Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx "
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Qry += "  where Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx "
+            End If
+            Qry += " Group BY Item_Code order by Item_Desc"
             dt = clsDBFuncationality.GetDataTable(Qry)
 
             If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
@@ -2296,7 +2282,7 @@ LEFT JOIN ( select item_code,uom_code,conversion_factor from TSPL_ITEM_UOM_DETAI
             Dim whrcls As String = ""
             Dim whrcls2 As String = ""
             If txtCustomer.arrValueMember IsNot Nothing Then
-                whrcls = " and TSPL_SD_SHIPMENT_head.Customer_Code in (''," & clsCommon.GetMulcallString(txtCustomer.arrValueMember) & ") "
+                whrcls = " And TSPL_SD_SHIPMENT_head.Customer_Code in (''," & clsCommon.GetMulcallString(txtCustomer.arrValueMember) & ") "
             End If
 
             If txtItem.arrValueMember IsNot Nothing Then
@@ -3516,8 +3502,13 @@ left outer join TSPL_TAX_MASTER as tax1 on tax1.tax_code =TSPL_SD_SALE_INVOICE_H
              left outer join TSPL_TAX_MASTER as tax7 on tax7.Tax_Code =TSPL_SD_SALE_INVOICE_HEAD .TAX7 
               left outer join TSPL_TAX_MASTER as tax8 on tax8.Tax_Code =TSPL_SD_SALE_INVOICE_HEAD .TAX8
             left outer join TSPL_TAX_MASTER as tax9 on tax9.Tax_Code =TSPL_SD_SALE_INVOICE_HEAD .TAX9 
-              left outer join TSPL_TAX_MASTER as tax10 on tax10.Tax_Code =TSPL_SD_SALE_INVOICE_HEAD .TAX10 
-where convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=Convert( Date,'" + strtxtfDate + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)<=Convert( Date,'" + strToDate + "',103)"
+              left outer join TSPL_TAX_MASTER as tax10 on tax10.Tax_Code =TSPL_SD_SALE_INVOICE_HEAD .TAX10 "
+
+             If rbtnSupplyDate.IsChecked Then
+                Baseqry += "  where Convert(Date, TSPL_SD_SHIPMENT_HEAD.Supply_Date,103) >=Convert( Date,'" + strtxtfDate + "',103) and convert(date,TSPL_SD_SHIPMENT_HEAD.Supply_Date,103)<=Convert( Date,'" + strToDate + "',103) "
+            ElseIf rbtnDocumentDate.IsChecked Then
+                Baseqry += "  where Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'  "
+            End If
 
             If txtCustomer.arrValueMember IsNot Nothing AndAlso txtCustomer.arrValueMember.Count > 0 Then
                 Baseqry += " and tspl_customer_master.cust_code in(" + clsCommon.GetMulcallString(txtCustomer.arrValueMember) + ")" + Environment.NewLine
