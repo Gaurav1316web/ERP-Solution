@@ -198,10 +198,9 @@ Public Class ClsVLCDataUploaderManual
             qry = "delete from TSPL_VLC_DATA_UPLOADER_DETAIL where Document_Code='" & obj.Document_Code & "'"
             clsDBFuncationality.ExecuteNonQuery(qry, trans)
             If isNewEntry Then
-                qry = "select Document_Code from TSPL_VLC_DATA_UPLOADER_MASTER where CONVERT(date, TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103)='" + clsCommon.GetPrintDate(obj.Document_Date, "dd/MMM/yyyy") + "' and TSPL_VLC_DATA_UPLOADER_MASTER.[Shift] = '" + obj.Shift + "'  and VLC_code='" + obj.VLC_Code + "'"
-                Dim dt As DataTable = clsDBFuncationality.GetDataTable(qry, trans)
-                If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
-                    Throw New Exception("Document No [" + clsCommon.myCstr(dt.Rows(0)("Document_Code")) + "] is already generated for VLC [" + obj.VLC_Code + "].Please Add in this document")
+                Dim strDocNo As String = GetDocumentNo(obj.Document_Date, obj.Shift, obj.VLC_Code, trans)
+                If clsCommon.myLen(strDocNo) > 0 Then
+                    Throw New Exception("Document No [" + strDocNo + "] is already generated for VLC [" + obj.VLC_Code + "].Please Add in this document")
                 End If
                 obj.Document_Code = clsERPFuncationality.GetNextCode(trans, obj.Document_Date, clsDocType.VLCDataUploaderManual, "", mcc_Code)
             End If
@@ -234,6 +233,15 @@ Public Class ClsVLCDataUploaderManual
             Throw New Exception(err.Message)
         End Try
         Return True
+    End Function
+
+    Public Shared Function GetDocumentNo(document_Date As Date, shift As String, vLC_Code As String, trans As SqlTransaction) As String
+        Dim qry As String = "select Document_Code from TSPL_VLC_DATA_UPLOADER_MASTER where CONVERT(date, TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103)='" + clsCommon.GetPrintDate(document_Date, "dd/MMM/yyyy") + "' and TSPL_VLC_DATA_UPLOADER_MASTER.[Shift] = '" + shift + "'  and VLC_code='" + vLC_Code + "'"
+        Dim dt As DataTable = clsDBFuncationality.GetDataTable(qry, trans)
+        If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
+            Return clsCommon.myCstr(dt.Rows(0)("Document_Code"))
+        End If
+        Return ""
     End Function
 
     Shared Sub CreateSMSContentMP(ByVal obj As ClsVLCDataUploaderManual, ByVal trans As SqlTransaction)
@@ -413,10 +421,12 @@ Public Class ClsVLCDataUploaderManualdetail
                     clsCommon.AddColumnsForChange(coll, "Reject_Type", obj.Reject_Type, True)
                     clsCommon.AddColumnsForChange(coll, "Milk_Type", obj.Milk_Type, True)
                     If clsCommon.myLen(obj.Reject_Type) <= 0 Then
-                        Dim objIncetive As clsMPIncetiveDetail = clsMPIncetive.GetIncentive(obj.SNFPer, MCC, VLC, TransDate, trans)
-                        If objIncetive IsNot Nothing AndAlso clsCommon.myLen(objIncetive.TRCode) > 0 Then
-                            clsCommon.AddColumnsForChange(coll, "Incentive_TRCode", objIncetive.TRCode)
-                            clsCommon.AddColumnsForChange(coll, "Incentive_Amt", Math.Round(obj.Qty * objIncetive.Slab_Value, 2))
+                        If clsCommon.myLen(MCC) > 0 Then
+                            Dim objIncetive As clsMPIncetiveDetail = clsMPIncetive.GetIncentive(obj.SNFPer, MCC, VLC, TransDate, trans)
+                            If objIncetive IsNot Nothing AndAlso clsCommon.myLen(objIncetive.TRCode) > 0 Then
+                                clsCommon.AddColumnsForChange(coll, "Incentive_TRCode", objIncetive.TRCode)
+                                clsCommon.AddColumnsForChange(coll, "Incentive_Amt", Math.Round(obj.Qty * objIncetive.Slab_Value, 2))
+                            End If
                         End If
                     End If
                     issaved = issaved And clsCommonFunctionality.UpdateDataTable(coll, "TSPL_VLC_DATA_UPLOADER_DETAIL", OMInsertOrUpdate.Insert, "", trans)

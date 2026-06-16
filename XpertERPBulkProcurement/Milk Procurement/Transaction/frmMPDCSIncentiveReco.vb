@@ -73,7 +73,7 @@ Public Class frmMPDCSIncentiveReco
         UcAttachment1.settAutoAttachment = True
 
         strICode = clsFixedParameter.GetData(clsFixedParameterType.MCCDefaultMilkItem, clsFixedParameterCode.MilkSetting, Nothing)
-        SettRefreshDBTReco = (clsCommon.myCDecimal(clsFixedParameter.GetData(clsFixedParameterType.RefreshDBTReco, clsFixedParameterCode.RefreshDBTReco, Nothing)) > 0)
+        'SettRefreshDBTReco = (clsCommon.myCDecimal(clsFixedParameter.GetData(clsFixedParameterType.RefreshDBTReco, clsFixedParameterCode.RefreshDBTReco, Nothing)) > 0)
         SettApplyZoneOnDBT = (clsCommon.myCDecimal(clsFixedParameter.GetData(clsFixedParameterType.ApplyZoneInDBT, clsFixedParameterCode.ApplyZoneInDBT, Nothing)) > 0)
         txtZone.MendatroryField = SettApplyZoneOnDBT
         SettDCSMPIncetiveReco = (clsCommon.myCDecimal(clsFixedParameter.GetData(clsFixedParameterType.DCSRecoCondition, clsFixedParameterCode.MandatoryDCSMPIncetiveReco, Nothing)) = 1)
@@ -1129,10 +1129,16 @@ select  '" + strICode + "' as Item,TSPL_MP_INCENTIVE_ENTRY_DETAIL.MP_Code,Qty,ca
     End Sub
     Private Sub btnPost_Click(sender As Object, e As EventArgs) Handles btnPost.Click
         Try
-            Dim qry As String = ""
             Dim msg As String = ""
-            Dim dt As DataTable = Nothing
-
+            If Not chkFarmerCollection.Checked Then
+                Dim qry As String = "select TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.VLC_Code,TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader,TSPL_VLC_MASTER_HEAD.VLC_Name from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL 
+left outer join TSPL_VLC_MASTER_HEAD on TSPL_VLC_MASTER_HEAD.VLC_Code=TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.VLC_Code
+where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code='" + txtDocumentNo.Value + "' and isnull(TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Status,0)=0"
+                Dim dt As DataTable = clsDBFuncationality.GetDataTable(qry)
+                If clsCommon.MyMessageBoxShow(Me, "There are " & dt.Rows.Count & " DCS that have not approved their transactions." + Environment.NewLine + " Do you want to export to excel these DCS?", Me.Text, MessageBoxButtons.YesNo, RadMessageIcon.Question) = DialogResult.Yes Then
+                    transportSql.ExporttoExcelWithoutFilter(qry, "", "", Me)
+                End If
+            End If
             If (myMessages.postConfirm()) Then
                 If SettRefreshDBTReco Then
                     SaveData(True)
@@ -1350,9 +1356,10 @@ left outer join TSPL_ZONE_MASTER on TSPL_ZONE_MASTER.Zone_Code=TSPL_VENDOR_MASTE
 
     Private Sub RadButton6_Click(sender As Object, e As EventArgs) Handles RadButton6.Click
         Try
-            If chkFarmerCollection.Checked Then
-                Throw New Exception("Update is not allowed for the Day-wise Farmer Collection document.")
-            End If
+            Throw New Exception("Update is not allowed for the Day-wise Farmer Collection document.")
+            'If chkFarmerCollection.Checked Then
+            '    Throw New Exception("Update is not allowed for the Day-wise Farmer Collection document.")
+            'End If
 
             If Not lblPending.Status = ERPTransactionStatus.Pending Then
                 Throw New Exception("Trasanction should be pending for update")

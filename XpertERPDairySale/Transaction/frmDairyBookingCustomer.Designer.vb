@@ -907,7 +907,7 @@ Partial Class frmDairyBookingCustomer
         Me.txtAdharNo.ReferenceFieldDesc = Nothing
         Me.txtAdharNo.ReferenceFieldName = Nothing
         Me.txtAdharNo.ReferenceTableName = Nothing
-        Me.txtAdharNo.Size = New System.Drawing.Size(178, 18)
+        Me.txtAdharNo.Size = New System.Drawing.Size(119, 18)
         Me.txtAdharNo.TabIndex = 1604
         '
         'lblReceiptAmt
@@ -1146,7 +1146,7 @@ Partial Class frmDairyBookingCustomer
         'chkisTCS
         '
         Me.chkisTCS.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkisTCS.Location = New System.Drawing.Point(484, 180)
+        Me.chkisTCS.Location = New System.Drawing.Point(425, 180)
         Me.chkisTCS.Name = "chkisTCS"
         Me.chkisTCS.Size = New System.Drawing.Size(43, 16)
         Me.chkisTCS.TabIndex = 1581
@@ -1155,7 +1155,7 @@ Partial Class frmDairyBookingCustomer
         'chkTPT
         '
         Me.chkTPT.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.chkTPT.Location = New System.Drawing.Point(436, 181)
+        Me.chkTPT.Location = New System.Drawing.Point(481, 179)
         Me.chkTPT.Name = "chkTPT"
         Me.chkTPT.Size = New System.Drawing.Size(42, 16)
         Me.chkTPT.TabIndex = 1580
@@ -2245,10 +2245,10 @@ Partial Class frmDairyBookingCustomer
         Me.RadGroupBox2.Controls.Add(Me.gv1)
         Me.RadGroupBox2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RadGroupBox2.HeaderText = "Item Details"
-        Me.RadGroupBox2.Location = New System.Drawing.Point(2, 203)
+        Me.RadGroupBox2.Location = New System.Drawing.Point(2, 217)
         Me.RadGroupBox2.Name = "RadGroupBox2"
         Me.RadGroupBox2.Padding = New System.Windows.Forms.Padding(10, 20, 10, 10)
-        Me.RadGroupBox2.Size = New System.Drawing.Size(1255, 198)
+        Me.RadGroupBox2.Size = New System.Drawing.Size(1255, 184)
         Me.RadGroupBox2.TabIndex = 28
         Me.RadGroupBox2.Text = "Item Details"
         '
@@ -2275,7 +2275,7 @@ Partial Class frmDairyBookingCustomer
         Me.gv1.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.gv1.ShowGroupPanel = False
         Me.gv1.ShowHeaderCellButtons = True
-        Me.gv1.Size = New System.Drawing.Size(1235, 168)
+        Me.gv1.Size = New System.Drawing.Size(1235, 154)
         Me.gv1.TabIndex = 17
         Me.gv1.TabStop = False
         Me.gv1.VarID = ""

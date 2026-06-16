@@ -20,9 +20,7 @@ Public Class clsMPDCSInsentiveReco
         Dim qry As String = ""
         Try
             If Not isNewEntry Then
-                If obj.Farmer_Collection Then
-                    Throw New Exception("Update is not allowed for the Day-wise Farmer Collection document.")
-                End If
+                Throw New Exception("Update is not allowed.")
             End If
 
             clsERPFuncationality.ValidateLocationCode(objCommonVar.CurrentCompanyCode, clsUserMgtCode.ModuleMCCMilkProcurement, clsUserMgtCode.DCSMPIncentiveReco, obj.arr(0).MCC_Code, obj.Document_Date, trans)
@@ -168,24 +166,15 @@ Public Class clsMPDCSInsentiveReco
             End If
 
             Dim Location_code As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select top 1 MCC_Code from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL where Document_Code='" + strDocNo + "'", trans))
-
             If (clsCommon.myLen(Location_code) <= 0) Then
                 Location_code = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select top 1 MCC_Code from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID where Document_Code='" + strDocNo + "'", trans))
             End If
-
             Dim strPostDate As String = clsCommon.GetPrintDate(clsCommon.GETSERVERDATE(trans), "dd/MMM/yyyy hh:mm tt")
-
             Dim obj As clsMPDCSInsentiveReco = clsMPDCSInsentiveReco.GetData(strDocNo, NavigatorType.Current, "", trans)
-
-
             If obj.Farmer_Collection Then
                 Throw New Exception("Posting is not required for the Day-wise Farmer Collection document.")
             End If
-
-
             clsERPFuncationality.ValidateLocationCode(objCommonVar.CurrentCompanyCode, clsUserMgtCode.ModuleMCCMilkProcurement, clsUserMgtCode.DCSMPIncentiveReco, Location_code, obj.Document_Date, trans)
-
-
             If (obj Is Nothing OrElse clsCommon.myLen(obj.Document_Code) <= 0) Then
                 Throw New Exception("No Data found to Post")
             End If
@@ -376,16 +365,15 @@ where Document_Code='" + strDocNo + "' and tspl_vendor_master.zone_Code in (" + 
         clsCommon.AddColumnsForChange(coll, "Diff_SNF", obj.Diff_SNF)
         clsCommon.AddColumnsForChange(coll, "Diff_Amount", obj.Diff_Amount)
 
-        Dim strTableName As String = ""
-
-        If FarmerCollection Then
-            strTableName = "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL"
-        ElseIf obj.Reco_Staus Then
-            strTableName = "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL"
-        Else
-            strTableName = "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID"
-        End If
-        clsCommonFunctionality.UpdateDataTable(coll, strTableName, OMInsertOrUpdate.Insert, "", trans)
+        'Dim strTableName As String = ""
+        'If FarmerCollection Then
+        '    strTableName = "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL"
+        'ElseIf obj.Reco_Staus Then
+        '    strTableName = "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL"
+        'Else
+        '    strTableName = "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID"
+        'End If
+        clsCommonFunctionality.UpdateDataTable(coll, "TSPL_DCS_MP_INCENTIVE_RECO_DETAIL", OMInsertOrUpdate.Insert, "", trans)
     End Sub
 
     Public Shared Function getData(ByVal strDocNo As String, ByVal SelectedZone As String, ByVal trans As SqlTransaction) As List(Of clsMPDCSInsentiveRecoDetail)
@@ -394,7 +382,7 @@ where Document_Code='" + strDocNo + "' and tspl_vendor_master.zone_Code in (" + 
             Dim obj As clsMPDCSInsentiveRecoDetail = Nothing
             Dim qry As String = "Select TSPL_VLC_MASTER_HEAD.Route_Code,TSPL_BULK_ROUTE_MASTER.ROUTE_NAME, TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.*,TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader
 ,TSPL_VLC_MASTER_HEAD.VLC_Name,TSPL_MCC_MASTER.MCC_NAME,TSPL_VENDOR_MASTER.Zone_Code,TSPL_ZONE_MASTER.Description as Zone_Name,TabCollectionQty.Qty as MPCollectionQty
-from ( select PK_Id,Document_Code,SNo,Cycle_Year,Cycle_Month,Cycle_No,MCC_Code,VLC_Code,Qty,UOM,FAT,SNF,Amount,MP_Count,MP_Qty,MP_FAT,MP_SNF,MP_Amount,Diff_Qty,Diff_FAT,Diff_SNF,Diff_Amount,1 as Reco_Staus from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code='" & strDocNo & "'
+from ( select PK_Id,Document_Code,SNo,Cycle_Year,Cycle_Month,Cycle_No,MCC_Code,VLC_Code,Qty,UOM,FAT,SNF,Amount,MP_Count,MP_Qty,MP_FAT,MP_SNF,MP_Amount,Diff_Qty,Diff_FAT,Diff_SNF,Diff_Amount,TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Status as Reco_Staus from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Document_Code='" & strDocNo & "'
 union all
 select PK_Id,Document_Code,SNo,Cycle_Year,Cycle_Month,Cycle_No,MCC_Code,VLC_Code,Qty,UOM,FAT,SNF,Amount,MP_Count,MP_Qty,MP_FAT,MP_SNF,MP_Amount,Diff_Qty,Diff_FAT,Diff_SNF,Diff_Amount,0 as Reco_Staus from TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID where TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID.Document_Code='" & strDocNo & "' ) as TSPL_DCS_MP_INCENTIVE_RECO_DETAIL 
 left outer join TSPL_VLC_MASTER_HEAD on TSPL_VLC_MASTER_HEAD.VLC_Code=TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.VLC_Code
