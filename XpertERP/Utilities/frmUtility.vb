@@ -27972,15 +27972,19 @@ where Doc_Date='" + strCurrDate + "' "
                         For jj As Integer = 0 To Arr.Count - 1
                             Dim item As KeyValuePair(Of String, List(Of ClsVLCDataUploaderManualdetail)) = Arr.ElementAt(jj)
                             Dim parts() As String = item.Key.Split("#"c)
-
-                            Dim obj As New ClsVLCDataUploaderManual
-                            obj.Document_Date = clsCommon.myCDate(strCurrDate)
-                            obj.VLC_Code = parts(1)
-                            obj.Route_Code = strDefaultRoute
-                            obj.Shift = parts(0)
-                            obj.Dock_Collection_Milk_Type = ""
-                            obj.arrVLCDetail = item.Value
-                            ClsVLCDataUploaderManual.SaveData(obj, True, tran)
+                            Dim strDocNo As String = ClsVLCDataUploaderManual.GetDocumentNo(clsCommon.myCDate(strCurrDate), parts(0), parts(1), tran)
+                            If clsCommon.myLen(strDocNo) > 0 Then
+                                ClsVLCDataUploaderManualdetail.saveData(clsCommon.myCDate(strCurrDate), "", parts(1), item.Value, strDocNo, tran)
+                            Else
+                                Dim obj As New ClsVLCDataUploaderManual
+                                obj.Document_Date = clsCommon.myCDate(strCurrDate)
+                                obj.VLC_Code = parts(1)
+                                obj.Route_Code = strDefaultRoute
+                                obj.Shift = parts(0)
+                                obj.Dock_Collection_Milk_Type = ""
+                                obj.arrVLCDetail = item.Value
+                                ClsVLCDataUploaderManual.SaveData(obj, True, tran)
+                            End If
                             clsCommon.ProgressBarPercentUpdate(ii, dtDate.Rows.Count, "Date [" + strCurrDate + "] Saving data " & jj & "/" & Arr.Count & "")
                         Next
 

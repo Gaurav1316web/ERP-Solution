@@ -818,7 +818,9 @@ left outer join TSPL_DBT_CAPING_DETAIL on TSPL_DBT_CAPING_DETAIL.Document_Code=T
     left outer join tspl_MCC_Master on tspl_MCC_Master.MCC_Code=TSPL_MP_INCENTIVE_ENTRY_HEAD.MCC_Code
     where 2=2 "
         If SettDCSMPIncetiveReco Then
-            BaseQry += "  and ((isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Farmer_Collection,0)=0 and isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Status,0)=1) or (isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Farmer_Collection,0)=1 and isnull(TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Status,0)=1 )) and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.PK_Id is not null 
+            BaseQry += "  and ((isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Farmer_Collection,0)=0 and isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Status,0)=1 and isnull(TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Status,0)=1) 
+or  (isnull(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.Farmer_Collection,0)=1 and isnull(TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.Status,0)=1 ))
+and TSPL_DCS_MP_INCENTIVE_RECO_DETAIL.PK_Id is not null 
 and 2=(case when ISNULL(TSPL_DCS_MP_INCENTIVE_RECO_HEAD.DBT_Capping_Apply,0)=1 then ((case when ISNULL(TSPL_DBT_CAPING_DETAIL.Capping_Status,0)=1 then 2 else 3 end)) else 2 end)"
         End If
         If Not isCheckOnly Then

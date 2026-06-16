@@ -227,7 +227,7 @@ Partial Class frmMPDCSIncentiveReco
         Me.RadGroupBox1.HeaderText = "Consider FAT SNF Above"
         Me.RadGroupBox1.Location = New System.Drawing.Point(631, 18)
         Me.RadGroupBox1.Name = "RadGroupBox1"
-        Me.RadGroupBox1.Size = New System.Drawing.Size(148, 58)
+        Me.RadGroupBox1.Size = New System.Drawing.Size(148, 57)
         Me.RadGroupBox1.TabIndex = 87
         Me.RadGroupBox1.Text = "Consider FAT SNF Above"
         Me.RadGroupBox1.Visible = False

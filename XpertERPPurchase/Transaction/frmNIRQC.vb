@@ -249,13 +249,12 @@ Public Class frmNIRQC
         'If clsCommon.myLen(lblBillToLocationCode.Text) > 0 Then
         '    Throw New Exception(" Please select Sample number")
         'End If
-        Dim ChkNewEntry As String = (clsDBFuncationality.getSingleValue("SELECT COUNT(*) FROM TSPL_LOCATION_MASTER 
-     WHERE location_code = '" & lblBillToLocationCode.Text & "' AND ISNULL(NIR_QC_Instrumental_ID,'') <> ''"))
-        ' Dim i As Integer = clsCommon.myCdbl(clsDBFuncationality.getSingleValue(sql1))
-
-        If (ChkNewEntry > 0) Then
-            Throw New Exception(" Please select Sample number")
-
+        Dim ChkNewEntry As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue("SELECT NIR_QC_Instrumental_ID FROM TSPL_LOCATION_MASTER WHERE location_code = '" & lblBillToLocationCode.Text & "' "))
+        If (clsCommon.myLen(ChkNewEntry) > 0) Then
+            If clsCommon.myLen(txtSampleNo.Value) <= 0 Then
+                txtSampleNo.Focus()
+                Throw New Exception(" Please select Sample number")
+            End If
         End If
 
         'If chkManual.Checked = False Then
