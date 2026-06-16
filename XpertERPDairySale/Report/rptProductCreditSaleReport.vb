@@ -85,28 +85,30 @@ and convert(date,TSPL_SD_SHIPMENT_HEAD.Document_Date,103) <= Convert(Date,'" + c
                 Next
             End If
 
+            If dtitemName.Rows.Count > 0 Then
 
-            qry = " Select Customer_Code,max(Credit_Customer)Credit_Customer,case when max(Credit_Customer)='Y' then max(Customer_Name) +'(In Distributor)' else  max(Customer_Name) +'(To Agent)' end as Customer_Name," & itemNames4 & "
+
+                qry = " Select Customer_Code,max(Credit_Customer)Credit_Customer,case when max(Credit_Customer)='Y' then max(Customer_Name) +'(In Distributor)' else  max(Customer_Name) +'(To Agent)' end as Customer_Name," & itemNames4 & "
  from (SELECT Customer_Code,Credit_Customer,Customer_Name, " & itemNames1 & ", " & itemNames2 & "
 	  FROM
 (
     SELECT TSPL_SD_SHIPMENT_HEAD.Customer_Code,max(TSPL_CUSTOMER_MASTER.Credit_Customer)Credit_Customer,Max(TSPL_CUSTOMER_MASTER.Customer_Name)Customer_Name,
         TSPL_DEMAND_BOOKING_DETAIL.Item_Code,max(Item_desc)Item_Desc,SUM(TSPL_DEMAND_BOOKING_DETAIL.Qty) AS Qty, "
-            If chkShowAmt.Checked Then
-                qry += " Sum(ItemNetAmount) as Item_Net_Amt "
-            Else
-                qry += " CASE WHEN max(TSPL_CUSTOMER_MASTER.Credit_Customer) = 'Y' THEN 0
+                If chkShowAmt.Checked Then
+                    qry += " Sum(ItemNetAmount) as Item_Net_Amt "
+                Else
+                    qry += " CASE WHEN max(TSPL_CUSTOMER_MASTER.Credit_Customer) = 'Y' THEN 0
                             ELSE Sum(ItemNetAmount) END AS Item_Net_Amt "
-            End If
-            qry += " 
+                End If
+                qry += " 
     FROM TSPL_SD_SHIPMENT_HEAD 
     LEFT JOIN TSPL_SD_SHIPMENT_BOOKING_DETAIL ON TSPL_SD_SHIPMENT_BOOKING_DETAIL.DOCUMENT_CODE = TSPL_SD_SHIPMENT_HEAD.Document_Code
     LEFT JOIN TSPL_DEMAND_BOOKING_DETAIL ON TSPL_DEMAND_BOOKING_DETAIL.TR_Code = TSPL_SD_SHIPMENT_BOOKING_DETAIL.Booking_TR_Code
     LEFT JOIN TSPL_CUSTOMER_MASTER ON TSPL_CUSTOMER_MASTER.Cust_Code = TSPL_SD_SHIPMENT_HEAD.Customer_Code
 	left outer join TSPL_ITEM_MASTER ON TSPL_ITEM_MASTER.Item_Code=TSPL_SD_SHIPMENT_BOOKING_DETAIL.Item_Code
 
-    WHERE CONVERT(DATE, TSPL_SD_SHIPMENT_HEAD.Document_Date, 103) >= CONVERT(DATE, '04/Jun/2026', 103) and
-                    CONVERT(DATE, TSPL_SD_SHIPMENT_HEAD.Document_Date, 103) <= CONVERT(DATE, '08/Jun/2026', 103) 
+    WHERE CONVERT(DATE, TSPL_SD_SHIPMENT_HEAD.Document_Date, 103) >= CONVERT(DATE, '" + strtxtfDate + "', 103) and
+                    CONVERT(DATE, TSPL_SD_SHIPMENT_HEAD.Document_Date, 103) <= CONVERT(DATE, '" + strToDate + "', 103) 
     GROUP BY TSPL_SD_SHIPMENT_HEAD.Customer_Code,TSPL_DEMAND_BOOKING_DETAIL.Item_Code
 ) X
 PIVOT
@@ -114,7 +116,10 @@ PIVOT
 	Pivot 
 	(Sum(Item_Net_Amt) for item_Desc In (" & itemNames2 & ") ) Q
 ) YY Group by Customer_Code "
-
+            Else
+                clsCommon.MyMessageBoxShow(Me, "No Data Found to Display", Me.Text)
+                Exit Sub
+            End If
             dt = clsDBFuncationality.GetDataTable(qry)
             gvdata.DataSource = Nothing
             gvdata.Rows.Clear()

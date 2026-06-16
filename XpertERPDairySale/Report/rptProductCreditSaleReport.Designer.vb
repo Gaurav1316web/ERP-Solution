@@ -22,7 +22,7 @@ Partial Class rptProductCreditSaleReport
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim TableViewDefinition2 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition1 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
         Me.RadPageViewPage1 = New Telerik.WinControls.UI.RadPageViewPage()
@@ -251,7 +251,6 @@ Partial Class rptProductCreditSaleReport
         Me.chkShowAmt.TabIndex = 1506
         Me.chkShowAmt.Text = "Show Amount"
         Me.chkShowAmt.UseVisualStyleBackColor = True
-        Me.chkShowAmt.Visible = False
         '
         'RadGroupBox1
         '
@@ -587,7 +586,7 @@ Partial Class rptProductCreditSaleReport
         Me.gvdata.MasterTemplate.AllowAddNewRow = False
         Me.gvdata.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gvdata.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gvdata.MasterTemplate.ViewDefinition = TableViewDefinition2
+        Me.gvdata.MasterTemplate.ViewDefinition = TableViewDefinition1
         Me.gvdata.MyExportAPI = False
         Me.gvdata.MyExportFilePath = ""
         Me.gvdata.MyStopExport = False
