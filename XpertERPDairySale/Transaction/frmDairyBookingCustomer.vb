@@ -10242,6 +10242,10 @@ where  TSPL_BOOKING_DETAIL.Cust_Code='" & strVendorno & "' and convert(date,TSPL
         End If
     End Sub
 
+    Private Sub RadMenu1_Click(sender As Object, e As EventArgs) Handles RadMenu1.Click
+
+    End Sub
+
     'Private Sub txtMobileNo_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtMobileNo.KeyPress
     '    If Not Char.IsDigit(e.KeyChar) AndAlso e.KeyChar <> ChrW(8) Then
     '        e.Handled = True
