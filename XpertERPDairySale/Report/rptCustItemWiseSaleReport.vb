@@ -1340,11 +1340,27 @@ Left Join TSPL_ITEM_UOM_DETAIL AS ItemConvReportUOM  ON TSPL_ITEM_MASTER.Item_Co
 Left Join TSPL_ITEM_UOM_DETAIL AS ItemConvinUOM 
     On " & TableName & "_DETAIL.Item_Code = ItemConvinUOM.Item_Code And " & TableName & "_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
 Left Join TSPL_COMPANY_MASTER 
-    On 2 = 2 "
+    On 2 = 2 where 2=2 "
+
             If rbtnSupplyDate.IsChecked Then
-                Qry += " where convert(date,TSPL_SD_SHIPMENT_HEAD.Supply_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,TSPL_SD_SHIPMENT_HEAD.Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+                Qry += " and cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as Date)>='" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(clsCommon.myCDate(txtFromDate1.Value)), "dd/MMM/yyyy") + "' and cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as date )<='" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(clsCommon.myCDate(txtToDate1.Value)), "dd/MMM/yyyy") + "'"
             ElseIf rbtnDocumentDate.IsChecked Then
-                Qry += " where convert(date," & TableName & "_HEAD.Document_Date,103)>='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date," & TableName & "_HEAD.Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "'"
+                Qry += " and cast(" & TableName & "_HEAD.Document_Date as date)>='" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(clsCommon.myCDate(txtFromDate1.Value)), "dd/MMM/yyyy") + "' and cast(" & TableName & "_HEAD.Document_Date as date)<='" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(clsCommon.myCDate(txtToDate1.Value)), "dd/MMM/yyyy") + "'"
+            End If
+            If clsCommon.CompairString(txtFromShift.Text, "E") = CompairStringResult.Equal Then
+                If rbtnSupplyDate.IsChecked Then
+                    Qry += " and 2=( case when Cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as Date) >= '" + clsCommon.GetPrintDate(txtFromDate1.Value, "dd/MMM/yyyy") + "' and Cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as Date) <= '" + clsCommon.GetPrintDate(txtFromDate1.Value, "dd/MMM/yyyy") + "' and  TSPL_SD_SHIPMENT_HEAD.shift_type='AM' then 3 else 2 end  )"
+                ElseIf rbtnDocumentDate.IsChecked Then
+                    Qry += " and 2=( case when Cast(" & TableName & "_HEAD.Document_Date as Date) >= '" + clsCommon.GetPrintDate(txtFromDate1.Value, "dd/MMM/yyyy") + "' and Cast(" & TableName & "_HEAD.Document_Date as Date) <= '" + clsCommon.GetPrintDate(txtFromDate1.Value, "dd/MMM/yyyy") + "' and  TSPL_SD_SHIPMENT_HEAD.shift_type='AM' then 3 else 2 end  )"
+                End If
+            End If
+
+            If clsCommon.CompairString(txtToShift.Text, "M") = CompairStringResult.Equal Then
+                If rbtnSupplyDate.IsChecked Then
+                    Qry += " and 2=( case when Cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as Date) >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate1.Value), "dd/MMM/yyyy") + "' and Cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as Date) <= '" + clsCommon.GetPrintDate(txtToDate1.Value, "dd/MMM/yyyy") + "' and TSPL_SD_SHIPMENT_HEAD.shift_type='PM' then 3 else 2 end  )"
+                ElseIf rbtnDocumentDate.IsChecked Then
+                    Qry += " and 2=( case when Cast(" & TableName & "_HEAD.Document_Date as Date) >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate1.Value), "dd/MMM/yyyy") + "' and Cast(" & TableName & "_HEAD.Document_Date as Date) <= '" + clsCommon.GetPrintDate(txtToDate1.Value, "dd/MMM/yyyy") + "' and TSPL_SD_SHIPMENT_HEAD.shift_type='PM' then 3 else 2 end  )"
+                End If
             End If
 
             Qry += "  and  TSPL_ITEM_MASTER.IsTaxable=0 "
@@ -2147,13 +2163,24 @@ Left Join TSPL_COMPANY_MASTER
 LEFT JOIN ( select item_code,uom_code,conversion_factor from TSPL_ITEM_UOM_DETAIL WHERE DEFAULT_UOM = 1 ) DefUOM ON TSPL_SD_SHIPMENT_DETAIL.Item_Code = DefUOM.item_code
                                          left join TSPL_ITEM_UOM_DETAIL as ItemConvinUOM on TSPL_SD_SHIPMENT_DETAIL.Item_Code = ItemConvinUOM.Item_Code 
                                        and TSPL_SD_SHIPMENT_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
-                        LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 "
-            If rbtnSupplyDate.IsChecked Then
-                Qry += "  where Convert(Date, Supply_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx "
-            ElseIf rbtnDocumentDate.IsChecked Then
-                Qry += "  where Convert(Date, Document_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx "
+                        LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 where 2=2 "
+
+            Dim strDate As String = ""
+            If rbtnDocumentDate.IsChecked Then
+                strDate = "Document_Date"
+            ElseIf rbtnSupplyDate.IsChecked Then
+                strDate = "Supply_Date"
+            End If
+            Qry += " and Cast(TSPL_SD_SHIPMENT_HEAD." + strDate + " as Date) >='" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(clsCommon.myCDate(txtFromDate1.Value)), "dd/MMM/yyyy") + "' and Cast(TSPL_SD_SHIPMENT_HEAD." + strDate + " as Date) <='" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(clsCommon.myCDate(txtToDate1.Value)), "dd/MMM/yyyy") + "'"
+
+            If clsCommon.CompairString(txtFromShift.Text, "E") = CompairStringResult.Equal Then
+                Qry += " and 2=( case when Cast(TSPL_SD_SHIPMENT_HEAD." + strDate + " as Date) >= '" + clsCommon.GetPrintDate(txtFromDate1.Value, "dd/MMM/yyyy") + "' and Cast(TSPL_SD_SHIPMENT_HEAD." + strDate + " as Date) <= '" + clsCommon.GetPrintDate(txtFromDate1.Value, "dd/MMM/yyyy") + "' and  TSPL_SD_SHIPMENT_HEAD.shift_type='AM' then 3 else 2 end  )"
+            End If
+            If clsCommon.CompairString(txtToShift.Text, "M") = CompairStringResult.Equal Then
+                Qry += " and 2=( case when Cast(TSPL_SD_SHIPMENT_HEAD." + strDate + " as Date) >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate1.Value), "dd/MMM/yyyy") + "' and Cast(TSPL_SD_SHIPMENT_HEAD." + strDate + " as Date) <= '" + clsCommon.GetPrintDate(txtToDate1.Value, "dd/MMM/yyyy") + "'  and TSPL_SD_SHIPMENT_HEAD.shift_type='PM' then 3 else 2 end  )"
             End If
 
+            Qry += "  and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx "
 
             Qry +=" GROUP BY Item_Code order by Item_Desc"
             dt = clsDBFuncationality.GetDataTable(Qry)
@@ -2234,13 +2261,30 @@ left outer join TSPL_SD_SHIPMENT_HEAD on TSPL_SD_SHIPMENT_HEAD.Document_Code = T
 LEFT JOIN ( select item_code,uom_code,conversion_factor from TSPL_ITEM_UOM_DETAIL WHERE DEFAULT_UOM = 1 ) DefUOM ON TSPL_SD_SALE_INVOICE_DETAIL.Item_Code = DefUOM.item_code
                                          left join TSPL_ITEM_UOM_DETAIL as ItemConvinUOM on TSPL_SD_SALE_INVOICE_DETAIL.Item_Code = ItemConvinUOM.Item_Code 
                                        and TSPL_SD_SALE_INVOICE_DETAIL.Unit_code = ItemConvinUOM.UOM_Code
-                        LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 "
+                        LEFT JOIN TSPL_COMPANY_MASTER ON 2 = 2 where 2=2 "
+
             If rbtnSupplyDate.IsChecked Then
-                Qry += "  where Convert(Date, TSPL_SD_SHIPMENT_HEAD.Supply_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,TSPL_SD_SHIPMENT_HEAD.Supply_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx "
+                Qry += " and Cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as Date) >='" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(clsCommon.myCDate(txtFromDate1.Value)), "dd/MMM/yyyy") + "' and Cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as Date) <='" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(clsCommon.myCDate(txtToDate1.Value)), "dd/MMM/yyyy") + "'"
             ElseIf rbtnDocumentDate.IsChecked Then
-                Qry += "  where Convert(Date, TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) >='" + clsCommon.GetPrintDate(txtFromDate.Value) + "' and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)<='" + clsCommon.GetPrintDate(txtToDate.Value) + "' and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx "
+                Qry += " and Cast(TSPL_SD_SALE_INVOICE_HEAD.Document_Date as Date) >='" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(clsCommon.myCDate(txtFromDate1.Value)), "dd/MMM/yyyy") + "' and Cast(TSPL_SD_SALE_INVOICE_HEAD.Document_Date as Date) <='" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(clsCommon.myCDate(txtToDate1.Value)), "dd/MMM/yyyy") + "'"
             End If
-            Qry += " Group BY Item_Code order by Item_Desc"
+            If clsCommon.CompairString(txtFromShift.Text, "E") = CompairStringResult.Equal Then
+                If rbtnSupplyDate.IsChecked Then
+                    Qry += " and 2=( case when Cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as Date) >= '" + clsCommon.GetPrintDate(txtFromDate1.Value, "dd/MMM/yyyy") + "' and Cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as Date) <= '" + clsCommon.GetPrintDate(txtFromDate1.Value, "dd/MMM/yyyy") + "' and  TSPL_SD_SHIPMENT_HEAD.shift_type='AM' then 3 else 2 end  )"
+                ElseIf rbtnDocumentDate.IsChecked Then
+                    Qry += " and 2=( case when Cast(TSPL_SD_SALE_INVOICE_HEAD.Document_Date as Date) >= '" + clsCommon.GetPrintDate(txtFromDate1.Value, "dd/MMM/yyyy") + "' and Cast(TSPL_SD_SALE_INVOICE_HEAD.Document_Date as Date) <= '" + clsCommon.GetPrintDate(txtFromDate1.Value, "dd/MMM/yyyy") + "' and  TSPL_SD_SHIPMENT_HEAD.shift_type='AM' then 3 else 2 end  )"
+                End If
+            End If
+            If clsCommon.CompairString(txtToShift.Text, "M") = CompairStringResult.Equal Then
+                If rbtnSupplyDate.IsChecked Then
+                    Qry += " and 2=( case when Cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as Date) >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate1.Value), "dd/MMM/yyyy") + "' and Cast(TSPL_SD_SHIPMENT_HEAD.Supply_Date as Date) <= '" + clsCommon.GetPrintDate(txtToDate1.Value, "dd/MMM/yyyy") + "'  and TSPL_SD_SHIPMENT_HEAD.shift_type='PM' then 3 else 2 end  )"
+                ElseIf rbtnDocumentDate.IsChecked Then
+                    Qry += " and 2=( case when Cast(TSPL_SD_SALE_INVOICE_HEAD.Document_Date as Date) >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate1.Value), "dd/MMM/yyyy") + "' and Cast(TSPL_SD_SALE_INVOICE_HEAD.Document_Date as Date) <= '" + clsCommon.GetPrintDate(txtToDate1.Value, "dd/MMM/yyyy") + "'  and TSPL_SD_SHIPMENT_HEAD.shift_type='PM' then 3 else 2 end  )"
+                End If
+            End If
+
+
+            Qry += " and  TSPL_ITEM_MASTER.IsTaxable=0 ) xx Group BY Item_Code order by Item_Desc"
             dt = clsDBFuncationality.GetDataTable(Qry)
 
             If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
@@ -3259,6 +3303,9 @@ left join TSPL_ITEM_UOM_DETAIL as ItemBulkUOM on TSPL_SD_SHIPMENT_DETAIL.Item_Co
                 lblLocation.Visible = True
             End If
             LoadType()
+            If BtnBillWiseSaleOfMilkSummary.IsChecked OrElse BtnBillWiseSaleOfMilk.IsChecked Then
+                RadGroupBox4.Visible = True
+            End If
         ElseIf BtnStcRegisterPartyandItemWiseSummary.IsChecked OrElse BtnStcRegisterItemWiseSummary.IsChecked OrElse BtnMilkStcSummary.IsChecked Then
             btnGo.Enabled = True
             RadSplitButton1.Enabled = True

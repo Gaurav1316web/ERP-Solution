@@ -27,6 +27,7 @@ Public Class SaleEinvoiceReport
     End Sub
     Private Sub reset()
         chkDCSSale.Checked = False
+        chkOnlyDCSSale.Checked = False
         txtMultiCustomer.arrValueMember = Nothing
         TxtRoute.arrValueMember = Nothing
         txtItem.arrValueMember = Nothing
@@ -175,7 +176,7 @@ Public Class SaleEinvoiceReport
                 Whr += " and TSPL_BOOKING_MATSER.Is_APS=1 or TSPL_SD_SHIPMENT_HEAD.Screen_Type ='CT' "
             Else
                 If TxtRoute.arrValueMember IsNot Nothing AndAlso TxtRoute.arrValueMember.Count > 0 Then
-                    If chkDCSSale.Checked Then
+                    If chkDCSSale.Checked OrElse chkOnlyDCSSale.Checked Then
                         Whr += " and TSPL_SD_SALE_INVOICE_HEAD.Route_No in(" + clsCommon.GetMulcallString(TxtRoute.arrValueMember) + ",'')" + Environment.NewLine
                     Else
                         Whr += " and TSPL_SD_SALE_INVOICE_HEAD.Route_No in(" + clsCommon.GetMulcallString(TxtRoute.arrValueMember) + ")" + Environment.NewLine
@@ -207,8 +208,12 @@ Max(TSPL_DCS_SALE_ENTRY_detail.DOCUMENT_CODE) As [DCS Sale Entry],max(CONVERT(va
                            max(TSPL_LOCATION_MASTER.GSTNO) AS [GST No],
                            max(TSPL_STATE_MASTER.GST_STATE_Code) AS [State Code],
                            max(TSPL_CUSTOMER_MASTER.Cust_Code) AS [Customer Code],
-                           max(TSPL_CUSTOMER_MASTER.Customer_Name) AS [Customer Name],
-                           maX(TSPL_STATE_MASTER.GST_STATE_Code) AS [Party State],
+                           max(TSPL_CUSTOMER_MASTER.Customer_Name) AS [Customer Name],"
+                If chkDCSSale.Checked OrElse chkOnlyDCSSale.Checked Then
+                    qry += " max(tspl_vlc_master_head.VLC_Code_VLC_Uploader) as [DCS Uploader Code], "
+                End If
+
+                qry += " maX(TSPL_STATE_MASTER.GST_STATE_Code) AS [Party State],
                            max(TSPL_CUSTOMER_MASTER.GSTNO) AS [Recipient Gst No],
                            max(TSPL_SD_SALE_INVOICE_HEAD.EInvoice_Type) as [E Invoice Type],"
                 If EnableProductSaleForJPR Then
@@ -312,8 +317,11 @@ Sum(TSPL_SD_SALE_INVOICE_DETAIL.Total_Tax_Amt) As [Total Tax Amount],
                            ON TSPL_CUSTOMER_MASTER.Cust_Code = TSPL_SD_SALE_INVOICE_HEAD.Customer_Code
                            LEFT OUTER JOIN TSPL_STATE_MASTER 
                            ON TSPL_CUSTOMER_MASTER.State = TSPL_STATE_MASTER.STATE_CODE
-                           left join tspl_item_master on tspl_item_master.Item_Code=TSPL_SD_SALE_INVOICE_DETAIL.Item_Code
-                           left outer join TSPL_ROUTE_MASTER on TSPL_CUSTOMER_MASTER.Route_No=TSPL_ROUTE_MASTER.Route_No
+                           left join tspl_item_master on tspl_item_master.Item_Code=TSPL_SD_SALE_INVOICE_DETAIL.Item_Code "
+                 If chkDCSSale.Checked OrElse chkOnlyDCSSale.Checked Then
+                    qry += " left outer join tspl_vlc_master_head on tspl_vlc_master_head.vsp_code = TSPL_SD_SALE_INVOICE_HEAD.Customer_Code "
+                End If
+                qry += "    left outer join TSPL_ROUTE_MASTER on TSPL_CUSTOMER_MASTER.Route_No=TSPL_ROUTE_MASTER.Route_No
                            left outer join TSPL_SD_SHIPMENT_HEAD on TSPL_SD_SHIPMENT_HEAD.Document_Code=TSPL_SD_SALE_INVOICE_HEAD.Against_Shipment_No
 						   Left outer Join TSPL_SD_SHIPMENT_DETAIL On TSPL_SD_SHIPMENT_DETAIL.DOCUMENT_CODE=TSPL_SD_SALE_INVOICE_Detail.Shipment_Code  And   TSPL_SD_SHIPMENT_DETAIL.Item_Code=TSPL_SD_SALE_INVOICE_Detail.Item_Code
 						  Left Join TSPL_DCS_SALE_ENTRY_detail On TSPL_DCS_SALE_ENTRY_detail.PK_Id=TSPL_SD_SHIPMENT_DETAIL.REF_PK_ID "
@@ -331,8 +339,11 @@ TSPL_DCS_SALE_ENTRY_detail.DOCUMENT_CODE As [DCS Sale Entry],CONVERT(varchar,TSP
                                 TSPL_LOCATION_MASTER.GSTNO AS [GST No],
                                 TSPL_STATE_MASTER.GST_STATE_Code AS [State Code],
                                 TSPL_CUSTOMER_MASTER.Cust_Code AS [Customer Code],
-                                TSPL_CUSTOMER_MASTER.Customer_Name AS [Customer Name],
-                                TSPL_STATE_MASTER.GST_STATE_Code AS [Party State],
+                                TSPL_CUSTOMER_MASTER.Customer_Name AS [Customer Name],"
+                If chkDCSSale.Checked OrElse chkOnlyDCSSale.Checked Then
+                    qry += " tspl_vlc_master_head.VLC_Code_VLC_Uploader as [DCS Uploader Code], "
+                End If
+                qry += " TSPL_STATE_MASTER.GST_STATE_Code AS [Party State],
 								TSPL_CUSTOMER_MASTER.GSTNO AS [Recipient Gst No],
                                 TSPL_SD_SALE_INVOICE_HEAD.EInvoice_Type as [E Invoice Type],"
                 If EnableProductSaleForJPR Then
@@ -513,8 +524,11 @@ TSPL_SD_SALE_INVOICE_DETAIL.Total_Tax_Amt As [Total Tax Amount],
 
                                 LEFT OUTER JOIN TSPL_CUSTOMER_MASTER ON TSPL_CUSTOMER_MASTER.Cust_Code = TSPL_SD_SALE_INVOICE_HEAD.Customer_Code
                                 LEFT OUTER JOIN TSPL_STATE_MASTER ON TSPL_CUSTOMER_MASTER.State = TSPL_STATE_MASTER.STATE_CODE
-                                left join tspl_item_master on tspl_item_master.Item_Code=TSPL_SD_SALE_INVOICE_DETAIL.Item_Code
-                                left outer join TSPL_ROUTE_MASTER on TSPL_CUSTOMER_MASTER.Route_No=TSPL_ROUTE_MASTER.Route_No
+                                left join tspl_item_master on tspl_item_master.Item_Code=TSPL_SD_SALE_INVOICE_DETAIL.Item_Code "
+                If chkDCSSale.Checked OrElse chkOnlyDCSSale.Checked Then
+                    qry += " left outer join tspl_vlc_master_head on tspl_vlc_master_head.vsp_code = TSPL_SD_SALE_INVOICE_HEAD.Customer_Code "
+                End If
+                qry += "  left outer join TSPL_ROUTE_MASTER on TSPL_CUSTOMER_MASTER.Route_No=TSPL_ROUTE_MASTER.Route_No
                                 left outer join TSPL_SD_SHIPMENT_HEAD on TSPL_SD_SHIPMENT_HEAD.Document_Code=TSPL_SD_SALE_INVOICE_HEAD.Against_Shipment_No
 						  Left outer Join TSPL_SD_SHIPMENT_DETAIL On TSPL_SD_SHIPMENT_DETAIL.DOCUMENT_CODE=TSPL_SD_SALE_INVOICE_Detail.Shipment_Code  And   TSPL_SD_SHIPMENT_DETAIL.Item_Code=TSPL_SD_SALE_INVOICE_Detail.Item_Code
 						  Left Join TSPL_DCS_SALE_ENTRY_detail On TSPL_DCS_SALE_ENTRY_detail.PK_Id=TSPL_SD_SHIPMENT_DETAIL.REF_PK_ID "
@@ -531,8 +545,13 @@ TSPL_SD_SALE_INVOICE_DETAIL.Total_Tax_Amt As [Total Tax Amount],
                     qry += "  group by TSPL_SD_SALE_INVOICE_HEAD.Document_Code "
                 End If
             End If
-
-            qry += " ORDER BY TSPL_SD_SALE_INVOICE_HEAD.Document_Code"
+            If chkOnlyDCSSale.Checked Then
+                qry = Baseqry + whrDCSSale + Whr + " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type = 'MCC' "
+                If rbtnSummary.IsChecked Then
+                    qry += "  group by TSPL_SD_SALE_INVOICE_HEAD.Document_Code "
+                End If
+                qry += " ORDER BY TSPL_SD_SALE_INVOICE_HEAD.Document_Code"
+            End If
 
             dt = clsDBFuncationality.GetDataTable(qry)
             gvData.GroupDescriptors.Clear()
@@ -1360,6 +1379,7 @@ TSPL_SD_SALE_INVOICE_DETAIL.Total_Tax_Amt As [Total Tax Amount],
             RadGroupBox6.Visible = False
             RadGroupBox1.Enabled = False
             chkDCSSale.Visible = False
+            chkOnlyDCSSale.Visible = False
             TxtRoute.Visible = False
             txtItem.Visible = False
             MyLabel10.Visible = False
@@ -1377,6 +1397,7 @@ TSPL_SD_SALE_INVOICE_DETAIL.Total_Tax_Amt As [Total Tax Amount],
             RadGroupBox6.Visible = True
             RadGroupBox1.Enabled = True
             chkDCSSale.Visible = True
+            chkOnlyDCSSale.Visible = True
             TxtRoute.Visible = True
             txtItem.Visible = False
             MyLabel10.Visible = True
@@ -1392,6 +1413,7 @@ TSPL_SD_SALE_INVOICE_DETAIL.Total_Tax_Amt As [Total Tax Amount],
             RadGroupBox6.Visible = False
             RadGroupBox1.Enabled = False
             chkDCSSale.Visible = False
+            chkOnlyDCSSale.Visible = False
             TxtRoute.Visible = False
             txtItem.Visible = False
             MyLabel10.Visible = False
@@ -1409,14 +1431,13 @@ TSPL_SD_SALE_INVOICE_DETAIL.Total_Tax_Amt As [Total Tax Amount],
             RadGroupBox6.Visible = True
             RadGroupBox1.Enabled = True
             chkDCSSale.Visible = True
+            chkOnlyDCSSale.Visible = True
             TxtRoute.Visible = True
             txtItem.Visible = False
             MyLabel10.Visible = True
             MyLabel4.Visible = False
         End If
     End Sub
-
-
 
     'Private Sub rmsaveLayout_Click(sender As Object, e As EventArgs) Handles rmsaveLayout.Click
     '    If clsCommon.myLen(PageSetupReport_ID) < 0 Then

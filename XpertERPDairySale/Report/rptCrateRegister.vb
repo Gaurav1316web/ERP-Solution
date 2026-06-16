@@ -5,8 +5,47 @@ Public Class rptCrateRegister
     Private Sub rptCrateRegister_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         txtFromDate.Value = clsCommon.GETSERVERDATE()
         txtToDate.Value = clsCommon.GETSERVERDATE()
+        LoadShiftFrom()
+        LoadShiftTo()
+    End Sub
+    Sub LoadShiftFrom()
+        Dim dt As DataTable = New DataTable
+        dt.Columns.Add("Code")
+        dt.Columns.Add("Shift")
+
+        Dim dr As DataRow = dt.NewRow
+        dr("Code") = "M"
+        dr("Shift") = "Morning"
+        dt.Rows.Add(dr)
+
+        dr = dt.NewRow
+        dr("Code") = "E"
+        dr("Shift") = "Evening"
+        dt.Rows.Add(dr)
+
+        txtFromShift.DataSource = dt
+        txtFromShift.ValueMember = "Code"
     End Sub
 
+    Sub LoadShiftTo()
+        Dim dt As DataTable = New DataTable
+        dt.Columns.Add("Code")
+        dt.Columns.Add("Shift")
+
+        Dim dr As DataRow = dt.NewRow
+        dr("Code") = "M"
+        dr("Shift") = "Morning"
+        dt.Rows.Add(dr)
+
+        dr = dt.NewRow
+        dr("Code") = "E"
+        dr("Shift") = "Evening"
+        dt.Rows.Add(dr)
+
+        txtToShift.DataSource = dt
+        txtToShift.ValueMember = "Code"
+
+    End Sub
     Private Sub MultLocation__My_Click(sender As Object, e As EventArgs) Handles MultLocation._My_Click
         Try
             'Dim qry As String = "select Cust_Code as Code ,Customer_Name as  Name from TSPL_CUSTOMER_MASTER "
@@ -72,13 +111,31 @@ Public Class rptCrateRegister
 FROM(
 select
 '" + clsCommon.GetPrintDate(txtFromDate.Value, "dd/MM/yyyy") + "' As FromDate, '" + clsCommon.GetPrintDate(txtToDate.Value, "dd/MM/yyyy") + "'  As ToDate,
-Route_No,max(Route_Desc)Route_Desc,Customer_Code, max(Customer_Name)Customer_Name,max(Comp_Name)Comp_Name,max(Location_Code)Location_Code,max(Location_Desc)Location_Desc, max(Vehicle_Id)Vehicle_Id,max(Vehicle_Number)Vehicle_Number 
+Route_No,max(Route_Desc)Route_Desc,Customer_Code, max(Customer_Name)Customer_Name,max(Comp_Name)Comp_Name,max(Location_Code)Location_Code,max(Location_Desc)Location_Desc, max(Vehicle_Id)Vehicle_Id,max(Vehicle_Number)Vehicle_Number "
 
-,sum(Qty * RI * CASE when  Document_Date<'" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "'   then 1 else 0 end ) as  OP
-,sum(Qty * case when RI=1 then 1 else 0 end * CASE when  Document_Date>='" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "' and Document_Date<='" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "'   then 1 else 0 end ) as  Supply
-,sum(Qty * case when RI=-1 then 1 else 0 end * CASE when  Document_Date>='" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "' and Document_Date<='" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "'  then 1 else 0 end ) as  [Return]
-,sum(Qty * RI * CASE when  Document_Date<'" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "' then 1 else 0 end ) as  CL
-from (
+            If clsCommon.CompairString(txtFromShift.SelectedValue, "M") = CompairStringResult.Equal Then
+                qry += " ,sum(Qty * RI * CASE when  Document_Date<'" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "'   then 1 else 0 end ) as  OP "
+            ElseIf clsCommon.CompairString(txtFromShift.SelectedValue, "E") = CompairStringResult.Equal Then
+                qry += " ,sum(Qty * RI * CASE when  Document_Date<= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "'  and ShiftType='M' then 1 else 0 end ) as  OP "
+            End If
+            Dim whrclsShift As String = ""
+            If clsCommon.CompairString(txtFromShift.Text, "E") = CompairStringResult.Equal Then
+                whrclsShift += " and 2=( case when Cast(Document_Date as Date) >= '" + clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") + "' and Cast(Document_Date as Date) <= '" + clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") + "' and  shifttype='M' then 3 else 2 end  )"
+            End If
+            If clsCommon.CompairString(txtToShift.Text, "M") = CompairStringResult.Equal Then
+                whrclsShift += " and 2=( case when Cast(Document_Date as Date) >= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtToDate.Value), "dd/MMM/yyyy") + "' and Cast(Document_Date as Date) <= '" + clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") + "'  and shifttype='E' then 3 else 2 end  )"
+            End If
+
+            qry += " ,sum(Qty * case when RI=1 then 1 else 0 end * CASE when  Document_Date>='" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "' and Document_Date<='" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "' " + whrclsShift + "  then 1 else 0 end ) as  Supply
+,sum(Qty * case when RI=-1 then 1 else 0 end * CASE when  Document_Date>='" + clsCommon.GetPrintDate(clsCommon.GetDateWithStartTime(txtFromDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "' and Document_Date<='" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "' " + whrclsShift + "  then 1 else 0 end ) as  [Return] "
+
+            If clsCommon.CompairString(txtToShift.SelectedValue, "M") = CompairStringResult.Equal Then
+                qry += " ,sum(Qty * RI * CASE when  Document_Date<'" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "' then 1 else 0 end ) as  CL "
+            ElseIf clsCommon.CompairString(txtToShift.SelectedValue, "E") = CompairStringResult.Equal Then
+                qry += " ,sum(Qty * RI * CASE when  Document_Date<= '" + clsCommon.GetPrintDate(clsCommon.GetDateWithEndTime(txtToDate.Value), "dd/MMM/yyyy hh:mm:ss tt") + "' and ShiftType='M' then 1 else 0 end ) as  CL "
+            End If
+
+            qry += " from (
 select TSPL_CRATE_RECEIVED_HEAD_FRESHSALE.type, TSPL_CRATE_RECEIVED_HEAD_FRESHSALE.Document_Date, TSPL_CRATE_RECEIVED_HEAD_FRESHSALE.Document_No, TSPL_CRATE_RECEIVED_DETAIL_FRESHSALE.Vehicle_Code AS Vehicle_Id,TSPL_CRATE_RECEIVED_DETAIL_FRESHSALE.VehicleNo AS Vehicle_Number, TSPL_CRATE_RECEIVED_HEAD_FRESHSALE.Route_code as Route_No,  TSPL_CRATE_RECEIVED_HEAD_FRESHSALE.ShiftType,TSPL_route_master.Route_Desc,TSPL_CRATE_RECEIVED_DETAIL_FRESHSALE.Customer_Code,TSPL_CUSTOMER_MASTER.Customer_Name,CAST(TSPL_CRATE_RECEIVED_HEAD_FRESHSALE.Invoice_Date AS DATE) AS Sale_Invoice_Date,TSPL_CRATE_RECEIVED_DETAIL_FRESHSALE.CrateQtyRecd as Qty ,(case when TSPL_CRATE_RECEIVED_HEAD_FRESHSALE.type='O' THEN 1 ELSE -1 END )as RI,TSPL_CRATE_RECEIVED_HEAD_FRESHSALE.Location_Code,TSPL_LOCATION_MASTER.Location_Desc,TSPL_COMPANY_MASTER.Comp_Name
 From TSPL_CRATE_RECEIVED_DETAIL_FRESHSALE
 left outer join TSPL_CRATE_RECEIVED_HEAD_FRESHSALE on TSPL_CRATE_RECEIVED_HEAD_FRESHSALE.Document_No=TSPL_CRATE_RECEIVED_DETAIL_FRESHSALE.Document_No
