@@ -20,7 +20,7 @@ Public Class clsMPDCSInsentiveReco
         Dim qry As String = ""
         Try
             If Not isNewEntry Then
-                Throw New Exception("Update is not allowed for the Day-wise Farmer Collection document.")
+                Throw New Exception("Update is not allowed.")
             End If
 
             clsERPFuncationality.ValidateLocationCode(objCommonVar.CurrentCompanyCode, clsUserMgtCode.ModuleMCCMilkProcurement, clsUserMgtCode.DCSMPIncentiveReco, obj.arr(0).MCC_Code, obj.Document_Date, trans)
