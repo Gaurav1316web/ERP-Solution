@@ -347,7 +347,20 @@ DetailData.Route_And_Group As Code,(Route_Desc) As Description, "
                 strQry += clsCommon.myCstr(strItemTypeIN)
                 strQry += " (DetailData.Months)Months,IsNull((DetailData.Target_Qty),0)Target_Qty,
 ((QtyInLTR)*Case When Item_Sub_Group_Type='MILK' Then 1 Else 0 End)/DAY('" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "') As 'ACHV MILK'
-from DetailData 
+from DetailData Where DetailData.IsGoverment=0
+)xyz Group By Code
+
+Union All
+
+Select Code,MAX(Description)Description " & clsCommon.myCstr(strItemType) & ",Max(Target_Qty)[TGT MILK],SUM([ACHV MILK])[ACHV MILK],Case When Max(Target_Qty)<>0 Then Round(((SUM([ACHV MILK])/Max(Target_Qty))*100),0) Else 0 End As 'PROGRESS' from (
+Select 
+DetailData.Route_And_Group As Code,(TSPL_CUSTOMER_GROUP_MASTER.Cust_Group_Desc) As Description, "
+                strQry += clsCommon.myCstr(strItemTypeIN)
+                strQry += " (DetailData.Months)Months,IsNull((DetailData.Target_Qty),0)Target_Qty,
+((QtyInLTR)*Case When Item_Sub_Group_Type='MILK' Then 1 Else 0 End)/DAY('" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "') As 'ACHV MILK'
+from DetailData
+Inner Join TSPL_CUSTOMER_GROUP_MASTER On TSPL_CUSTOMER_GROUP_MASTER.Cust_Group_Code=DetailData.Route_And_Group
+Where TSPL_CUSTOMER_GROUP_MASTER.IsGoverment=1
 )xyz Group By Code
 
 Union All
@@ -366,15 +379,22 @@ Union All
 
 Select Null As Code,'TOTAL(LTR)' As Description " & IIf(isPrint, clsCommon.myCstr(strItemTypeGroup), clsCommon.myCstr(strItemType)) & ",Sum([TGT MILK])[TGT MILK],SUM([ACHV MILK])[ACHV MILK],Case When Sum([TGT MILK])<>0 Then Round(((SUM([ACHV MILK])/Sum([TGT MILK]))*100),0) Else 0 End As 'PROGRESS' from (
 Select Code,MAX(Description)Description " & clsCommon.myCstr(strItemType) & ",Max(Target_Qty)[TGT MILK],SUM([ACHV MILK])[ACHV MILK] from (
-Select 
-DetailData.Route_And_Group As Code,(Route_Desc) As Description, "
+Select DetailData.Route_And_Group As Code,(Route_Desc) As Description, "
+                strQry += clsCommon.myCstr(strItemTypeIN)
+                strQry += " (DetailData.Months)Months,IsNull((DetailData.Target_Qty),0)Target_Qty,
+((QtyInLTR)*Case When Item_Sub_Group_Type='MILK' Then 1 Else 0 End)/DAY('" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "') As 'ACHV MILK'
+from DetailData Where DetailData.IsGoverment=0
+Union All
+Select DetailData.Route_And_Group As Code,(TSPL_CUSTOMER_GROUP_MASTER.Cust_Group_Desc) As Description, "
                 strQry += clsCommon.myCstr(strItemTypeIN)
                 strQry += " (DetailData.Months)Months,IsNull((DetailData.Target_Qty),0)Target_Qty,
 ((QtyInLTR)*Case When Item_Sub_Group_Type='MILK' Then 1 Else 0 End)/DAY('" & clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") & "') As 'ACHV MILK'
 from DetailData 
+Inner Join TSPL_CUSTOMER_GROUP_MASTER On TSPL_CUSTOMER_GROUP_MASTER.Cust_Group_Code=DetailData.Route_And_Group
+Where TSPL_CUSTOMER_GROUP_MASTER.IsGoverment=1
 )xyz Group By Code)AllTotal )final
 Left Outer Join TSPL_COMPANY_MASTER ON TSPL_COMPANY_MASTER.Comp_Code1='" & objCommonVar.CurrComp_Code1 & "'
-Left Outer Join TSPL_STATE_MASTER On TSPL_STATE_MASTER.STATE_CODE=TSPL_COMPANY_MASTER.State"
+Left Outer Join TSPL_STATE_MASTER On TSPL_STATE_MASTER.STATE_CODE=TSPL_COMPANY_MASTER.State ORDER BY CASE WHEN Code IS NULL THEN 1 ELSE 0 END, Code"
             Else
                 Throw New Exception("Item sub group type not found !")
             End If

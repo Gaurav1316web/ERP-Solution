@@ -2068,7 +2068,7 @@ CAST(ROUND( XXGetAllRecords.DiffMCCVsEntered_SNFKG, 2) AS DECIMAL(10, 2))as Diff
             Area = clsCommon.myCstr(clsDBFuncationality.getSingleValue("select MCC_NAME from TSPL_MCC_MASTER WHERE Area_Location_Code = '" & fndArea.Value & "' "))
 
             qry = " Select ROW_NUMBER() OVER (ORDER BY (shift_date)) AS SrNo,Convert(Varchar,(xxx.Shift_Date),103)Shift_Date,Shift,max(Bulk_Route_Code)Bulk_Route_Code,(SNo)SNo,(Uploader_Code)Uploader_Code,QBD,SUM(No_Of_Cans)Can,sum(Milk_Weight)Milk_Weight,
-                    case when max(Manual_Weight)=1 then 'Manual' else 'Auto' end as Manual_Auto_Weight,SUM(FAT)FAT,SUM(SNF)SNF,case when max(Manual_Sample)=1 then 'Manual' else 'Auto' end as QC_Manual_Auto,max(QAT)QAT
+                    case when max(Manual_Weight)=1 then 'Manual' else 'Auto' end as Manual_Auto_Weight,SUM(FAT)FAT,SUM(SNF)SNF,case when max(Manual_Sample)=1 then 'Manual' else 'Auto' end as QC_Manual_Auto,max(QAT)QAT,Sum(FATKG)FATKG,sum(SNFKG)SNFKG
 
                      from (SELECT TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.FAT,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.SNF,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Milk_Weight,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.No_Of_Cans,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Reject_Type,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Shift_Date,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Shift,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Bulk_Route_Code,TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Dock_Collection_Milk_Type,case when isnull(TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.FAT,0) =0 then 0 else cast(cast(cast(((TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Milk_Weight*TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.FAT/100)*1000) as int) as decimal(18,0))/1000 as decimal(18,3)) end as FATKG
                     ,case when isnull(TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.SNF,0) =0 then 0 else cast(cast(cast(((TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.Milk_Weight*TSPL_MILK_PROCUREMENT_UPLOADER_DETAIL.SNF/100)*1000) as int) as decimal(18,0))/1000 as decimal(18,3)) end as SNFKG,TSPL_VLC_MASTER_HEAD.VLC_Name,TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader as [Uploader_Code],TSPL_MCC_MASTER.MCC_NAME As MCC,
@@ -2584,7 +2584,10 @@ FROM
         summaryRowItem.Add(EnteredFatKg)
         Dim EnteredSnfKg As New GridViewSummaryItem("Milk_Weight", "{0:F2}", GridAggregateFunction.Sum)
         summaryRowItem.Add(EnteredSnfKg)
-
+        Dim EnteredSnfKg1 As New GridViewSummaryItem("FATKG", "{0:F2}", GridAggregateFunction.Sum)
+        summaryRowItem.Add(EnteredSnfKg1)
+        Dim EnteredSnfKg2 As New GridViewSummaryItem("SNFKG", "{0:F2}", GridAggregateFunction.Sum)
+        summaryRowItem.Add(EnteredSnfKg2)
         Gv1.EnableFiltering = True
         Gv1.MasterTemplate.SummaryRowsBottom.Add(summaryRowItem)
         Gv1.MasterView.SummaryRows(0).PinPosition = PinnedRowPosition.Bottom

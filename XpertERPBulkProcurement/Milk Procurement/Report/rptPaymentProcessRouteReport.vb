@@ -2170,10 +2170,12 @@ and not exists(select 1 from TSPL_MILK_PURCHASE_INVOICE_PRO_LOSS where TSPL_MILK
             If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "CHT") = CompairStringResult.Equal Then
                 BaseQry = " select  XXXFinal.ROUTE_CODE , DOCNO, Route_Name , VSP_CODE, max(Vendor_Name) as Vendor_Name , max(Type) as Type ,sum( Qty) as Qty , sum(case when QBD = 'SWEET' then   Qty else 0 end) as SweetQty ,
                             sum(case when QBD = 'CURD' then   Qty else 0 end) as CurdQty , sum(case when QBD = 'SOUR' then   Qty else 0 end) as SourQty , case when  sum( Qty) =0 then 0 else  sum(FATQTY) * 100 / sum( Qty) end  as FAT_PER ,case when  sum( Qty) =0 then 0 else  sum(SNFQTY) * 100 / sum( Qty) end as SNF_PER, sum(FATQTY) as  FATQTY, sum(SNFQTY) as SNFQTY, sum (SRN_Net_Amount) as SRN_Net_Amount,max(VLC_Code_VLC_Uploader) as VLC_Code_VLC_Uploader,VLC_NO,Mcc_Code_VLC_Uploader,max(MCC_NAME)MCC_NAME from (  " + BaseQry + " ) XXXFinal group by  XXXFinal.ROUTE_CODE , DOCNO, Route_Name , VSP_CODE,VLC_NO,Mcc_Code_VLC_Uploader  "
-                'ElseIf clsCommon.CompairString(objCommonVar.CurrComp_Code1, "BKN") = CompairStringResult.Equal Then
-            Else
+            ElseIf clsCommon.CompairString(objCommonVar.CurrComp_Code1, "BKN") = CompairStringResult.Equal Then
                 BaseQry = " select  XXXFinal.ROUTE_CODE , DOCNO, Route_Name , VSP_CODE, max(Vendor_Name) as Vendor_Name , max(Type) as Type ,sum( Qty) as Qty , sum(case when QBD = 'SWEET' then   Qty else 0 end) as SweetQty ,
                             SUM(CASE WHEN QBD = 'SWEET' AND (FATPER < " & settMaxFATPerLimit & " OR SNFPER < " & settMaxSNFPerLimit & ") THEN Qty ELSE 0 END) AS  GoodFailQty ,sum(case when QBD = 'CURD' then   Qty else 0 end) as CurdQty , sum(case when QBD = 'SOUR' then   Qty else 0 end) as SourQty , case when  sum( Qty) =0 then 0 else  sum(FATQTY) * 100 / sum( Qty) end  as FAT_PER ,case when  sum( Qty) =0 then 0 else  sum(SNFQTY) * 100 / sum( Qty) end as SNF_PER, sum(FATQTY) as  FATQTY, sum(SNFQTY) as SNFQTY, sum (SRN_Net_Amount) as SRN_Net_Amount,max(VLC_Code_VLC_Uploader) as VLC_Code_VLC_Uploader,VLC_NO,Mcc_Code_VLC_Uploader,max(MCC_NAME)MCC_NAME from (  " + BaseQry + " ) XXXFinal group by  XXXFinal.ROUTE_CODE , DOCNO, Route_Name , VSP_CODE,VLC_NO,Mcc_Code_VLC_Uploader  "
+            Else
+                BaseQry = " select  XXXFinal.ROUTE_CODE , DOCNO, Route_Name , VSP_CODE, max(Vendor_Name) as Vendor_Name , max(Type) as Type ,sum( Qty) as Qty , sum(case when QBD = 'SWEET' then   Qty else 0 end) as SweetQty ,
+                            sum(case when QBD = 'CURD' then   Qty else 0 end) as CurdQty , sum(case when QBD = 'SOUR' then   Qty else 0 end) as SourQty , case when  sum( Qty) =0 then 0 else  sum(FATQTY) * 100 / sum( Qty) end  as FAT_PER ,case when  sum( Qty) =0 then 0 else  sum(SNFQTY) * 100 / sum( Qty) end as SNF_PER, sum(FATQTY) as  FATQTY, sum(SNFQTY) as SNFQTY, sum (SRN_Net_Amount) as SRN_Net_Amount,max(VLC_Code_VLC_Uploader) as VLC_Code_VLC_Uploader,VLC_NO,Mcc_Code_VLC_Uploader,max(MCC_NAME)MCC_NAME from (  " + BaseQry + " ) XXXFinal group by  XXXFinal.ROUTE_CODE , DOCNO, Route_Name , VSP_CODE,VLC_NO,Mcc_Code_VLC_Uploader  "
                 'Else
                 'BaseQry = " select  XXXFinal.ROUTE_CODE , DOCNO, Route_Name , VSP_CODE, max(Vendor_Name) as Vendor_Name , max(Type) as Type ,sum( Qty) as Qty , sum(case when QBD = 'SWEET' then   Qty else 0 end) as SweetQty ,sum(case when QBD = 'CURD' then   Qty else 0 end) as CurdQty , sum(case when QBD = 'SOUR' then   Qty else 0 end) as SourQty , case when  sum( Qty) =0 then 0 else  sum(FATQTY) * 100 / sum( Qty) end  as FAT_PER ,case when  sum( Qty) =0 then 0 else  sum(SNFQTY) * 100 / sum( Qty) end as SNF_PER, sum(FATQTY) as  FATQTY, sum(SNFQTY) as SNFQTY, sum (SRN_Net_Amount) as SRN_Net_Amount,max(VLC_Code_VLC_Uploader) as VLC_Code_VLC_Uploader,VLC_NO from (  " + BaseQry + " ) XXXFinal group by  XXXFinal.ROUTE_CODE , DOCNO, Route_Name , VSP_CODE,VLC_NO  "
             End If
@@ -2184,11 +2186,13 @@ and not exists(select 1 from TSPL_MILK_PURCHASE_INVOICE_PRO_LOSS where TSPL_MILK
             If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "CHT") = CompairStringResult.Equal Then
                 legerMainQuery += "Invoice.Mcc_Code_VLC_Uploader, Invoice.MCC_NAME,"
             End If
-            'If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "BKN") = CompairStringResult.Equal Then
-            legerMainQuery += "   Invoice.VSP_CODE,	Invoice.Vendor_Name,Invoice.Type,Invoice.Qty,(Invoice.SweetQty-Invoice.GoodFailQty)SweetQty,Invoice.GoodFailQty,Invoice.CurdQty,Invoice.SourQty,Invoice.FAT_PER,Invoice.SNF_PER,Invoice.FATQTY,Invoice.SNFQTY,Invoice.SRN_Net_Amount,Invoice.VLC_Code_VLC_Uploader,Invoice.VLC_NO, coalesce(PaymentProcess.Total_EMP_Amount,0) as Total_EMP_Amount,coalesce(PaymentProcess.Incentive_Amount,0) as Incentive_Amount ,coalesce(PaymentProcess.Incentive_EMP_Amount,0) as Incentive_EMP_Amount ,coalesce(PaymentProcess.EMP_Amount,0) as EMP_Amount ,coalesce(PaymentProcess.Vsp_Own_System_Amount,0) as Vsp_Own_System_Amount ,coalesce(PaymentProcess.Head_Load_Amount,0) as Head_Load_Amount ,"
-            'Else
-            'legerMainQuery += "   Invoice.VSP_CODE,	Invoice.Vendor_Name,Invoice.Type,Invoice.Qty,Invoice.SweetQty,Invoice.CurdQty,Invoice.SourQty,Invoice.FAT_PER,Invoice.SNF_PER,Invoice.FATQTY,Invoice.SNFQTY,Invoice.SRN_Net_Amount,Invoice.VLC_Code_VLC_Uploader,Invoice.VLC_NO, coalesce(PaymentProcess.Total_EMP_Amount,0) as Total_EMP_Amount,coalesce(PaymentProcess.Incentive_Amount,0) as Incentive_Amount ,coalesce(PaymentProcess.Incentive_EMP_Amount,0) as Incentive_EMP_Amount ,coalesce(PaymentProcess.EMP_Amount,0) as EMP_Amount ,coalesce(PaymentProcess.Vsp_Own_System_Amount,0) as Vsp_Own_System_Amount ,coalesce(PaymentProcess.Head_Load_Amount,0) as Head_Load_Amount ,"
-            'End If
+            If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "BKN") = CompairStringResult.Equal Then
+                legerMainQuery += "   Invoice.VSP_CODE,	Invoice.Vendor_Name,Invoice.Type,Invoice.Qty,(Invoice.SweetQty-Invoice.GoodFailQty)SweetQty,Invoice.GoodFailQty,Invoice.CurdQty,Invoice.SourQty,Invoice.FAT_PER,Invoice.SNF_PER,Invoice.FATQTY,Invoice.SNFQTY,Invoice.SRN_Net_Amount,Invoice.VLC_Code_VLC_Uploader,Invoice.VLC_NO, coalesce(PaymentProcess.Total_EMP_Amount,0) as Total_EMP_Amount,coalesce(PaymentProcess.Incentive_Amount,0) as Incentive_Amount ,coalesce(PaymentProcess.Incentive_EMP_Amount,0) as Incentive_EMP_Amount ,coalesce(PaymentProcess.EMP_Amount,0) as EMP_Amount ,coalesce(PaymentProcess.Vsp_Own_System_Amount,0) as Vsp_Own_System_Amount ,coalesce(PaymentProcess.Head_Load_Amount,0) as Head_Load_Amount ,"
+            ElseIf clsCommon.CompairString(objCommonVar.CurrComp_Code1, "CHT") = CompairStringResult.Equal Then
+                legerMainQuery += "   Invoice.VSP_CODE,	Invoice.Vendor_Name,Invoice.Type,Invoice.Qty,Invoice.SweetQty,Invoice.CurdQty,Invoice.SourQty,Invoice.FAT_PER,Invoice.SNF_PER,Invoice.FATQTY,Invoice.SNFQTY,Invoice.SRN_Net_Amount,Invoice.VLC_Code_VLC_Uploader,Invoice.VLC_NO, coalesce(PaymentProcess.Total_EMP_Amount,0) as Total_EMP_Amount,coalesce(PaymentProcess.Incentive_Amount,0) as Incentive_Amount ,coalesce(PaymentProcess.Incentive_EMP_Amount,0) as Incentive_EMP_Amount ,coalesce(PaymentProcess.EMP_Amount,0) as EMP_Amount ,coalesce(PaymentProcess.Vsp_Own_System_Amount,0) as Vsp_Own_System_Amount ,coalesce(PaymentProcess.Head_Load_Amount,0) as Head_Load_Amount ,"
+            Else
+                legerMainQuery += "   Invoice.VSP_CODE,	Invoice.Vendor_Name,Invoice.Type,Invoice.Qty,Invoice.SweetQty,Invoice.CurdQty,Invoice.SourQty,Invoice.FAT_PER,Invoice.SNF_PER,Invoice.FATQTY,Invoice.SNFQTY,Invoice.SRN_Net_Amount,Invoice.VLC_Code_VLC_Uploader,Invoice.VLC_NO, coalesce(PaymentProcess.Total_EMP_Amount,0) as Total_EMP_Amount,coalesce(PaymentProcess.Incentive_Amount,0) as Incentive_Amount ,coalesce(PaymentProcess.Incentive_EMP_Amount,0) as Incentive_EMP_Amount ,coalesce(PaymentProcess.EMP_Amount,0) as EMP_Amount ,coalesce(PaymentProcess.Vsp_Own_System_Amount,0) as Vsp_Own_System_Amount ,coalesce(PaymentProcess.Head_Load_Amount,0) as Head_Load_Amount ,"
+            End If
 
             'legerMainQuery += "   Invoice.VSP_CODE,	Invoice.Vendor_Name,Invoice.Type,Invoice.Qty,Invoice.SweetQty,Invoice.CurdQty,Invoice.SourQty,Invoice.FAT_PER,Invoice.SNF_PER,Invoice.FATQTY,Invoice.SNFQTY,Invoice.SRN_Net_Amount,Invoice.VLC_Code_VLC_Uploader,Invoice.VLC_NO, coalesce(PaymentProcess.Total_EMP_Amount,0) as Total_EMP_Amount,coalesce(PaymentProcess.Incentive_Amount,0) as Incentive_Amount ,coalesce(PaymentProcess.Incentive_EMP_Amount,0) as Incentive_EMP_Amount ,coalesce(PaymentProcess.EMP_Amount,0) as EMP_Amount ,coalesce(PaymentProcess.Vsp_Own_System_Amount,0) as Vsp_Own_System_Amount ,coalesce(PaymentProcess.Head_Load_Amount,0) as Head_Load_Amount ,"
 
@@ -2658,7 +2662,10 @@ where convert(date,TSPL_PAYMENT_PROCESS_HEAD.From_Date,103)>=convert(date,('" + 
                                     CountNo = clsCommon.myCdbl(V + 1)
                                 End If
                                 SumSWEET1 = clsCommon.myCdbl(dt.Compute("sum(SweetQty)", strWhrcls))
-                                SumGoodFail1 = clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", strWhrcls))
+                                If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "BKN") = CompairStringResult.Equal Then
+                                    SumGoodFail1 = clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", strWhrcls))
+                                End If
+                                'SumGoodFail1 = clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", strWhrcls))
                                 SumSOUR1 = clsCommon.myCdbl(dt.Compute("sum(SourQty)", strWhrcls))
                                 SumCURD1 = clsCommon.myCdbl(dt.Compute("sum(CurdQty)", strWhrcls))
                                 SumQty1 = clsCommon.myCdbl(dt.Compute("sum(Qty)", strWhrcls))
@@ -2802,7 +2809,10 @@ where convert(date,TSPL_PAYMENT_PROCESS_HEAD.From_Date,103)>=convert(date,('" + 
                                 Sumtotal = MilkAmt + SumPayment1 + HeadLoadAmt
                             Else
                                 SumSWEET1 = clsCommon.myCdbl(dt.Compute("sum(SweetQty)", "ROUTE_CODE='" + clsCommon.myCstr(dtROUTE1.Rows(R).Item("ROUTE_CODE")) + "'"))
-                                SumGoodFail1 = clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", "ROUTE_CODE='" + clsCommon.myCstr(dtROUTE1.Rows(R).Item("ROUTE_CODE")) + "'"))
+                                If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "CHT") = CompairStringResult.Equal Then
+                                    SumGoodFail1 = clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", "ROUTE_CODE='" + clsCommon.myCstr(dtROUTE1.Rows(R).Item("ROUTE_CODE")) + "'"))
+                                End If
+                                'SumGoodFail1 = clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", "ROUTE_CODE='" + clsCommon.myCstr(dtROUTE1.Rows(R).Item("ROUTE_CODE")) + "'"))
                                 SumSOUR1 = clsCommon.myCdbl(dt.Compute("sum(SourQty)", "ROUTE_CODE='" + clsCommon.myCstr(dtROUTE1.Rows(R).Item("ROUTE_CODE")) + "'"))
                                 SumCURD1 = clsCommon.myCdbl(dt.Compute("sum(CurdQty)", "ROUTE_CODE='" + clsCommon.myCstr(dtROUTE1.Rows(R).Item("ROUTE_CODE")) + "'"))
                                 SumQty1 = clsCommon.myCdbl(dt.Compute("sum(Qty)", "ROUTE_CODE='" + clsCommon.myCstr(dtROUTE1.Rows(R).Item("ROUTE_CODE")) + "'"))
@@ -3001,7 +3011,10 @@ where convert(date,TSPL_PAYMENT_PROCESS_HEAD.From_Date,103)>=convert(date,('" + 
                             CountNo = clsCommon.myCdbl(R + 1)
                         End If
                         SumSWEET1 = clsCommon.myCdbl(dt.Compute("sum(SweetQty)", "VSP_CODE='" + clsCommon.myCstr(dr("VSP_CODE")) + "'"))
-                        SumGoodFail1 = clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", "VSP_CODE='" + clsCommon.myCstr(dr("VSP_CODE")) + "'"))
+                        If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "TNK") = CompairStringResult.Equal Then
+                            SumGoodFail1 = clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", "VSP_CODE='" + clsCommon.myCstr(dr("VSP_CODE")) + "'"))
+                        End If
+                        'SumGoodFail1 = clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", "VSP_CODE='" + clsCommon.myCstr(dr("VSP_CODE")) + "'"))
                         SumSOUR1 = clsCommon.myCdbl(dt.Compute("sum(SourQty)", "VSP_CODE='" + clsCommon.myCstr(dr("VSP_CODE")) + "'"))
                         SumCURD1 = clsCommon.myCdbl(dt.Compute("sum(CurdQty)", "VSP_CODE='" + clsCommon.myCstr(dr("VSP_CODE")) + "'"))
                         SumQty1 = clsCommon.myCdbl(dt.Compute("sum(Qty)", "VSP_CODE='" + clsCommon.myCstr(dr("VSP_CODE")) + "'"))
@@ -3120,8 +3133,12 @@ where convert(date,TSPL_PAYMENT_PROCESS_HEAD.From_Date,103)>=convert(date,('" + 
                 dtMain.Rows.Add(newBlankRow1)
                 newBlankRow2 = dtMain.NewRow
                 dtMain.Rows.Add(newBlankRow2)
+                Dim GSumGoodFail As Decimal = 0
                 Dim GSumSWEET As Decimal = Math.Round(clsCommon.myCdbl(dt.Compute("sum(SweetQty)", "")), 2)
-                Dim GSumGoodFail As Decimal = Math.Round(clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", "")), 2)
+                If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "BKN") = CompairStringResult.Equal Then
+                    GSumGoodFail = Math.Round(clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", "")), 2)
+                End If
+                ' GSumGoodFail = Math.Round(clsCommon.myCdbl(dt.Compute("sum(GoodFailQty)", "")), 2)
                 Dim GSumSOUR As Decimal = Math.Round(clsCommon.myCdbl(dt.Compute("sum(SourQty)", "")), 2)
                 Dim GSumCURD As Decimal = Math.Round(clsCommon.myCdbl(dt.Compute("sum(CurdQty)", "")), 2)
                 Dim GSumQty As Decimal = Math.Round(clsCommon.myCdbl(dt.Compute("sum(Qty)", "")), 2)

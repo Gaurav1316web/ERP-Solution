@@ -790,6 +790,15 @@ Partial Class FrmUtility
         Me.TxtMultiDairyGPass = New common.UserControls.txtMultiSelectFinder()
         Me.RadPageViewPage8 = New Telerik.WinControls.UI.RadPageViewPage()
         Me.RadScrollablePanel5 = New Telerik.WinControls.UI.RadScrollablePanel()
+        Me.GroupBox117 = New System.Windows.Forms.GroupBox()
+        Me.RadCheckBox2 = New Telerik.WinControls.UI.RadCheckBox()
+        Me.RadButton359 = New Telerik.WinControls.UI.RadButton()
+        Me.RadCheckBox1 = New Telerik.WinControls.UI.RadCheckBox()
+        Me.MyLabel76 = New common.Controls.MyLabel()
+        Me.MyDateTimePicker9 = New common.Controls.MyDateTimePicker()
+        Me.MyLabel77 = New common.Controls.MyLabel()
+        Me.MyDateTimePicker10 = New common.Controls.MyDateTimePicker()
+        Me.RadButton358 = New Telerik.WinControls.UI.RadButton()
         Me.GroupBox118 = New System.Windows.Forms.GroupBox()
         Me.btnPickCFSaleInvoiceDoc = New Telerik.WinControls.UI.RadButton()
         Me.btnResetCFSaleInvoiceDoc = New Telerik.WinControls.UI.RadButton()
@@ -1597,6 +1606,15 @@ Partial Class FrmUtility
         CType(Me.RadScrollablePanel5, System.ComponentModel.ISupportInitialize).BeginInit
         Me.RadScrollablePanel5.PanelContainer.SuspendLayout
         Me.RadScrollablePanel5.SuspendLayout
+        Me.GroupBox117.SuspendLayout
+        CType(Me.RadCheckBox2, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.RadButton359, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.RadCheckBox1, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.MyLabel76, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.MyDateTimePicker9, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.MyLabel77, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.MyDateTimePicker10, System.ComponentModel.ISupportInitialize).BeginInit
+        CType(Me.RadButton358, System.ComponentModel.ISupportInitialize).BeginInit
         Me.GroupBox118.SuspendLayout
         CType(Me.btnPickCFSaleInvoiceDoc, System.ComponentModel.ISupportInitialize).BeginInit
         CType(Me.btnResetCFSaleInvoiceDoc, System.ComponentModel.ISupportInitialize).BeginInit
@@ -2062,7 +2080,7 @@ Partial Class FrmUtility
         Me.RadPageView1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.RadPageView1.Location = New System.Drawing.Point(0, 0)
         Me.RadPageView1.Name = "RadPageView1"
-        Me.RadPageView1.SelectedPage = Me.RadPageViewPage1
+        Me.RadPageView1.SelectedPage = Me.RadPageViewPage8
         Me.RadPageView1.Size = New System.Drawing.Size(1112, 569)
         Me.RadPageView1.TabIndex = 44
         CType(Me.RadPageView1.GetChildAt(0), Telerik.WinControls.UI.RadPageViewStripElement).StripButtons = Telerik.WinControls.UI.StripViewButtons.None
@@ -10160,6 +10178,7 @@ Partial Class FrmUtility
         '
         'RadScrollablePanel5.PanelContainer
         '
+        Me.RadScrollablePanel5.PanelContainer.Controls.Add(Me.GroupBox117)
         Me.RadScrollablePanel5.PanelContainer.Controls.Add(Me.GroupBox118)
         Me.RadScrollablePanel5.PanelContainer.Controls.Add(Me.groupBoxMSInventory)
         Me.RadScrollablePanel5.PanelContainer.Controls.Add(Me.GroupBox113)
@@ -10179,6 +10198,137 @@ Partial Class FrmUtility
         Me.RadScrollablePanel5.PanelContainer.Size = New System.Drawing.Size(1074, 519)
         Me.RadScrollablePanel5.Size = New System.Drawing.Size(1093, 521)
         Me.RadScrollablePanel5.TabIndex = 387
+        '
+        'GroupBox117
+        '
+        Me.GroupBox117.Controls.Add(Me.RadCheckBox2)
+        Me.GroupBox117.Controls.Add(Me.RadButton359)
+        Me.GroupBox117.Controls.Add(Me.RadCheckBox1)
+        Me.GroupBox117.Controls.Add(Me.MyLabel76)
+        Me.GroupBox117.Controls.Add(Me.MyDateTimePicker9)
+        Me.GroupBox117.Controls.Add(Me.MyLabel77)
+        Me.GroupBox117.Controls.Add(Me.MyDateTimePicker10)
+        Me.GroupBox117.Controls.Add(Me.RadButton358)
+        Me.GroupBox117.Location = New System.Drawing.Point(377, 366)
+        Me.GroupBox117.Name = "GroupBox117"
+        Me.GroupBox117.Size = New System.Drawing.Size(415, 75)
+        Me.GroupBox117.TabIndex = 390
+        Me.GroupBox117.TabStop = False
+        Me.GroupBox117.Text = "Convert VLCDataUploader to Farmer collection"
+        '
+        'RadCheckBox2
+        '
+        Me.RadCheckBox2.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RadCheckBox2.Location = New System.Drawing.Point(242, 21)
+        Me.RadCheckBox2.Name = "RadCheckBox2"
+        Me.RadCheckBox2.Size = New System.Drawing.Size(125, 16)
+        Me.RadCheckBox2.TabIndex = 333
+        Me.RadCheckBox2.Text = "Skip Missing Farmes"
+        '
+        'RadButton359
+        '
+        Me.RadButton359.Location = New System.Drawing.Point(12, 16)
+        Me.RadButton359.Name = "RadButton359"
+        Me.RadButton359.Size = New System.Drawing.Size(224, 25)
+        Me.RadButton359.TabIndex = 332
+        Me.RadButton359.Text = "Export Farmers with Missing Details"
+        '
+        'RadCheckBox1
+        '
+        Me.RadCheckBox1.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.RadCheckBox1.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RadCheckBox1.Location = New System.Drawing.Point(241, 50)
+        Me.RadCheckBox1.Name = "RadCheckBox1"
+        Me.RadCheckBox1.Size = New System.Drawing.Size(130, 16)
+        Me.RadCheckBox1.TabIndex = 331
+        Me.RadCheckBox1.Text = "Delete Duplicate Data"
+        Me.RadCheckBox1.ToggleState = Telerik.WinControls.Enumerations.ToggleState.[On]
+        '
+        'MyLabel76
+        '
+        Me.MyLabel76.FieldName = Nothing
+        Me.MyLabel76.Location = New System.Drawing.Point(129, 49)
+        Me.MyLabel76.Name = "MyLabel76"
+        Me.MyLabel76.Size = New System.Drawing.Size(17, 18)
+        Me.MyLabel76.TabIndex = 330
+        Me.MyLabel76.Text = "to"
+        '
+        'MyDateTimePicker9
+        '
+        Me.MyDateTimePicker9.CalculationExpression = Nothing
+        Me.MyDateTimePicker9.CustomFormat = "dd/MMM/yyyy"
+        Me.MyDateTimePicker9.FieldCode = Nothing
+        Me.MyDateTimePicker9.FieldDesc = Nothing
+        Me.MyDateTimePicker9.FieldMaxLength = 0
+        Me.MyDateTimePicker9.FieldName = Nothing
+        Me.MyDateTimePicker9.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyDateTimePicker9.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.MyDateTimePicker9.isCalculatedField = False
+        Me.MyDateTimePicker9.IsSourceFromTable = False
+        Me.MyDateTimePicker9.IsSourceFromValueList = False
+        Me.MyDateTimePicker9.IsUnique = False
+        Me.MyDateTimePicker9.Location = New System.Drawing.Point(149, 49)
+        Me.MyDateTimePicker9.MendatroryField = False
+        Me.MyDateTimePicker9.MinDate = New Date(1753, 1, 1, 0, 0, 0, 0)
+        Me.MyDateTimePicker9.MyLinkLable1 = Me.RadLabel4
+        Me.MyDateTimePicker9.MyLinkLable2 = Nothing
+        Me.MyDateTimePicker9.Name = "MyDateTimePicker9"
+        Me.MyDateTimePicker9.NullDate = New Date(1753, 1, 1, 0, 0, 0, 0)
+        Me.MyDateTimePicker9.ReferenceFieldDesc = Nothing
+        Me.MyDateTimePicker9.ReferenceFieldName = Nothing
+        Me.MyDateTimePicker9.ReferenceTableName = Nothing
+        Me.MyDateTimePicker9.Size = New System.Drawing.Size(87, 18)
+        Me.MyDateTimePicker9.TabIndex = 329
+        Me.MyDateTimePicker9.TabStop = False
+        Me.MyDateTimePicker9.Text = "13/Jun/2011"
+        Me.MyDateTimePicker9.Value = New Date(2011, 6, 13, 0, 0, 0, 0)
+        '
+        'MyLabel77
+        '
+        Me.MyLabel77.FieldName = Nothing
+        Me.MyLabel77.Location = New System.Drawing.Point(4, 49)
+        Me.MyLabel77.Name = "MyLabel77"
+        Me.MyLabel77.Size = New System.Drawing.Size(30, 18)
+        Me.MyLabel77.TabIndex = 60
+        Me.MyLabel77.Text = "Date"
+        '
+        'MyDateTimePicker10
+        '
+        Me.MyDateTimePicker10.CalculationExpression = Nothing
+        Me.MyDateTimePicker10.CustomFormat = "dd/MMM/yyyy"
+        Me.MyDateTimePicker10.FieldCode = Nothing
+        Me.MyDateTimePicker10.FieldDesc = Nothing
+        Me.MyDateTimePicker10.FieldMaxLength = 0
+        Me.MyDateTimePicker10.FieldName = Nothing
+        Me.MyDateTimePicker10.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MyDateTimePicker10.Format = System.Windows.Forms.DateTimePickerFormat.Custom
+        Me.MyDateTimePicker10.isCalculatedField = False
+        Me.MyDateTimePicker10.IsSourceFromTable = False
+        Me.MyDateTimePicker10.IsSourceFromValueList = False
+        Me.MyDateTimePicker10.IsUnique = False
+        Me.MyDateTimePicker10.Location = New System.Drawing.Point(40, 49)
+        Me.MyDateTimePicker10.MendatroryField = False
+        Me.MyDateTimePicker10.MinDate = New Date(1753, 1, 1, 0, 0, 0, 0)
+        Me.MyDateTimePicker10.MyLinkLable1 = Me.RadLabel4
+        Me.MyDateTimePicker10.MyLinkLable2 = Nothing
+        Me.MyDateTimePicker10.Name = "MyDateTimePicker10"
+        Me.MyDateTimePicker10.NullDate = New Date(1753, 1, 1, 0, 0, 0, 0)
+        Me.MyDateTimePicker10.ReferenceFieldDesc = Nothing
+        Me.MyDateTimePicker10.ReferenceFieldName = Nothing
+        Me.MyDateTimePicker10.ReferenceTableName = Nothing
+        Me.MyDateTimePicker10.Size = New System.Drawing.Size(87, 18)
+        Me.MyDateTimePicker10.TabIndex = 59
+        Me.MyDateTimePicker10.TabStop = False
+        Me.MyDateTimePicker10.Text = "13/Jun/2011"
+        Me.MyDateTimePicker10.Value = New Date(2011, 6, 13, 0, 0, 0, 0)
+        '
+        'RadButton358
+        '
+        Me.RadButton358.Location = New System.Drawing.Point(373, 12)
+        Me.RadButton358.Name = "RadButton358"
+        Me.RadButton358.Size = New System.Drawing.Size(37, 56)
+        Me.RadButton358.TabIndex = 13
+        Me.RadButton358.Text = ">>"
         '
         'GroupBox118
         '
@@ -11668,6 +11818,16 @@ Partial Class FrmUtility
         Me.RadScrollablePanel5.PanelContainer.ResumeLayout(False)
         CType(Me.RadScrollablePanel5, System.ComponentModel.ISupportInitialize).EndInit
         Me.RadScrollablePanel5.ResumeLayout(False)
+        Me.GroupBox117.ResumeLayout(False)
+        Me.GroupBox117.PerformLayout
+        CType(Me.RadCheckBox2, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.RadButton359, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.RadCheckBox1, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.MyLabel76, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.MyDateTimePicker9, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.MyLabel77, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.MyDateTimePicker10, System.ComponentModel.ISupportInitialize).EndInit
+        CType(Me.RadButton358, System.ComponentModel.ISupportInitialize).EndInit
         Me.GroupBox118.ResumeLayout(False)
         CType(Me.btnPickCFSaleInvoiceDoc, System.ComponentModel.ISupportInitialize).EndInit
         CType(Me.btnResetCFSaleInvoiceDoc, System.ComponentModel.ISupportInitialize).EndInit
@@ -12570,5 +12730,14 @@ Partial Class FrmUtility
     Friend WithEvents rbtnShipment As RadRadioButton
     Friend WithEvents rbtnInvoice As RadRadioButton
     Friend WithEvents btnExportUpdateFormat As RadButton
+    Friend WithEvents GroupBox117 As GroupBox
+    Friend WithEvents MyLabel76 As common.Controls.MyLabel
+    Friend WithEvents MyDateTimePicker9 As common.Controls.MyDateTimePicker
+    Friend WithEvents MyLabel77 As common.Controls.MyLabel
+    Friend WithEvents MyDateTimePicker10 As common.Controls.MyDateTimePicker
+    Friend WithEvents RadButton358 As RadButton
+    Friend WithEvents RadCheckBox1 As RadCheckBox
+    Friend WithEvents RadCheckBox2 As RadCheckBox
+    Friend WithEvents RadButton359 As RadButton
 End Class
 

@@ -35,8 +35,8 @@ Public Class FrmperdayDetailRpt
 
             BaseQry = " 
                       
-select Structure_Code,(Amt_Less_Discount-Return_Amt)Amount,TSPL_COMPANY_MASTER.* from (
-select max(xx.Item_Code)Item_Code,CONCAT('SALE OF ', xx.Structure_Code) AS Structure_Code,sum(isnull(Amt_Less_Discount,0))Amt_Less_Discount,sum(isnull(Return_Amt,0))Return_Amt
+select Structure_Code,(Amt_Less_Discount-Return_Amt)Amount,(Amt_Less_Discount1-Return_Amt1) as Debit_Amt,TSPL_COMPANY_MASTER.* from (
+select max(xx.Item_Code)Item_Code,CONCAT('SALE OF ', xx.Structure_Code) AS Structure_Code,sum(isnull(Amt_Less_Discount,0))Amt_Less_Discount,sum(isnull(Return_Amt,0))Return_Amt,0 as Amt_Less_Discount1,0 as Return_Amt1,2 as RI
 from( select TSPL_SD_SALE_INVOICE_DETAIL.Item_Code,TSPL_ITEM_MASTER.Structure_Code,TSPL_SD_SALE_INVOICE_DETAIL.Qty,TSPL_SD_SALE_INVOICE_DETAIL.Amt_Less_Discount,TSPL_SD_SALE_RETURN_DETAIL.Amt_Less_Discount as Return_Amt from TSPL_SD_SALE_INVOICE_DETAIL
 LEFT OUTER JOIN TSPL_SD_SALE_INVOICE_HEAD ON TSPL_SD_SALE_INVOICE_HEAD.DOCUMENT_CODE=TSPL_SD_SALE_INVOICE_DETAIL.DOCUMENT_CODE
 LEFT OUTER JOIN TSPL_SD_SALE_RETURN_HEAD ON TSPL_SD_SALE_RETURN_HEAD.Against_Invoice_No=TSPL_SD_SALE_INVOICE_HEAD.DOCUMENT_CODE
@@ -51,7 +51,7 @@ convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= convert(date,('" + 
 and TSPL_CUSTOMER_MASTER.State=TSPL_LOCATION_MASTER.State and TSPL_SD_SALE_INVOICE_HEAD.Is_Taxable=1 )xx group by Structure_Code 
 union all
 
-select max(xx.Item_Code)Item_Code,CONCAT('SALE OF ', xx.Structure_Code,'( ',Floor(max(xx.Sale_IGST_Rate)),'% IGST)') AS Structure_Code,sum(isnull(Amt_Less_Discount,0))Amt_Less_Discount,sum(isnull(Return_Amt,0))Return_Amt
+select max(xx.Item_Code)Item_Code,CONCAT('SALE OF ', xx.Structure_Code,'( ',Floor(max(xx.Sale_IGST_Rate)),'% IGST)') AS Structure_Code,sum(isnull(Amt_Less_Discount,0))Amt_Less_Discount,sum(isnull(Return_Amt,0))Return_Amt,0 as Amt_Less_Discount1,0 as Return_Amt1,2 as RI
 from( select TSPL_SD_SALE_INVOICE_DETAIL.Item_Code,TSPL_ITEM_MASTER.Structure_Code,TSPL_SD_SALE_INVOICE_DETAIL.Qty,TSPL_SD_SALE_INVOICE_DETAIL.Amt_Less_Discount,TSPL_SD_SALE_RETURN_DETAIL.Amt_Less_Discount as Return_Amt,	CASE WHEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX1) = 'IGST' THEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX1_Rate) ELSE (CASE WHEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX2) = 'IGST' THEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX2_Rate) ELSE (CASE WHEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX3) = 'IGST' THEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX3_Rate) ELSE (CASE WHEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX4) = 'IGST' THEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX4_Rate) 
 ELSE (CASE WHEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX5) = 'IGST' THEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX5_Rate) ELSE (CASE WHEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX6) = 'IGST' THEN (TSPL_SD_SALE_INVOICE_DETAIL.TAX6_Rate) 
  ELSE 0 END) END) END) END) END ) END
@@ -72,7 +72,25 @@ and TSPL_CUSTOMER_MASTER.State<>TSPL_LOCATION_MASTER.State and TSPL_SD_SALE_INVO
 )xx group by Structure_Code
 
 Union all
-( select (xy.Item_Code)Item_Code,(xy.Sale_Tax) as Structure_Code,(isnull(Sale_Tax_Amt,0))Amt_Less_Discount,(isnull(Return_Tax_Amt,0))Return_Amt
+
+Select Item_Code,MAX(Structure_Code)Structure_Code,0 as Amt_Less_Discount,0 as Return_Amt,SUM(Amt_Less_Discount)Amt_Less_Discount1,sum(Return_Amt)Return_Amt1 ,1 as RI
+
+from 
+
+(select TSPL_SD_SALE_INVOICE_HEAD.Customer_Code as Item_Code,Case when TSPL_CUSTOMER_MASTER.Cust_Group_Code='DCS' then ISNULL(TSPL_CUSTOMER_MASTER.Customer_Name, '') +
+' DCS Code.' + ISNULL(TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader, '') else ISNULL(TSPL_CUSTOMER_MASTER.Customer_Name, '') end  as Structure_Code,TSPL_SD_SALE_INVOICE_DETAIL.Qty,TSPL_SD_SALE_INVOICE_DETAIL.Item_Net_Amt as Amt_Less_Discount,0 as Return_Amt from TSPL_SD_SALE_INVOICE_DETAIL
+LEFT OUTER JOIN TSPL_SD_SALE_INVOICE_HEAD ON TSPL_SD_SALE_INVOICE_HEAD.DOCUMENT_CODE=TSPL_SD_SALE_INVOICE_DETAIL.DOCUMENT_CODE
+LEFT OUTER JOIN TSPL_ITEM_MASTER ON TSPL_ITEM_MASTER.Item_Code=TSPL_SD_SALE_INVOICE_DETAIL.Item_Code
+left outer join TSPL_CUSTOMER_MASTER ON TSPL_CUSTOMER_MASTER.Cust_Code = TSPL_SD_SALE_INVOICE_HEAD.Customer_Code
+left outer join TSPL_LOCATION_MASTER ON TSPL_LOCATION_MASTER.Location_Code = TSPL_SD_SALE_INVOICE_HEAD.Bill_To_Location
+left outer join TSPL_VLC_MASTER_HEAD ON TSPL_VLC_MASTER_HEAD.VSP_Code=TSPL_SD_SALE_INVOICE_HEAD.Customer_Code
+
+where convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,('" + from_Date + "'),103) and
+convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= convert(date,('" + To_date + "'),103)
+and TSPL_CUSTOMER_MASTER.State=TSPL_LOCATION_MASTER.State and TSPL_SD_SALE_INVOICE_HEAD.Is_Taxable=1 )xx group by Item_Code 
+
+Union all
+( select (xy.Item_Code)Item_Code,(xy.Sale_Tax) as Structure_Code,(isnull(Sale_Tax_Amt,0))Amt_Less_Discount,(isnull(Return_Tax_Amt,0))Return_Amt,0 as Amt_Less_Discount1,0 as Return_Amt1,2 as RI
 from
 (select max(xx.Item_Code)Item_Code,Sale_Tax,sum(Sale_Tax_Amt)Sale_Tax_Amt,sum(Return_Tax_Amt)Return_Tax_Amt from(
 select TSPL_SD_SALE_INVOICE_DETAIL.Item_Code,
@@ -147,7 +165,8 @@ convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <= convert(date,('" + 
 
 )) xxxx 
 LEFT OUTER JOIN TSPL_COMPANY_MASTER ON TSPL_COMPANY_MASTER.Comp_Code1= '" + objCommonVar.CurrComp_Code1 + "'
-where Structure_Code IS NOT NULL AND Structure_Code <> '' and (Amt_Less_Discount-Return_Amt)>0
+where Structure_Code IS NOT NULL AND Structure_Code <> '' and ((Amt_Less_Discount-Return_Amt)>0 or (Amt_Less_Discount1-Return_Amt1)>0 ) order by RI
+
 "
 
             Dim dt As DataTable = Nothing
