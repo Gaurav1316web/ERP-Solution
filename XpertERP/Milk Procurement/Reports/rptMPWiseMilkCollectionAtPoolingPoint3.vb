@@ -581,7 +581,7 @@ ISNULL( CAST(SUM(XXX.FARMERSNF_KG) * 100.0 / NULLIF(SUM(FARMERQTY), 0) AS DECIMA
 --,(sum(XXX.RECOQTY)-SUM(XXX.FARMERQTY) ) AS Difference1
 ,CAST((SUM(XXX.RECOQTY) - SUM(XXX.FARMERQTY)) AS DECIMAL(18,2)) AS Difference,
 CASE 
-    WHEN (SUM(XXX.RECOQTY) - SUM(XXX.FARMERQTY)) < 0.09
+    WHEN ROUND(ABS(SUM(XXX.RECOQTY) - SUM(XXX.FARMERQTY)), 2) = 0
     THEN 'MATCH' 
     ELSE 'NOT MATCH' 
 END AS STATUS
@@ -650,7 +650,7 @@ convert(date,TSPL_DCS_MP_INCENTIVE_RECO_head.Reco_Date,103) <=CONVERT(DATE,'" & 
             '    Qry += " and UOM  = '" + cboUnit.Text + "' "
             'End If
             Qry += "  UNION ALL
-                      select '' as UOMRECO,Unit_Code AS UOMFARMER, '' as MP_CODE, TSPL_ZONE_MASTER.Zone_Code,TSPL_ZONE_MASTER.Description, fORMAT(CONVERT(date, TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date, 103), 'MMMM yyyy') AS Month ,  TSPL_VLC_DATA_UPLOADER_MASTER.VLC_Code AS VLC_CODE, (TSPL_VLC_MASTER_HEAD.MCC) AS MCC_CODE,(TSPL_VLC_DATA_UPLOADER_MASTER.Document_Code) AS DOC_CODE, convert(varchar,TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103) AS DOC_DATE,TSPL_VLC_DATA_UPLOADER_MASTER.shift AS SHIFT , (VSP_CODE) AS DCS_CODE,
+                      select '' as UOMRECO,Unit_Code AS UOMFARMER, TSPL_VLC_DATA_UPLOADER_DETAIL.Farmer_Code as MP_CODE, TSPL_ZONE_MASTER.Zone_Code,TSPL_ZONE_MASTER.Description, fORMAT(CONVERT(date, TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date, 103), 'MMMM yyyy') AS Month ,  TSPL_VLC_DATA_UPLOADER_MASTER.VLC_Code AS VLC_CODE, (TSPL_VLC_MASTER_HEAD.MCC) AS MCC_CODE,(TSPL_VLC_DATA_UPLOADER_MASTER.Document_Code) AS DOC_CODE, convert(varchar,TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103) AS DOC_DATE,TSPL_VLC_DATA_UPLOADER_MASTER.shift AS SHIFT , (VSP_CODE) AS DCS_CODE,
                      ( TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader) AS DCS_Uploader_code, (TSPL_VLC_MASTER_HEAD.VLC_Name) AS DCS_NAME,(TSPL_VLC_DATA_UPLOADER_MASTER.Route_Code) AS ROUTE_CODE,
                       0 AS RECOQTY,0 AS RECOFAT_KG,0 AS RECOSNF_KG   ,(TSPL_VLC_DATA_UPLOADER_DETAIL.Farmer_Code)Farmer_Count,
                       (TSPL_VLC_DATA_UPLOADER_DETAIL.QTY) AS FARMERQTY, (TSPL_VLC_DATA_UPLOADER_DETAIL.FatPer*TSPL_VLC_DATA_UPLOADER_DETAIL.QTY/100)FARMERFAT_KG,
@@ -704,7 +704,7 @@ LEFT  JOIN TSPL_ZONE_MASTER ON TSPL_ZONE_MASTER.Zone_Code =TSPL_VENDOR_MASTER.Zo
             If clsCommon.myLen(cboUnit.Text) > 0 Then
                 Qry += " and Uom_Code  ='" + cboUnit.Text + "'"
             End If
-            Qry += ")  XXX GROUP BY  XXX.VLC_CODE  "
+            Qry += ")  XXX 	GROUP BY  XXX.VLC_CODE  HAVING SUM(XXX.RECOQTY) > 0 "
             dt = clsDBFuncationality.GetDataTable(Qry)
             'Dim dt As DataTable = clsDBFuncationality.GetDataTable(Baseqry)
             If dt IsNot Nothing AndAlso dt.Rows.Count > 0 Then
@@ -756,7 +756,7 @@ ISNULL(
 , 0.00) AS FARMERSNFAVG
 ,CAST((SUM(XXX.SRNQTY) - SUM(XXX.FARMERQTY)) AS DECIMAL(18,2)) AS Difference,
 CASE 
-    WHEN (SUM(XXX.SRNQTY) - SUM(XXX.FARMERQTY)) = 0 
+    WHEN ROUND(ABS(SUM(XXX.SRNQTY) - SUM(XXX.FARMERQTY)), 2) = 0
     THEN 'MATCH' 
     ELSE 'NOT MATCH' 
 END AS STATUS
