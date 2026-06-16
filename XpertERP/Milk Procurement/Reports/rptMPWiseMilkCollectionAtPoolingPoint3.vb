@@ -613,9 +613,9 @@ convert(date,TSPL_DCS_MP_INCENTIVE_RECO_head.Reco_Date,103) <=CONVERT(DATE,'" & 
             If TxtZone.arrValueMember IsNot Nothing AndAlso TxtZone.arrValueMember.Count > 0 Then
                 Qry += " AND TSPL_ZONE_MASTER.Zone_Code  IN (" + clsCommon.GetMulcallString(TxtZone.arrValueMember) + ") "
             End If
-            If clsCommon.myLen(cboUnit.Text) > 0 Then
-                Qry += " and UOM  = '" + cboUnit.Text + " '"
-            End If
+            'If clsCommon.myLen(cboUnit.Text) > 0 Then
+            '    Qry += " and UOM  = '" + cboUnit.Text + " '"
+            'End If
             Qry += " UNION ALL
 SELECT UOM as UOMRECO,'' AS UOMFARMER, '' as MP_CODE,TSPL_ZONE_MASTER.Zone_Code,TSPL_ZONE_MASTER.Description, fORMAT(CONVERT(date, TSPL_DCS_MP_INCENTIVE_RECO_head.Document_Date, 103), 'MMMM yyyy') AS Month , TSPL_VLC_MASTER_HEAD.VLC_CODE, (TSPL_DCS_MP_INCENTIVE_RECO_DETAIL_INVALID.MCC_CODE)MCC_CODE, 
 (TSPL_DCS_MP_INCENTIVE_RECO_head.document_code)DOC_CODE,CONVERT(varchar, TSPL_DCS_MP_INCENTIVE_RECO_head.Document_Date,103)DOC_DATE,'' AS SHIFT,(TSPL_VLC_MASTER_HEAD.VSP_CODE) AS[DCS_Code],
@@ -646,9 +646,9 @@ convert(date,TSPL_DCS_MP_INCENTIVE_RECO_head.Reco_Date,103) <=CONVERT(DATE,'" & 
             If TxtZone.arrValueMember IsNot Nothing AndAlso TxtZone.arrValueMember.Count > 0 Then
                 Qry += " AND TSPL_ZONE_MASTER.Zone_Code  IN (" + clsCommon.GetMulcallString(TxtZone.arrValueMember) + ") "
             End If
-            If clsCommon.myLen(cboUnit.Text) > 0 Then
-                Qry += " and UOM  = '" + cboUnit.Text + "' "
-            End If
+            'If clsCommon.myLen(cboUnit.Text) > 0 Then
+            '    Qry += " and UOM  = '" + cboUnit.Text + "' "
+            'End If
             Qry += "  UNION ALL
                       select '' as UOMRECO,Unit_Code AS UOMFARMER, '' as MP_CODE, TSPL_ZONE_MASTER.Zone_Code,TSPL_ZONE_MASTER.Description, fORMAT(CONVERT(date, TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date, 103), 'MMMM yyyy') AS Month ,  TSPL_VLC_DATA_UPLOADER_MASTER.VLC_Code AS VLC_CODE, (TSPL_VLC_MASTER_HEAD.MCC) AS MCC_CODE,(TSPL_VLC_DATA_UPLOADER_MASTER.Document_Code) AS DOC_CODE, convert(varchar,TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103) AS DOC_DATE,TSPL_VLC_DATA_UPLOADER_MASTER.shift AS SHIFT , (VSP_CODE) AS DCS_CODE,
                      ( TSPL_VLC_MASTER_HEAD.VLC_Code_VLC_Uploader) AS DCS_Uploader_code, (TSPL_VLC_MASTER_HEAD.VLC_Name) AS DCS_NAME,(TSPL_VLC_DATA_UPLOADER_MASTER.Route_Code) AS ROUTE_CODE,
@@ -676,7 +676,7 @@ LEFT  JOIN TSPL_ZONE_MASTER ON TSPL_ZONE_MASTER.Zone_Code =TSPL_VENDOR_MASTER.Zo
                 Qry += " AND TSPL_ZONE_MASTER.Zone_Code  IN (" + clsCommon.GetMulcallString(TxtZone.arrValueMember) + ") "
             End If
             If clsCommon.myLen(cboUnit.Text) > 0 Then
-                Qry += " and Unit_Code  =' " + cboUnit.Text + " '"
+                Qry += " and Unit_Code  ='" + cboUnit.Text + "'"
             End If
             Qry += " UNION ALL
                  select '' as UOMRECO,Uom_Code AS UOMFARMER,   TSPL_VLC_DATA_UPLOADER.MP_CODE, TSPL_ZONE_MASTER.Zone_Code,TSPL_ZONE_MASTER.Description,fORMAT(CONVERT(date, TSPL_VLC_DATA_UPLOADER.Doc_Date, 103), 'MMMM yyyy') AS Month  ,TSPL_VLC_MASTER_HEAD.VLC_CODE	,(TSPL_VLC_MASTER_HEAD.MCC)MCC,	(TSPL_VLC_DATA_UPLOADER.DOC_NO) AS DOC_CODE	,CONVERT(VARCHAR,TSPL_VLC_DATA_UPLOADER.DOC_DATE,103)DOC_DATE,	SHIFT,	(VSP_Code)DCS_Code,	(VLC_Code_VLC_Uploader)DCS_Uploader_code,	(VLC_Name)DCS_NAME	,(ROUTE_CODE)ROUTE_CODE	, 0 AS RECOQTY	,0 AS RECOFAT_KG	,0 AS RECOSNF_KG	,	
@@ -702,7 +702,7 @@ LEFT  JOIN TSPL_ZONE_MASTER ON TSPL_ZONE_MASTER.Zone_Code =TSPL_VENDOR_MASTER.Zo
                 Qry += " AND TSPL_ZONE_MASTER.Zone_Code  IN (" + clsCommon.GetMulcallString(TxtZone.arrValueMember) + ") "
             End If
             If clsCommon.myLen(cboUnit.Text) > 0 Then
-                Qry += " and Uom_Code  =' " + cboUnit.Text + "' "
+                Qry += " and Uom_Code  ='" + cboUnit.Text + "'"
             End If
             Qry += ")  XXX GROUP BY  XXX.VLC_CODE  "
             dt = clsDBFuncationality.GetDataTable(Qry)
@@ -790,7 +790,7 @@ LEFT  JOIN TSPL_ZONE_MASTER ON TSPL_ZONE_MASTER.Zone_Code =TSPL_VENDOR_MASTER.Zo
             End If
 
             If clsCommon.myLen(cboUnit.Text) > 0 Then
-                Qry += " and UOM_Code  =' " + cboUnit.Text + "' "
+                Qry += " and UOM_Code  ='" + cboUnit.Text + "'"
             End If
             ' convert(date,TSPL_MILK_SRN_head.DOC_DATE,103)>='01/Feb/2026' and convert(date,TSPL_MILK_SRN_head.DOC_DATE,103) <='01/Feb/2026' 
             'AND VLC_Code_VLC_Uploader='5102'
@@ -827,7 +827,7 @@ LEFT  JOIN TSPL_ZONE_MASTER ON TSPL_ZONE_MASTER.Zone_Code =TSPL_VENDOR_MASTER.Zo
                 Qry += " AND TSPL_ZONE_MASTER.Zone_Code  IN (" + clsCommon.GetMulcallString(TxtZone.arrValueMember) + ") "
             End If
             If clsCommon.myLen(cboUnit.Text) > 0 Then
-                Qry += " and Unit_Code  =' " + cboUnit.Text + "' "
+                Qry += " and Unit_Code  ='" + cboUnit.Text + "'"
             End If
             'convert(date,TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103)>='01/Feb/2026' and convert(date,TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103) <='01/Feb/2026'
             'AND VLC_Code_VLC_Uploader='5102'
@@ -858,7 +858,7 @@ where 2=2 and  "
                 Qry += " AND TSPL_ZONE_MASTER.Zone_Code  IN (" + clsCommon.GetMulcallString(TxtZone.arrValueMember) + ") "
             End If
             If clsCommon.myLen(cboUnit.Text) > 0 Then
-                Qry += " and Uom_Code  =' " + cboUnit.Text + "' "
+                Qry += " and Uom_Code  ='" + cboUnit.Text + "'"
             End If
             '         convert(date,TSPL_VLC_DATA_UPLOADER.DOC_DATE,103)>='01/Feb/2026' and convert(date,TSPL_VLC_DATA_UPLOADER.DOC_DATE,103) <='01/Feb/2026' 
             'AND VLC_Code_VLC_Uploader='5102'
@@ -1240,6 +1240,8 @@ COUNT(Farmer_Count) AS Farmer_Count,SUM(XXXX.FARMERQTY)FARMERQTY,SUM(XXXX.FARMER
             gv.Columns("DCS_NAME").HeaderText = "DCS Name"
             gv.Columns("Zone_Code").HeaderText = "Zone Code"
             gv.Columns("Zone_Name").HeaderText = "Zone Name"
+            gv.Columns("UOMRECO").HeaderText = "UOM SRN"
+            gv.Columns("UOMFARMER").HeaderText = "UOM Farmer"
 
             gv.Columns("SRNQTY").IsVisible = False
             gv.Columns("SRNQTY").VisibleInColumnChooser = True
@@ -1329,7 +1331,7 @@ COUNT(Farmer_Count) AS Farmer_Count,SUM(XXXX.FARMERQTY)FARMERQTY,SUM(XXXX.FARMER
             If isPrint Then
                 Qry &= " , TSPL_COMPANY_MASTER.Logo_Img,TSPL_COMPANY_MASTER.Logo_Img2,TSPL_COMPANY_MASTER.Comp_Name,TSPL_COMPANY_MASTER.Add1,TSPL_COMPANY_MASTER.Add2,TSPL_COMPANY_MASTER.Add3,TSPL_COMPANY_MASTER.State,TSPL_STATE_MASTER.STATE_NAME,'" & objCommonVar.CurrentUser & "' As PrintBy "
             End If
-            Qry &= " from(Select [Union],MAX(Doc_Date)Doc_Date,
+            Qry &= " from(Select [Union],MAX(Doc_Date)Doc_Date,MAX(UOMFARMER)UOMFARMER ,
 CONVERT(decimal(18,2),Sum(MorningQty))MorningQty,
 CONVERT(decimal(18,2),Sum(case When (MorningFATKG)>0 Then ((MorningFATKG/MorningQty)*100) Else 0 End)) As MorningFAT,
 CONVERT(decimal(18,2),Sum(Case When (MorningSNFKG)>0 Then ((MorningSNFKG/MorningQty)*100) Else 0 End)) As MorningSNF,
@@ -1337,7 +1339,7 @@ CONVERT(decimal(18,2),Sum(MorningAmount)) As MorningAmount,
 CONVERT(decimal(18,2),Sum(EveningQty))EveningQty,
 CONVERT(decimal(18,2),Sum(Case When (EveningFATKG)>0 Then ((EveningFATKG/EveningQty)*100) Else 0 End)) As EveningFAT,
 CONVERT(decimal(18,2),Sum(Case When (EveningSNFKG)>0 Then ((EveningSNFKG/EveningQty)*100) Else 0 End)) As EveningSNF,
-CONVERT(decimal(18,2),Sum(EveningAmount)) As EveningAmount,CONVERT(decimal(18,2),Sum(MorningQty + EveningQty)) As TotalQuantity,max(ZONE_CODE)[Zone_Code],max(Description) as [Zone_Name],MAX(UOMFARMER)UOMFARMER 
+CONVERT(decimal(18,2),Sum(EveningAmount)) As EveningAmount,CONVERT(decimal(18,2),Sum(MorningQty + EveningQty)) As TotalQuantity,max(ZONE_CODE)[Zone_Code],max(Description) as [Zone_Name]
 from 
 (Select [Union],Max(Convert(Varchar(10),Doc_Date,103))Doc_Date,
 Sum(Case When shift='M' Then Qty Else 0 End) As MorningQty,
@@ -1544,9 +1546,9 @@ Where 1=1 "
             If isPrint Then
                 Qry &= " , TSPL_COMPANY_MASTER.Logo_Img,TSPL_COMPANY_MASTER.Logo_Img2,TSPL_COMPANY_MASTER.Comp_Name,TSPL_COMPANY_MASTER.Add1,TSPL_COMPANY_MASTER.Add2,TSPL_COMPANY_MASTER.Add3,TSPL_COMPANY_MASTER.State,TSPL_STATE_MASTER.STATE_NAME,'" & objCommonVar.CurrentUser & "' As PrintBy "
             End If
-            Qry &= " from( Select [Union],MAX(Doc_Date)Doc_Date,SUM(MorningQty)MorningQty,SUM(EveningQty)EveningQty, MAX(ZONE_CODE)ZONE_CODE, MAX(ZONE_NAME)ZONE_NAME,max(UOMFARMER)UOMFARMER  from (Select
-[Union],Max(Convert(Varchar(10),Doc_Date,103))Doc_Date,(Case When shift='M' Then Count(Distinct MP_Code) Else 0 End) As MorningQty,
-(Case When shift='E' Then Count(Distinct MP_Code) Else 0 End) As EveningQty, MAX(ZONE_CODE)ZONE_CODE, MAX(Description)ZONE_NAME,max(UOMFARMER)UOMFARMER "
+            Qry &= " from( Select [Union],MAX(Doc_Date)Doc_Date,max(UOMFARMER)UOMFARMER ,SUM(MorningQty)MorningQty,SUM(EveningQty)EveningQty, MAX(ZONE_CODE)ZONE_CODE, MAX(ZONE_NAME)ZONE_NAME from (Select
+[Union],Max(Convert(Varchar(10),Doc_Date,103))Doc_Date,max(UOMFARMER)UOMFARMER,(Case When shift='M' Then Count(Distinct MP_Code) Else 0 End) As MorningQty,
+(Case When shift='E' Then Count(Distinct MP_Code) Else 0 End) As EveningQty, MAX(ZONE_CODE)ZONE_CODE, MAX(Description)ZONE_NAME "
             Qry &= " from(" & ReturnFarmerBaseQry() & ")final Group By [Union],shift)BAseQry group by [Union]  "
             Qry &= ")finalQry "
             If isPrint Then
@@ -1637,7 +1639,7 @@ where Doc_Date>='" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") & 
                     qry &= " AND TSPL_ZONE_MASTER.Zone_Code  IN (" + clsCommon.GetMulcallString(TxtZone.arrValueMember) + ") "
                 End If
                 If clsCommon.myLen(cboUnit.Text) > 0 Then
-                    qry += " and Uom_Code  = '" + cboUnit.Text + " '"
+                    qry += " and Uom_Code  = '" + cboUnit.Text + "'"
                 End If
                 qry &= Environment.NewLine & " Union All " & Environment.NewLine
                 qry &= " select Unit_Code AS UOMFARMER, '" & strUnion("Location_Name") & "' As [Union],Cast('" & clsCommon.myCstr(dcsCount) & "' As Int) As DCSCount,TSPL_VLC_DATA_UPLOADER_MASTER.Document_Code As Doc_No,
@@ -1665,7 +1667,7 @@ Where 1=1 and convert(date,TSPL_VLC_DATA_UPLOADER_MASTER.Document_Date,103) >='"
                     qry &= " AND TSPL_ZONE_MASTER.Zone_Code  IN (" + clsCommon.GetMulcallString(TxtZone.arrValueMember) + ") "
                 End If
                 If clsCommon.myLen(cboUnit.Text) > 0 Then
-                    qry += " and Unit_Code  = '" + cboUnit.Text + " '"
+                    qry += " and Unit_Code  = '" + cboUnit.Text + "'"
                 End If
                 qry &= Environment.NewLine & " Union All " & Environment.NewLine
                 qry &= "select '' as UOMFARMER,'" & strUnion("Location_Name") & "' As [Union],Cast('" & clsCommon.myCstr(dcsCount) & "' As Int) As DCSCount,'' As Doc_No,'" & clsCommon.GetPrintDate(txtFromDate.Value, "dd/MM/yyyy") & "' As Doc_Date,'' As File_Date,'' As shift,
@@ -1757,7 +1759,7 @@ Left Outer Join TSPL_STATE_MASTER On TSPL_STATE_MASTER.STATE_CODE=TSPL_COMPANY_M
                 gv.Columns("EveningPending").HeaderText = "Pending"
                 gv.Columns("Zone_Code").HeaderText = "Zone Code"
                 gv.Columns("Zone_Name").HeaderText = "Zone Name"
-                gv.Columns("UOMFARMER").HeaderText = "UOM"
+                gv.Columns("UOMFARMER").HeaderText = "Farmer UOM"
 
 
             End If
@@ -1768,7 +1770,7 @@ Left Outer Join TSPL_STATE_MASTER On TSPL_STATE_MASTER.STATE_CODE=TSPL_COMPANY_M
                 gv.Columns("EveningQty").HeaderText = "Evening"
                 gv.Columns("ZONE_CODE").HeaderText = "Zone Code"
                 gv.Columns("ZONE_NAME").HeaderText = "Zone Name"
-                gv.Columns("UOMFARMER").HeaderText = "UOM"
+                gv.Columns("UOMFARMER").HeaderText = "Farmer UOM"
 
 
             End If
@@ -1785,7 +1787,7 @@ Left Outer Join TSPL_STATE_MASTER On TSPL_STATE_MASTER.STATE_CODE=TSPL_COMPANY_M
                 gv.Columns("TotalQuantity").HeaderText = "Total Quantity"
                 gv.Columns("Zone_Code").HeaderText = "Zone Code"
                 gv.Columns("Zone_Name").HeaderText = "Zone Name"
-                gv.Columns("UOMFARMER").HeaderText = "UOM"
+                gv.Columns("UOMFARMER").HeaderText = "Farmer UOM"
 
 
             End If
@@ -1811,7 +1813,7 @@ Left Outer Join TSPL_STATE_MASTER On TSPL_STATE_MASTER.STATE_CODE=TSPL_COMPANY_M
                 gv.Columns("ZONE_CODE").HeaderText = "Zone Code"
 
                 gv.Columns("ZONE_NAME").HeaderText = "Zone Name"
-                gv.Columns("UOMFARMER").HeaderText = "UOM"
+                gv.Columns("UOMFARMER").HeaderText = "Farmer UOM"
 
             End If
         Catch ex As Exception
@@ -1926,7 +1928,7 @@ Left Outer Join TSPL_STATE_MASTER On TSPL_STATE_MASTER.STATE_CODE=TSPL_COMPANY_M
 
     Private Sub FarmerCollectionDetails()
         Try
-            Dim qry As String = " Select ROW_NUMBER() Over (Order By (Select 1)) As SNo,[Union],Convert(Varchar(10),Doc_Date,103) As [Date],
+            Dim qry As String = " Select ROW_NUMBER() Over (Order By (Select 1)) As SNo,[Union],Convert(Varchar(10),Doc_Date,103) As [Date],UOMFARMER as [Farmer Uom],
  Vlc_Code_VLC_Uploader As [DCS],VLC_Name As [DCS Name],MP_Uploader_Code As [Farmer Code],MP_Name As [Farmer Name],shift As [Shift],qty As [Qty],fat As [Fat %],snf As [Snf %],Convert(Decimal(18,2),Case When qty>0 Then Amount/qty Else 0 End) As [Rate],Amount,tttype As [Source]  ,ZONE_CODE as [Zone Code],Description as [Zone Name] "
             If isPrint Then
                 qry &= " ,'" & objCommonVar.CurrentUser & "' As PrintBy,TSPL_COMPANY_MASTER.Logo_Img, TSPL_COMPANY_MASTER.Logo_Img2, TSPL_COMPANY_MASTER.Comp_Name, TSPL_COMPANY_MASTER.Add1, TSPL_COMPANY_MASTER.Add2, TSPL_COMPANY_MASTER.Add3, TSPL_COMPANY_MASTER.State, TSPL_STATE_MASTER.STATE_NAME"
