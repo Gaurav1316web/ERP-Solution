@@ -86,7 +86,13 @@ left join TSPL_ROUTE_MASTER on TSPL_CUSTOMER_MASTER.Route_No=TSPL_ROUTE_MASTER.R
 left join TSPL_LOCATION_MASTER on TSPL_LOCATION_MASTER.Location_Code =TSPL_SD_SALE_INVOICE_HEAD.Bill_To_Location
 left join TSPL_STATE_MASTER on TSPL_STATE_MASTER.STATE_CODE =TSPL_LOCATION_MASTER.State 
 left outer join TSPL_SD_SHIPMENT_HEAD on TSPL_SD_SHIPMENT_HEAD.Sale_Invoice_No = TSPL_SD_SALE_INVOICE_HEAD.Document_Code
-where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND TSPL_SD_SALE_INVOICE_HEAD.Screen_Type='DS' "
+where  1=1 "
+        If chkDCSSale.Checked Then
+            sQuery &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS','MCC') "
+        Else
+            sQuery &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND TSPL_SD_SALE_INVOICE_HEAD.Screen_Type='DS' "
+        End If
+
         If rbtnDocumentDate.Checked Then
             sQuery += " and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,'" + clsCommon.GetPrintDate(txtFromDate.Value, "dd/MMM/yyyy") + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <=convert(date,'" + clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") + "' ,103) " + Whr + " "
         End If
@@ -102,7 +108,7 @@ where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND TSPL_SD_SALE_INVO
         ElseIf clsCommon.CompairString(clsCommon.myCstr(cboReportType.SelectedValue), "UT") = CompairStringResult.Equal Then
             sQuery += " and TSPL_SD_SALE_INVOICE_HEAD.is_taxable=1  and isnull(TSPL_STATE_MASTER.Is_GST_UT,0)=1"
         ElseIf clsCommon.CompairString(clsCommon.myCstr(cboReportType.SelectedValue), "IT") = CompairStringResult.Equal Then
-            sQuery += "and TSPL_SD_SALE_INVOICE_HEAD.is_taxable=1 and TSPL_LOCATION_MASTER.State<>TSPL_CUSTOMER_MASTER.State and 0= (select count(*) from TSPL_TAX_GROUP_DETAILS where Tax_Group_Code=TSPL_SD_SALE_INVOICE_HEAD.Tax_Group and Tax_Code in(select Tax_Code from TSPL_TAX_MASTER where Is_Mandi_Tax='Y'))"
+            sQuery += " and TSPL_SD_SALE_INVOICE_HEAD.is_taxable=1 and TSPL_LOCATION_MASTER.State<>TSPL_CUSTOMER_MASTER.State and 0= (select count(*) from TSPL_TAX_GROUP_DETAILS where Tax_Group_Code=TSPL_SD_SALE_INVOICE_HEAD.Tax_Group and Tax_Code in(select Tax_Code from TSPL_TAX_MASTER where Is_Mandi_Tax='Y'))"
         ElseIf clsCommon.CompairString(clsCommon.myCstr(cboReportType.SelectedValue), "IWM") = CompairStringResult.Equal Then
             sQuery += " and TSPL_SD_SALE_INVOICE_HEAD.is_taxable=1 and TSPL_LOCATION_MASTER.State<>TSPL_CUSTOMER_MASTER.State and 1 <= (select count(*) from TSPL_TAX_GROUP_DETAILS where Tax_Group_Code=TSPL_SD_SALE_INVOICE_HEAD.Tax_Group and Tax_Code in(select Tax_Code from TSPL_TAX_MASTER where Is_Mandi_Tax='Y'))"
         ElseIf clsCommon.CompairString(clsCommon.myCstr(cboReportType.SelectedValue), "NT") = CompairStringResult.Equal Then
@@ -175,7 +181,7 @@ where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND TSPL_SD_SALE_INVO
 
             Dim dtgv As New DataTable
             dtgv = clsDBFuncationality.GetDataTable(FinalQry)
-            If dtgv IsNot Nothing And dtgv.Rows.Count > 0 Then
+            If dtgv IsNot Nothing AndAlso dtgv.Rows.Count > 0 Then
                 gv.DataSource = Nothing
                 gv.Rows.Clear()
                 gv.Columns.Clear()
@@ -421,7 +427,7 @@ where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND TSPL_SD_SALE_INVO
 
     Private Sub BtnPrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnPrint.Click
         Try
-            If ApplyMilkPouchPrint = True Then
+            If ApplyMilkPouchPrint Then
                 Try
                     'If txtFromDate.ToString("yyyyMM") < txtToDate.ToString("yyyyMM") Then
                     '    clsCommon.MyMessageBoxShow("From Date and To Date should be same month of year.", Me.Text)
@@ -448,8 +454,13 @@ where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND TSPL_SD_SALE_INVO
                     Dim strMonthlyQry As String = " select top 1 isnull (TSPL_SD_SALE_INVOICE_HEAD.MonthlySaleInvoiceNo,'')   FROM   TSPL_SD_SALE_INVOICE_DETAIL 
                                                 left outer join TSPL_SD_SALE_INVOICE_HEAD on TSPL_SD_SALE_INVOICE_DETAIL.DOCUMENT_CODE = TSPL_SD_SALE_INVOICE_HEAD.Document_Code  
                                                 inner join TSPL_ITEM_MASTER on TSPL_ITEM_MASTER.Item_Code = TSPL_SD_SALE_INVOICE_DETAIL.Item_Code  
-                                                where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND Screen_Type='DS'  
-                                                and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,'" + txtFromDate.Value + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <=convert(date,'" + txtToDate.Value + "' ,103) and TSPL_SD_SALE_INVOICE_HEAD.Customer_Code= '" + fndCustom.Value + "' and TSPL_ITEM_MASTER.Is_Milk_Pouch =1  and TSPL_SD_SALE_INVOICE_HEAD.Status =1 and len( isnull (TSPL_SD_SALE_INVOICE_HEAD.MonthlySaleInvoiceNo,'')) > 0 "
+                                                where  1=1 "
+                    If chkDCSSale.Checked Then
+                        strMonthlyQry &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS','MCC') "
+                    Else
+                        strMonthlyQry &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND Screen_Type='DS' "
+                    End If
+                    strMonthlyQry &= " And convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,'" + txtFromDate.Value + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <=convert(date,'" + txtToDate.Value + "' ,103) and TSPL_SD_SALE_INVOICE_HEAD.Customer_Code= '" + fndCustom.Value + "' and TSPL_ITEM_MASTER.Is_Milk_Pouch =1  and TSPL_SD_SALE_INVOICE_HEAD.Status =1 and len( isnull (TSPL_SD_SALE_INVOICE_HEAD.MonthlySaleInvoiceNo,'')) > 0 "
                     Dim ExistMonthlySaleInvoiceNo As String = clsCommon.myCstr(clsDBFuncationality.getSingleValue(strMonthlyQry))
                     If clsCommon.myLen(ExistMonthlySaleInvoiceNo) > 0 Then
                     Else
@@ -460,8 +471,13 @@ where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND TSPL_SD_SALE_INVO
                                              select distinct TSPL_SD_SALE_INVOICE_HEAD.Document_Code   FROM   TSPL_SD_SALE_INVOICE_DETAIL 
                                              left outer join TSPL_SD_SALE_INVOICE_HEAD on TSPL_SD_SALE_INVOICE_DETAIL.DOCUMENT_CODE = TSPL_SD_SALE_INVOICE_HEAD.Document_Code  
                                              inner join TSPL_ITEM_MASTER on TSPL_ITEM_MASTER.Item_Code = TSPL_SD_SALE_INVOICE_DETAIL.Item_Code  
-                                             where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND Screen_Type='DS'  
-                                             and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,'" + txtFromDate.Value + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <=convert(date,'" + txtToDate.Value + "' ,103) and TSPL_SD_SALE_INVOICE_HEAD.Customer_Code= '" + fndCustom.Value + "' and TSPL_ITEM_MASTER.Is_Milk_Pouch =1  and TSPL_SD_SALE_INVOICE_HEAD.Status =1 and  len (isnull (MonthlySaleInvoiceNo,'')) <=0 ) "
+                                             where  1=1 "
+                    If chkDCSSale.Checked Then
+                        qryUpdate &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS','MCC') "
+                    Else
+                        qryUpdate &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND Screen_Type='DS'  "
+                    End If
+                    qryUpdate &=" And convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,'" + txtFromDate.Value + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <=convert(date,'" + txtToDate.Value + "' ,103) and TSPL_SD_SALE_INVOICE_HEAD.Customer_Code= '" + fndCustom.Value + "' and TSPL_ITEM_MASTER.Is_Milk_Pouch =1  and TSPL_SD_SALE_INVOICE_HEAD.Status =1 and  len (isnull (MonthlySaleInvoiceNo,'')) <=0 ) "
                     clsDBFuncationality.ExecuteNonQuery(qryUpdate)
                     ' strMonth, strCurrentDate , strFromDate,strToDate 
                     Dim qry As String = "  select '" + strMonth + "' as Month , '" + strCurrentDate + "' as CurrentDate , '" + strFromDate + "' as FromDate , '" + strToDate + "' as ToDate, '" + ExistMonthlySaleInvoiceNo + "' as MonthlySaleInvoiceNo,  max(Comp_Code) as Comp_Code,  max(Comp_Name ) as Comp_Name ,  max(Comp_Add1) as Comp_Add1, max(Comp_Add2) as Comp_Add2,max( Comp_Add3) as Comp_Add3, max(Comp_City_Code ) as Comp_City_Code, max(Comp_PinCode) as Comp_PinCode ,max(Comp_Phone1) as Comp_Phone1 ,max(Comp_Phone2) as Comp_Phone2 ,max(Comp_GSTINNo) as Comp_GSTINNo, max(Comp_StateCode) as Comp_StateCode ,max( Comp_StateName) as Comp_StateName , max(Cust_Code) as Cust_Code ,max(Customer_Name) as Customer_Name , max(Cust_Add1) as Cust_Add1 ,max(Cust_Add2) as Cust_Add2,max(Cust_Add3) as Cust_Add3 ,max(Cust_GSTNO) as Cust_GSTNO, max(Cust_StateCode) as  Cust_StateCode,  max(Cust_State_Name) as Cust_State_Name , max(Route_No) as Route_No,  max(Route_Desc) as Route_Desc, max(HSN_Code) as HSN_Code,Doc_Date  ,
@@ -523,15 +539,22 @@ where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND TSPL_SD_SALE_INVO
                                          left outer join TSPL_ROUTE_MASTER on TSPL_ROUTE_MASTER.Route_No = TSPL_CUSTOMER_MASTER.Route_No
                                          left outer join TSPL_ITEM_UOM_DETAIL as StockUOM on StockUOM.Item_Code = TSPL_SD_SALE_INVOICE_DETAIL.Item_Code and  StockUOM.UOM_Code  = TSPL_SD_SALE_INVOICE_DETAIL.Unit_code
                                          left outer join TSPL_ITEM_UOM_DETAIL as TargetUOM on TargetUOM.Item_Code = TSPL_SD_SALE_INVOICE_DETAIL.Item_Code and TargetUOM.UOM_Code = 'Ltr'
-                                         inner join TSPL_ITEM_MASTER on TSPL_ITEM_MASTER.Item_Code = TSPL_SD_SALE_INVOICE_DETAIL.Item_Code 
- 
-                                         where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND Screen_Type='DS'  
-                                         and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,'" + txtFromDate.Value + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <=convert(date,'" + txtToDate.Value + "' ,103) and TSPL_CUSTOMER_MASTER.Cust_Code= '" + fndCustom.Value + "' and TSPL_ITEM_MASTER.Is_Milk_Pouch =1  and TSPL_SD_SALE_INVOICE_HEAD.Status =1
+                                         inner join TSPL_ITEM_MASTER on TSPL_ITEM_MASTER.Item_Code = TSPL_SD_SALE_INVOICE_DETAIL.Item_Code  
+                                         where 1=1 "
+                    If chkDCSSale.Checked Then
+                        qry &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS','MCC') "
+                    Else
+                        qry &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND Screen_Type='DS' "
+                    End If
+                    qry &= " and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,'" + txtFromDate.Value + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <=convert(date,'" + txtToDate.Value + "' ,103) and TSPL_CUSTOMER_MASTER.Cust_Code= '" + fndCustom.Value + "' and TSPL_ITEM_MASTER.Is_Milk_Pouch =1  and TSPL_SD_SALE_INVOICE_HEAD.Status =1
                                          ) Final ) XFinal ) XXFinal  on XXFinal.Item_Desc = TSPL_ITEM_MASTER.Alies_Name and XXFinal.Item_Code = TSPL_ITEM_MASTER.Item_Code
-
-
-                                         where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND Screen_Type='DS'  
-                                         and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,'" + txtFromDate.Value + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <=convert(date,'" + txtToDate.Value + "' ,103) and TSPL_CUSTOMER_MASTER.Cust_Code= '" + fndCustom.Value + "' and TSPL_ITEM_MASTER.Is_Milk_Pouch =1  and TSPL_SD_SALE_INVOICE_HEAD.Status =1
+                                         where 1=1 "
+                    If chkDCSSale.Checked Then
+                        qry &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS','MCC') "
+                    Else
+                        qry &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND Screen_Type='DS' "
+                    End If
+                    qry &= " and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,'" + txtFromDate.Value + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <=convert(date,'" + txtToDate.Value + "' ,103) and TSPL_CUSTOMER_MASTER.Cust_Code= '" + fndCustom.Value + "' and TSPL_ITEM_MASTER.Is_Milk_Pouch =1  and TSPL_SD_SALE_INVOICE_HEAD.Status =1
                                          ) XXXFinal group by XXXFinal.Doc_Date, XXXFinal.Cust_Code, XXXFinal.Item_Code
                                          ) Final
                                          pivot ( sum(QtyInLtr) for Item_Desc in ([Item1_Qty],[Item2_Qty],[Item3_Qty],[Item4_Qty],[Item5_Qty]) ) QtyPivot 
@@ -554,9 +577,13 @@ where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND TSPL_SD_SALE_INVO
                                          left outer join TSPL_ITEM_UOM_DETAIL as StockUOM on StockUOM.Item_Code = TSPL_SD_SALE_INVOICE_DETAIL.Item_Code and  StockUOM.UOM_Code  = TSPL_SD_SALE_INVOICE_DETAIL.Unit_code
                                          left outer join TSPL_ITEM_UOM_DETAIL as TargetUOM on TargetUOM.Item_Code = TSPL_SD_SALE_INVOICE_DETAIL.Item_Code and TargetUOM.UOM_Code = 'Ltr'
                                          inner join TSPL_ITEM_MASTER on TSPL_ITEM_MASTER.Item_Code = TSPL_SD_SALE_INVOICE_DETAIL.Item_Code 
- 
-                                         where  TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND Screen_Type='DS'  
-                                         and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,'" + txtFromDate.Value + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <=convert(date,'" + txtToDate.Value + "' ,103) and TSPL_CUSTOMER_MASTER.Cust_Code= '" + fndCustom.Value + "' and TSPL_ITEM_MASTER.Is_Milk_Pouch =1  and TSPL_SD_SALE_INVOICE_HEAD.Status =1
+                                          where 1=1 "
+                    If chkDCSSale.Checked Then
+                        qry &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS','MCC') "
+                    Else
+                        qry &= " And TSPL_SD_SALE_INVOICE_HEAD.Trans_Type IN ('FS','PS') AND Screen_Type='DS' "
+                    End If
+                    qry &= "  and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103)>=convert(date,'" + txtFromDate.Value + "',103) and convert(date,TSPL_SD_SALE_INVOICE_HEAD.Document_Date,103) <=convert(date,'" + txtToDate.Value + "' ,103) and TSPL_CUSTOMER_MASTER.Cust_Code= '" + fndCustom.Value + "' and TSPL_ITEM_MASTER.Is_Milk_Pouch =1  and TSPL_SD_SALE_INVOICE_HEAD.Status =1
                                          ) Final ) xfinal ) as XXFinal) TTT on TTT.SNO = XFinal.SNO
                                           group by Doc_Date, Cust_Code "
 
