@@ -72,6 +72,7 @@ Partial Class SaleEinvoiceReport
         Me.rmenuPDF = New Telerik.WinControls.UI.RadMenuItem()
         Me.btnReset = New Telerik.WinControls.UI.RadButton()
         Me.btnGo = New Telerik.WinControls.UI.RadButton()
+        Me.chkOnlyDCSSale = New Telerik.WinControls.UI.RadCheckBox()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -117,6 +118,7 @@ Partial Class SaleEinvoiceReport
         CType(Me.RadSplitButton1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnReset, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnGo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkOnlyDCSSale, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -263,6 +265,7 @@ Partial Class SaleEinvoiceReport
         'RadGroupBox7
         '
         Me.RadGroupBox7.AccessibleRole = System.Windows.Forms.AccessibleRole.Grouping
+        Me.RadGroupBox7.Controls.Add(Me.chkOnlyDCSSale)
         Me.RadGroupBox7.Controls.Add(Me.chkAPS)
         Me.RadGroupBox7.Controls.Add(Me.chkDCSSale)
         Me.RadGroupBox7.Controls.Add(Me.chkBPL)
@@ -271,13 +274,13 @@ Partial Class SaleEinvoiceReport
         Me.RadGroupBox7.Margin = New System.Windows.Forms.Padding(4)
         Me.RadGroupBox7.Name = "RadGroupBox7"
         Me.RadGroupBox7.Padding = New System.Windows.Forms.Padding(13, 25, 13, 12)
-        Me.RadGroupBox7.Size = New System.Drawing.Size(245, 40)
+        Me.RadGroupBox7.Size = New System.Drawing.Size(359, 40)
         Me.RadGroupBox7.TabIndex = 454
         '
         'chkAPS
         '
         Me.chkAPS.AutoSize = True
-        Me.chkAPS.Location = New System.Drawing.Point(161, 12)
+        Me.chkAPS.Location = New System.Drawing.Point(177, 12)
         Me.chkAPS.Name = "chkAPS"
         Me.chkAPS.Size = New System.Drawing.Size(69, 17)
         Me.chkAPS.TabIndex = 453
@@ -289,14 +292,14 @@ Partial Class SaleEinvoiceReport
         Me.chkDCSSale.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.chkDCSSale.Location = New System.Drawing.Point(13, 12)
         Me.chkDCSSale.Name = "chkDCSSale"
-        Me.chkDCSSale.Size = New System.Drawing.Size(70, 16)
+        Me.chkDCSSale.Size = New System.Drawing.Size(110, 16)
         Me.chkDCSSale.TabIndex = 446
-        Me.chkDCSSale.Text = "DCS Sale"
+        Me.chkDCSSale.Text = "Include DCS Sale"
         '
         'chkBPL
         '
         Me.chkBPL.AutoSize = True
-        Me.chkBPL.Location = New System.Drawing.Point(99, 12)
+        Me.chkBPL.Location = New System.Drawing.Point(130, 12)
         Me.chkBPL.Name = "chkBPL"
         Me.chkBPL.Size = New System.Drawing.Size(43, 17)
         Me.chkBPL.TabIndex = 452
@@ -680,6 +683,15 @@ Partial Class SaleEinvoiceReport
         Me.btnGo.TabIndex = 161
         Me.btnGo.Text = ">>>"
         '
+        'chkOnlyDCSSale
+        '
+        Me.chkOnlyDCSSale.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkOnlyDCSSale.Location = New System.Drawing.Point(254, 12)
+        Me.chkOnlyDCSSale.Name = "chkOnlyDCSSale"
+        Me.chkOnlyDCSSale.Size = New System.Drawing.Size(96, 16)
+        Me.chkOnlyDCSSale.TabIndex = 454
+        Me.chkOnlyDCSSale.Text = "Only DCS Sale"
+        '
         'SaleEinvoiceReport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -746,6 +758,7 @@ Partial Class SaleEinvoiceReport
         CType(Me.RadSplitButton1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnReset, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnGo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkOnlyDCSSale, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -800,5 +813,6 @@ Partial Class SaleEinvoiceReport
     Friend WithEvents chkAPS As CheckBox
     Friend WithEvents RadGroupBox8 As RadGroupBox
     Friend WithEvents RadGroupBox7 As RadGroupBox
+    Friend WithEvents chkOnlyDCSSale As RadCheckBox
 End Class
 

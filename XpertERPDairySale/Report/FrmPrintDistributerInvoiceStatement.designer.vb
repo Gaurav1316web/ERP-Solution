@@ -22,7 +22,7 @@ Partial Class FrmPrintDistributerInvoiceStatement
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim TableViewDefinition4 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
+        Dim TableViewDefinition1 As Telerik.WinControls.UI.TableViewDefinition = New Telerik.WinControls.UI.TableViewDefinition()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
         Me.RadPageView1 = New Telerik.WinControls.UI.RadPageView()
         Me.RadPageViewPage1 = New Telerik.WinControls.UI.RadPageViewPage()
@@ -78,6 +78,7 @@ Partial Class FrmPrintDistributerInvoiceStatement
         Me.BtnReset = New Telerik.WinControls.UI.RadButton()
         Me.btnclose = New Telerik.WinControls.UI.RadButton()
         Me.btnGo = New Telerik.WinControls.UI.RadButton()
+        Me.chkDCSSale = New Telerik.WinControls.UI.RadCheckBox()
         Me.SplitContainer1.Panel1.SuspendLayout()
         Me.SplitContainer1.Panel2.SuspendLayout()
         Me.SplitContainer1.SuspendLayout()
@@ -122,6 +123,7 @@ Partial Class FrmPrintDistributerInvoiceStatement
         CType(Me.BtnReset, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnclose, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.btnGo, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chkDCSSale, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -179,6 +181,7 @@ Partial Class FrmPrintDistributerInvoiceStatement
         '
         'RadPageViewPage1
         '
+        Me.RadPageViewPage1.Controls.Add(Me.chkDCSSale)
         Me.RadPageViewPage1.Controls.Add(Me.RadGroupBox3)
         Me.RadPageViewPage1.Controls.Add(Me.TxtItem)
         Me.RadPageViewPage1.Controls.Add(Me.MyLabel3)
@@ -665,7 +668,9 @@ Partial Class FrmPrintDistributerInvoiceStatement
         Me.gv.MasterTemplate.EnableFiltering = True
         Me.gv.MasterTemplate.SelectionMode = Telerik.WinControls.UI.GridViewSelectionMode.CellSelect
         Me.gv.MasterTemplate.ShowHeaderCellButtons = True
-        Me.gv.MasterTemplate.ViewDefinition = TableViewDefinition4
+        Me.gv.MasterTemplate.ViewDefinition = TableViewDefinition1
+        Me.gv.MyExportAPI = False
+        Me.gv.MyExportFilePath = ""
         Me.gv.MyStopExport = False
         Me.gv.Name = "gv"
         Me.gv.RightToLeft = System.Windows.Forms.RightToLeft.No
@@ -828,6 +833,15 @@ Partial Class FrmPrintDistributerInvoiceStatement
         Me.btnGo.TabIndex = 17
         Me.btnGo.Text = ">>>"
         '
+        'chkDCSSale
+        '
+        Me.chkDCSSale.Font = New System.Drawing.Font("Arial", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.chkDCSSale.Location = New System.Drawing.Point(829, 17)
+        Me.chkDCSSale.Name = "chkDCSSale"
+        Me.chkDCSSale.Size = New System.Drawing.Size(73, 16)
+        Me.chkDCSSale.TabIndex = 456
+        Me.chkDCSSale.Text = "DCS Sale"
+        '
         'FrmPrintDistributerInvoiceStatement
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -891,6 +905,7 @@ Partial Class FrmPrintDistributerInvoiceStatement
         CType(Me.BtnReset, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnclose, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.btnGo, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chkDCSSale, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
@@ -950,5 +965,6 @@ Partial Class FrmPrintDistributerInvoiceStatement
     Friend WithEvents RadGroupBox3 As RadGroupBox
     Friend WithEvents rbtnPartyWise As RadioButton
     Friend WithEvents rbtnInvoiceWise As RadioButton
+    Friend WithEvents chkDCSSale As RadCheckBox
 End Class
 

@@ -191,7 +191,10 @@ Public Class rptHSNWiseSaleReport
             dtTax = clsDBFuncationality.GetDataTable("SELECT * FROM ( select Tax_Code,Tax_Code_Desc,type,case when type = 'SGST' then 1 when type = 'CGST' then 2  when type = 'IGST' then 3  end as Sequence_No from TSPL_TAX_MASTER where Type in ('SGST','CGST','IGST') )X Order by Sequence_No ")
         End If
 
-        Dim VoucherCount As String = clsDBFuncationality.getSingleValue("select COUNT(Document_No) Document_No  FROM ( select Document_No from ( " & BaseQuery & "  group by Document_No )XXX ")
+        Dim VoucherCount As String = "0"
+        If isPrint Then
+            VoucherCount = clsDBFuncationality.getSingleValue("select COUNT(Document_No) Document_No  FROM ( select Document_No from ( " & BaseQuery & "  group by Document_No )XXX ")
+        End If
         For ii As Integer = 0 To dtTax.Rows.Count - 1
             If chkKKFMandi.Checked Then
                 If isPrint Then
