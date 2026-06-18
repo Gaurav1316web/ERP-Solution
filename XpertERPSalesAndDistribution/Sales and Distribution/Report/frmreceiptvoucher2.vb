@@ -162,8 +162,7 @@ Public Class Frmreceiptvoucher2
             dttemp.Columns.Add(logo2)
             'dttemp.Columns.Add("logo1", GetType(Image))
             'dttemp.Columns.Add("logo2", GetType(Image))
-            ''dttemp.Columns.Add("Posted", GetType(System.String))
-            dttemp.Columns.Add("Status", GetType(System.String))
+            dttemp.Columns.Add("Posted", GetType(System.String))
             dttemp.Columns.Add("SegName", GetType(System.String))
             dttemp.Columns.Add("vouchertype", GetType(System.String))
             dttemp.Columns.Add("SaleInvoice", GetType(System.String))
@@ -240,29 +239,10 @@ Public Class Frmreceiptvoucher2
                                        " (SELECT     Description FROM TSPL_GL_SEGMENT_CODE WHERE      (Seg_No = '7') AND (Segment_code = SUBSTRING(xxx.Account_code, LEN(xxx.Account_code) - 2, 3))) AS SegName," &
                 "case "
                 '' Anubhooti 11-Feb-2015 (If Receipt Type =Refund Then VoucherType Heading should be 'Payment Voucher')
-                '',xxx.IsShowDocumentNo, Cheque_From,case when Posted ='N' Then 'UN-APPROVED' else 'P' end as Posted,SaleInvoice,BRNCH_AC ,GL_ACC,xxx.TapalNo,xxx.DateAndTime 
                 strquery += " WHEN (Select Receipt_Type From TSPL_RECEIPT_HEADER Where Receipt_No ='" + recvalue + "') ='F' THEN 'Payment Voucher'" &
                 " when  xxx.Payment_Code ='cheque' then 'Bank Receipt Voucher' when xxx.Payment_Code ='check' then 'Bank Receipt Voucher'when xxx.Payment_Code ='SETTLEMENT' then'Cash Receipt Voucher'when xxx.Payment_Code ='SETTLEB'then 'Bank Receipt Voucher' when xxx.Payment_Code ='CASH' then 'Cash Receipt Voucher'  " &
                 "  when xxx.Payment_Code ='NEFT' THEN 'NEFT Receipt Voucher'when xxx.Payment_Code ='RTGS' THEN 'RTGS Receipt Voucher' when xxx.Payment_Code ='DD' THEN 'DD Receipt Voucher' when xxx.Payment_Code='OTHER' then '" + recvalue + "'+ ' Voucher'    else (select distinct TSPL_PAYMENT_CODE.Payment_Code  from TSPL_PAYMENT_CODE left outer join TSPL_RECEIPT_HEADER on TSPL_PAYMENT_CODE.Payment_Code =TSPL_RECEIPT_HEADER.Payment_Code  where Receipt_No='" + recvalue + "') +'  Voucher' " &
-                " end   as vouchertype,  
-                
-                xxx.IsShowDocumentNo,
-                    Cheque_From,
-
-                    CASE
-                        WHEN xxx.Posted = 'Y' THEN 'Approved'
-                        WHEN xxx.Posted = 'N' THEN 'UN Approved'
-                        ELSE ''
-                    END AS Status,
-
-                    SaleInvoice,
-                    BRNCH_AC,
-                    GL_ACC,
-                    xxx.TapalNo,
-                    xxx.DateAndTime
-                
-
-                FROM  (" &
+                " end   as vouchertype ,xxx.IsShowDocumentNo, Cheque_From,case when Posted ='N' Then 'UN-APPROVED' else 'P' end as Posted,SaleInvoice,BRNCH_AC ,GL_ACC,xxx.TapalNo,xxx.DateAndTime  FROM  (" &
                 " select TSPL_RECEIPT_HEADER.Cheque_No,TSPL_RECEIPT_HEADER.Cheque_Date,TSPL_RECEIPT_HEADER.Entry_Desc, xx.Receipt_No,TSPL_RECEIPT_HEADER.Receipt_Post_Date,TSPL_RECEIPT_HEADER.Created_By,TSPL_RECEIPT_HEADER.Modify_By,0 as Detail_Line_No,xx.ACCode as Account_code,xx.Account_Desc,xx.Amount,'' as Description,TSPL_RECEIPT_HEADER.Cust_Code, TSPL_RECEIPT_HEADER.Customer_Name,   TSPL_BANK_MASTER.DESCRIPTION AS BankName ,TSPL_RECEIPT_HEADER.Payment_Code,TSPL_CUSTOMER_MASTER.GSTNO, TSPL_STATE_MASTER.GST_STATE_Code,xx.IsShowDocumentNo,tspl_gl_accounts.Account_Seg_Code7, TSPL_RECEIPT_HEADER.Cheque_From, xx.Entry_Desc as rmk,TSPL_RECEIPT_HEADER.Posted , SaleInvoice " + Environment.NewLine &
                 " ,ISNULL(SUBSTRING(TSPL_BRANCH_ACCOUNT_MAPPING.BRANCH_ACCOUNT,0,LEN(TSPL_BRANCH_ACCOUNT_MAPPING.BRANCH_ACCOUNT)-3),'') AS BRNCH_AC,SUBSTRING(TSPL_GL_ACCOUNTS.Account_Code,0,LEN(TSPL_GL_ACCOUNTS.Account_Code)-3) AS GL_ACC,TSPL_RECEIPT_HEADER.TapalNo,TSPL_RECEIPT_HEADER.DateAndTime " &
                 " from(" + Environment.NewLine
@@ -343,8 +323,7 @@ Public Class Frmreceiptvoucher2
                         newrow("Column2") = DirectCast(dt.Rows(0)("logo2"), Byte())
                     End If
 
-                    ''newrow("Posted") = Convert.ToString(dt.Rows(count)("Posted"))
-                    newrow("Status") = Convert.ToString(dt.Rows(count)("Status"))
+                    newrow("Posted") = Convert.ToString(dt.Rows(count)("Posted"))
                     newrow("SegName") = Convert.ToString(dt.Rows(count)("SegName"))
                     newrow("vouchertype") = Convert.ToString(dt.Rows(count)("vouchertype"))
                     newrow("Cheque_From") = Convert.ToString(dt.Rows(count)("Cheque_From"))

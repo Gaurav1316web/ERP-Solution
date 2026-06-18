@@ -12336,12 +12336,7 @@ left outer join TSPL_TAX_MASTER on  TSPL_TAX_MASTER.tax_code=TSPL_TAX_GROUP_DETA
         Qry += " isnull(TSPL_SD_SHIPMENT_HEAD .Total_Tax_Amt,0) as total_tax_amt, TSPL_SD_SHIPMENT_HEAD.Total_Amt as DocAmt,TSPL_SD_SHIPMENT_HEAD.Security_TotalAmt,  TSPL_COMPANY_MASTER.Comp_Name as compname,ISNULL(TSPL_COMPANY_MASTER.Phone1,'')+ Case When ISNULL(TSPL_COMPANY_MASTER.Phone2,'')<>'' Then ', '+ TSPL_COMPANY_MASTER.Phone2 Else'' End as Phone,TSPL_COMPANY_MASTER.Fax as Comp_Fax,TSPL_COMPANY_MASTER.Logo_Img,TSPL_COMPANY_MASTER.Logo_Img2,ISNULL(tspl_company_Master.ADD1,'') as Comp_address,"
         Qry += " TSPL_SD_SHIPMENT_DETAIL.item_code as item_code,TSPL_SD_SHIPMENT_DETAIL.Batch_No, TSPL_ITEM_MASTER.Item_Desc + case when Scheme_Item ='Y' then ' (Free Scheme)' else '' end    as itemdesc, TSPL_SD_SHIPMENT_DETAIL.Row_Type,TSPL_SD_SHIPMENT_DETAIL.Qty as qty,TSPL_SD_SHIPMENT_DETAIL.unit_code as uom,TSPL_SD_SHIPMENT_DETAIL.item_cost as itemcost,TSPL_SD_SHIPMENT_DETAIL.amount as amount,TSPL_SD_SHIPMENT_HEAD.TAX1,TSPL_SD_SHIPMENT_HEAD.TAX2,TSPL_SD_SHIPMENT_HEAD.TAX3,TSPL_SD_SHIPMENT_HEAD.TAX4,TSPL_SD_SHIPMENT_HEAD.TAX5,TSPL_SD_SHIPMENT_HEAD.Total_Add_Charge "
         Qry += " " & QryShowStatus & " "
-        Qry += " " & SerialNoColumn & ",TSPL_SD_SHIPMENT_HEAD.description  
-        ,CASE
-                    WHEN TSPL_SD_SHIPMENT_DETAIL.Status IN ('0') THEN 'Approved'
-                    WHEN TSPL_SD_SHIPMENT_DETAIL.Status IN ('1') THEN 'UN Approved'
-                    ELSE ''
-                    END AS Statuss  "
+        Qry += " " & SerialNoColumn & ",TSPL_SD_SHIPMENT_HEAD.description  "
         Qry += " from TSPL_SD_SHIPMENT_DETAIL  "
         Qry += " " & SerialNo & " "
         Qry += " left outer join TSPL_SD_SHIPMENT_HEAD  on TSPL_SD_SHIPMENT_HEAD.Document_Code  =TSPL_SD_SHIPMENT_DETAIL.Document_Code   "

@@ -7443,12 +7443,7 @@ where  TSPL_TRANSFER_ORDER_HEAD. Document_No = '" + StrCode + "'"
                 Else
                     Qry = " select '" & strCancelOrDelete & "' As IsCancelled,TSPL_COMPANY_MASTER.Comp_Name,TSPL_COMPANY_MASTER.Add1+TSPL_COMPANY_MASTER.Add2+TSPL_COMPANY_MASTER.Add3 as Comp_Address,TSPL_COMPANY_MASTER.Phone1,TSPL_COMPANY_MASTER.Email,TSPL_COMPANY_MASTER.Logo_Img,TSPL_COMPANY_MASTER.GSTReg_No,TSPL_TRANSFER_ORDER_HEAD.Vehicle_Mannual_No,TSPL_TRANSFER_ORDER_HEAD.Transporter_Name_Manual,TSPL_TRANSFER_ORDER_HEAD.TransferOutNo,TSPL_TRANSFER_ORDER_HEAD.Delivery_date,frmLocation.Location_Desc as From_Location,ToLocation.Location_Desc as To_Location,TSPL_TRANSFER_ORDER_HEAD.Document_No,TSPL_TRANSFER_ORDER_HEAD.Document_Date,TrasOut.Requisition_Id,TSPL_REQUISITION_HEAD.Requisition_Date,TSPL_TRANSFER_ORDER_DETAIL.Item_Code,TSPL_ITEM_MASTER.Short_Description,TSPL_ITEM_MASTER.HSN_Code,TSPL_TRANSFER_ORDER_DETAIL.Unit_code,"
                     Qry += " case when TSPL_TRANSFER_ORDER_HEAD.Transfer_Type='I' Then case when isnull(TSPL_BATCH_ITEM.Batch_No,'')='' then TSPL_TRANSFER_ORDER_DETAIL.In_Qty else TSPL_BATCH_ITEM.Qty end else case when isnull(TSPL_BATCH_ITEM.Batch_No,'')='' then TSPL_TRANSFER_ORDER_DETAIL.Out_Qty else TSPL_BATCH_ITEM.Qty end End As Qty, "
-                    Qry += " TSPL_BATCH_ITEM.Batch_No,TSPL_TRANSFER_ORDER_HEAD.Transfer_Type,
-                    CASE
-					WHEN TSPL_TRANSFER_ORDER_HEAD.Status = '1' THEN 'Approved'
-					WHEN TSPL_TRANSFER_ORDER_HEAD.Status = '0' THEN 'UN Approved'
-					ELSE ''
-				END AS Status
+                    Qry += " TSPL_BATCH_ITEM.Batch_No,TSPL_TRANSFER_ORDER_HEAD.Transfer_Type
 from " & tbl_TSPL_TRANSFER_ORDER_HEAD & "
 left join " & tbl_TSPL_TRANSFER_ORDER_Detail & " on TSPL_TRANSFER_ORDER_HEAD.Document_No=TSPL_TRANSFER_ORDER_DETAIL.Document_No
 left join TSPL_ITEM_MASTER on TSPL_TRANSFER_ORDER_DETAIL.Item_Code=TSPL_ITEM_MASTER.Item_Code
