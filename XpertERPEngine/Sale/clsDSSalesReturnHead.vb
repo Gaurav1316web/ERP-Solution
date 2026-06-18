@@ -627,7 +627,12 @@ from
               --  TSPL_SD_SHIPMENT_DETAIL.Booth_Security_Amt, 
               --  0
               --)
-			  0 as  Booth_Security_Amt 
+			  0 as  Booth_Security_Amt,
+               CASE
+                WHEN TSPL_SD_SALE_RETURN_HEAD.Status IN ('1') THEN 'Approved'
+                WHEN TSPL_SD_SALE_RETURN_HEAD.Status IN ('0') THEN 'UN Approved'
+                ELSE ''
+            END AS Status
             from 
               " + TSPL_SD_SALE_RETURN_detail + " 
               LEFT OUTER JOIN " + TSPL_SD_SALE_RETURN_HEAD + " ON " + TSPL_SD_SALE_RETURN_HEAD + ".Document_Code = " + TSPL_SD_SALE_RETURN_detail + ".DOCUMENT_CODE 
