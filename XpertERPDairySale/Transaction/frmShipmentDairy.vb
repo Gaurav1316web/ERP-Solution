@@ -67,6 +67,7 @@ Public Class frmShipmentDairy
     Dim EWBThresholdLimitForInterState As Integer = 0
     Dim DefaultEnableNoTransporter As Boolean = False
 
+
     Const colURoundOff As String = "colURoundOff"
     Const col_Is_Taxable As String = "col_Is_Taxable"
     Const colTransType As String = "colTransType"
@@ -7180,8 +7181,8 @@ where TSPL_DISTRIBUTOR_COMMISSION_HEAD.Applicable_Date<='" + clsCommon.GetPrintD
         gvCC.Rows.Clear()
         gvCC.Columns.Clear()
         gv1.ReadOnly = False
+        Dim CurrDateTime As DateTime = clsCommon.GETSERVERDATE()
         If SetDefaultShiftTime.Length > 0 Then
-            Dim CurrDateTime As DateTime = clsCommon.GETSERVERDATE
             Dim EndTime As DateTime = clsCommon.GetPrintDate(SetDefaultShiftTime, "dd/MMM/yyyy hh:mm tt")
             If CurrDateTime.TimeOfDay < EndTime.TimeOfDay Then
                 txtSupplyDate.Value = clsCommon.GetPrintDate(CurrDateTime)

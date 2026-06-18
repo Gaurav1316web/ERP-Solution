@@ -263,24 +263,24 @@ Public Class frmCustomerGroup
                 fndTermsCode.Value = dr(3).ToString().Trim()
                 TxtShfLife.Text = dr(4).ToString()
                 txtTaxGroup.Enabled = True
-                If clsCommon.CompairString(dr(5).ToString().Trim(), "0") = CompairStringResult.Equal Then
-                    chkShowGrouponCVReport.Checked = False
-                Else
+
+                chkShowGrouponCVReport.Checked = False
+                If clsCommon.CompairString(dr(5).ToString().Trim(), "1") = CompairStringResult.Equal Then
                     chkShowGrouponCVReport.Checked = True
                 End If
-                If clsCommon.CompairString(dr(6).ToString().Trim(), "0") = CompairStringResult.Equal Then
-                    chkPONOMandatory.Checked = False
-                Else
+
+                chkPONOMandatory.Checked = False
+                If clsCommon.CompairString(dr(6).ToString().Trim(), "1") = CompairStringResult.Equal Then
                     chkPONOMandatory.Checked = True
                 End If
-                If clsCommon.CompairString(dr(7).ToString().Trim(), "0") = CompairStringResult.Equal Then
-                    chkDefaultVSP.Checked = False
-                Else
+
+                chkDefaultVSP.Checked = False
+                If clsCommon.CompairString(dr(7).ToString().Trim(), "1") = CompairStringResult.Equal Then
                     chkDefaultVSP.Checked = True
                 End If
-                If clsCommon.CompairString(clsCommon.myCstr(dr("IsGoverment").ToString().Trim()), "0") = CompairStringResult.Equal Then
-                    chkGov.Checked = False
-                Else
+
+                chkGov.Checked = False
+                If clsCommon.CompairString(clsCommon.myCstr(dr("IsGoverment").ToString().Trim()), "1") = CompairStringResult.Equal Then
                     chkGov.Checked = True
                 End If
 
@@ -418,6 +418,7 @@ where Cust_Group_Code ='" & clsCommon.myCstr(fndCustomerGroupCode.Value) & "'"
         chkShowGrouponCVReport.Checked = False
         chkPONOMandatory.Checked = False
         chkDefaultVSP.Checked = False
+        chkGov.Checked = False
         txtPercentage.Text = ""
         fndCustomerGroupCode.Focus()
         TxtShfLife.Text = 0

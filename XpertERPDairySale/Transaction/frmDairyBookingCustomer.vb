@@ -89,6 +89,7 @@ Public Class frmDairyBookingCustomer
     Dim EnableCustomerPODetailonDairyBooking As Integer = 0
     Dim CheckAvgQtyOnDairyBooking As Boolean = False
     Dim ShowAvailableQtyOnDairyBooking As Boolean = False
+    Dim SetDefaultShiftTime As String = ""
     Const colLineNo As String = "COLLNO"
     Const colICode As String = "COLICODE"
     Const colIType As String = "colIType"
@@ -339,6 +340,7 @@ Public Class frmDairyBookingCustomer
         CheckCustomeroutStandingAmt = IIf(clsCommon.myCdbl(clsFixedParameter.GetData(clsFixedParameterType.CheckCustomeroutStandingAmt, clsFixedParameterCode.CheckCustomeroutStandingAmt, Nothing)) = 1, True, False)
         DeductTPTFromDocAmt = IIf(clsCommon.myCdbl(clsFixedParameter.GetData(clsFixedParameterType.DeductTPTFromDocAmt, clsFixedParameterCode.DeductTPTFromDocAmt, Nothing)) = 1, True, False)
         ServerDateTimeForTaxableInvoice = IIf(clsCommon.myCdbl(clsFixedParameter.GetData(clsFixedParameterType.ServerDateTimeForTaxableInvoice, clsFixedParameterCode.ServerDateTimeForTaxableInvoice, Nothing)) = 1, True, False)
+        SetDefaultShiftTime = clsCommon.myCstr(clsFixedParameter.GetData(clsFixedParameterType.SetDefaultShiftTime, clsFixedParameterCode.SetDefaultShiftTime, Nothing))
 
         'SetMailRight()
         SetUserMgmtNew()
@@ -3097,7 +3099,15 @@ order by TSPL_DISTRIBUTOR_COMMISSION_HEAD.Applicable_Date desc,TSPL_DISTRIBUTOR_
             lblReceiptAmt.Visible = True
             lblReceiptAmtDesc.Visible = True
         End If
-
+        Dim CurrDateTime As DateTime = clsCommon.GETSERVERDATE()
+        If SetDefaultShiftTime.Length > 0 Then
+            Dim EndTime As DateTime = clsCommon.GetPrintDate(SetDefaultShiftTime, "dd/MMM/yyyy hh:mm tt")
+            If CurrDateTime.TimeOfDay < EndTime.TimeOfDay Then
+                txtSupplyDate.Value = clsCommon.GetPrintDate(CurrDateTime)
+            Else
+                txtSupplyDate.Value = clsCommon.GetPrintDate(CurrDateTime.AddDays(1))
+            End If
+        End If
     End Sub
     Sub ENABLEDISABLECONTROLS()
         If ShowBookingTypeDropDownonDairyBookingCustomer Then

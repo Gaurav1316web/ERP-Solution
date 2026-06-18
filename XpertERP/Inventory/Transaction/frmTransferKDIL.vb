@@ -5255,8 +5255,13 @@ Public Class FrmTransferKDIL
                 txtVehicleCode.Value = clsCommon.ShowSelectForm("Vehicle No", qry, "vehicle_id", "", txtVehicleCode.Value, "vehicle_id", isButtonClicked)
             End If
             'txtVehicle.Text = txtVehicleCode.Value
-            lblVehicleNo.Text = connectSql.RunScalar("Select Description  from TSPL_VEHICLE_MASTER where Vehicle_Id = '" + Convert.ToString(txtVehicleCode.Value) + "'")
-            txtvehicle_mannual_no.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("Select number from TSPL_VEHICLE_MASTER where Vehicle_Id = '" + Convert.ToString(txtVehicleCode.Value) + "'"))
+            If clsCommon.myLen(txtVehicleCode.Value) > 0 Then
+                lblVehicleNo.Text = connectSql.RunScalar("Select Description  from TSPL_VEHICLE_MASTER where Vehicle_Id = '" + Convert.ToString(txtVehicleCode.Value) + "'")
+                txtvehicle_mannual_no.Text = clsCommon.myCstr(clsDBFuncationality.getSingleValue("Select number from TSPL_VEHICLE_MASTER where Vehicle_Id = '" + Convert.ToString(txtVehicleCode.Value) + "'"))
+            Else
+                lblVehicleNo.Text = Nothing
+                txtvehicle_mannual_no.Text = Nothing
+            End If
         Catch ex As Exception
             common.clsCommon.MyMessageBoxShow(Me, ex.Message, Me.Text)
         End Try

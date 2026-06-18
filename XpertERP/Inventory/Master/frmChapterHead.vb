@@ -365,13 +365,13 @@ Public Class frmChapterHead
             rdtxtchapterdesc.Text = ""
             rdbtnSave.Text = "Update"
             rdbtnDelete.Enabled = False
-            If var <> "" Then
-                funfill()
-            End If
         Else
             rdtxtchapterdesc.Text = ""
             rdbtnSave.Text = "Save"
             rdbtnDelete.Enabled = False
+        End If
+        If var <> "" Then
+            funfill()
         End If
     End Sub
 

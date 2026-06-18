@@ -1414,7 +1414,6 @@ Public Class clsFixedParameterType
 End Class
 Public Class clsFixedParameterCode
     Public Const SkadaDefaultSiloLocation As String = "Default Silo Location"
-
     Public Const SkadaLastDocument As String = "Last Document"
     Public Const SkadaDefaultRoute As String = "Default Route"
     Public Const SkipDebitNoteforRejectInBMCTruckSheet As String = "Skip Debit Note for Reject In BMC Truck Sheet"
