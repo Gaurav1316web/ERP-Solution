@@ -3181,7 +3181,15 @@ left join TSPL_ITEM_UOM_DETAIL as ItemBulkUOM on TSPL_SD_SHIPMENT_DETAIL.Item_Co
                 If BtnMilkStcSummary.IsChecked OrElse BtnStcRegisterItemWiseSummary.IsChecked Then
                     qry += " union all Select 'Summary' as Code,'Summary' as Name "
                 End If
+            ElseIf rbtnSalesRegister.IsChecked Then
+                If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
+                    qry += " union all Select 'Milk' as Code,'Milk' as Name  union all 
+ Select 'Product' as Code,'Product' as Name 
+            union all 
+ Select 'Both' as Code,'Both' as Name "
+                End If
             End If
+
             ddlReportType.DataSource = clsDBFuncationality.GetDataTable(qry)
             ddlReportType.ValueMember = "Code"
             ddlReportType.DisplayMember = "Name"
@@ -3350,8 +3358,15 @@ left join TSPL_ITEM_UOM_DETAIL as ItemBulkUOM on TSPL_SD_SHIPMENT_DETAIL.Item_Co
             lblLocation.Visible = False
             lblToLocation.Visible = False
             txtToLocation.Visible = False
-            lblReportType.Visible = False
-            ddlReportType.Visible = False
+            If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
+                lblReportType.Visible = True
+                lblReportType.Text = "Item Type"
+                ddlReportType.Visible = True
+                LoadReportType()
+            Else
+                lblReportType.Visible = False
+                ddlReportType.Visible = False
+            End If
             lblQtyConv.Visible = True
             ddlQtyConversionType.Visible = False
             ddlDefaultReportUOM.Visible = True
@@ -3417,6 +3432,13 @@ left join TSPL_ITEM_UOM_DETAIL as ItemBulkUOM on TSPL_SD_SHIPMENT_DETAIL.Item_Co
                 clsCommon.MyMessageBoxShow(Me, "Please select Type", Me.Text)
                 Exit Sub
             End If
+            If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
+                If ddlReportType.SelectedIndex = 0 Then
+                    clsCommon.MyMessageBoxShow(Me, "Please select Item Type", Me.Text)
+                    Exit Sub
+                End If
+            End If
+
             Baseqry = " select  
         CASE WHEN EXISTS ( SELECT 1 FROM TSPL_SD_SHIPMENT_HEAD 
         LEFT JOIN TSPL_BOOKING_MATSER ON TSPL_BOOKING_MATSER.Document_No = TSPL_SD_SHIPMENT_HEAD.Against_Booking_No
@@ -3454,7 +3476,7 @@ TSPL_CUSTOMER_MASTER.Customer_Name AS [Party Name],
 tspl_item_master.Item_Desc as [Item Name],(TSPL_SD_SALE_INVOICE_DETAIL.item_cost * Report_UOM.Conversion_Factor/tspl_item_uom_detail.Conversion_Factor ) as [Rate],
 TSPL_SD_SALE_INVOICE_DETAIL.Unit_code as [Measure of Qty],
   TSPL_SD_SALE_INVOICE_DETAIL.Qty as [Product Qty],
-  tspl_item_master.HSN_Code,
+  tspl_item_master.HSN_Code,TSPL_ITEM_MASTER.Is_FreshItem ,TSPL_ITEM_MASTER.Is_Ambient ,
   case when TSPL_SD_SALE_INVOICE_DETAIL.Tax1='KKF' or TSPL_SD_SALE_INVOICE_DETAIL.Tax2='KKF' then (case when TSPL_SD_SALE_INVOICE_DETAIL.tax3='IGST' then TSPL_SD_SALE_INVOICE_DETAIL.TAX3_Rate else  TSPL_SD_SALE_INVOICE_DETAIL.TAX3_Rate + TSPL_SD_SALE_INVOICE_DETAIL.TAX4_Rate end ) else (case when  TSPL_SD_SALE_INVOICE_DETAIL.tax1='IGST' then TSPL_SD_SALE_INVOICE_DETAIL.TAX1_Rate else TSPL_SD_SALE_INVOICE_DETAIL.TAX1_Rate +TSPL_SD_SALE_INVOICE_DETAIL.TAX2_Rate end)end as [IGST Rate], 
      TSPL_SD_SALE_INVOICE_DETAIL.Amount as[ItemBasic Amt],
     TSPL_SD_SALE_INVOICE_DETAIL.disc_Amt as[Margin Amt],
@@ -3585,7 +3607,7 @@ TSPL_CUSTOMER_MASTER.Customer_Name AS [Party Name],
 tspl_item_master.Item_Desc as [Item Name],TSPL_SCRAPINVOICE_Detail.Price As [Rate],
 TSPL_SCRAPINVOICE_Detail.Unit_code as [Measure of Qty],
   TSPL_SCRAPINVOICE_Detail.shipped_Qty as [Product Qty],
-  tspl_item_master.HSN_Code,
+  tspl_item_master.HSN_Code,TSPL_ITEM_MASTER.Is_FreshItem ,TSPL_ITEM_MASTER.Is_Ambient ,
   case when TSPL_SCRAPINVOICE_Detail.Tax1='KKF' or TSPL_SCRAPINVOICE_Detail.Tax2='KKF' then (case when TSPL_SCRAPINVOICE_Detail.tax3='IGST' then TSPL_SCRAPINVOICE_Detail.TAX3_Rate else  TSPL_SCRAPINVOICE_Detail.TAX3_Rate + TSPL_SCRAPINVOICE_Detail.TAX4_Rate end ) else (case when  TSPL_SCRAPINVOICE_Detail.tax1='IGST' then TSPL_SCRAPINVOICE_Detail.TAX1_Rate else TSPL_SCRAPINVOICE_Detail.TAX1_Rate +TSPL_SCRAPINVOICE_Detail.TAX2_Rate end)end as [IGST Rate], 
   --case when TSPL_SCRAPINVOICE_Detail.Tax1='KKF' or TSPL_SCRAPINVOICE_Detail.Tax2='KKF' then (case when TSPL_SCRAPINVOICE_Detail.tax3='IGST' then TSPL_SCRAPINVOICE_Detail.TAX3_Base_Amt else  TSPL_SCRAPINVOICE_Detail.TAX3_Base_Amt end ) else (case when  TSPL_SCRAPINVOICE_Detail.tax1='IGST' then TSPL_SCRAPINVOICE_Detail.TAX1_Base_Amt else TSPL_SCRAPINVOICE_Detail.TAX1_Base_Amt end)end as [Basic Amt]
      TSPL_SCRAPINVOICE_HEAD.Discount_Base as[ItemBasic Amt],
@@ -3715,6 +3737,13 @@ left outer join TSPL_TAX_MASTER as tax1 on tax1.tax_code =TSPL_SCRAPINVOICE_HEAD
             End If
             If txtTransaction.arrValueMember IsNot Nothing AndAlso txtTransaction.arrValueMember.Count > 0 Then
                 qry += " And XX.Transcation_Type In(" + clsCommon.GetMulcallString(txtTransaction.arrValueMember) + ")" + Environment.NewLine
+            End If
+            If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "AJM") = CompairStringResult.Equal Then
+                If clsCommon.CompairString(ddlReportType.SelectedValue, "Milk") = CompairStringResult.Equal Then
+                    qry += " and  Is_FreshItem = 1  "
+                ElseIf clsCommon.CompairString(ddlReportType.SelectedValue, "Product") = CompairStringResult.Equal Then
+                    qry += " and Is_Ambient = 1  "
+                End If
             End If
 
             If Print Then

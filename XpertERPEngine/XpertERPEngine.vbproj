@@ -161,7 +161,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="TelerikCommon">
-      <HintPath>..\..\dll2\dll\TelerikCommon.dll</HintPath>
+      <HintPath>..\..\New folder\XpertERPRCDF\XpertERP\bin\Debug\TelerikCommon.dll</HintPath>
     </Reference>
     <Reference Include="TelerikData, Version=2022.1.222.20, Culture=neutral, PublicKeyToken=5bb2a467cbec794e, processorArchitecture=MSIL">
       <HintPath>..\XpertERP\lib\RCWF\2022.1.222.20.Trial\TelerikData.dll</HintPath>

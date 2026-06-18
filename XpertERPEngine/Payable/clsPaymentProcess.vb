@@ -2309,7 +2309,7 @@ group by code,Sequence_No,Description order by  Description desc"
 
             sQuery = "select 
 Comp_Code,Comp_Name,max(MCC_NAME) as MCC_NAME,Regn_No
-,max(Milk_Qty) as Milk_Qty,max(Milk_Amount) as Milk_Amount,max(Date1) as Date1,max(Date2) as Date2,max(comp_add1) as comp_add1,max(comp_add2) as comp_add2,max(comp_add3) as comp_add3,max(comp_Fax) as comp_Fax,max(comp_Email) as comp_Email,max(CompPhone) as CompPhone,max(Pincode) as Pincode,max(Tcan_No) as Tcan_No,max(Doc_Date) as Doc_Date,min(from_date) as from_date, max(to_date) as to_date,max(Milk_Qty) as Milk_Qty,max(Milk_Amount) as Milk_Amount,max(DebitAmount) as DebitAmount,max(CreditAmount) as CreditAmount,max(SaleReturnAmount)SaleReturnAmount,max(Hold_Payable_Amount) as Hold_Payable_Amount,sum(HeadLoadAmount) as HeadLoadAmount "
+,max(Milk_Qty) as Milk_Qty,max(Status) as Status,max(Milk_Amount) as Milk_Amount,max(Date1) as Date1,max(Date2) as Date2,max(comp_add1) as comp_add1,max(comp_add2) as comp_add2,max(comp_add3) as comp_add3,max(comp_Fax) as comp_Fax,max(comp_Email) as comp_Email,max(CompPhone) as CompPhone,max(Pincode) as Pincode,max(Tcan_No) as Tcan_No,max(Doc_Date) as Doc_Date,min(from_date) as from_date, max(to_date) as to_date,max(Milk_Qty) as Milk_Qty,max(Status) as Status,max(Milk_Amount) as Milk_Amount,max(DebitAmount) as DebitAmount,max(CreditAmount) as CreditAmount,max(SaleReturnAmount)SaleReturnAmount,max(Hold_Payable_Amount) as Hold_Payable_Amount,sum(HeadLoadAmount) as HeadLoadAmount "
 
             If clsCommon.CompairString(objCommonVar.CurrComp_Code1, "RJS") = CompairStringResult.Equal OrElse clsCommon.CompairString(objCommonVar.CurrComp_Code1, "UDP") = CompairStringResult.Equal Then
                 sQuery += " , sum(TotalOutStandingAmt) as TotalOutStandingAmt "
@@ -2366,7 +2366,13 @@ Comp_Code,Comp_Name,max(MCC_NAME) as MCC_NAME,Regn_No
             If CycleWiseData = True AndAlso clsCommon.myLen(strVSPCode) > 0 Then
                 sQuery += " and TSPL_PAYMENT_PROCESS_DETAIL.VSP_CODE In (" + strVSPCode + ")"
             End If
-            sQuery += ") AS Hold_Payable_Amount
+            sQuery += ") AS Hold_Payable_Amount,
+               TSPL_PAYMENT_PROCESS_HEAD.isPosted,
+				CASE
+					WHEN TSPL_PAYMENT_PROCESS_HEAD.isPosted = '1' THEN 'Approved'
+					WHEN TSPL_PAYMENT_PROCESS_HEAD.isPosted = '0' THEN 'UN Approved'
+					ELSE ''
+				END AS Status
                     from TSPL_PAYMENT_PROCESS_HEAD                    
                     left outer join TSPL_COMPANY_MASTER  on TSPL_COMPANY_MASTER.Comp_Code =TSPL_PAYMENT_PROCESS_HEAD.Comp_Code"
             If AreaWiseBilling = True Then

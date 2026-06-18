@@ -65,8 +65,8 @@ Public Class rptProductCreditSaleReport
             Dim itemNames4 As String = Nothing
 
             Dim ItemQry As String = " Select Distinct TSPL_SD_SHIPMENT_BOOKING_DETAIL.Item_Code,TSPL_ITEM_MASTER.Item_Desc,Sku_Seq
-from  TSPL_SD_SHIPMENT_HEAD
-left outer join TSPL_SD_SHIPMENT_BOOKING_DETAIL ON TSPL_SD_SHIPMENT_BOOKING_DETAIL.DOCUMENT_CODE=TSPL_SD_SHIPMENT_HEAD.Document_Code
+from  TSPL_SD_SHIPMENT_BOOKING_DETAIL
+left outer join TSPL_SD_SHIPMENT_HEAD ON TSPL_SD_SHIPMENT_HEAD.DOCUMENT_CODE=TSPL_SD_SHIPMENT_BOOKING_DETAIL.Document_Code
 left outer join TSPL_ITEM_MASTER ON TSPL_ITEM_MASTER.Item_Code=TSPL_SD_SHIPMENT_BOOKING_DETAIL.Item_Code
 where Convert( Date, TSPL_SD_SHIPMENT_HEAD.Document_Date,103) >=convert(date,'" + clsCommon.GetPrintDate(txtfDate.Value, "dd/MMM/yyyy") + "',103) 
 and convert(date,TSPL_SD_SHIPMENT_HEAD.Document_Date,103) <= Convert(Date,'" + clsCommon.GetPrintDate(txtToDate.Value, "dd/MMM/yyyy") + "',103) order by Sku_Seq"
